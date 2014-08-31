@@ -1,0 +1,22 @@
+[user]
+	name = Ian Chesal
+	email = ian.chesal@gmail.com
+[core]
+  #editor = /usr/bin/mate --wait --line 1
+	editor = subl -w
+	excludesfile = /Users/ian/.gitignore
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+[difftool "Kaleidoscope"]
+	cmd = ksdiff-wrapper git \"$LOCAL\" \"$REMOTE\"
+[difftool]
+	prompt = false
+[diff]
+	tool = Kaleidoscope
+[mergetool]
+	keepBackup = true
+[push]
+	default = matching
