@@ -1,0 +1,1 @@
+export GOPATH=/Users/ian/code/go
