@@ -7,3 +7,6 @@
 [submodule "vim/vendor/vim-colors-solarized"]
 	path = vim/vendor/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized
+[submodule "fonts/Meslo-Font"]
+	path = fonts/Meslo-Font
+	url = git@github.com:andreberg/Meslo-Font.git
