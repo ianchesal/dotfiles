@@ -10,3 +10,6 @@
 [submodule "fonts/Meslo-Font"]
 	path = fonts/Meslo-Font
 	url = git@github.com:andreberg/Meslo-Font.git
+[submodule "rubymine/solarized"]
+	path = rubymine/solarized
+	url = git@github.com:dgt79/rubymine-colors-solarized.git
