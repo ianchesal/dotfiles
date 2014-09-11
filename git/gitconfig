@@ -13,7 +13,6 @@
 	plre = pull --rebase
 	st = status
 	out = log origin..HEAD
-	ci = commit
 	ci = commit -v
 	co = checkout
 	cp = cherry-pick
