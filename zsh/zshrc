@@ -64,7 +64,6 @@ plugins=(
   ruby
   rvm
   screen
-  tmux
   vagrant
   zsh_reload
 )
