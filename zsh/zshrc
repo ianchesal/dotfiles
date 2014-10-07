@@ -58,6 +58,8 @@ plugins=(
   jira
   mygo
   myosx
+  mygit
+  myruby
   osx
   rake
   rsync
