@@ -102,4 +102,9 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# For the 5.0.x Homebrew'ed zsh installation...
+unalias run-help
+autoload run-help
+HELPDIR=/usr/local/share/zsh/help
+
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
