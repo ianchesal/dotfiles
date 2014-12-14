@@ -60,14 +60,15 @@ plugins=(
   myosx
   mygit
   myruby
-  osx
   rake
   rsync
   ruby
   rvm
   screen
   vagrant
+  vi-mode
   zsh_reload
+  myvi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
