@@ -13,3 +13,6 @@
 [submodule "rubymine/solarized"]
 	path = rubymine/solarized
 	url = git@github.com:dgt79/rubymine-colors-solarized.git
+[submodule "vim/vendor/vim-fugitive"]
+	path = vim/vendor/vim-fugitive
+	url = git://github.com/tpope/vim-fugitive.git
