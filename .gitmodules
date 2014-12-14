@@ -16,3 +16,9 @@
 [submodule "vim/vendor/vim-fugitive"]
 	path = vim/vendor/vim-fugitive
 	url = git://github.com/tpope/vim-fugitive.git
+[submodule "vim/vendor/vim-airline"]
+	path = vim/vendor/vim-airline
+	url = https://github.com/bling/vim-airline
+[submodule "vim/vendor/vim-surround"]
+	path = vim/vendor/vim-surround
+	url = git://github.com/tpope/vim-surround.git
