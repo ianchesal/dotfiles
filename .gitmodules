@@ -22,3 +22,6 @@
 [submodule "vim/vendor/vim-surround"]
 	path = vim/vendor/vim-surround
 	url = git://github.com/tpope/vim-surround.git
+[submodule "vim/vendor/vim-endwise"]
+	path = vim/vendor/vim-endwise
+	url = git://github.com/tpope/vim-endwise.git
