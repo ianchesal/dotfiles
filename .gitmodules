@@ -25,3 +25,6 @@
 [submodule "vim/vendor/vim-endwise"]
 	path = vim/vendor/vim-endwise
 	url = git://github.com/tpope/vim-endwise.git
+[submodule "vim/vendor/nerdcommenter"]
+	path = vim/vendor/nerdcommenter
+	url = https://github.com/scrooloose/nerdcommenter.git
