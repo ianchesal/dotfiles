@@ -1,30 +1,6 @@
-[submodule "vim/vendor/vim-sensible"]
-	path = vim/vendor/vim-sensible
-	url = git://github.com/tpope/vim-sensible.git
-[submodule "vim/vim-pathogen"]
-	path = vim/vim-pathogen
-	url = https://github.com/tpope/vim-pathogen
-[submodule "vim/vendor/vim-colors-solarized"]
-	path = vim/vendor/vim-colors-solarized
-	url = https://github.com/altercation/vim-colors-solarized
 [submodule "fonts/Meslo-Font"]
 	path = fonts/Meslo-Font
 	url = git@github.com:andreberg/Meslo-Font.git
 [submodule "rubymine/solarized"]
 	path = rubymine/solarized
 	url = git@github.com:dgt79/rubymine-colors-solarized.git
-[submodule "vim/vendor/vim-fugitive"]
-	path = vim/vendor/vim-fugitive
-	url = git://github.com/tpope/vim-fugitive.git
-[submodule "vim/vendor/vim-airline"]
-	path = vim/vendor/vim-airline
-	url = https://github.com/bling/vim-airline
-[submodule "vim/vendor/vim-surround"]
-	path = vim/vendor/vim-surround
-	url = git://github.com/tpope/vim-surround.git
-[submodule "vim/vendor/vim-endwise"]
-	path = vim/vendor/vim-endwise
-	url = git://github.com/tpope/vim-endwise.git
-[submodule "vim/vendor/nerdcommenter"]
-	path = vim/vendor/nerdcommenter
-	url = https://github.com/scrooloose/nerdcommenter.git
