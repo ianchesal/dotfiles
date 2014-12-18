@@ -13,3 +13,8 @@ and then you install plugins from within `vim` with:
 or from the command line:
 
     vim +PluginInstall +qall
+
+To complete the YCM installtion you also need tod:
+
+    cd ~/.vim/bundle/YouCompleteMe
+    ./install.sh
