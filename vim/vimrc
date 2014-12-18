@@ -103,13 +103,16 @@ match ExtraWhitespace /\s\+\%#\@<!$/
 augroup vimrcEx
   autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 
-  "Auto reload this file when editing it
+  " Auto reload this file when editing it
   au! BufWritePost .vimrc source %
 
-  "Add rails filetype to all ruby files, need to find a way to limit to just rails files maybe
+  " Add rails filetype to all ruby files, need to find a way to limit to just rails files maybe
   au BufRead,BufNewFile *.rb set filetype=ruby.rails.rspec
   au BufRead,BufNewFile Isolate set filetype=ruby
   au BufRead,BufNewFile config.ru set filetype=ruby
+
+  " Vagrantfiles are Ruby
+  au BufRead,BufNewFile Vagrantfile set filetype=ruby
 
   " Override default modula2 detection, these files are markdown
   au BufNewFile,BufRead *.md set filetype=markdown

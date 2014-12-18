@@ -1,6 +1,8 @@
-I use Homebrew's MacVIM and vim:
+I use Homebrew's vim:
 
-    brew install macvim vim
+    brew uninstall vim; rvm system; brew install vim
+
+That `rvm system` is necessary otherwise `vim` segfaults when you try to use Ruby.
 
 You need to clone [Vundle](https://github.com/gmarik/Vundle.vim#about) before this `vimrc` will work:
 
