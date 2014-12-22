@@ -52,6 +52,8 @@ set winwidth=81    " Ideal minimum window width of 80 chars
 
 set gfn=Monofur:h14
 
+noremap ; :
+
 syntax on
 
 filetype plugin indent on
