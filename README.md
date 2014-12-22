@@ -6,6 +6,9 @@ My dotfiles. What else were you expecting?
 
     git clone --recursive git@github.com:ianchesal/dotfiles.git
 
-Linking up dotfiles is currently a manual process. Maybe I'll automate it some day. It's not arduous enough to require automation right now.
+You can link up some of the bits and pieces using the included `Rakefile`. See:
 
-Most of this stuff assumes you've cloned this repository to `~/code/dotfiles` in your environment.
+    rake -T
+
+for the targets you can run to link up pieces. Not everything is available for automatic installation via the `Rakefile`.
+

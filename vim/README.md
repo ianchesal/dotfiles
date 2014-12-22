@@ -1,6 +1,6 @@
 I use Homebrew's vim:
 
-    brew uninstall vim; rvm system; brew install vim
+    brew uninstall vim; rvm system; brew install vim; rvm use 2.1.2
 
 That `rvm system` is necessary otherwise `vim` segfaults when you try to use Ruby.
 
