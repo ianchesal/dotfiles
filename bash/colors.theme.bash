@@ -226,6 +226,7 @@ background_orange="$(color red bg bright)"
 
 normal="$(color reset)"
 reset_color="$(__make_ansi '' 39)"
+reset_bold="$(__make_ansi '' 21)"
 
 # These colors are meant to be used with `echo -e`
 echo_black="$(echo_color reset black)"
