@@ -25,6 +25,9 @@ task :default do
   system "rake -T"
 end
 
+desc "Install all dotfiles (are you really sure you want to do this?)"
+task :all => [:bash, :zsh, :vim, :ruby, :curl, :git]
+
 desc "Install vim dotfiles"
 task :vim => [:vimrc, :vimdir]
 task :vim do
