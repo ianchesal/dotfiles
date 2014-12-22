@@ -1,0 +1,33 @@
+# Tab bar
+hardstatus off
+hardstatus alwayslastline
+#hardstatus string "%{+b wk} %-w%{+b wk} %n %t %{-}%+w %41=%H @ %l %-= %= %D,%c:%s "
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
+# Escape key
+escape \\a
+
+# To clear the screen after closing some programs
+altscreen on
+
+# Programs opening by default
+screen -t "SHELL" 1 
+#screen -t "MPD" 2 ncmpc
+#screen -t "IRC" 3 irssi
+#screen -t "HTOP" 4 htop
+
+# Keys
+bindkey -k k; quit
+
+# COLORS! and some useful terminfo
+term screen-256color
+terminfo rxvt-unicode 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+# Do not show startup message
+startup_message off
+
+# Why would anyone want this?
+vbell off
+
+# More scrollback
+defscrollback 10000

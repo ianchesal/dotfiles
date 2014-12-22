@@ -26,7 +26,7 @@ task :default do
 end
 
 desc "Install all dotfiles (are you really sure you want to do this?)"
-task :all => [:bash, :zsh, :vim, :ruby, :curl, :git]
+task :all => [:bash, :zsh, :vim, :ruby, :curl, :git, :screen]
 
 desc "Install vim dotfiles"
 task :vim => [:vimrc, :vimdir]
@@ -98,3 +98,7 @@ task :zshrc do |t|
   dolink(File.join(ENV['HOME'], '.zshrc'), File.join(root, 'zsh', 'zshrc'))
 end
 
+desc "Install screen dotfiles"
+task :screen do |t|
+  dolink(File.join(ENV['HOME'], '.screenrc'), File.join(root, 'screen', 'screenrc'))
+end
