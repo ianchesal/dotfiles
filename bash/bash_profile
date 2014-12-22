@@ -8,6 +8,8 @@ fi
 export SQUARE_HOME
 if [[ -f "$SQUARE_HOME/config_files/square/bash_profile" ]]; then
   source $SQUARE_HOME/config_files/square/bash_profile
+else
+  alias _pair_startup=true
 fi
 ##############################################################
 
