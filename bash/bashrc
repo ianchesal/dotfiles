@@ -1,3 +1,17 @@
-export BASH_CONF="bashrc"
+########################################################
+# Bootstrap my work environment
+if [[ -f "$SQUARE_HOME/config_files/square/bashrc" ]]; then
+  source $SQUARE_HOME/config_files/square/bashrc
+fi
+########################################################
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+pathadd() {
+  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+    PATH="${PATH:+"$PATH:"}$1"
+  fi
+}
+
+pathadd /usr/local/bin
+export PATH
+

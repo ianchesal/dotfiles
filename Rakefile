@@ -81,10 +81,14 @@ task :curl do |t|
 end
 
 desc "Install bash dotfiles"
-task :bash => [:bashrc, :bash_profile]
+task :bash => [:bashrc, :bash_profile, :inputrc]
 
 task :bashrc do |t|
   dolink(File.join(ENV['HOME'], '.bashrc'), File.join(root, 'bash', 'bashrc'))
+end
+
+task :inputrc do |t|
+  dolink(File.join(ENV['HOME'], '.inputrc'), File.join(root, 'bash', 'inputrc'))
 end
 
 task :bash_profile do |t|
