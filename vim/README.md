@@ -16,7 +16,7 @@ or from the command line:
 
     vim +PluginInstall +qall
 
-To complete the YCM installtion you also need tod:
+To complete the YCM installtion you also need to do:
 
     cd ~/.vim/bundle/YouCompleteMe
     ./install.sh
