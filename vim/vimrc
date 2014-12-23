@@ -23,6 +23,7 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'elzr/vim-json'
 Plugin 'kien/ctrlp.vim'
 Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'godlygeek/tabular'
 
 call vundle#end()
 
