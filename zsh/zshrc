@@ -102,6 +102,7 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias vim-update-plugins='vim +PluginInstall +qall'
 
 # For the 5.0.x Homebrew'ed zsh installation...
 unalias run-help
