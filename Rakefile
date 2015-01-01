@@ -2,8 +2,24 @@ require 'fileutils'
 
 def dolink(target, source)
   backup target if File.exist? target
-  system("ln -s #{source} #{target}")
+  system "ln -s #{source} #{target}"
   puts "Linked #{source} -> #{target}"
+end
+
+def clean_restore(target)
+  return unless File.symlink? target
+  File.delete target
+  last_backup = find_backup target
+  if File.exists? last_backup
+    File.rename last_backup, target
+    puts "Restored backup #{last_backup} -> #{target}"
+  end
+end
+
+def find_backup(target)
+  index = 0
+  index += 1 while File.exist? target + ".#{index}"
+  target + ".#{index-1}"
 end
 
 def backup(target)
@@ -13,8 +29,12 @@ def backup(target)
   puts "Renamed existing file #{target} -> #{target}.#{index}"
 end
 
-def root
-  File.dirname(__FILE__)
+def root(*args)
+  File.join(File.dirname(__FILE__), args)
+end
+
+def home(*args)
+  File.join(File.expand_path('~'), args)
 end
 
 def mkdir_if_needed(path)
@@ -28,8 +48,19 @@ end
 desc "Install all dotfiles (are you really sure you want to do this?)"
 task :all => [:bash, :zsh, :vim, :ruby, :curl, :git, :screen]
 
+desc "Remove my customizations and restore system default dotfiles"
+task :clean => [
+  'bash:clean',
+  'zsh:clean',
+  'vim:clean',
+  'ruby:clean',
+  'curl:clean',
+  'git:clean',
+  'screen:clean'
+]
+
 desc "Install vim dotfiles"
-task :vim => [:vimrc, :vimdir]
+task :vim => ['vim:all']
 task :vim do
   puts "Now run:\n\n"
   puts "\tbrew uninstall vim; rvm system; brew install vim"
@@ -38,71 +69,131 @@ task :vim do
   puts "\nto complete the installation."
 end
 
-task :vimrc do |t|
-  dolink(File.join(ENV['HOME'], '.vimrc'), File.join(root, 'vim', 'vimrc'))
-end
+namespace :vim do
+  task :all => [:rc, :dir]
 
-task :vimdir do |t|
-  mkdir_if_needed File.expand_path '~/.vim'
+  task :rc do |t|
+    dolink(home('.vimrc'), root('vim', 'vimrc'))
+  end
+
+  task :dir do |t|
+    mkdir_if_needed home('.vim')
+  end
+
+  task :clean do |t|
+    system "rm -rf #{home('.vim')}/*"
+    clean_restore home('.vimrc')
+  end
 end
 
 desc "Install git dotfiles"
-task :git => [:gitconfig, :gitignore, :gittemplate]
+task :git => ['git:all']
 
-task :gitconfig do |t|
-  dolink(File.join(ENV['HOME'], '.gitconfig'), File.join(root, 'git', 'gitconfig'))
-end
+namespace :git do
+  task :all => [:gitconfig, :gitignore, :gittemplate]
 
-task :gitignore do |t|
-  dolink(File.join(ENV['HOME'], '.gitignore'), File.join(root, 'git', 'gitignore'))
-end
+  task :gitconfig do |t|
+    dolink(home('.gitconfig'), root('git', 'gitconfig'))
+  end
 
-task :gittemplate do |t|
-  mkdir_if_needed File.expand_path '~/.git_template'
+  task :gitignore do |t|
+    dolink(home('.gitignore'), root('git', 'gitignore'))
+  end
+
+  task :gittemplate do |t|
+    mkdir_if_needed home('.git_template')
+  end
+
+  task :clean do |t|
+    clean_restore home('.gitignore')
+    clean_restore home('.gitconfig')
+  end
 end
 
 desc "Install all Ruby-related dotfiles (gem, rubocop, etc.)"
-task :ruby => [:gem, :rubocop]
+task :ruby => ['ruby:all']
 
-task :gem => [:gemrc]
+namespace :ruby do
+  task :all => [:gemrc, :rubocop]
 
-task :gemrc do |t|
-  mkdir_if_needed File.expand_path '~/.gem'
-  dolink(File.join(ENV['HOME'], '.gemrc'), File.join(root, 'gem', 'gemrc'))
-end
+  task :gemrc => [:gemdir] do |t|
+    dolink(home('.gemrc'), root('gem', 'gemrc'))
+  end
 
-task :rubocop do |t|
-  dolink(File.join(ENV['HOME'], '.rubocop.yml'), File.join(root, 'rubocop', 'rubocop.yml'))
+  task :gemdir do |t|
+    mkdir_if_needed home('.gem')
+  end
+
+  task :rubocop do |t|
+    dolink(home('.rubocop.yml'), root('rubocop', 'rubocop.yml'))
+  end
+
+  task :clean do |t|
+    clean_restore home('.rubocop.yml')
+    clean_restore home('.gemrc')
+  end
 end
 
 desc "Install curl dotfiles"
-task :curl do |t|
-  dolink(File.join(ENV['HOME'], '.curlrc'), File.join(root, 'curl', 'curlrc'))
+task :curl => ['curl:rc']
+
+namespace :curl do
+  task :rc do |t|
+    dolink(home('.curlrc'), root('curl', 'curlrc'))
+  end
+
+  task :clean do |t|
+    clean_restore home('.curlrc')
+  end
 end
 
 desc "Install bash dotfiles"
-task :bash => [:bashrc, :bash_profile, :inputrc]
+task :bash => ['bash:all']
 
-task :bashrc do |t|
-  dolink(File.join(ENV['HOME'], '.bashrc'), File.join(root, 'bash', 'bashrc'))
-end
+namespace :bash do
+  task :all => [:rc, :inputrc, :profile]
 
-task :inputrc do |t|
-  dolink(File.join(ENV['HOME'], '.inputrc'), File.join(root, 'bash', 'inputrc'))
-end
+  task :rc do |t|
+    dolink(home('.bashrc'), root('bash', 'bashrc'))
+  end
 
-task :bash_profile do |t|
-  dolink(File.join(ENV['HOME'], '.bash_profile'), File.join(root, 'bash', 'bash_profile'))
+  task :inputrc do |t|
+    dolink(home('.inputrc'), root('bash', 'inputrc'))
+  end
+
+  task :profile do |t|
+    dolink(home('.bash_profile'), root('bash', 'bash_profile'))
+  end
+
+  task :clean do |t|
+    clean_restore home('.bash_profile')
+    clean_restore home('.inputrc')
+    clean_restore home('.bashrc')
+  end
 end
 
 desc "Install zsh dotfiles"
-task :zsh => [:zshrc]
+task :zsh => ['zsh:rc']
 
-task :zshrc do |t|
-  dolink(File.join(ENV['HOME'], '.zshrc'), File.join(root, 'zsh', 'zshrc'))
+namespace :zsh do
+  task :rc do |t|
+    dolink(home('.zshrc'), root('zsh', 'zshrc'))
+  end
+
+  task :clean do |t|
+    clean_restore home('.zshrc')
+  end
 end
 
 desc "Install screen dotfiles"
-task :screen do |t|
-  dolink(File.join(ENV['HOME'], '.screenrc'), File.join(root, 'screen', 'screenrc'))
+task :screen => ['screen:rc']
+
+namespace :screen do
+  task :rc do |t|
+    dolink(home('.screenrc'), root('screen', 'screenrc'))
+  end
+
+  task :clean do |t|
+    clean_restore home('.screenrc')
+  end
 end
