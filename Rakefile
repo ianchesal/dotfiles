@@ -46,7 +46,7 @@ task :default do
 end
 
 desc "Install all dotfiles (are you really sure you want to do this?)"
-task :all => [:bash, :zsh, :vim, :ruby, :curl, :git, :screen]
+task :all => [:bash, :zsh, :vim, :ruby, :curl, :git, :screen, :irssi]
 
 desc "Remove my customizations and restore system default dotfiles"
 task :clean => [
@@ -56,7 +56,8 @@ task :clean => [
   'ruby:clean',
   'curl:clean',
   'git:clean',
-  'screen:clean'
+  'screen:clean',
+  'irssi:clean'
 ]
 
 desc "Install vim dotfiles"
@@ -195,5 +196,18 @@ namespace :screen do
 
   task :clean do |t|
     clean_restore home('.screenrc')
+  end
+end
+
+desc "Install irssi dotfiles"
+task :irssi => ['irssi:all']
+
+namespace :irssi do
+  task :all do |t|
+    dolink(home('.irssi'), root('irssi'))
+  end
+
+  task :clean do |t|
+    clean_restore home('.irssi')
   end
 end
