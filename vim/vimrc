@@ -20,7 +20,6 @@ Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-surround'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'elzr/vim-json'
 Plugin 'kien/ctrlp.vim'
 Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'godlygeek/tabular'
@@ -50,6 +49,8 @@ set encoding=utf-8 " Default to Unicode/UTF-8 rather than latin1
 set ttyfast        " Terminals are plenty fast these days.
 
 set winwidth=81    " Ideal minimum window width of 80 chars
+
+set clipboard=unnamed " Allow clipboard sharing with OS X. See: http://stackoverflow.com/a/680271/259811
 
 set gfn=Monofur:h14
 
