@@ -172,8 +172,8 @@ settings = {
   "fe-text" = { actlist_sort = "refnum"; };
   theme = "xchat";
   "fe-common/core" = { theme = "xchat"; };
+  "perl/core/scripts" = {
+    crapbuster_levels = "JOINS PARTS QUITS NICKS CLIENTCRAP CRAP MODE TOPICS KICKS";
+  };
 };
 hilights = ( { text = "ianc"; nick = "yes"; word = "yes"; } );
-ignores = (
-  { level = "ALL"; pattern = ".* sets modes .*"; regexp = "yes"; }
-);
