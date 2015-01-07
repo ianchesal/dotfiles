@@ -174,3 +174,6 @@ settings = {
   "fe-common/core" = { theme = "xchat"; };
 };
 hilights = ( { text = "ianc"; nick = "yes"; word = "yes"; } );
+ignores = (
+  { level = "ALL"; pattern = ".* sets modes .*"; regexp = "yes"; }
+);
