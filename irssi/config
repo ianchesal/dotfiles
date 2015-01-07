@@ -177,3 +177,6 @@ settings = {
   };
 };
 hilights = ( { text = "ianc"; nick = "yes"; word = "yes"; } );
+ignores = (
+  { level = "ACTIONS MODES"; }
+)
