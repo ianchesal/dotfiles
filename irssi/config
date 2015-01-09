@@ -176,7 +176,10 @@ settings = {
     crapbuster_levels = "JOINS PARTS QUITS NICKS CLIENTCRAP CRAP MODE TOPICS KICKS";
   };
 };
-hilights = ( { text = "ianc"; nick = "yes"; word = "yes"; } );
+hilights = (
+  { text = "ianc"; nick = "yes"; word = "yes"; },
+  { text = "@ianc"; nick = "yes"; word = "yes"; }
+);
 ignores = (
   { level = "ACTIONS MODES"; }
 )
