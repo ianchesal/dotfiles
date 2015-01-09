@@ -16,7 +16,7 @@ aliases = {
   WI = "whois";
   WII = "whois $0 $0";
   WW = "whowas";
-  W = "who";
+  W = "window";
   N = "names";
   M = "msg";
   T = "topic";
@@ -171,10 +171,16 @@ settings = {
   };
   "fe-text" = { actlist_sort = "refnum"; };
   theme = "xchat";
-  "fe-common/core" = { theme = "xchat"; };
+  "fe-common/core" = {
+    autolog = "yes";
+    autolog_level = "~/.irssi/logs/$tag/$0.log";
+    activity_hide_level = "= JOINS QUITS";
+    theme = "xchat";
+  };
   "perl/core/scripts" = {
     crapbuster_levels = "JOINS PARTS QUITS NICKS CLIENTCRAP CRAP MODE TOPICS KICKS";
   };
+
 };
 hilights = (
   { text = "ianc"; nick = "yes"; word = "yes"; },
