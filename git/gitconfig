@@ -6,6 +6,7 @@
 [alias]
 	c = commit -m
 	a = add
+	g = grep
 	di = diff
 	dic = diff --cached
 	pl = pull
