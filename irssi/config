@@ -186,6 +186,50 @@ hilights = (
   { text = "ianc"; nick = "yes"; word = "yes"; },
   { text = "@ianc"; nick = "yes"; word = "yes"; }
 );
-ignores = (
-  { level = "ACTIONS MODES"; }
-)
+ignores = ( { level = "ACTIONS MODES"; } );
+chatnets = {
+  Geeks = {
+    type = "IRC";
+    nick = "iaresee";
+    username = "iaresee";
+    realname = "Ian C.";
+  };
+};
+servers = (
+  {
+    address = "irc.geeksirc.net";
+    chatnet = "Geeks";
+    port = "6667";
+    use_ssl = "no";
+    ssl_verify = "no";
+    autoconnect = "yes";
+  }
+);
+channels = (
+  { name = "#aft-chat"; chatnet = "Geeks"; autojoin = "yes"; },
+  { name = "#aft-support"; chatnet = "Geeks"; autojoin = "yes"; }
+);
+windows = {
+  1 = { immortal = "yes"; name = "(status)"; level = "ALL"; };
+  2 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#aft-chat";
+        tag = "Geeks";
+      }
+    );
+  };
+  3 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#aft-support";
+        tag = "Geeks";
+      }
+    );
+  };
+};
+mainwindows = { 1 = { first_line = "1"; lines = "46"; }; };
