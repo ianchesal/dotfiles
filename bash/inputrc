@@ -6,7 +6,6 @@
 "\e[B": history-search-forward
 "\e[A": history-search-backward
 
-set editing-mode vi
 set completion-ignore-case on
 set bell-style none
 
