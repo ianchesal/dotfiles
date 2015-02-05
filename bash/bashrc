@@ -14,6 +14,15 @@ pathadd() {
   fi
 }
 
+export HISTSIZE=1000000
+# Don't put duplicate lines in the history.
+export HISTCONTROL=ignoredups
+# ... and ignore same successive entries.
+export HISTCONTROL=ignoreboth
+
+# After each command, update LINES and COLUMNS to reflect the current window size
+shopt -s checkwinsize
+
 pathadd /usr/local/bin
 export PATH
 
