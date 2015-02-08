@@ -194,10 +194,9 @@ hilights = (
 );
 ignores = (
   { level = "ACTIONS MODES"; },
-  { level = "JOINS PARTS QUITS NICKS"; channels = ( "#aft-chat" ); },
   {
     level = "JOINS PARTS QUITS NICKS";
-    channels = ( "#aft-support", "#aft-chat" );
+    channels = ( "#aft-support" );
   },
   {
     level = "ACTIONS";
