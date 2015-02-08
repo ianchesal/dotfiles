@@ -66,9 +66,7 @@ plugins=(
   rvm
   screen
   vagrant
-  vi-mode
   zsh_reload
-  myvi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
