@@ -1,1 +1,1 @@
-export GOPATH=/Users/ian/code/go
+#export GOPATH=/Users/ian/code/go

@@ -46,6 +46,7 @@ ZSH_CUSTOM=$HOME/code/dotfiles/zsh/custom
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  square
   aws
   brew
   docker
@@ -63,17 +64,17 @@ plugins=(
   rake
   rsync
   ruby
-  rvm
   screen
   vagrant
   zsh_reload
+  rvm
 )
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/Users/ian/.rvm/bin"
+#export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin:/Users/ian/.rvm/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -107,4 +108,8 @@ unalias run-help
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+if [[ -f "${HOME}/.zsh_local" ]]; then
+  source "${HOME}/.zsh_local"
+fi
+
