@@ -13,6 +13,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'            " let Vundle manage Vundle, required
 Plugin 'tpope/vim-fugitive'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
