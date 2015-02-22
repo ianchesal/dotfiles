@@ -14,7 +14,7 @@ function add_to_path {
 }
 
 # color grep
-export GREP_OPTIONS='--color=auto -i -E'
+export GREP_OPTIONS='--color=auto -E'
 GREP_COLOR='1;32'
 #
 # # automatically enter directories without cd
