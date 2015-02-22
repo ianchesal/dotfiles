@@ -3,7 +3,7 @@ if [[ -d "$HOME/Development" ]]; then
 fi
 export SQUARE_HOME
 if [[ -f "$SQUARE_HOME/config_files/square/zshrc" ]]; then
-  source $SQUARE_HOME/config_files/square/zshrc
+  #source $SQUARE_HOME/config_files/square/zshrc
 fi
 
 function add_to_path {

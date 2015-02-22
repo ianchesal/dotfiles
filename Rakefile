@@ -179,10 +179,12 @@ task :zsh => ['zsh:rc']
 namespace :zsh do
   task :rc do |t|
     dolink(home('.zshrc'), root('zsh', 'zshrc'))
+    dolink(home('.zshenv'), root('zsh', 'zshenv'))
   end
 
   task :clean do |t|
     clean_restore home('.zshrc')
+    clean_restore home('.zshenv')
   end
 end
 
