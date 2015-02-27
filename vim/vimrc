@@ -191,6 +191,17 @@ nmap <leader>bm :CtrlPMixed<cr>
 nmap <leader>bs :CtrlPMRU<cr>
 
 """""""""""""""""""""""""""
+" NERDTree Configuration
+" Show hidden files by default
+let NERDTreeShowHidden=1
+
+" Toggle with Ctrl-n
+map <C-n> :NERDTreeToggle<CR>
+
+" Close vim if the only thing left open is NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+"""""""""""""""""""""""""""
 " Buffergator Configuration
 " Use the right side of the screen
 let g:buffergator_viewport_split_policy = 'R'
