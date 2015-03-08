@@ -57,7 +57,8 @@ task :clean => [
   'curl:clean',
   'git:clean',
   'screen:clean',
-  'irssi:clean'
+  'irssi:clean',
+  'tmux:clean'
 ]
 
 desc "Install vim dotfiles"
@@ -185,6 +186,19 @@ namespace :zsh do
   task :clean do |t|
     clean_restore home('.zshrc')
     clean_restore home('.zshenv')
+  end
+end
+
+desc "Install tmux dotfiles"
+task :tmux => ['tmux:conf']
+
+namespace :tmux do
+  task :conf do |t|
+    dolink(home('.tmux.conf'), root('tmux', 'tmux.conf'))
+  end
+
+  task :clean do |t|
+    clean_restore home('.tmux.conf')
   end
 end
 
