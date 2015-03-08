@@ -26,6 +26,8 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'godlygeek/tabular'
 Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'nacitar/terminalkeys.vim'
+Plugin 'drmikehenry/vim-fixkey'
 
 call vundle#end()
 
@@ -226,3 +228,8 @@ nmap <leader>bl :BuffergatorOpen<cr>
 " Shared bindings from Solution #1 from earlier
 nmap <leader>T :enew<cr>
 nmap <leader>bq :bp <BAR> bd #<cr>
+
+" Make arrow keys work in tmux sessions
+if &term =~ '256color'
+  set t_ut=
+endif
