@@ -88,6 +88,11 @@ else
   export EDITOR='vim'
 fi
 
+# Correct a bad $SHELL setting
+if [[ $SHELL == *"bash"* ]]; then
+  export SHELL=/usr/local/bin/zsh
+fi
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
