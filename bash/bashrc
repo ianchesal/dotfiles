@@ -23,6 +23,9 @@ export HISTCONTROL=ignoreboth
 # After each command, update LINES and COLUMNS to reflect the current window size
 shopt -s checkwinsize
 
+# AWS command line completion
+complete -C aws_completer aws
+
 pathadd /usr/local/bin
 export PATH
 

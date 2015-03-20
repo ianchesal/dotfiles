@@ -57,6 +57,7 @@ plugins=(
   heroku
   history
   jira
+  myaws
   mygo
   myosx
   mygit
