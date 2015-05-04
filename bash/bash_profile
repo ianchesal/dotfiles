@@ -43,3 +43,4 @@ alias brake='bundle exec rake'
 
 # vim: filetype=sh
 export PATH=/usr/local/sbin:$PATH
+export PATH=/usr/local/opt/go/libexec//bin:$PATH
