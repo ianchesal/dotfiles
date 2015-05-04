@@ -28,6 +28,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'nacitar/terminalkeys.vim'
 Plugin 'drmikehenry/vim-fixkey'
+Plugin 'plasticboy/vim-markdown'
 
 call vundle#end()
 
@@ -229,7 +230,14 @@ nmap <leader>bl :BuffergatorOpen<cr>
 nmap <leader>T :enew<cr>
 nmap <leader>bq :bp <BAR> bd #<cr>
 
+
 " Make arrow keys work in tmux sessions
 if &term =~ '256color'
   set t_ut=
 endif
+
+"""""""""""""""""""""""""""
+" Markdown Configuration
+" Don't automatically fold everything when opening a Markdown doc
+let g:vim_markdown_folding_disabled=1
+
