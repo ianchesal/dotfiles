@@ -28,7 +28,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'nacitar/terminalkeys.vim'
 Plugin 'drmikehenry/vim-fixkey'
-Plugin 'plasticboy/vim-markdown'
+" Plugin 'plasticboy/vim-markdown'
 
 call vundle#end()
 
@@ -239,5 +239,5 @@ endif
 """""""""""""""""""""""""""
 " Markdown Configuration
 " Don't automatically fold everything when opening a Markdown doc
-let g:vim_markdown_folding_disabled=1
+" let g:vim_markdown_folding_disabled=1
 
