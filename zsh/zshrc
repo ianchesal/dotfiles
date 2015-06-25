@@ -56,7 +56,6 @@ plugins=(
   go
   heroku
   history
-  jira
   myaws
   mygo
   myosx
@@ -69,6 +68,7 @@ plugins=(
   vagrant
   zsh_reload
   rvm
+  urltools
 )
 
 source $ZSH/oh-my-zsh.sh
