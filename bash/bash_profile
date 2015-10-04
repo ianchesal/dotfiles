@@ -34,12 +34,18 @@ if [[ -f "/usr/local/etc/bash_completion" ]]; then
   source /usr/local/etc/bash_completion
 fi
 
+for f in /usr/local/etc/bash_completion.d/*; do
+  source $f
+done
+
 if [[ -d "/usr/local/opt/go/libexec/" ]]; then
   export GOROOT=/usr/local/opt/go/libexec/
 fi
 
 alias gpoh='git push origin HEAD'
 alias brake='bundle exec rake'
+
+source ~/code/dotfiles/bash/aliases
 
 SSH_ENV="$HOME/.ssh/environment"
 
@@ -66,3 +72,5 @@ fi
 # vim: filetype=sh
 export PATH=/usr/local/sbin:$PATH
 export PATH=/usr/local/opt/go/libexec//bin:$PATH
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"

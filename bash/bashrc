@@ -29,3 +29,4 @@ complete -C aws_completer aws
 pathadd /usr/local/bin
 export PATH
 
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
