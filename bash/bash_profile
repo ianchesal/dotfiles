@@ -32,11 +32,11 @@ source ~/code/dotfiles/bash/ianc.theme.bash
 
 if [[ -f "/usr/local/etc/bash_completion" ]]; then
   source /usr/local/etc/bash_completion
+else
+  for f in /usr/local/etc/bash_completion.d/*; do
+    source $f
+  done
 fi
-
-for f in /usr/local/etc/bash_completion.d/*; do
-  source $f
-done
 
 if [[ -d "/usr/local/opt/go/libexec/" ]]; then
   export GOROOT=/usr/local/opt/go/libexec/
