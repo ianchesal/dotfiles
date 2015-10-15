@@ -59,18 +59,21 @@ function start_agent {
 }
 
 # Source SSH settings, if applicable
-if [ -f "${SSH_ENV}" ]; then
-  . "${SSH_ENV}" > /dev/null
-  #ps ${SSH_AGENT_PID} doesn't work under cywgin
-  ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+if [[ $(uname) != "Darwin" ]]; then
+  if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    #ps ${SSH_AGENT_PID} doesn't work under cywgin
+    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
     start_agent;
   }
-else
-  start_agent;
+  else
+    start_agent;
+  fi
 fi
 
 # vim: filetype=sh
-export PATH=/usr/local/sbin:$PATH
-export PATH=/usr/local/opt/go/libexec//bin:$PATH
+pathadd /usr/local/sbin
+pathadd /usr/local/opt/go/libexec/bin
+export PATH
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
