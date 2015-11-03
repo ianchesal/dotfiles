@@ -38,9 +38,18 @@ else
   done
 fi
 
-if [[ -d "/usr/local/opt/go/libexec/" ]]; then
-  export GOROOT=/usr/local/opt/go/libexec/
+# Go
+if [[ -d "/usr/local/opt/go/libexec" ]]; then
+  export GOROOT=/usr/local/opt/go/libexec
+else
+  export GOROOT=/usr/local/go
 fi
+export GOPATH="${HOME}/code/go"
+if [[ -d "${HOME}/Development/config_files/config/go/aliases" ]]; then
+  export GOFETCH_ALIASES="${HOME}/Development/config_files/config/go/aliases"
+fi
+pathadd $GOROOT/bin
+pathadd $GOPATH/bin
 
 alias gpoh='git push origin HEAD'
 alias brake='bundle exec rake'
@@ -73,7 +82,6 @@ fi
 
 # vim: filetype=sh
 pathadd /usr/local/sbin
-pathadd /usr/local/opt/go/libexec/bin
 export PATH
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"

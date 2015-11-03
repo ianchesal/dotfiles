@@ -32,11 +32,17 @@ export RANGE_PORT=443
 export RANGE_SSL=1
 
 # Go
-export GOROOT=/usr/local/go
-export GOPATH="$SQUARE_HOME/go"
-export GOFETCH_ALIASES="$SQUARE_HOME/config_files/config/go/aliases"
-add_to_path $GOPATH/bin
+if [[ -d "/usr/local/opt/go/libexec" ]]; then
+  export GOROOT=/usr/local/opt/go/libexec
+else
+  export GOROOT=/usr/local/go
+fi
+export GOPATH="${HOME}/Development/go"
+if [[ -d "${HOME}/Development/config_files/config/go/aliases" ]]; then
+  export GOFETCH_ALIASES="${HOME}/Development/config_files/config/go/aliases"
+fi
 add_to_path $GOROOT/bin
+add_to_path $GOPATH/bin
 
 # Put topsoil on the path
 if [[ -d "$SQUARE_HOME/topsoil/bin" ]]; then
