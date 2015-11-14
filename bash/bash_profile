@@ -99,4 +99,12 @@ fi
 pathadd /usr/local/sbin
 export PATH
 
+# List tmux sessions
+TMUX_SESSIONS=$(tmux ls 2>/dev/null)
+if ! [[ -z "$TMUX_SESSIONS" ]]; then
+  echo "---------- tmux sessions ----------"
+  tmux ls
+  echo "-----------------------------------"
+fi
+
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
