@@ -21,6 +21,14 @@ export GIT_EDITOR=vim
 # Configure the current git user on shell startup.
 _pair_startup
 
+# Defining this here as well as bashrc because of the way I use iTerm
+# to load different shells.
+pathadd() {
+  if [ -d "$1" ] && [[ ":$path:" != *":$1:"* ]]; then
+    path="${path:+"$path:"}$1"
+  fi
+}
+
 # Print the current git author when the shell loads
 if [[ -n $(which git) ]]; then
   printf "${COLOR_LIGHT_CYAN}Current git author:${COLOR_WHITE} ${GIT_AUTHOR_NAME:-$(git config user.name)} <${GIT_AUTHOR_EMAIL:-$(git config user.email)}>\n${COLOR_NC}"
