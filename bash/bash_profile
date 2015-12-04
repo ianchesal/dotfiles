@@ -108,3 +108,6 @@ if ! [[ -z "$TMUX_SESSIONS" ]]; then
 fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+export GOFETCH_ALIASES=/Users/ianc/Development/config_files/config/go/aliases
+export PATH=/usr/local/go/bin:$PATH
+export PATH=/usr/local/opt/go/libexec/bin:$PATH
