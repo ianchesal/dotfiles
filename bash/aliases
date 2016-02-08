@@ -138,5 +138,6 @@ alias sgem='sudo gem'
 alias srake='sudo rake'
 alias urldecode='node -e "console.log(decodeURIComponent(process.argv[1]))"'
 alias urlencode='node -e "console.log(encodeURIComponent(process.argv[1]))"'
+vlias v='vim'
 alias vim-update-plugins='vim +PluginInstall +qall'
 alias which-command=whence
