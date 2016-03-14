@@ -38,6 +38,7 @@
 [core]
   editor = vim
 	excludesfile = ~/.gitignore
+  pager = cat
 [color]
 	status = auto
 	branch = auto
@@ -70,3 +71,9 @@
 	clean = git media clean %f
 	smudge = git media smudge %f
 	required = true
+[transfer]
+  fsckobjects = true
+[fetch]
+  fsckobjects = true
+[receive]
+  fsckobjects = true
