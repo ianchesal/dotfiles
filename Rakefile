@@ -227,3 +227,16 @@ namespace :irssi do
     clean_restore home('.irssi')
   end
 end
+
+desc "Install emacs dotfiles"
+task :emacs => ['emacs:all']
+
+namespace :emacs do
+  task :all do |t|
+    dolink(home('.spacemacs'), root('emacs', 'spacemacs'))
+  end
+
+  task :clean do |t|
+    clean_restore home('.spacemacs')
+  end
+end
