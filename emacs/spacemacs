@@ -95,7 +95,11 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
+   dotspacemacs-themes '(wheatgrass
+                         spacemacs-dark
+                         wheatgrass
+                         afternoon
+                         alect-black
                          spacemacs-light
                          solarized-light
                          solarized-dark
@@ -251,7 +255,5 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
   )
 
-;; Install the themes megapack
-(setq-default dotspacemacs-configuration-layers '(themes-megapack))
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
