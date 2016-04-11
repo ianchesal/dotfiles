@@ -19,4 +19,4 @@ or from the command line:
 To complete the YCM installtion you also need to do:
 
     cd ~/.vim/bundle/YouCompleteMe
-    ./install.sh
+    ./install.py
