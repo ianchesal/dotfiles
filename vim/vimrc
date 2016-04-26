@@ -50,7 +50,7 @@ set wildmode=longest,list " Better tab completion for :e and friends
 set wildignore=*.rbc,.git,*.o,*.gem
 set history=100   " Default is 20, not enough.
 set ls=2          " Always display a status line
-set colorcolumn=80 " Vertical bar at 80 chars
+" set colorcolumn=80 " Vertical bar at 80 chars
 
 set visualbell     " Use visual bell instead of beeping.
 set shortmess=atI  " short info tokens, short command line messages, no intro.
@@ -85,7 +85,8 @@ endif
 set t_Co=256
 
 set background=dark
-colorscheme solarized
+" colorscheme solarized
+colorscheme molokai
 
 " call togglebg#map("<F3>")
 
