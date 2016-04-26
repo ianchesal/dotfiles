@@ -111,3 +111,6 @@ fi
 export GOFETCH_ALIASES=/Users/ianc/Development/config_files/config/go/aliases
 export PATH=/usr/local/go/bin:$PATH
 export PATH=/usr/local/opt/go/libexec/bin:$PATH
+
+# Opt out of Homebrew analytics
+export HOMEBREW_NO_ANALYTICS=1
