@@ -1,4 +1,1 @@
-# If ".rvm" doesn't appear in $PATH load RVM
-if [[ $PATH != *".rvm"* ]]; then
-  [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-fi
+[[ -s ~/.rvm/scripts/rvm ]] && source ~/.rvm/scripts/rvm

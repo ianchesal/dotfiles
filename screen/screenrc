@@ -31,3 +31,6 @@ vbell off
 
 # More scrollback
 defscrollback 10000
+
+# Make it be a zsh loging shell
+shell -${SHELL}
