@@ -17,4 +17,4 @@ then from the package control list, type / select `Solarized Color Scheme`
 Note that packages are auto-updating, so as new modifications are made they will automatically be installed.
 
 [Sublime]: http://www.sublimetext.com/dev
-[SublimePackage]: http://wbond.net/sublime_packages/package_control/installation
+[SublimePackage]: https://packagecontrol.io/

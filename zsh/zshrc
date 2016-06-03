@@ -69,6 +69,7 @@ plugins=(
   zsh_reload
   rvm
   urltools
+  mysublime
 )
 
 source $ZSH/oh-my-zsh.sh
