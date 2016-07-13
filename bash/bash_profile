@@ -54,16 +54,10 @@ else
 fi
 
 # Go
-if [[ -d "/usr/local/opt/go/libexec" ]]; then
-  export GOROOT=/usr/local/opt/go/libexec
-else
-  export GOROOT=/usr/local/go
-fi
 export GOPATH="${HOME}/code/go"
 if [[ -d "${HOME}/Development/config_files/config/go/aliases" ]]; then
   export GOFETCH_ALIASES="${HOME}/Development/config_files/config/go/aliases"
 fi
-pathadd $GOROOT/bin
 pathadd $GOPATH/bin
 
 alias gpoh='git push origin HEAD'
