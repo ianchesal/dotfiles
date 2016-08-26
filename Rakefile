@@ -61,7 +61,7 @@ task :clean => [
   'tmux:clean'
 ]
 
-desc "Install vim dotfiles"
+desc "Install vim and neovim dotfiles"
 task :vim => ['vim:all']
 task :vim do
   puts "Now run:\n\n"
@@ -72,14 +72,17 @@ task :vim do
 end
 
 namespace :vim do
-  task :all => [:rc, :dir]
+  task :all => [:dir, :rc]
 
   task :rc do |t|
     dolink(home('.vimrc'), root('vim', 'vimrc'))
+    dolink(home('.config/nvim/init.vim'), root('vim', 'vimrc'))
   end
 
   task :dir do |t|
+    mkdir_if_needed home('.config')
     mkdir_if_needed home('.vim')
+    dolink('~/.config/nvim', '~/.vim')
   end
 
   task :clean do |t|
