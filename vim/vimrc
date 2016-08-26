@@ -28,7 +28,9 @@ Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'godlygeek/tabular'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'nacitar/terminalkeys.vim'
-" Plugin 'drmikehenry/vim-fixkey'
+if !has('nvim')
+  Plugin 'drmikehenry/vim-fixkey'
+endif
 Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
 " Plugin 'plasticboy/vim-markdown'
