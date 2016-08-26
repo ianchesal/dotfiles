@@ -139,6 +139,19 @@ namespace :ruby do
   end
 end
 
+desc "Install tags dotfiles"
+task :ctags => ['ctags:rc']
+
+namespace :ctags do
+  task :rc do |t|
+    dolink(home('.ctags'), root('ctags', 'ctags'))
+  end
+
+  task :clean do |t|
+    clean_restore home('.ctags')
+  end
+end
+
 desc "Install curl dotfiles"
 task :curl => ['curl:rc']
 
