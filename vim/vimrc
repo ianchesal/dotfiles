@@ -53,6 +53,7 @@ set wildignore=*.rbc,.git,*.o,*.gem
 set history=100   " Default is 20, not enough.
 set ls=2          " Always display a status line
 " set colorcolumn=80 " Vertical bar at 80 chars
+set complete=.,w,b,u,t,i,kspell
 
 set visualbell     " Use visual bell instead of beeping.
 set shortmess=atI  " short info tokens, short command line messages, no intro.
