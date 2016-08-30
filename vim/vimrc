@@ -137,6 +137,9 @@ augroup vimrcEx
   " Override default modula2 detection, these files are markdown
   au BufNewFile,BufRead *.md set filetype=markdown
 
+  " Don't leave insert mode when I tab away
+  " This doesn't work: au BufEnter * :startinsert
+
   " C style for ruby codes
   au FileType c setl ts=4 sw=4 noexpandtab
 

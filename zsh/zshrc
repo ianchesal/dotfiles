@@ -72,6 +72,11 @@ plugins=(
   mysublime
 )
 
+# Only do this if chruby is installed
+if [[ -f "/usr/local/bin/chruby-exec" ]]; then
+  plugins+=(chruby)
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -124,6 +129,11 @@ HELPDIR=/usr/local/share/zsh/help
 # export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 if [[ -f "${HOME}/.zsh_local" ]]; then
   source "${HOME}/.zsh_local"
+fi
+
+# If chruby, set a default ruby so we're not using system ruby
+if [[ -f "/usr/local/bin/chruby-exec" ]]; then
+  chruby 2.3
 fi
 
 # Opt out of Homebrew analytics

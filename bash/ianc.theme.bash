@@ -21,7 +21,7 @@ RVM_THEME_PROMPT_PREFIX="|"
 RVM_THEME_PROMPT_SUFFIX="|"
 
 function prompt_command() {
-    PS1="\n${reset_color}\h:${blue}\w ${red}$(ruby_version_prompt) ${green}$(scm_prompt_info)${green}${reset_color}\n>${reset_bold}${reset_color} "
+    PS1="\n${reset_color}\h:${blue}\w ${green}$(scm_prompt_info)${green}${reset_color}\n>${reset_bold}${reset_color} "
 }
 
 PROMPT_COMMAND=prompt_command;

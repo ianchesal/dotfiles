@@ -1,6 +1,6 @@
 # Based off of frisk.zsh-theme
 PROMPT=$'
-%{%{$reset_color%}%M:$fg[blue]%}%~%{$reset_color%} $(rvm_prompt_info) $(git_prompt_info)$(bzr_prompt_info) %{$reset_color%}
+%{%{$reset_color%}%M:$fg[blue]%}%~%{$reset_color%} $(git_prompt_info)$(bzr_prompt_info) %{$reset_color%}
 >%{$reset_color%} '
 
 PROMPT2="%{$fg_blod[white]%}%_> %{$reset_color%}"
