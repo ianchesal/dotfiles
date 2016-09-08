@@ -69,7 +69,7 @@ plugins=(
   zsh_reload
   rvm
   urltools
-  mysublime
+  myatom
 )
 
 # Only do this if chruby is installed
