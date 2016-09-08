@@ -46,7 +46,7 @@ task :default do
 end
 
 desc "Install all dotfiles (are you really sure you want to do this?)"
-task :all => [:bash, :zsh, :vim, :ruby, :curl, :git, :screen, :irssi]
+task :all => [:bash, :zsh, :vim, :ruby, :curl, :git, :screen, :irssi, :atom]
 
 desc "Remove my customizations and restore system default dotfiles"
 task :clean => [
@@ -58,7 +58,8 @@ task :clean => [
   'git:clean',
   'screen:clean',
   'irssi:clean',
-  'tmux:clean'
+  'tmux:clean',
+  'atom:clean'
 ]
 
 desc "Install vim and neovim dotfiles"
@@ -254,5 +255,23 @@ namespace :emacs do
 
   task :clean do |t|
     clean_restore home('.spacemacs')
+  end
+end
+
+desc "Install Atom dotfiles"
+task :atom => ['atom:all']
+
+namespace :atom do
+  task :all do |t|
+    Dir.foreach('atom/packages') do |package|
+      next if package == '.' || package == '..'
+      dolink(home(".atom/packages/#{package}"), root('atom', 'packages', package))
+    end
+  end
+
+  task :clean do |t|
+    Dir.foreach(home('.atom/packages')) do |t|
+      clean_restore home(".atom/packages/#{t}")
+    end
   end
 end
