@@ -262,16 +262,29 @@ desc "Install Atom dotfiles"
 task :atom => ['atom:all']
 
 namespace :atom do
-  task :all do |t|
+  CONFIG_FILES = %w(config.cson init.coffee keymap.cson snippets.cson styles.less)
+
+  task all: [:packages, :conf_files]
+
+  task :packages do |t|
     Dir.foreach('atom/packages') do |package|
       next if package == '.' || package == '..'
       dolink(home(".atom/packages/#{package}"), root('atom', 'packages', package))
     end
   end
 
+  task :conf_files do |t|
+    CONFIG_FILES.each do |f|
+      dolink(home(".atom/#{f}"), root('atom', f))
+    end
+  end
+
   task :clean do |t|
     Dir.foreach(home('.atom/packages')) do |t|
       clean_restore home(".atom/packages/#{t}")
+    end
+    CONFIG_FILES.each do |f|
+      clean_restore home(".atom/#{f}")
     end
   end
 end
