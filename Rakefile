@@ -10,10 +10,9 @@ def clean_restore(target)
   return unless File.symlink? target
   File.delete target
   last_backup = find_backup target
-  if File.exists? last_backup
-    File.rename last_backup, target
-    puts "Restored backup #{last_backup} -> #{target}"
-  end
+  return unless File.exist? last_backup
+  File.rename last_backup, target
+  puts "Restored backup #{last_backup} -> #{target}"
 end
 
 def find_backup(target)
@@ -42,14 +41,14 @@ def mkdir_if_needed(path)
 end
 
 task :default do
-  system "rake -T"
+  system 'rake -T'
 end
 
-desc "Install all dotfiles (are you really sure you want to do this?)"
-task :all => [:bash, :zsh, :vim, :ruby, :curl, :git, :screen, :irssi, :atom]
+desc 'Install all dotfiles (are you really sure you want to do this?)'
+task all: [:bash, :zsh, :vim, :ruby, :curl, :git, :screen, :irssi, :atom]
 
-desc "Remove my customizations and restore system default dotfiles"
-task :clean => [
+desc 'Remove my customizations and restore system default dotfiles'
+task clean: [
   'bash:clean',
   'zsh:clean',
   'vim:clean',
@@ -62,8 +61,8 @@ task :clean => [
   'atom:clean'
 ]
 
-desc "Install vim and neovim dotfiles"
-task :vim => ['vim:all']
+desc 'Install vim and neovim dotfiles'
+task vim: ['vim:all']
 task :vim do
   puts "Now run:\n\n"
   puts "\tbrew uninstall vim; rvm system; brew install vim"
@@ -73,218 +72,237 @@ task :vim do
 end
 
 namespace :vim do
-  task :all => [:dir, :rc]
+  task all: [:dir, :rc]
 
-  task :rc do |t|
+  task :rc do
     dolink(home('.vimrc'), root('vim', 'vimrc'))
     dolink(home('.config/nvim/init.vim'), root('vim', 'vimrc'))
   end
 
-  task :dir do |t|
+  task :dir do
     mkdir_if_needed home('.config')
     mkdir_if_needed home('.vim')
     dolink('~/.config/nvim', '~/.vim')
   end
 
-  task :clean do |t|
+  task :clean do
     system "rm -rf #{home('.vim')}/*"
     clean_restore home('.vimrc')
   end
 end
 
-desc "Install git dotfiles"
-task :git => ['git:all']
+desc 'Install git dotfiles'
+task git: ['git:all']
 
 namespace :git do
-  task :all => [:gitconfig, :gitignore, :gittemplate]
+  task all: [:gitconfig, :gitignore, :gittemplate]
 
-  task :gitconfig do |t|
+  task :gitconfig do
     dolink(home('.gitconfig'), root('git', 'gitconfig'))
   end
 
-  task :gitignore do |t|
+  task :gitignore do
     dolink(home('.gitignore'), root('git', 'gitignore'))
   end
 
-  task :gittemplate do |t|
+  task :gittemplate do
     mkdir_if_needed home('.git_template')
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.gitignore')
     clean_restore home('.gitconfig')
   end
 end
 
-desc "Install all Ruby-related dotfiles (gem, rubocop, etc.)"
-task :ruby => ['ruby:all']
+desc 'Install all Ruby-related dotfiles (gem, rubocop, etc.)'
+task ruby: ['ruby:all']
 
 namespace :ruby do
-  task :all => [:gemrc, :rubocop]
+  task all: [:gemrc, :rubocop]
 
-  task :gemrc => [:gemdir] do |t|
+  task gemrc: [:gemdir] do
     dolink(home('.gemrc'), root('gem', 'gemrc'))
   end
 
-  task :gemdir do |t|
+  task :gemdir do
     mkdir_if_needed home('.gem')
   end
 
-  task :rubocop do |t|
+  task :rubocop do
     dolink(home('.rubocop.yml'), root('rubocop', 'rubocop.yml'))
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.rubocop.yml')
     clean_restore home('.gemrc')
   end
 end
 
-desc "Install tags dotfiles"
-task :ctags => ['ctags:rc']
+desc 'Install tags dotfiles'
+task ctags: ['ctags:rc']
 
 namespace :ctags do
-  task :rc do |t|
+  task :rc do
     dolink(home('.ctags'), root('ctags', 'ctags'))
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.ctags')
   end
 end
 
-desc "Install curl dotfiles"
-task :curl => ['curl:rc']
+desc 'Install curl dotfiles'
+task curl: ['curl:rc']
 
 namespace :curl do
-  task :rc do |t|
+  task :rc do
     dolink(home('.curlrc'), root('curl', 'curlrc'))
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.curlrc')
   end
 end
 
-desc "Install bash dotfiles"
-task :bash => ['bash:all']
+desc 'Install bash dotfiles'
+task bash: ['bash:all']
 
 namespace :bash do
-  task :all => [:rc, :inputrc, :profile]
+  task all: [:rc, :inputrc, :profile]
 
-  task :rc do |t|
+  task :rc do
     dolink(home('.bashrc'), root('bash', 'bashrc'))
   end
 
-  task :inputrc do |t|
+  task :inputrc do
     dolink(home('.inputrc'), root('bash', 'inputrc'))
   end
 
-  task :profile do |t|
+  task :profile do
     dolink(home('.bash_profile'), root('bash', 'bash_profile'))
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.bash_profile')
     clean_restore home('.inputrc')
     clean_restore home('.bashrc')
   end
 end
 
-desc "Install zsh dotfiles"
-task :zsh => ['zsh:rc']
+desc 'Install zsh dotfiles'
+task zsh: ['zsh:rc']
 
 namespace :zsh do
-  task :rc do |t|
+  task :rc do
     dolink(home('.zshrc'), root('zsh', 'zshrc'))
     dolink(home('.zshenv'), root('zsh', 'zshenv'))
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.zshrc')
     clean_restore home('.zshenv')
   end
 end
 
-desc "Install tmux dotfiles"
-task :tmux => ['tmux:conf']
+desc 'Install tmux dotfiles'
+task tmux: ['tmux:conf']
 
 namespace :tmux do
-  task :conf do |t|
+  task :conf do
     dolink(home('.tmux.conf'), root('tmux', 'tmux.conf'))
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.tmux.conf')
   end
 end
 
-desc "Install screen dotfiles"
-task :screen => ['screen:rc']
+desc 'Install screen dotfiles'
+task screen: ['screen:rc']
 
 namespace :screen do
-  task :rc do |t|
+  task :rc do
     dolink(home('.screenrc'), root('screen', 'screenrc'))
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.screenrc')
   end
 end
 
-desc "Install irssi dotfiles"
-task :irssi => ['irssi:all']
+desc 'Install irssi dotfiles'
+task irssi: ['irssi:all']
 
 namespace :irssi do
-  task :all do |t|
+  task :all do
     dolink(home('.irssi'), root('irssi'))
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.irssi')
   end
 end
 
-desc "Install emacs dotfiles"
-task :emacs => ['emacs:all']
+desc 'Install emacs dotfiles'
+task emacs: ['emacs:all']
 
 namespace :emacs do
-  task :all do |t|
+  task :all do
     dolink(home('.spacemacs'), root('emacs', 'spacemacs'))
   end
 
-  task :clean do |t|
+  task :clean do
     clean_restore home('.spacemacs')
   end
 end
 
-desc "Install Atom dotfiles"
-task :atom => ['atom:all']
+desc 'Install Atom dotfiles'
+task atom: ['atom:all']
 
 namespace :atom do
-  CONFIG_FILES = %w(config.cson init.coffee keymap.cson snippets.cson styles.less)
+  CONFIG_FILES = %w(config.cson init.coffee keymap.cson snippets.cson styles.less).freeze
 
-  task all: [:packages, :conf_files]
+  task all: [:dir, :packages, :conf_files]
 
-  task :packages do |t|
+  task :dir do
+    mkdir_if_needed home('.atom')
+  end
+
+  task :packages do
     Dir.foreach('atom/packages') do |package|
       next if package == '.' || package == '..'
       dolink(home(".atom/packages/#{package}"), root('atom', 'packages', package))
     end
   end
 
-  task :conf_files do |t|
+  task :conf_files do
     CONFIG_FILES.each do |f|
       dolink(home(".atom/#{f}"), root('atom', f))
     end
   end
 
-  task :clean do |t|
+  task :clean do
     Dir.foreach(home('.atom/packages')) do |t|
       clean_restore home(".atom/packages/#{t}")
     end
     CONFIG_FILES.each do |f|
       clean_restore home(".atom/#{f}")
     end
+  end
+end
+
+namespace :rubocop do
+  RUBOCOP = 'rubocop --display-cop-names --color'.freeze
+  FILES_TO_CHECK = %w(Rakefile).freeze
+
+  desc 'Run Rubocop checks'
+  task :check do
+    system("#{RUBOCOP} " + FILES_TO_CHECK.join(' '))
+  end
+
+  desc 'Auto-correct Rubocop failures'
+  task :auto_correct do
+    system("#{RUBOCOP} --auto-correct " + FILES_TO_CHECK.join(' '))
   end
 end
