@@ -1,8 +1,6 @@
-I use Homebrew's vim:
+Switch to system ruby:
 
-    brew uninstall vim; rvm system; brew install vim; rvm use 2.1.2
-
-That `rvm system` is necessary otherwise `vim` segfaults when you try to use Ruby.
+    chruby system
 
 You need to clone [Vundle](https://github.com/gmarik/Vundle.vim#about) before this `vimrc` will work:
 
