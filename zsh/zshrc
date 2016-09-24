@@ -20,7 +20,7 @@ DISABLE_AUTO_UPDATE="true"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -31,7 +31,7 @@ DISABLE_AUTO_UPDATE="true"
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -47,15 +47,10 @@ ZSH_CUSTOM=$HOME/code/dotfiles/zsh/custom
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   square
-  aws
-  brew
-  docker
   forklift
   git
   git-flow
-  go
-  heroku
-  history
+  myhistory
   myaws
   mygo
   myosx
@@ -63,12 +58,8 @@ plugins=(
   myruby
   rake
   rsync
-  ruby
-  screen
   vagrant
   zsh_reload
-  rvm
-  urltools
   myatom
 )
 
@@ -76,6 +67,9 @@ plugins=(
 if [[ -f "/usr/local/bin/chruby-exec" ]]; then
   plugins+=(chruby)
 fi
+
+# Only load the rvm oh-my-zsh plugin if rvm is installed
+[[ -s ~/.rvm/scripts/rvm ]] && plugins+=(rvm)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -89,6 +83,7 @@ export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
+# (Yes, I know it's vim in both cases...)
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
