@@ -1,0 +1,84 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "/private/var/folders/n5/rvnp62_d6qjccpmfz7lkqbcm0000gn/T/d-11694-73566-uxfw8k/package.tgz",
+        "scope": null,
+        "escapedName": null,
+        "name": null,
+        "rawSpec": "/private/var/folders/n5/rvnp62_d6qjccpmfz7lkqbcm0000gn/T/d-11694-73566-uxfw8k/package.tgz",
+        "spec": "/private/var/folders/n5/rvnp62_d6qjccpmfz7lkqbcm0000gn/T/d-11694-73566-uxfw8k/package.tgz",
+        "type": "local"
+      },
+      "/private/var/folders/n5/rvnp62_d6qjccpmfz7lkqbcm0000gn/T/apm-install-dir-11694-73566-1ueg12x"
+    ]
+  ],
+  "_from": "../d-11694-73566-uxfw8k/package.tgz",
+  "_id": "dash@1.7.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/dash",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "/private/var/folders/n5/rvnp62_d6qjccpmfz7lkqbcm0000gn/T/d-11694-73566-uxfw8k/package.tgz",
+    "scope": null,
+    "escapedName": null,
+    "name": null,
+    "rawSpec": "/private/var/folders/n5/rvnp62_d6qjccpmfz7lkqbcm0000gn/T/d-11694-73566-uxfw8k/package.tgz",
+    "spec": "/private/var/folders/n5/rvnp62_d6qjccpmfz7lkqbcm0000gn/T/d-11694-73566-uxfw8k/package.tgz",
+    "type": "local"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "file:../d-11694-73566-uxfw8k/package.tgz",
+  "_shasum": "b3e09d866f5cb1a9465cba507d3bb3cebd460a9a",
+  "_shrinkwrap": null,
+  "_spec": "/private/var/folders/n5/rvnp62_d6qjccpmfz7lkqbcm0000gn/T/d-11694-73566-uxfw8k/package.tgz",
+  "_where": "/private/var/folders/n5/rvnp62_d6qjccpmfz7lkqbcm0000gn/T/apm-install-dir-11694-73566-1ueg12x",
+  "activationCommands": {
+    "atom-text-editor": [
+      "dash:shortcut",
+      "dash:shortcut-background",
+      "dash:shortcut-alt",
+      "dash:shortcut-alt-background",
+      "dash:context-menu"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/blakeembrey/atom-dash/issues"
+  },
+  "dependencies": {},
+  "description": "Dash documentation integration with Atom",
+  "devDependencies": {
+    "coffeelint": "^1.9.2",
+    "pre-commit": "^1.0.5"
+  },
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "homepage": "https://github.com/blakeembrey/atom-dash#readme",
+  "keywords": [
+    "dash",
+    "documentation",
+    "api",
+    "docs",
+    "man"
+  ],
+  "license": "MIT",
+  "main": "./lib/dash",
+  "name": "dash",
+  "optionalDependencies": {},
+  "private": true,
+  "readme": "# Atom Dash\n\n[![Build status][travis-image]][travis-url]\n\n> Simple [Dash](http://kapeli.com/dash) documentation integration for [Atom](https://atom.io/packages/dash).\n\n**Please note:** This plugin will also work with Velocity on Windows and Zeal on Linux.\n\n## Installation\n\n```\napm install dash\n```\n\nAlternatively, open `Settings/Preferences -> Install` and search for `dash`.\n\n## Usage\n\nLook up the word under your cursor or selected text by pressing `ctrl-h`. This uses a scoped search and searches based on the current file name and selected syntax. If you want to search all documentation, press `ctrl-alt-h`.\n\n**Hint:** To open avoid activating Dash, add `shift` to the command. E.g. `ctrl-shift-h`. This is useful when Dash is already visible - such as a dual monitor setup.\n\n### Adding Docsets\n\nOpen the Atom config file `Atom -> Config...` and add the docsets under the `dash` object in the following form:\n\n```cson\n'dash':\n  'grammars':\n    'JavaScript': [\n      'nodejs'\n    ]\n  'filenames':\n    'gruntfile.js': [\n      'grunt'\n    ]\n```\n\n**Please note:** File names _must_ be lower case.\n\nDocsets defined in your local configuration will override the default settings. Take a look at the [built-in grammar map](https://github.com/blakeembrey/atom-dash/blob/master/lib/grammar-map.coffee) and [built-in filename map](https://github.com/blakeembrey/atom-dash/blob/master/lib/filename-map.coffee) for the default configurations.\n\n## License\n\nMIT\n\n[travis-image]: https://img.shields.io/travis/blakeembrey/atom-dash.svg?style=flat\n[travis-url]: https://travis-ci.org/blakeembrey/atom-dash\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blakeembrey/atom-dash.git"
+  },
+  "scripts": {
+    "lint": "coffeelint .",
+    "test": "npm run lint && apm test"
+  },
+  "version": "1.7.0"
+}

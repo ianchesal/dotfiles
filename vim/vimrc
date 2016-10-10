@@ -33,6 +33,7 @@ if !has('nvim')
 endif
 Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
+Plugin 'rizzatti/dash.vim'
 " Plugin 'plasticboy/vim-markdown'
 
 call vundle#end()

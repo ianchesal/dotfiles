@@ -6,7 +6,7 @@
       "monokai"
     ]
   editor:
-    fontSize: 12
+    fontSize: 16
     showIndentGuide: true
   "exception-reporting":
     userId: "a2a8db36-414a-582f-d9f1-b20f16147aa1"
