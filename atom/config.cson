@@ -1,6 +1,7 @@
 "*":
   core:
     projectHome: "/Users/ian/code"
+    telemetryConsent: "limited"
     themes: [
       "one-dark-ui"
       "monokai"
