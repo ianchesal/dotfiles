@@ -270,9 +270,12 @@ namespace :atom do
   end
 
   task :packages do
-    Dir.foreach('atom/packages') do |package|
-      next if package == '.' || package == '..'
-      dolink(home(".atom/packages/#{package}"), root('atom', 'packages', package))
+    File.readlines('atom/packages.list').each do |line|
+      if File.directory?(home(".atom/packages/#{line.strip}"))
+        sh "apm update #{line.strip}"
+      else
+        sh "apm install #{line.strip}"
+      end
     end
   end
 
@@ -283,8 +286,8 @@ namespace :atom do
   end
 
   task :clean do
-    Dir.foreach(home('.atom/packages')) do |t|
-      clean_restore home(".atom/packages/#{t}")
+    File.readlines('atom/packages.list').each do |line|
+      sh "apm uninstall #{line.strip}"
     end
     CONFIG_FILES.each do |f|
       clean_restore home(".atom/#{f}")
