@@ -111,3 +111,4 @@ export PATH=/usr/local/opt/go/libexec/bin:$PATH
 
 # Opt out of Homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
+export GOROOT=/usr/local/opt/go/libexec
