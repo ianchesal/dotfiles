@@ -25,7 +25,8 @@ Plugin 'tpope/vim-haml'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'kien/ctrlp.vim'
 Plugin 'jeetsukumaran/vim-buffergator'
-Plugin 'godlygeek/tabular'
+" Plugin 'godlygeek/tabular'
+Plugin 'junegunn/vim-easy-align'
 Plugin 'cakebaker/scss-syntax.vim'
 Plugin 'nacitar/terminalkeys.vim'
 if !has('nvim')
@@ -253,3 +254,10 @@ endif
 " Don't automatically fold everything when opening a Markdown doc
 " let g:vim_markdown_folding_disabled=1
 
+"""""""""""""""""""""""""""
+" Easy Align Configuration
+" From: https://github.com/junegunn/vim-easy-align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
