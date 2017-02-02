@@ -42,3 +42,27 @@ add_to_path $GOPATH/bin
 if [[ -d "$SQUARE_HOME/topsoil/bin" ]]; then
   add_to_path $SQUARE_HOME/topsoil/bin
 fi
+
+# For keeping disk clean
+function get-free-disk-space() {
+  df -k / | tail -n 1 | awk '{ print $4 }'
+}
+
+function as-gb() {
+  read num
+  echo $(echo "scale=2;$num/1048576" | bc)Gi
+}
+
+function clean-logs() {
+  before=$(get-free-disk-space)
+  set -x
+  /bin/rm -f ~/Development/web/log/*.log
+  /bin/rm -f ~/Development/log/development/*
+  /bin/rm -f ~/Development/log/*
+  /bin/rm -f ~/Development/jumbotron/log/*
+  /bin/rm -f /usr/local/var/log/nginx/*.log
+  set +x
+  after=$(get-free-disk-space)
+  diff=$(echo $(expr $before - $after) | as-gb)
+  echo "Cleaned up $diff"
+}
