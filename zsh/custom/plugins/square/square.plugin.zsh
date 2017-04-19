@@ -43,6 +43,12 @@ if [[ -d "$SQUARE_HOME/topsoil/bin" ]]; then
   add_to_path $SQUARE_HOME/topsoil/bin
 fi
 
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '~/google-cloud-sdk/path.zsh.inc' ]; then source '~/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '~/google-cloud-sdk/completion.zsh.inc' ]; then source '~/google-cloud-sdk/completion.zsh.inc'; fi
+
 # For keeping disk clean
 function get-free-disk-space() {
   df -k / | tail -n 1 | awk '{ print $4 }'
