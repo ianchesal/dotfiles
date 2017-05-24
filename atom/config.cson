@@ -1,4 +1,9 @@
 "*":
+  "autocomplete-plus":
+    fileBlacklist: [
+      "*.md"
+      "*.txt"
+    ]
   core:
     projectHome: "/Users/ian/code"
     telemetryConsent: "limited"
