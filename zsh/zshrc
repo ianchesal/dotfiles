@@ -61,6 +61,7 @@ plugins=(
   vagrant
   zsh_reload
   myatom
+  gcloud
 )
 
 # Only do this if chruby is installed
