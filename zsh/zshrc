@@ -62,6 +62,7 @@ plugins=(
   zsh_reload
   myatom
   gcloud
+  anaconda
 )
 
 # Only do this if chruby is installed
