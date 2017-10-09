@@ -63,7 +63,12 @@ plugins=(
   myatom
   gcloud
   anaconda
+  virtualenvwrapper
 )
+
+# Python configuration
+export WORKON_HOME=$HOME/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python2
 
 # Only do this if chruby is installed
 if [[ -f "/usr/local/bin/chruby-exec" ]]; then
