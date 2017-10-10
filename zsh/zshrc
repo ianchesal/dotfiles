@@ -135,7 +135,7 @@ fi
 
 # If chruby, set a default ruby so we're not using system ruby
 if [[ -f "/usr/local/bin/chruby-exec" ]]; then
-  chruby 2.3
+  chruby 2.4
 fi
 
 # Opt out of Homebrew analytics
