@@ -63,7 +63,7 @@ plugins=(
   myatom
   gcloud
   anaconda
-  virtualenvwrapper
+  pyenv
 )
 
 # Python configuration
