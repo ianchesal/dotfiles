@@ -12,7 +12,6 @@ call vundle#begin()
 " Vundle-Managed Plugins
 Plugin 'gmarik/Vundle.vim'            " let Vundle manage Vundle, required
 Plugin 'tpope/vim-fugitive'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
@@ -36,6 +35,7 @@ Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
 Plugin 'rizzatti/dash.vim'
 " Plugin 'plasticboy/vim-markdown'
+Plugin 'shougo/deoplete.nvim'
 
 call vundle#end()
 
@@ -261,3 +261,7 @@ endif
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+" deoplete configuration
+" Turn it on by default
+let g:deoplete#enable_at_startup = 1
