@@ -265,3 +265,7 @@ nmap ga <Plug>(EasyAlign)
 " deoplete configuration
 " Turn it on by default
 let g:deoplete#enable_at_startup = 1
+" Use smartcase for completions
+let g:deoplete#enable_smart_case = 1
+" Use tab-complete to navigate completions
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
