@@ -12,6 +12,7 @@ call vundle#begin()
 " Vundle-Managed Plugins
 Plugin 'gmarik/Vundle.vim'            " let Vundle manage Vundle, required
 Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
@@ -23,6 +24,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-haml'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'kien/ctrlp.vim'
+" Plugin 'junegunn/fzf'
 Plugin 'jeetsukumaran/vim-buffergator'
 " Plugin 'godlygeek/tabular'
 Plugin 'junegunn/vim-easy-align'
@@ -269,3 +271,10 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 " Use tab-complete to navigate completions
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+" fzf configuration
+" This is a wild noremap for me! I've been use ; for : for a long time
+" so let's see if this trips me up or makes me superhuman.
+" nmap ; :Buffers<CR>
+" Search files like the old CTRL-P plugin used to do
+" nmap <Leader>p :Files<CR>

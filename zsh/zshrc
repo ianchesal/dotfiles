@@ -48,6 +48,7 @@ ZSH_CUSTOM=$HOME/code/dotfiles/zsh/custom
 plugins=(
   square
   forklift
+  fzf
   git
   git-flow
   myhistory
@@ -69,6 +70,12 @@ plugins=(
 # Python configuration
 export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python2
+
+# This function is useful
+_has() {
+  # Returns whether the given command is executable or aliased.
+  return $( whence $1 >/dev/null )
+}
 
 # Only do this if chruby is installed
 if [[ -f "/usr/local/bin/chruby-exec" ]]; then
@@ -134,7 +141,7 @@ if [[ -f "${HOME}/.zsh_local" ]]; then
 fi
 
 # If chruby, set a default ruby so we're not using system ruby
-if [[ -f "/usr/local/bin/chruby-exec" ]]; then
+if _has chruby-exec; then
   chruby 2.4
 fi
 
