@@ -35,9 +35,10 @@ if !has('nvim')
 endif
 Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
-Plugin 'rizzatti/dash.vim'
+" Plugin 'rizzatti/dash.vim'
 " Plugin 'plasticboy/vim-markdown'
 Plugin 'shougo/deoplete.nvim'
+Plugin 'ianchesal/myhelp.vim'
 
 call vundle#end()
 
