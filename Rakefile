@@ -191,7 +191,7 @@ namespace :bash do
 end
 
 desc 'Install zsh dotfiles'
-task zsh: ['zsh:rc']
+task zsh: ['zsh:rc', 'zsh:jiraurl']
 
 namespace :zsh do
   task :rc do
@@ -199,9 +199,14 @@ namespace :zsh do
     dolink(home('.zshenv'), root('zsh', 'zshenv'))
   end
 
+  task :jiraurl do
+    dolink(home('.jira-url'), root('zsh', 'jira-url'))
+  end
+
   task :clean do
     clean_restore home('.zshrc')
     clean_restore home('.zshenv')
+    clean_restore home('.jira-url')
   end
 end
 

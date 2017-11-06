@@ -65,6 +65,7 @@ plugins=(
   gcloud
   anaconda
   pyenv
+  jira
 )
 
 # Setup homebrew paths before we source oh-my-zsh
