@@ -77,6 +77,8 @@ set clipboard=unnamed " Allow clipboard sharing with OS X. See: http://stackover
 
 set gfn=Monofur:h14
 
+set mouse=a
+
 noremap ; :
 
 syntax on
