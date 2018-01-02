@@ -16,13 +16,11 @@ PROMPT_STYLE="classic"
 setopt prompt_subst
 autoload -Uz colors && colors
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' actionformats \
-    '%F{green}[%s::%b|%a]%F'
-zstyle ':vcs_info:*' formats       \
-    '%F{green}[%s::%b]%F'
-zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
+zstyle ':vcs_info:*' actionformats "%{$fg[green]%}[%s::%b|%a]"
+zstyle ':vcs_info:*' formats "%{$fg[green]%}[%s::%b]"
+zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat "%b%F{1}:%F{3}%r"
 
-zstyle ':vcs_info:*' enable git cvs svn
+zstyle ':vcs_info:*' enable git
 
 # or use pre_cmd, see man zshcontrib
 vcs_info_wrapper() {
@@ -36,7 +34,7 @@ vcs_info_wrapper() {
 
 # Based off of frisk.zsh-theme
 PROMPT=$'
-%{%{$reset_color%}%M:%F{blue}%}%~%{$reset_color%} $(vcs_info_wrapper) %{$reset_color%}
+%{%{$reset_color%}%M:%{$fg[blue]%}%}%~%{$reset_color%} $(vcs_info_wrapper) %{$reset_color%}
 >%{$reset_color%} '
 
 PROMPT2="%{$fg_blod[white]%}%_> %{$reset_color%}"
