@@ -1,13 +1,5 @@
 for config (~/Development/dotfiles/zsh/lib/*.zsh) source $config
 
-# Only do this if chruby is installed
-if [[ -f "/usr/local/bin/chruby-exec" ]]; then
-  # plugins+=(chruby)
-fi
-
-# Only load the rvm oh-my-zsh plugin if rvm is installed
-[[ -s ~/.rvm/scripts/rvm ]] && plugins+=(rvm)
-
 if [[ -f "${HOME}/.zsh_local" ]]; then
   source "${HOME}/.zsh_local"
 fi
