@@ -7,10 +7,14 @@ _pyenv-from-homebrew-installed() {
 }
 
 FOUND_PYENV=0
-pyenvdirs=("$HOME/.pyenv" "/usr/local/pyenv" "/opt/pyenv")
-if _homebrew-installed && _pyenv-from-homebrew-installed ; then
-    pyenvdirs=($(brew --prefix pyenv) "${pyenvdirs[@]}")
-fi
+#pyenvdirs=("$HOME/.pyenv" "/usr/local/pyenv" "/opt/pyenv")
+#if _homebrew-installed && _pyenv-from-homebrew-installed ; then
+#    pyenvdirs=($(brew --prefix pyenv) "${pyenvdirs[@]}")
+#fi
+
+# Hard coding this. I only use this on macOS with homebrew so eval'ing
+# this is unnecessary. It shaves 3s off my shell startup time.
+pyenvdirs=/usr/local/opt/pyenv
 
 for pyenvdir in "${pyenvdirs[@]}" ; do
     if [ -d $pyenvdir/bin -a $FOUND_PYENV -eq 0 ] ; then
