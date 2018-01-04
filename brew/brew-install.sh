@@ -52,6 +52,8 @@ libgpg-error \
 libusb \
 openssl \
 pth \
+keychain \
+zsh-syntax-highlighting \
 tree
 
 # brew install mysql
