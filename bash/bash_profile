@@ -103,7 +103,7 @@ fi
 if [[ -f "/usr/local/opt/chruby/share/chruby/chruby.sh" ]]; then
   source /usr/local/opt/chruby/share/chruby/chruby.sh
   source /usr/local/opt/chruby/share/chruby/auto.sh
-  chruby 2.3
+  chruby 2.4
 fi
 export GOFETCH_ALIASES=/Users/ianc/Development/config_files/config/go/aliases
 export PATH=/usr/local/go/bin:$PATH

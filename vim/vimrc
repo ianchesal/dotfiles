@@ -44,6 +44,8 @@ Plugin 'nelstrom/vim-textobj-rubyblock'
 " Plugin 'plasticboy/vim-markdown'
 Plugin 'shougo/deoplete.nvim'
 Plugin 'ianchesal/myhelp.vim'
+" LookML Syntax support
+Plugin 'thalesmello/lkml.vim'
 
 call vundle#end()
 
