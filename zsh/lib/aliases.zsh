@@ -14,6 +14,7 @@ alias gll='git log --color=always | less -r'
 alias gpoh='git push origin HEAD'
 alias grep='grep --color=auto -E'
 alias gss='git status --short --branch'
+alias ll='ls -lah'
 alias rake="noglob rake" # allows square brackts for rake task invocation
 alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"

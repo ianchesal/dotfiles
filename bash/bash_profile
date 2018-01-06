@@ -31,9 +31,9 @@ pathadd() {
   fi
 }
 
-source ~/code/dotfiles/bash/base.theme.bash
 source ~/code/dotfiles/bash/colors.theme.bash
-source ~/code/dotfiles/bash/ianc.theme.bash
+source ~/code/dotfiles/bash/pure.theme.bash
+#source ~/code/dotfiles/bash/ianc.theme.bash
 
 if [[ -f "/usr/local/etc/bash_completion" ]]; then
   source /usr/local/etc/bash_completion
