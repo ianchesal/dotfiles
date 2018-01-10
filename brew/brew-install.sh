@@ -9,6 +9,8 @@ libksba \
 libusb-compat \
 ossp-uuid \
 python \
+pyenv \
+pyenv-virtualenv \
 unrar \
 automake \
 gdbm \
@@ -38,7 +40,6 @@ pinentry \
 sqlite \
 zsh \
 ctags \
-git-flow \
 gpg-agent \
 libgcrypt \
 libtool \
@@ -54,7 +55,8 @@ openssl \
 pth \
 keychain \
 zsh-syntax-highlighting \
-tree
+tree \
+octave
 
 # brew install mysql
 # brew install postgres
