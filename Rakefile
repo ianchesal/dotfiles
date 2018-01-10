@@ -58,7 +58,8 @@ task clean: [
   'screen:clean',
   'irssi:clean',
   'tmux:clean',
-  'atom:clean'
+  'atom:clean',
+  'octave:clean'
 ]
 
 desc 'Install vim and neovim dotfiles'
@@ -259,6 +260,19 @@ namespace :emacs do
 
   task :clean do
     clean_restore home('.spacemacs')
+  end
+end
+
+desc 'Install octave dotfiles'
+task octave: ['octave:all']
+
+namespace :octave do
+  task :all do
+    dolink(home('.octaverc'), root('octave', 'octaverc'))
+  end
+
+  task :clean do
+    clean_restore home('.octaverc')
   end
 end
 

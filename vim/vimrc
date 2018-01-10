@@ -46,6 +46,8 @@ Plugin 'shougo/deoplete.nvim'
 Plugin 'ianchesal/myhelp.vim'
 " LookML Syntax support
 Plugin 'thalesmello/lkml.vim'
+" Octave Syntax support
+Plugin 'jvirtanen/vim-octave.git'
 
 call vundle#end()
 
