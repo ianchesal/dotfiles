@@ -111,4 +111,7 @@ export PATH=/usr/local/opt/go/libexec/bin:$PATH
 
 # Opt out of Homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
+# Cask options
+HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+
 export GOROOT=/usr/local/opt/go/libexec

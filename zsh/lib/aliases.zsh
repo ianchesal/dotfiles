@@ -29,6 +29,6 @@ alias v='vim'
 alias vi="vim"
 alias vim-update-plugins='vim +PluginInstall +qall'
 
-function rgp {
-  rg -p $* | less -R
+function rpg {
+  rg -p "$@" | less -R
 }
