@@ -109,6 +109,13 @@ export GOFETCH_ALIASES=/Users/ianc/Development/config_files/config/go/aliases
 export PATH=/usr/local/go/bin:$PATH
 export PATH=/usr/local/opt/go/libexec/bin:$PATH
 
+# Perl
+if [[ -f "/usr/local/bin/perl" ]]; then
+  export PERL_MB_OPT="--install_base \"/Users/ianc/.perl5\""
+  export PERL_MM_OPT="INSTALL_BASE=/Users/ianc/.perl5"
+  export PERL5LIB=${HOME}/.perl5/lib/perl5
+fi
+
 # Opt out of Homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
 # Cask options
