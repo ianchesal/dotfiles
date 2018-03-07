@@ -5,6 +5,13 @@ export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
 export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python2
 
+# Perl
+if [[ -a "/usr/local/bin/perl" ]]; then
+  export PERL_MB_OPT="--install_base \"/Users/ianc/.perl5\""
+  export PERL_MM_OPT="INSTALL_BASE=/Users/ianc/.perl5"
+  export PERL5LIB=${HOME}/.perl5/lib/perl5
+fi
+
 # Preferred editor for local and remote sessions
 # (Yes, I know it's vim in both cases...)
 if [[ -n $SSH_CONNECTION ]]; then

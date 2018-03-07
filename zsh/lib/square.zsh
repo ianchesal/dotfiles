@@ -2,9 +2,9 @@ if [[ -d "$HOME/Development" ]]; then
   SQUARE_HOME=$HOME/Development
 fi
 export SQUARE_HOME
-if [[ -f "$SQUARE_HOME/config_files/square/zshrc" ]]; then
+#if [[ -f "$SQUARE_HOME/config_files/square/zshrc" ]]; then
   #source $SQUARE_HOME/config_files/square/zshrc
-fi
+#fi
 
 #add_to_path /usr/local/mysql/bin
 #add_to_path /opt/nginx/sbin
@@ -22,6 +22,9 @@ if [[ -d "${HOME}/Development/config_files/config/go/aliases" ]]; then
   export GOFETCH_ALIASES="${HOME}/Development/config_files/config/go/aliases"
 fi
 add_to_path $GOPATH/bin
+
+# Snowflake
+export SNOWSQL_ACCOUNT="square"
 
 # Put topsoil on the path
 if [[ -d "$SQUARE_HOME/topsoil/bin" ]]; then

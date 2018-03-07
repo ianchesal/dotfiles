@@ -56,7 +56,9 @@ pth \
 keychain \
 zsh-syntax-highlighting \
 tree \
-octave
+octave \
+perl \
+weechat
 
 # brew install mysql
 # brew install postgres
