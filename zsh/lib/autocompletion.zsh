@@ -24,3 +24,15 @@ zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+# use graphical menu for tab completion
+zstyle ':completion:*:*:*:*:*' menu select
+
+# completion options
+setopt auto_menu                 # show completion menu on succesive tab press
+setopt menu_complete             # toggle auto-selecting first menu entry (overrides auto_menu)
+setopt always_last_prompt        # second tab replaces first suggestions instead of reprinting new prompt
+setopt list_types                # append types of files in tab-completion menu (like ls -F)
+unsetopt list_rows_first         # list files by columns, not rows in tab-completion menu
+setopt complete_in_word          # allow completion inside word instead of putting cursor to end of word
+setopt always_to_end             # when completing inside word, move cursor to end after full completion is inserted
