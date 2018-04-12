@@ -35,6 +35,6 @@ To configure weechat the way I like you can run `weechat` and then enter:
 
 I got a lot of this from the published hard work of others out there. Notably:
 
-	* https://alexjj.com/blog/2016/9/setting-up-weechat/
-	* https://gist.github.com/pascalpoitras/8406501
-	* https://alicoding.com/hide-bar-item-in-weechat-for-a-specific-buffer/
+* https://alexjj.com/blog/2016/9/setting-up-weechat/
+* https://gist.github.com/pascalpoitras/8406501
+* https://alicoding.com/hide-bar-item-in-weechat-for-a-specific-buffer/
