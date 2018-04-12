@@ -4,7 +4,7 @@ Not a dotfile, but a setup script for weechat.
 
 ## Installing weechat (macOS)
 
-    brew reinstall weechat --with-perl --with-ruby --with-python@2
+    brew install weechat --with-perl --with-ruby --with-python@2
 
 ## Slack Support
 
