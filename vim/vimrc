@@ -49,7 +49,9 @@ Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
 " Plugin 'rizzatti/dash.vim'
 " Plugin 'plasticboy/vim-markdown'
-Plugin 'shougo/deoplete.nvim'
+if s:uname == "Darwin\n"
+  Plugin 'shougo/deoplete.nvim'
+endif
 Plugin 'ianchesal/myhelp.vim'
 " LookML Syntax support
 Plugin 'thalesmello/lkml.vim'
