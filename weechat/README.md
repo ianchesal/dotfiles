@@ -4,7 +4,7 @@ Not a dotfile, but a setup script for weechat.
 
 ## Installing weechat (macOS)
 
-    brew install weechat --with-perl --with-ruby --with-python@2
+    brew install weechat --with-perl --with-ruby --with-python@2 --with-lua
 
 ## Slack Support
 
@@ -30,6 +30,13 @@ To configure weechat the way I like you can run `weechat` and then enter:
 
     /eval /exec -oc cat ${env:HOME}/Development/dotfiles/weechat/myweechat.conf
 
+## Troubleshooting
+
+If you `brew update` from time to you'll bork the weechat dynamic links to Perl, etc. If this happens run:
+
+    brew reinstall weechat --with-perl --with-ruby --with-python@2 --with-lua
+
+and you'll be back in business.
 
 ## Kudos
 
