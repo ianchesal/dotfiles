@@ -50,6 +50,9 @@ else
   fi
 fi
 
+# ~/.local support
+pathadd "${HOME}/.local/bin"
+
 # Go
 export GOPATH="${HOME}/code/go"
 if [[ -d "${HOME}/Development/config_files/config/go/aliases" ]]; then
