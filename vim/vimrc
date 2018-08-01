@@ -57,6 +57,8 @@ Plugin 'ianchesal/myhelp.vim'
 Plugin 'thalesmello/lkml.vim'
 " Octave Syntax support
 Plugin 'jvirtanen/vim-octave.git'
+" Dracula theme: https://draculatheme.com/vim/
+Plugin 'dracula/vim'
 
 call vundle#end()
 
@@ -115,6 +117,7 @@ set t_Co=256
 set background=dark
 " colorscheme solarized
 colorscheme molokai
+" colorscheme dracula
 
 " call togglebg#map("<F3>")
 
