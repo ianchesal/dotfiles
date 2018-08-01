@@ -1,10 +1,6 @@
 ########################################################
 # Bootstrap my work environment
-if [[ -f "$SQUARE_HOME/config_files/square/bashrc" ]]; then
-  source $SQUARE_HOME/config_files/square/bashrc
-fi
 ########################################################
-
 
 alias vim-update-plugins='vim +PluginInstall +qall'
 

@@ -2,26 +2,12 @@
 
 ##############################################################
 # Bootstrap my work environment
-if [[ -d "$HOME/Development" ]]; then
-  SQUARE_HOME=$HOME/Development
-fi
-export SQUARE_HOME
-if [[ -f "$SQUARE_HOME/config_files/square/bash_profile" ]]; then
-  source $SQUARE_HOME/config_files/square/bash_profile
-else
-  alias _pair_startup=true
-fi
 ##############################################################
 
 
 # Set my editor and git editor
 export EDITOR=vim
 export GIT_EDITOR=vim
-
-# Configure the current git user on shell startup.
-if [[ -f "$SQUARE_HOME/config_files/square/bash_profile" ]]; then
-  _pair_startup
-fi
 
 # Defining this here as well as bashrc because of the way I use iTerm
 # to load different shells.
