@@ -17,4 +17,11 @@ if [ -d /usr/local/opt/chruby/share/chruby ]; then
   function chruby_prompt_info() {
       echo "$(current_ruby)"
   }
+
+  function rescan_rubies() {
+    RUBIES=()
+    for dir in "$PREFIX/opt/rubies" "$HOME/.rubies"; do
+      [[ -d "$dir" && -n "$(ls -A "$dir")" ]] && RUBIES+=("$dir"/*)
+    done
+  }
 fi
