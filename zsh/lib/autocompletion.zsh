@@ -1,5 +1,3 @@
-autoload -Uz compinit
-compinit
 autoload -U ~/Development/dotfiles/zsh/lib/completion/*(:t)
 
 zstyle ':completion:*' auto-description 'specify: %d'

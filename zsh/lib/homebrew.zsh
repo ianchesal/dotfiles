@@ -1,5 +1,5 @@
 # For the 5.0.x Homebrew'ed zsh installation...
-unalias run-help
+# unalias run-help
 autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
