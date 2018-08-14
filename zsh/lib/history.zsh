@@ -1,10 +1,10 @@
 HISTFILE=~/.zsh_history
-setopt APPEND_HISTORY
 HISTSIZE=10000
 SAVEHIST=10000
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt EXTENDED_HISTORY
-setopt SHARE_HISTORY
+HISTDUP=erase               # Erase duplicates in the history file
+setopt    appendhistory     # Append history to the history file (no overwriting)
+setopt    sharehistory      # Share history across terminals
+setopt    incappendhistory  # Immediately append to the history file, not just when a term is killed
 
 alias h='history'
 
