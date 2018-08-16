@@ -11,4 +11,7 @@ path+="/Users/ianc/stripe/space-commander/bin"
 path+="/Users/ianc/stripe/henson/bin"
 ### END HENSON
 
+# Useful stripe aliases and functions
+alias stripe-curl='curl -s --unix-socket ~/.stripeproxy'
+
 export PATH
