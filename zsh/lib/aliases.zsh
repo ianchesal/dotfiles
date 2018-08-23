@@ -8,6 +8,7 @@ alias brake='noglob bundle exec rake' # execute the bundled rake gem
 alias emacs="vim"
 alias fuck='sudo $(fc -ln -1)'
 alias gci='git commit --verbose'
+alias gcis='git commit --gpg-sign --verbose'
 alias gd='git diff --color=always'
 alias gdl='git diff --color=always | less -r'
 alias gll='git log --color=always | less -r'
