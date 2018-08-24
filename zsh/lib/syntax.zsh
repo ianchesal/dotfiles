@@ -1,10 +1,13 @@
 # Source the plugin https://github.com/zsh-users/zsh-syntax-highlighting
 # On macOS do: brew install zsh-syntax-highlighting
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# If you receive "highlighters directory not found" error message,
-# you may need to add the following to your .zshenv:
-export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
+# On Ubuntu: sudo apt install zsh-syntax-highlighting
+if [ -d /usr/local/share/zsh-syntax-highlighting ]; then
+  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
+elif [ -d /usr/share/zsh-syntax-highlighting ]; then
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/share/zsh-syntax-highlighting/highlighters
+fi
 
 # color overrides
 # ZSH_HIGHLIGHT_STYLES[default]='none'
