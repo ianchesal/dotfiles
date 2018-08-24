@@ -24,7 +24,9 @@ export GREP_COLOR='1;32'
 
 export LSCOLOR="Gxfxcxdxbxegedabagacad"
 
-export JAVA_HOME="$(/usr/libexec/java_home)"
+if [[ -a "/usr/libexec/java_home" ]]; then
+  export JAVA_HOME="$(/usr/libexec/java_home)"
+fi
 
 if [[ -d "${HOME}/.aws/certs" ]]; then
   export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.aws/certs/*-pk.pem | /usr/bin/head -1)"
