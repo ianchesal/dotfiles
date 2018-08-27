@@ -45,7 +45,7 @@ task :default do
 end
 
 desc 'Install all dotfiles (are you really sure you want to do this?)'
-task all: [:bash, :zsh, :vim, :ruby, :curl, :git, :screen, :irssi, :atom]
+task all: [:bash, :zsh, :vim, :ruby, :curl, :git, :screen, :irssi, :atom, :fish]
 
 desc 'Remove my customizations and restore system default dotfiles'
 task clean: [
@@ -59,7 +59,8 @@ task clean: [
   'irssi:clean',
   'tmux:clean',
   'atom:clean',
-  'octave:clean'
+  'octave:clean',
+  'fish:clean'
 ]
 
 desc 'Install vim and neovim dotfiles'
@@ -188,6 +189,26 @@ namespace :bash do
     clean_restore home('.bash_profile')
     clean_restore home('.inputrc')
     clean_restore home('.bashrc')
+  end
+end
+
+desc 'Install fish shell configuration'
+task fish: ['fish:conf']
+
+namespace :fish do
+  task :conf do
+    mkdir_if_needed home('.config/fish/conf.d')
+    Dir["fish/conf.d/*.fish"].each do |cf|
+      dolink(home(".config/#{cf}"), root(cf))
+    end
+    dolink(home('.config/fish/config.fish'), root('fish', 'config.fish'))
+  end
+
+  task :clean do
+    Dir["fish/conf.d/*.fish"].each do |cf|
+      clean_restore home(".config/#{cf}")
+    end
+    clean_restore home(".config/fish/config.fish")
   end
 end
 

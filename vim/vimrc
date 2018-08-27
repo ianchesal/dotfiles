@@ -59,7 +59,8 @@ Plugin 'thalesmello/lkml.vim'
 Plugin 'jvirtanen/vim-octave.git'
 " Dracula theme: https://draculatheme.com/vim/
 Plugin 'dracula/vim'
-
+" Fish shell file support
+Plugin 'dag/vim-fish'
 call vundle#end()
 
 """"""""""""""""""""""
