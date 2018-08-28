@@ -58,21 +58,23 @@ function rpg
 end
 
 # STRIPE
-if test -z (string match $HOME/stripe/password-vault/bin $PATH)
-  set -U fish_user_paths $HOME/stripe/password-vault/bin $fish_user_paths
-end
+if test -d $HOME/stripe
+  if test -z (string match $HOME/stripe/password-vault/bin $PATH)
+    set -U fish_user_paths $HOME/stripe/password-vault/bin $fish_user_paths
+  end
 
-if test -z (string match $HOME/stripe/space-commander/bin $PATH)
-  set -U fish_user_paths $HOME/stripe/space-commander/bin $fish_user_paths
-end
+  if test -z (string match $HOME/stripe/space-commander/bin $PATH)
+    set -U fish_user_paths $HOME/stripe/space-commander/bin $fish_user_paths
+  end
 
-if test -z (string match $HOME/stripe/henson/bin $PATH)
-  set -U fish_user_paths $HOME/stripe/henson/bin $fish_user_paths
-end
+  if test -z (string match $HOME/stripe/henson/bin $PATH)
+    set -U fish_user_paths $HOME/stripe/henson/bin $fish_user_paths
+  end
 
-if test -x ~/stripe/space-commander/bin/sc-ssh-wrapper
-  alias ssh="sc-ssh-wrapper"
-end
+  if test -x ~/stripe/space-commander/bin/sc-ssh-wrapper
+    alias ssh="sc-ssh-wrapper"
+  end
 
-# Useful stripe aliases and functions
-alias stripe-curl='curl -s --unix-socket ~/.stripeproxy'
+  # Useful stripe aliases and functions
+  alias stripe-curl='curl -s --unix-socket ~/.stripeproxy'
+end
