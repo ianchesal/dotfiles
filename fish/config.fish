@@ -13,7 +13,8 @@ if not test -f ~/.config/fish/functions/fisher.fish
   # Now install all the fisherman plugins I llike:
   fisher \
     rbenv \
-    rafaelrinaldi/pure
+    rafaelrinaldi/pure \
+    edc/bass
 end
 
 # ENV VARS
@@ -55,6 +56,12 @@ alias vim-update-plugins='vim +PluginInstall +qall'
 # FUNCTIONS
 function rpg
   rg -p "$argv" | less -R
+end
+
+# GOOGLE CLOUD SDK SETUP
+if test -d $HOME/google-cloud-sdk
+  bass source $HOME/google-cloud-sdk/path.bash.inc
+  bass source $HOME/google-cloud-sdk/completion.bash.inc
 end
 
 # STRIPE
