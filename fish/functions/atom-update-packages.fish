@@ -1,5 +1,5 @@
 function atom-update-packages
-  cd ~/Development/dotfiles; rake atom:packages
+  cd ~/code/dotfiles; rake atom:packages
 end
 
 function atom-update-plugins
