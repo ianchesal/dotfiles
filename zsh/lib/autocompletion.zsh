@@ -1,4 +1,4 @@
-autoload -U ~/Development/dotfiles/zsh/lib/completion/*(:t)
+autoload -U ~/code/dotfiles/zsh/lib/completion/*(:t)
 
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate

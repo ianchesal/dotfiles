@@ -1,7 +1,7 @@
 autoload -Uz compinit
 compinit
 
-for config (~/Development/dotfiles/zsh/lib/*.zsh) source $config
+for config (~/code/dotfiles/zsh/lib/*.zsh) source $config
 
 if [[ -f "${HOME}/.zsh_local" ]]; then
   source "${HOME}/.zsh_local"

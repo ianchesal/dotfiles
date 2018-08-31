@@ -1,4 +1,4 @@
-alias atom-update-packages="cd ~/Development/dotfiles; rake atom:packages"
+alias atom-update-packages="cd ~/code/dotfiles; rake atom:packages"
 alias atom-update-plugins=atom-update-packages
 alias atom="/Applications/Atom.app/Contents/Resources/app/atom.sh"
 alias be='bundle exec'

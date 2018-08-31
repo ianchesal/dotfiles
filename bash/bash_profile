@@ -41,8 +41,8 @@ pathadd "${HOME}/.local/bin"
 
 # Go
 export GOPATH="${HOME}/code/go"
-if [[ -d "${HOME}/Development/config_files/config/go/aliases" ]]; then
-  export GOFETCH_ALIASES="${HOME}/Development/config_files/config/go/aliases"
+if [[ -d "${HOME}/code/config_files/config/go/aliases" ]]; then
+  export GOFETCH_ALIASES="${HOME}/code/config_files/config/go/aliases"
 fi
 pathadd $GOPATH/bin
 
@@ -94,7 +94,7 @@ if [[ -f "/usr/local/opt/chruby/share/chruby/chruby.sh" ]]; then
   source /usr/local/opt/chruby/share/chruby/auto.sh
   chruby 2.4
 fi
-export GOFETCH_ALIASES=/Users/ianc/Development/config_files/config/go/aliases
+export GOFETCH_ALIASES=/Users/ianc/code/config_files/config/go/aliases
 export PATH=/usr/local/go/bin:$PATH
 export PATH=/usr/local/opt/go/libexec/bin:$PATH
 
