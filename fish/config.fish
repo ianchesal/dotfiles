@@ -21,6 +21,7 @@ end
 
 # ENV VARS
 set -U EDITOR vim
+set -U GREP_OPTIONS --color=auto
 
 # ABBREVIATIONS
 abbr vi vim
