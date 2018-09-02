@@ -1,6 +1,7 @@
 require 'fileutils'
 
 def dolink(target, source)
+  File.delete target if File.symlink? target # Nuke symlinks. We don't care about backing those up
   backup target if File.exist? target
   system "ln -s #{source} #{target}"
   puts "Linked #{source} -> #{target}"
