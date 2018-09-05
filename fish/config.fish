@@ -18,9 +18,18 @@ if not test -f ~/.config/fish/functions/fisher.fish
     rafaelrinaldi/pure
 end
 
+# Pyenv
+set -U PYENV_ROOT /usr/local/opt/pyenv
+export PYENV_ROOT=/usr/local/opt/pyenv # Required to get pyenv to pick this up...
+status --is-interactive; and source (pyenv init -|psub)
+status --is-interactive; and source (pyenv virtualenv-init -|psub)
+
 # ENV VARS
 set -U EDITOR vim
 set -U GREP_OPTIONS --color=auto
+if test -d ~/bin
+  set -U fish_user_paths ~/bin $fish_user_paths
+end
 
 # ABBREVIATIONS
 abbr vi vim
