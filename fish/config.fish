@@ -15,8 +15,7 @@ if not test -f ~/.config/fish/functions/fisher.fish
   # Now install all the fisherman plugins I llike:
   fisher \
     rbenv \
-    rafaelrinaldi/pure \
-    edc/bass
+    rafaelrinaldi/pure
 end
 
 # ENV VARS
@@ -30,12 +29,6 @@ abbr g git
 
 # ALIASES
 # Note: Lazy loaded functions are better for shell startup times.
-
-# GOOGLE CLOUD SDK SETUP
-if test -d $HOME/google-cloud-sdk
-  bass source $HOME/google-cloud-sdk/path.bash.inc
-  bass source $HOME/google-cloud-sdk/completion.bash.inc
-end
 
 # STRIPE
 if test -d $HOME/stripe
