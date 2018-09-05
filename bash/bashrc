@@ -16,6 +16,8 @@ export HISTCONTROL=ignoredups
 # ... and ignore same successive entries.
 export HISTCONTROL=ignoreboth
 
+export PYENV_ROOT=/usr/local/opt/pyenv
+
 # After each command, update LINES and COLUMNS to reflect the current window size
 shopt -s checkwinsize
 
