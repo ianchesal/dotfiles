@@ -31,7 +31,7 @@ I'm using NeoVIM now and it has nice python integrations. I've also switched to 
     # packages that provide cli programs that are used in Neovim.
     pip install flake8
     rm -f ~/bin/flake8
-    ln -s `pyenv which flake8` ~/bin/flake8  # Assumes that $HOME/bin is in $PATH
+    ln -s (pyenv which flake8) ~/bin/flake8  # Assumes that $HOME/bin is in $PATH
     pyenv deactivate
 
 And then my `vimrc` has the lines in it to point NeoVIM at the correct Python install. I've found it useful to run `:checkhealth` in NeoVIM after a big update or install to verify that all the components are happy and have what they need.
