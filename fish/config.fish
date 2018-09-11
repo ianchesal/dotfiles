@@ -18,6 +18,14 @@ if not test -f ~/.config/fish/functions/fisher.fish
     rafaelrinaldi/pure
 end
 
+function __append_to_path
+  if test -d $argv[1]
+    if not contains $argv[1] $fish_user_paths
+      set -U fish_user_paths $argv[1] $fish_user_paths
+    end
+  end
+end
+
 # Pyenv
 set -U PYENV_ROOT /usr/local/opt/pyenv
 export PYENV_ROOT=/usr/local/opt/pyenv # Required to get pyenv to pick this up...
@@ -29,16 +37,8 @@ set -U EDITOR vim
 set -U GREP_OPTIONS --color=auto
 
 # Persistent PATH settings
-if test -d ~/bin
-  if not contains ~/bin $fish_user_paths
-    set -U fish_user_paths ~/bin $fish_user_paths
-  end
-end
-if test -d ~/google-cloud-sdk/bin
-  if not contains ~/google-cloud-sdk/bin $fish_user_paths
-    set -U fish_user_paths ~/google-cloud-sdk/bin $fish_user_paths
-  end
-end
+__append_to_path ~/bin
+__append_to_path ~/google-cloud-sdk/bin
 
 # ABBREVIATIONS
 abbr vi vim
@@ -49,16 +49,8 @@ abbr g git
 # Note: Lazy loaded functions are better for shell startup times.
 
 # STRIPE
-if test -d $HOME/stripe
-  if not contains $HOME/stripe/password-vault/bin $fish_user_paths
-    set -U fish_user_paths $HOME/stripe/password-vault/bin $fish_user_paths
-  end
-
-  if not contains $HOME/stripe/space-commander/bin $fish_user_paths
-    set -U fish_user_paths $HOME/stripe/space-commander/bin $fish_user_paths
-  end
-
-  if not contains $HOME/stripe/henson/bin $fish_user_paths
-    set -U fish_user_paths $HOME/stripe/henson/bin $fish_user_paths
-  end
+if test -d ~/stripe
+  __append_to_path ~/stripe/password-vault/bin
+  __append_to_path ~/stripe/space-commander/bin
+  __append_to_path ~/stripe/henson/bin
 end
