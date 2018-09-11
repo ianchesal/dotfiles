@@ -27,8 +27,17 @@ status --is-interactive; and source (pyenv virtualenv-init -|psub)
 # ENV VARS
 set -U EDITOR vim
 set -U GREP_OPTIONS --color=auto
+
+# Persistent PATH settings
 if test -d ~/bin
-  set -U fish_user_paths ~/bin $fish_user_paths
+  if not contains ~/bin $fish_user_paths
+    set -U fish_user_paths ~/bin $fish_user_paths
+  end
+end
+if test -d ~/google-cloud-sdk/bin
+  if not contains ~/google-cloud-sdk/bin $fish_user_paths
+    set -U fish_user_paths ~/google-cloud-sdk/bin $fish_user_paths
+  end
 end
 
 # ABBREVIATIONS
