@@ -53,4 +53,5 @@ if test -d ~/stripe
   __append_to_path ~/stripe/password-vault/bin
   __append_to_path ~/stripe/space-commander/bin
   __append_to_path ~/stripe/henson/bin
+  . ~/stripe/space-commander/bin/sc-env-activate.fish
 end
