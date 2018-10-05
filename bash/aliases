@@ -146,6 +146,7 @@ alias which-command=whence
 alias atom="/Applications/Atom.app/Contents/Resources/app/atom.sh"
 alias atom-update-packages="cd ~/code/dotfiles; rake atom:plugins"
 alias atom-update-plugins=atom-update-plugins
+alias vscode=code
 
 function rpg {
   rg -p "$@" | less -R

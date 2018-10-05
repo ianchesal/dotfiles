@@ -5,16 +5,15 @@
 # BOOTSTRAP
 # Bootstrap Fisherman if it's not present
 # See: https://github.com/fisherman/fisherman
-if not test -f ~/.config/fish/functions/fisher.fish
-  echo "Missing Fisherman! Will install now..."
+if not functions -q fisher
+  echo "Installing fisher for the first time..." >&2
+  set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+  curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
+  fisher
   curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs https://git.io/fisher
-  chmod 755 ~/.config/fish/functions/fisher.fish
-  # Need to wipe out existing fisherman configuration if we do a fresh
-  # installation like this. Otherwise there are problems.
-  rm -rf ~/.config/fisherman
-  # Now install all the fisherman plugins I llike:
-  fisher \
-    rbenv \
+  # Now install all the fisherman plugins I like:
+  fisher add \
+    daenney/rbenv \
     rafaelrinaldi/pure
 end
 
