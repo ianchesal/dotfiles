@@ -1,3 +1,3 @@
 function gdl
-  git diff --color=always $argv | less -r
+  git diff --color=always $argv
 end

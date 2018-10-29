@@ -1,3 +1,3 @@
 function gll
-  git log $argv | less -r
+  git log $argv
 end
