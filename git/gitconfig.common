@@ -33,9 +33,9 @@
 	publish = push -u
 	tree = log --graph --decorate --pretty=oneline --abbrev-commit
 [core]
+  pager = less -+F
   editor = vim
 	excludesfile = ~/.gitignore
-  pager = cat
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
   preloadindex = true
 [color]
