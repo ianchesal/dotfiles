@@ -21,7 +21,8 @@ brew install \
   zsh \
   zsh-syntax-highlighting \
   bash-completion \
-  youtube-dl
+  youtube-dl \
+  hub
 
 # brew install mysql
 # brew install postgres
