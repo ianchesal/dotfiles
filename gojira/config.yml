@@ -1,0 +1,36 @@
+endpoint: http://jira.corp.stripe.com
+unixproxy: "$HOME/.stripeproxy"
+custom-commands:
+  - name: mine
+    help: display issues assigned to me
+    script: |-
+      jira list --query "resolution = unresolved and assignee=currentuser() ORDER BY created"
+  - name: sprint-fix
+    help: tickets in the sprint that need fixin
+    script: |-
+      # jira list --filter "https://jira.corp.stripe.com/issues/?filter=11837"
+      jira ls --query 'project = DND AND Sprint in openSprints() AND statusCategory != Done AND (assignee is EMPTY OR "Story Points" is EMPTY)'
+  - name: sprint
+    help: tickets in the current sprint
+    script: |-
+      # jira list --filter "https://jira.corp.stripe.com/issues/?filter=11837"
+      jira ls --query 'project = DND AND Sprint in openSprints() AND statusCategory != Done ORDER BY cf[10002] ASC'
+  - name: triage
+    help: list tickets to add components
+    script: |-
+      jira ls --query 'project = DND AND statusCategory != Done AND component is EMPTY AND issueFunction in linkedIssuesOf("project=DND and statusCategory != Done and component is EMPTY", "is epic of")'
+  - name: aws
+    help: list AWS tickets
+    script: |-
+      jira ls --query 'project = AWS AND status = Open AND issuetype="Access"'
+  - name: whoaws
+    help: list AWS tickets for a user
+    args:
+      - name: REPORTER
+        required: true
+    script: |-
+      jira ls --query 'project = AWS AND status = Open AND issuetype="Access" AND reporter={{args.REPORTER}}'
+  - name: staleaws
+    help: list stale AWS tickets
+    script: |-
+      jira ls --template=aws-list --query 'project = AWS AND status = Approved AND issuetype="Access" AND updatedDate < -14d'

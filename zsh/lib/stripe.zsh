@@ -16,5 +16,8 @@ if [[ -d "$HOME/stripe" ]]; then
   alias stripe-curl='curl -s --unix-socket ~/.stripeproxy'
   alias git=stripe-git
 
+  # Go setup
+  export GOPATH=${HOME}/stripe/go
+
   export PATH
 fi

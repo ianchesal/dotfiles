@@ -233,8 +233,22 @@ namespace :fish do
   end
 end
 
+desc 'Install go-jira dotfiles'
+task gojira: ['gojira:config']
+
+namespace :gojira do
+  task :config do
+    mkdir_if_needed home('.jira.d')
+    dolink(home('.jira.d/config.yml'), root('gojira', 'config.yml'))
+  end
+
+  task :clean do
+    clean_restore home(".jira.d/config.yml")
+  end
+end
+
 desc 'Install zsh dotfiles'
-task zsh: ['zsh:rc', 'zsh:jiraurl']
+task zsh: ['zsh:rc']
 
 namespace :zsh do
   task :rc do
@@ -242,14 +256,9 @@ namespace :zsh do
     dolink(home('.zshenv'), root('zsh', 'zshenv'))
   end
 
-  task :jiraurl do
-    dolink(home('.jira-url'), root('zsh', 'jira-url'))
-  end
-
   task :clean do
     clean_restore home('.zshrc')
     clean_restore home('.zshenv')
-    clean_restore home('.jira-url')
   end
 end
 
