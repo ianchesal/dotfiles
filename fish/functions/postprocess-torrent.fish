@@ -17,6 +17,8 @@ function postprocess-torrent
     -non-strict \
     --log-file "/Volumes/estore1/Media Drive/Torrents/Completed/amc.log" \
     --def \
+    minFileSize=0 \
+    minLengthMS=0 \
     unsorted=y \
     music=y \
     artwork=n \
