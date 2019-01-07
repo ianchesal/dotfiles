@@ -53,6 +53,9 @@ status --is-interactive; and source (pyenv virtualenv-init -|psub)
 set -U EDITOR vim
 set -U GREP_OPTIONS --color=auto
 
+# bat: https://github.com/sharkdp/bat#configuration-file
+set -U BAT_CONFIG_PATH ~/code/dotfiles/bat/bat.conf
+
 # Persistent PATH settings
 __append_to_path ~/bin
 __append_to_path ~/google-cloud-sdk/bin
