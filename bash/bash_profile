@@ -110,6 +110,9 @@ if [[ -f "/usr/local/bin/hub" ]]; then
   eval "$(hub alias -s)"
 fi
 
+# Bat: https://github.com/sharkdp/bat#configuration-file
+export BAT_CONFIG_PATH="~/code/dotfiles/bat/bat.conf"
+
 # Opt out of Homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
 # Cask options
