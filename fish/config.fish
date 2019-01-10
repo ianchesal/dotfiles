@@ -56,6 +56,13 @@ set -U GREP_OPTIONS --color=auto
 # bat: https://github.com/sharkdp/bat#configuration-file
 set -U BAT_CONFIG_PATH ~/code/dotfiles/bat/bat.conf
 
+# Opt out of Homebrew analytics
+set -U HOMEBREW_NO_ANALYTICS 1
+# Cleanup on install
+set -U HOMEBREW_INSTALL_CLEANUP 1
+# Cask options
+set -U HOMEBREW_CASK_OPTS --appdir=~/Applications
+
 # Persistent PATH settings
 __append_to_path ~/bin
 __append_to_path ~/google-cloud-sdk/bin

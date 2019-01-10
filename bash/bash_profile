@@ -41,9 +41,6 @@ pathadd "${HOME}/.local/bin"
 
 # Go
 export GOPATH="${HOME}/code/go"
-if [[ -d "${HOME}/code/config_files/config/go/aliases" ]]; then
-  export GOFETCH_ALIASES="${HOME}/code/config_files/config/go/aliases"
-fi
 pathadd $GOPATH/bin
 
 alias gpoh='git push origin HEAD'
@@ -94,7 +91,6 @@ if [[ -f "/usr/local/opt/chruby/share/chruby/chruby.sh" ]]; then
   source /usr/local/opt/chruby/share/chruby/auto.sh
   chruby 2.4
 fi
-export GOFETCH_ALIASES=/Users/ianc/code/config_files/config/go/aliases
 export PATH=/usr/local/go/bin:$PATH
 export PATH=/usr/local/opt/go/libexec/bin:$PATH
 
@@ -115,7 +111,9 @@ export BAT_CONFIG_PATH="~/code/dotfiles/bat/bat.conf"
 
 # Opt out of Homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
+# Cleanup on install
+export HOMEBREW_INSTALL_CLEANUP=1
 # Cask options
-HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
 export GOROOT=/usr/local/opt/go/libexec
