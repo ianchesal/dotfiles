@@ -18,4 +18,4 @@ fi
 
 # Nicer workaround for Vim+tmux colors and mappings.
 # See: https://github.com/henrik/dotfiles/commit/f8347e465fe9c4b9ff7ea211e2263d6e34ace9dd
-export TERM='xterm-color'
+export TERM='xterm-256color'
