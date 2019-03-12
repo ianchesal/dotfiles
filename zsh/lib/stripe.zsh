@@ -16,6 +16,16 @@ if [[ -d "$HOME/stripe" ]]; then
   alias stripe-curl='curl -s --unix-socket ~/.stripeproxy'
   alias git=stripe-git
 
+  function aws-credential {
+    cd ~/stripe/puppet-config
+    git checkout master
+    git pull
+    sc iam new-wizard $1
+  }
+
+  # For space-commander
+  source sc-aliases
+
   # Go setup
   export GOPATH=${HOME}/stripe/go
 
