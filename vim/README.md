@@ -11,11 +11,11 @@ I'm using NeoVIM now and it has nice python integrations. I've also switched to 
     popd
 
     brew install pyenv pyenv-virtualenv
-    pyenv install 2.7.15
-    pyenv install 3.7.0
+    pyenv install 2.7.16
+    pyenv install 3.7.3
 
-    pyenv virtualenv 2.7.15 neovim2
-    pyenv virtualenv 3.7.0 neovim3
+    pyenv virtualenv 2.7.16 neovim2
+    pyenv virtualenv 3.7.3 neovim3
 
     pyenv activate neovim2
     pip install neovim
