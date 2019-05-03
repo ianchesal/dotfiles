@@ -11,8 +11,8 @@ I'm using NeoVIM now and it has nice python integrations. I've also switched to 
     popd
 
     brew install pyenv pyenv-virtualenv
-    pyenv install 2.7.16
-    pyenv install 3.7.3
+    CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install 2.7.16
+    CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install 3.7.3
 
     pyenv virtualenv 2.7.16 neovim2
     pyenv virtualenv 3.7.3 neovim3
