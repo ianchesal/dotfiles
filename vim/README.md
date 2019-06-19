@@ -35,3 +35,7 @@ I'm using NeoVIM now and it has nice python integrations. I've also switched to 
     pyenv deactivate
 
 And then my `vimrc` has the lines in it to point NeoVIM at the correct Python install. I've found it useful to run `:checkhealth` in NeoVIM after a big update or install to verify that all the components are happy and have what they need.
+
+## Troubleshooting
+
+* If `pyenv` fails to install a python try reinstalling the CLI tools for your XCode version from [here](https://developer.apple.com/download/more/?=command%20line%20tools)
