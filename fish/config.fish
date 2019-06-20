@@ -39,7 +39,8 @@ if not functions -q fisher
     echo "You need to run:"
     echo fisher add \
       daenney/rbenv \
-      rafaelrinaldi/pure
+      rafaelrinaldi/pure \
+      oh-my-fish/plugin-aws
   end
 end
 
