@@ -1,13 +1,13 @@
 function rsink
   switch $argv[1]
     case copy cp
-      rsync -avz --progress -h $argv[2..-1]
+      rsync -avz --exclude=.DS_Store --progress -h $argv[2..-1]
     case move mv
-      rsync -avz --progress -h --remove-source-files $argv[2..-1]
+      rsync -avz --exclude=.DS_Store --progress -h --remove-source-files $argv[2..-1]
     case sync synchronize
-      rsync -avzu --delete --progress -h $argv[2..-1]
+      rsync -avzu --exclude=.DS_Store --delete --progress -h $argv[2..-1]
     case update
-      rsync -avzu --progress -h $argv[2..-1]
+      rsync -avzu --exclude=.DS_Store --progress -h $argv[2..-1]
     case --help -h help
       __rsink_print_help
     case \*
@@ -26,6 +26,7 @@ function __rsink_print_help
   printf "\tshell function writing.\n\n"
   printf "\tAny options you pass along to this command will also be passsed to the\n"
   printf "\tunderlying rsync call.\n\n"
+  printf "\tAuto-excludes .DS_Store files.\n\n"
   printf "OPTIONS\n"
   printf "\to   copy: Copy <source> to <destination> recursively.\n"
   printf "\t          Does not remove things at <destination> which do not exist\n"
