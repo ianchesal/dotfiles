@@ -40,7 +40,8 @@ if not functions -q fisher
     echo fisher add \
       daenney/rbenv \
       rafaelrinaldi/pure \
-      oh-my-fish/plugin-aws
+      oh-my-fish/plugin-aws \
+      jethrokuan/fzf
   end
 end
 

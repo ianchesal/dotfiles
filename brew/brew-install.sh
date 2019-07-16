@@ -4,6 +4,8 @@
 brew install \
   awscli \
   fish \
+  ffmpeg \
+  fzf \
   git \
   keychain \
   neovim \
@@ -18,6 +20,7 @@ brew install \
   terminal-notifier \
   tmux \
   tree \
+  yarn \
   zsh \
   zsh-syntax-highlighting \
   bash-completion \

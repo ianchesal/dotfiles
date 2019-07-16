@@ -35,8 +35,8 @@ Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-haml'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'kien/ctrlp.vim'
-" Plugin 'junegunn/fzf'
+" Plugin 'kien/ctrlp.vim'
+Plugin 'junegunn/fzf'
 Plugin 'jeetsukumaran/vim-buffergator'
 " Plugin 'godlygeek/tabular'
 Plugin 'junegunn/vim-easy-align'
@@ -303,3 +303,6 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " nmap ; :Buffers<CR>
 " Search files like the old CTRL-P plugin used to do
 " nmap <Leader>p :Files<CR>
+set runtimepath+=/usr/local/opt/fzf
+nmap <C-p> :FZF<cr>
+let g:fzf_layout = { 'down': '~30%' }
