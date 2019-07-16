@@ -306,3 +306,6 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 set runtimepath+=/usr/local/opt/fzf
 nmap <C-p> :FZF<cr>
 let g:fzf_layout = { 'down': '~30%' }
+
+" Use ripgrep for grep
+set grepprg=rg\ --vimgrep
