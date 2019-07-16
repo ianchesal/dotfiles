@@ -30,6 +30,7 @@ for pyenvdir in "${pyenvdirs[@]}" ; do
         function pyenv_prompt_info() {
             echo "$(pyenv version-name)"
         }
+        source $pyenvdir/completions/pyenv.zsh
     fi
 done
 unset pyenvdir
