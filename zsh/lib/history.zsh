@@ -8,9 +8,7 @@ setopt    incappendhistory  # Immediately append to the history file, not just w
 
 alias h='history'
 
-function hs
-{
-    history | rg -N $*
+# fh - repeat history
+fh() {
+  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
 }
-
-alias hsi='hs -i'
