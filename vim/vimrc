@@ -159,6 +159,7 @@ augroup vimrcEx
   au BufRead,BufNewFile *.rb set filetype=ruby.rails.rspec
   au BufRead,BufNewFile Isolate set filetype=ruby
   au BufRead,BufNewFile config.ru set filetype=ruby
+  au BufRead,BufNewFile *.pp set filetype=ruby
 
   " Vagrantfiles are Ruby
   au BufRead,BufNewFile Vagrantfile set filetype=ruby
