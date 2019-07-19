@@ -1,3 +1,5 @@
+if [ "$(uname 2> /dev/null)" = "Darwin" ]; then
+
 # For the 5.0.x Homebrew'ed zsh installation...
 # unalias run-help
 autoload run-help
@@ -43,4 +45,6 @@ bcp() {
 		do; brew uninstall $prog; done;
 	fi
 }
+fi
+
 fi
