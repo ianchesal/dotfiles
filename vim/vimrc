@@ -52,15 +52,15 @@ Plugin 'nelstrom/vim-textobj-rubyblock'
 if s:uname == "Darwin\n"
   Plugin 'shougo/deoplete.nvim'
 endif
-Plugin 'ianchesal/myhelp.vim'
+" Plugin 'ianchesal/myhelp.vim'
 " LookML Syntax support
 Plugin 'thalesmello/lkml.vim'
 " Octave Syntax support
-Plugin 'jvirtanen/vim-octave.git'
+" Plugin 'jvirtanen/vim-octave.git'
 " Dracula theme: https://draculatheme.com/vim/
 Plugin 'dracula/vim'
 " Fish shell file support
-Plugin 'dag/vim-fish'
+" Plugin 'dag/vim-fish'
 call vundle#end()
 
 """"""""""""""""""""""
