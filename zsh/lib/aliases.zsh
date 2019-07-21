@@ -5,9 +5,7 @@ alias be='bundle exec'
 alias ber='bundle exec ruby'
 alias brails='bundle exec rails'
 alias brake='noglob bundle exec rake' # execute the bundled rake gem
-if _has fzf; then
-  alias cat='bat'
-fi
+#alias cat='bat'
 alias emacs="vim"
 alias fuck='sudo $(fc -ln -1)'
 alias gci='git commit --verbose'
