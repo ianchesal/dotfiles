@@ -1,5 +1,6 @@
 # Paths
-export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
+export PATH=/usr/local/bin:${PATH}
+export PATH=/usr/local/sbin:${PATH}
 
 # Python configuration
 export WORKON_HOME=$HOME/.virtualenvs
