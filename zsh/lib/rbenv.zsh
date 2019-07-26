@@ -1,7 +1,7 @@
 if [ -d "${HOME}/.rbenv" ]; then
   RBENV_ROOT="${HOME}/.rbenv"
   export RBENV_ROOT
-  export PATH=${rbenvdir}/bin:$PATH
+  export PATH=/usr/local/opt/rbenv/bin:$PATH
   eval "$(rbenv init --no-rehash - zsh)"
 
   alias rubies="rbenv versions"
