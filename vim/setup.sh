@@ -62,12 +62,20 @@ for pyver in $python_versions; do
   pyenv deactivate
 done
 
-if rbenv global > /dev/null ; then
-  _echo_green "rbenv detected"
+if whence gem > /dev/null ; then
+  _echo_green "gem detected"
   _echo_green "Installing neovim support for Ruby..."
   gem install neovim
 else
-  _echo_red "No rbenv detected. Ruby support not installed."
+  _echo_red "No gem detected. Ruby support not installed."
+fi
+
+if whence npm > /dev/null; then
+  _echo_green "npm detected"
+  _echo_green "Installing neovim support for Node.js..."
+  npm install -g neovim
+else
+  _echo_red "No npm detected. Node.js support not installed."
 fi
 
 _echo_green "Vim setup complete"
