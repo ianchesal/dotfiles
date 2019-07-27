@@ -2,7 +2,7 @@
 " Python Setup
 if has("unix")
   let s:uname = system("uname")
-  if s:uname == "Darwin\n"
+  if has('nvim')
     let g:python_host_prog = '/usr/local/opt/pyenv/versions/neovim2/bin/python'
     let g:python3_host_prog = '/usr/local/opt/pyenv/versions/neovim3/bin/python'
   else
@@ -49,7 +49,7 @@ Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
 " Plugin 'rizzatti/dash.vim'
 " Plugin 'plasticboy/vim-markdown'
-if s:uname == "Darwin\n"
+if has('nvim')
   Plugin 'shougo/deoplete.nvim'
 endif
 " Plugin 'ianchesal/myhelp.vim'

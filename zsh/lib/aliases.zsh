@@ -35,3 +35,7 @@ alias vim-update-plugins='vim +PluginInstall +qall'
 function rpg {
   rg -p "$@" | less -R
 }
+
+function listpaths {
+  echo "$PATH" | tr ':' '\n'
+}
