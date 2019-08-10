@@ -59,6 +59,8 @@ Plugin 'thalesmello/lkml.vim'
 " Plugin 'jvirtanen/vim-octave.git'
 " Dracula theme: https://draculatheme.com/vim/
 Plugin 'dracula/vim'
+" Nord theme: https://github.com/arcticicestudio/nord-vim
+Plugin 'arcticicestudio/nord-vim'
 " Fish shell file support
 " Plugin 'dag/vim-fish'
 call vundle#end()
@@ -117,8 +119,9 @@ set t_Co=256
 
 set background=dark
 " colorscheme solarized
-colorscheme molokai
+" colorscheme molokai
 " colorscheme dracula
+colorscheme nord
 
 " call togglebg#map("<F3>")
 

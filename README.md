@@ -12,3 +12,6 @@ You can link up some of the bits and pieces using the included `Rakefile`. See:
 
 for the targets you can run to link up pieces. Not everything is available for automatic installation via the `Rakefile`.
 
+## Colours
+
+Really like Nord these days: https://www.nordtheme.com/

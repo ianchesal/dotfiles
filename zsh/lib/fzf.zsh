@@ -19,11 +19,19 @@ fi
 if _has fzf; then
 
 export FZF_DEFAULT_OPTS='
---color info:108,prompt:109,spinner:108,pointer:168,marker:168
 --preview "[[ $(file --mime {}) =~ binary ]] &&
              echo {} is a binary file ||
              (highlight -O ansi {} ||
              cat {}) 2> /dev/null | head -$LINES"'
+
+
+# Nord colors for fzf
+# Generated here: https://minsw.github.io/fzf-color-picker/
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+    --color=fg:#e5e9f0,bg:#3b4251,hl:#81a1c1
+    --color=fg+:#e5e9f0,bg+:#3b4251,hl+:#81a1c1
+    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
+    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)

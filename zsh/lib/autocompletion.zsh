@@ -13,7 +13,7 @@ else
   export CLICOLOR=1
   zstyle ':completion:*:default' list-colors ''
 fi
-zstyle ':completion:*' list-colors ''
+#zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
 zstyle ':completion:*' menu select=long
