@@ -1,7 +1,3 @@
-# Paths
-export PATH=/usr/local/bin:${PATH}
-export PATH=/usr/local/sbin:${PATH}
-
 # Python configuration
 export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python2
@@ -33,14 +29,11 @@ if [[ -d "${HOME}/.aws/certs" ]]; then
   export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.aws/certs/*-pk.pem | /usr/bin/head -1)"
   export EC2_CERT="$(/bin/ls "$HOME"/.aws/certs/*-cert.pem | /usr/bin/head -1)"
 fi
-export EC2_HOME="/usr/local/Cellar/ec2-api-tools/1.7.1.0/libexec"
+#export EC2_HOME="/usr/local/Cellar/ec2-api-tools/1.7.1.0/libexec"
 
 [[ -s "$HOME/.aws/keys.zsh" ]] && source "$HOME/.aws/keys.zsh"
 
 export COPYFILE_DISABLE=true
-
-# automatically enter directories without cd
-setopt auto_cd
 
 # Language
 export LC_COLLATE=en_US.UTF-8
