@@ -248,9 +248,16 @@ namespace :gojira do
 end
 
 desc 'Install zsh dotfiles'
-task zsh: ['zsh:rc']
+task zsh: ['zsh:ohmyzsh', 'zsh:rc']
 
 namespace :zsh do
+  task :ohmyzsh do
+    Dir.chdir(ENV['HOME']){
+      puts "Cloning oh-my-zsh to ~/.oh-my-zsh..."
+      `git clone --depth=1 --branch master https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh`
+    } unless File.directory? home('.oh-my-zsh')
+  end
+
   task :rc do
     dolink(home('.zshrc'), root('zsh', 'zshrc'))
     dolink(home('.zshenv'), root('zsh', 'zshenv'))
@@ -259,6 +266,9 @@ namespace :zsh do
   task :clean do
     clean_restore home('.zshrc')
     clean_restore home('.zshenv')
+    Dir.chdir(ENV['HOME']){
+      `rm -rf .oh-my-zsh`
+    } if File.directory? home('.oh-my-zsh')
   end
 end
 
