@@ -14,7 +14,7 @@ if [[ -d "$HOME/stripe" ]]; then
 
   # Useful stripe aliases and functions
   alias stripe-curl='curl -s --unix-socket ~/.stripeproxy'
-  alias git=stripe-git
+  #alias git=stripe-git
 
   function aws-credential {
     cd ~/stripe/puppet-config
