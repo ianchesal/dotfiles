@@ -25,10 +25,5 @@ alias v='vim'
 alias vi="vim"
 alias vim-update-plugins='vim +PluginInstall +qall'
 
-function rpg {
-  rg -p "$@" | less -R
-}
-
-function listpaths {
-  echo "$PATH" | tr ':' '\n'
-}
+# Curl Power Ups
+alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
