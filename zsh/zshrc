@@ -83,6 +83,7 @@ plugins=(
   ripgrep
   ruby
   vagrant
+  gcloud
 )
 
 source $ZSH/oh-my-zsh.sh
