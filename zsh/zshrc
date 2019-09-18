@@ -68,6 +68,9 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
+# NOTE: vi-mode and virtualenv are incompatible with the pure prompt
+#       and I should never use them!
 plugins=(
   brew
   colored-man-pages
