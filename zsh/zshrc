@@ -87,9 +87,12 @@ plugins=(
   ruby
   vagrant
   gcloud
+  aws
 )
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 for config (~/code/dotfiles/zsh/lib/*.zsh) source $config
+# Localize configuration
+for config (~/.zsh.d/*.zsh) source $config
