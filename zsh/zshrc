@@ -79,6 +79,7 @@ plugins=(
   docker-compose
   fzf
   git
+  golang
   pyenv
   python
   rake
@@ -95,4 +96,6 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 for config (~/code/dotfiles/zsh/lib/*.zsh) source $config
 # Localize configuration
-for config (~/.zsh.d/*.zsh) source $config
+if [ -d ~/.zsh.d ]; then
+  for config (~/.zsh.d/*.zsh) source $config
+fi
