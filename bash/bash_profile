@@ -40,7 +40,7 @@ fi
 pathadd "${HOME}/.local/bin"
 
 # Go
-export GOPATH="${HOME}/code/go"
+#export GOPATH="${HOME}/code/go"
 pathadd $GOPATH/bin
 
 alias gpoh='git push origin HEAD'
@@ -116,4 +116,4 @@ export HOMEBREW_INSTALL_CLEANUP=1
 # Cask options
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
-export GOROOT=/usr/local/opt/go/libexec
+#export GOROOT=/usr/local/opt/go/libexec
