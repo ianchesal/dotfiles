@@ -11,11 +11,7 @@ export GIT_EDITOR=vim
 
 # Defining this here as well as bashrc because of the way I use iTerm
 # to load different shells.
-pathadd() {
-  if [ -d "$1" ] && [[ ":$path:" != *":$1:"* ]]; then
-    path="${path:+"$path:"}$1"
-  fi
-}
+pathadd() { case ":${PATH:=$1}:" in *:"$1":*) ;; *) PATH="$1:$PATH" ;; esac; }
 
 source ~/code/dotfiles/bash/colors.theme.bash
 source ~/code/dotfiles/bash/pure.theme.bash
@@ -73,8 +69,8 @@ if [[ $(uname) != "Darwin" ]]; then
 fi
 
 # vim: filetype=sh
-pathadd /usr/local/sbin
-export PATH
+#pathadd /usr/local/sbin
+#export PATH
 
 # List tmux sessions
 TMUX_SESSIONS=$(tmux ls 2>/dev/null)
@@ -84,15 +80,11 @@ if ! [[ -z "$TMUX_SESSIONS" ]]; then
   echo "-----------------------------------"
 fi
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-# If chruby, set a default ruby so we're not using system ruby
-if [[ -f "/usr/local/opt/chruby/share/chruby/chruby.sh" ]]; then
-  source /usr/local/opt/chruby/share/chruby/chruby.sh
-  source /usr/local/opt/chruby/share/chruby/auto.sh
-  chruby 2.4
+if [[ -d "/usr/local/go/bin" ]]; then
+  export PATH=/usr/local/go/bin:$PATH
+  export PATH=/usr/local/opt/go/libexec/bin:$PATH
+  export GOROOT=/usr/local/opt/go/libexec
 fi
-export PATH=/usr/local/go/bin:$PATH
-export PATH=/usr/local/opt/go/libexec/bin:$PATH
 
 # Perl
 if [[ -f "/usr/local/bin/perl" ]]; then
@@ -101,10 +93,25 @@ if [[ -f "/usr/local/bin/perl" ]]; then
   export PERL5LIB=${HOME}/.perl5/lib/perl5
 fi
 
-# Hub
-if [[ -f "/usr/local/bin/hub" ]]; then
-  eval "$(hub alias -s)"
+# Python and pyenv
+PYENV_ROOT=/usr/local/opt/pyenv
+if [[ -f "${HOME}/.pyenv/bin/pyenv" ]]; then
+  PYENV_ROOT=${HOME}/.pyenv
+  pathadd ${PYENV_ROOT}/bin
+  eval "$(pyenv init -)"
 fi
+export PYENV_ROOT
+
+# Ruby and rbenv
+if [[ -d "${HOME}/.rbenv/bin" ]]; then
+  pathadd ${HOME}/.rbenv/bin
+  eval "$(${HOME}/.rbenv/bin/rbenv init -)"
+fi
+
+# Hub
+# if [[ -f "/usr/local/bin/hub" ]]; then
+#   eval "$(hub alias -s)"
+# fi
 
 # Bat: https://github.com/sharkdp/bat#configuration-file
 export BAT_CONFIG_PATH="~/code/dotfiles/bat/bat.conf"
@@ -117,3 +124,4 @@ export HOMEBREW_INSTALL_CLEANUP=1
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
 #export GOROOT=/usr/local/opt/go/libexec
+export PATH
