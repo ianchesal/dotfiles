@@ -147,6 +147,10 @@ alias atom="/Applications/Atom.app/Contents/Resources/app/atom.sh"
 alias atom-update-packages="cd ~/code/dotfiles; rake atom:plugins"
 alias atom-update-plugins=atom-update-plugins
 alias vscode=code
+if command -v nvim >/dev/null 2>&1; then
+  alias vim=nvim
+  alias vi=nvim
+fi
 
 function rpg {
   rg -p "$@" | less -R

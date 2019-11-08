@@ -4,11 +4,7 @@
 
 alias vim-update-plugins='vim +PluginInstall +qall'
 
-pathadd() {
-  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-    PATH="${PATH:+"$PATH:"}$1"
-  fi
-}
+pathadd() { case ":${PATH:=$1}:" in *:"$1":*) ;; *) PATH="$1:$PATH" ;; esac; }
 
 export HISTSIZE=1000000
 # Don't put duplicate lines in the history.
@@ -16,7 +12,16 @@ export HISTCONTROL=ignoredups
 # ... and ignore same successive entries.
 export HISTCONTROL=ignoreboth
 
-export PYENV_ROOT=/usr/local/opt/pyenv
+# Python and pyenv
+PYENV_ROOT=/usr/local/opt/pyenv
+if [[ -f "${HOME}/.pyenv/bin/pyenv" ]]; then
+  PYENV_ROOT=${HOME}/.pyenv
+  pathadd ${PYENV_ROOT}/bin
+  echo $PATH
+  echo $path
+  eval "$(pyenv init -)"
+fi
+export PYENV_ROOT
 
 # After each command, update LINES and COLUMNS to reflect the current window size
 shopt -s checkwinsize
