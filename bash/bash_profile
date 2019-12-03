@@ -116,10 +116,10 @@ fi
 # MQ Stuff
 export AVDB_SERVER="https://avdb.marqeta.com/"
 export CONSUMER="AVDB_CLI"
-export AVDB_TOKEN=~/bash.local
+export AVDB_TOKEN=~/.bash_local
 
 # Localized setup
-if [[ -f "${HOME}/.bash.local" ]]; then
+if [[ -f "${HOME}/.bash_local" ]]; then
   source "${HOME}/.bash_local"
 fi
 
