@@ -46,7 +46,7 @@ task :default do
 end
 
 desc 'Install all dotfiles (are you really sure you want to do this?)'
-task all: [:bash, :zsh, :vim, :ruby, :curl, :git, :screen, :irssi, :atom, :fish]
+task all: [:bash, :zsh, :vim, :ruby, :curl, :git, :screen, :irssi, :atom, :fish, :ansible]
 
 desc 'Remove my customizations and restore system default dotfiles'
 task clean: [
@@ -61,7 +61,8 @@ task clean: [
   'tmux:clean',
   'atom:clean',
   'octave:clean',
-  'fish:clean'
+  'fish:clean',
+  'ansible:clean'
 ]
 
 desc 'Install vim and neovim dotfiles'
@@ -389,5 +390,21 @@ namespace :rubocop do
   desc 'Auto-correct Rubocop failures'
   task :auto_correct do
     system("#{RUBOCOP} --auto-correct " + FILES_TO_CHECK.join(' '))
+  end
+end
+
+desc 'Install ansible dotfiles'
+task ansible: ['ansible:all']
+
+namespace :ansible do
+  task all: [:config]
+
+  task :config do
+    dolink(home('.ansible.cfg'), root('ansible', 'ansible.cfg'))
+  end
+
+  task :clean do
+    clean_restore home('.ansible.cfg')
+    clean_restore home('.gitconfig')
   end
 end
