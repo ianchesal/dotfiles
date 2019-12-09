@@ -9,7 +9,7 @@ MethodLength:
 LineLength:
   Max: 160
 
-AlignParameters:
+Layout/ParameterAlignment:
   Enabled: false
 
 SpaceAroundOperators:
