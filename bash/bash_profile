@@ -113,16 +113,10 @@ fi
 #   eval "$(hub alias -s)"
 # fi
 
-# MQ Stuff
-export AVDB_SERVER="https://avdb.marqeta.com/"
-export CONSUMER="AVDB_CLI"
-export AVDB_TOKEN=~/.bash_local
-
 # Localized setup
 if [[ -f "${HOME}/.bash_local" ]]; then
   source "${HOME}/.bash_local"
 fi
-
 
 # Bat: https://github.com/sharkdp/bat#configuration-file
 export BAT_CONFIG_PATH="~/code/dotfiles/bat/bat.conf"
