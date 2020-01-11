@@ -80,6 +80,7 @@ plugins=(
   fzf
   git
   golang
+  heroku
   pyenv
   python
   rake
