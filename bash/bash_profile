@@ -106,6 +106,9 @@ export PYENV_ROOT
 if [[ -d "${HOME}/.rbenv/bin" ]]; then
   pathadd ${HOME}/.rbenv/bin
   eval "$(${HOME}/.rbenv/bin/rbenv init -)"
+  if [[ -a "/usr/local/bin/brew" ]]; then
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+  fi
 fi
 
 # Hub
