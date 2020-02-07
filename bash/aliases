@@ -151,6 +151,8 @@ if command -v nvim >/dev/null 2>&1; then
   alias vim=nvim
   alias vi=nvim
 fi
+alias docker_clean_images='docker rmi $(docker images -a --filter=dangling=true -q)'
+alias docker_clean_ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
 
 function rpg {
   rg -p "$@" | less -R
