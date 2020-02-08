@@ -17,18 +17,29 @@ source ~/code/dotfiles/bash/colors.theme.bash
 source ~/code/dotfiles/bash/pure.theme.bash
 #source ~/code/dotfiles/bash/ianc.theme.bash
 
-if [[ -f "/usr/local/etc/bash_completion" ]]; then
-  source /usr/local/etc/bash_completion
-else
-  if [[ -d "/usr/local/etc/bash_completion.d" ]]; then
-    BASH_COMPLETION_DIR=/usr/local/etc/bash_completion.d
-  elif [[ -d "/etc/bash_completion.d" ]]; then
-    BASH_COMPLETION_DIR=/etc/bash_completion.d
-  fi
-  if ! [[ -z "$BASH_COMPLETION_DIR" ]]; then
-    for f in ${BASH_COMPLETION_DIR}/*; do
-      source $f
+if type brew &>/dev/null; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+      [[ -r "$COMPLETION" ]] && source "$COMPLETION"
     done
+  fi
+else
+  if [[ -f "/usr/local/etc/bash_completion" ]]; then
+    source /usr/local/etc/bash_completion
+  else
+    if [[ -d "/usr/local/etc/bash_completion.d" ]]; then
+      BASH_COMPLETION_DIR=/usr/local/etc/bash_completion.d
+    elif [[ -d "/etc/bash_completion.d" ]]; then
+      BASH_COMPLETION_DIR=/etc/bash_completion.d
+    fi
+    if ! [[ -z "$BASH_COMPLETION_DIR" ]]; then
+      for f in ${BASH_COMPLETION_DIR}/*; do
+        source $f
+      done
+    fi
   fi
 fi
 
