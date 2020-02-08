@@ -63,6 +63,14 @@ HIST_STAMPS="yyyy-mm-dd"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+# zsh Completions from Homebrew
+# This needs to be done before compinit is called, so that means
+# before oh-my-zsh is loaded.
+FPATH=${HOME}/code/dotfiles/zsh/completions:$FPATH
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
+
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
