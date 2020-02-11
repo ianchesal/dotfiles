@@ -144,3 +144,6 @@ export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
 #export GOROOT=/usr/local/opt/go/libexec
 export PATH
+
+# GPG
+export GPG_TTY=$(tty)

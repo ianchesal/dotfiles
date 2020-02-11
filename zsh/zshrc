@@ -85,6 +85,7 @@ plugins=(
   fzf
   git
   golang
+  gpg-agent
   heroku
   pyenv
   python
