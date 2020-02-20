@@ -33,7 +33,7 @@ else
 fi
 
 
-python_versions=(2.7.16 3.7.4)
+python_versions=(3.8.1)
 
 for pyver in $python_versions; do
   _pyenv_has_version $pyver || {
