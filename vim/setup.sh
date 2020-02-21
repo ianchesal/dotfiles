@@ -78,5 +78,13 @@ else
   _echo_red "No npm detected. Node.js support not installed."
 fi
 
+if whence yarn > /dev/null; then
+  _echo_green "yarn detected"
+  _echo_green "Installing neovim support for Node.js..."
+  yarn global add neovim
+else
+  _echo_red "No yarn detected. Node.js support not installed."
+fi
+
 _echo_green "Vim setup complete"
 _echo_green "Now run: vim +PluginInstall +qall; vim +checkhealth"
