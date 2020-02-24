@@ -27,3 +27,6 @@ alias vim-update-plugins='vim +PluginInstall +qall'
 
 # Curl Power Ups
 alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
+
+# Unalias stuff that gets set in oh-my-zsh plugins
+unalias gom
