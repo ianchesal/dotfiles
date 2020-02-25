@@ -51,6 +51,7 @@ Plugin 'nelstrom/vim-textobj-rubyblock'
 " Plugin 'plasticboy/vim-markdown'
 if has('nvim')
   Plugin 'shougo/deoplete.nvim'
+  Plugin 'iamcco/markdown-preview.nvim'
 endif
 " Plugin 'ianchesal/myhelp.vim'
 " LookML Syntax support
@@ -313,3 +314,12 @@ let g:fzf_layout = { 'down': '~30%' }
 
 " Use ripgrep for grep
 set grepprg=rg\ --vimgrep
+
+" markdown-preview.nvim
+" https://vimawesome.com/plugin/markdown-preview-nvim
+" https://github.com/iamcco/markdown-preview.nvim
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 1
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
