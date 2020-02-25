@@ -77,16 +77,19 @@ FPATH=${HOME}/code/dotfiles/zsh/completions:$FPATH
 # NOTE: vi-mode and virtualenv are incompatible with the pure prompt
 #       and I should never use them!
 plugins=(
+  aws
   brew
   colored-man-pages
   cp
   docker
   docker-compose
   fzf
+  gcloud
   git
   golang
   gpg-agent
   heroku
+  pipenv
   pyenv
   python
   rake
@@ -94,8 +97,6 @@ plugins=(
   ripgrep
   ruby
   vagrant
-  gcloud
-  aws
 )
 
 source $ZSH/oh-my-zsh.sh

@@ -104,7 +104,7 @@ if [[ -f "/usr/local/bin/perl" ]]; then
   export PERL5LIB=${HOME}/.perl5/lib/perl5
 fi
 
-# Python and pyenv
+# Python and pyenv and pipenv
 PYENV_ROOT=/usr/local/opt/pyenv
 if [[ -f "${HOME}/.pyenv/bin/pyenv" ]]; then
   PYENV_ROOT=${HOME}/.pyenv
@@ -112,6 +112,9 @@ if [[ -f "${HOME}/.pyenv/bin/pyenv" ]]; then
   eval "$(pyenv init -)"
 fi
 export PYENV_ROOT
+if type pipenv &>/dev/null; then
+  eval "$(pipenv --completion)"
+fi
 
 # Ruby and rbenv
 if [[ -d "${HOME}/.rbenv/bin" ]]; then

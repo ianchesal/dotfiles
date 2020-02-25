@@ -20,6 +20,9 @@ alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
 alias rsync-update="rsync -avzu --progress -h"
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+if type "nvim" > /dev/null; then
+  alias vim=nvim
+fi
 alias v="vim"
 alias v='vim'
 alias vi="vim"
