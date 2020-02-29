@@ -49,6 +49,11 @@ task :default do
   system 'rake -T'
 end
 
+desc 'Update all the git submodules in this repository'
+task :updatesubmodules do
+  system 'git submodule update --remote'
+end
+
 desc 'Install all dotfiles (are you really sure you want to do this?)'
 task all: []
 

@@ -1,5 +1,4 @@
-# Load the pure prompt from my dotfiles
-fpath=( $HOME/code/dotfiles/zsh/pure $fpath )
+fpath+=$HOME/code/dotfiles/zsh/pure
 autoload -U promptinit
 promptinit
 prompt pure
