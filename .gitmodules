@@ -4,3 +4,6 @@
 [submodule "rubymine/solarized"]
 	path = rubymine/solarized
 	url = git@github.com:dgt79/rubymine-colors-solarized.git
+[submodule "zsh/pure"]
+	path = zsh/pure
+	url = https://github.com/sindresorhus/pure.git
