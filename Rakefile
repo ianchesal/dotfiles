@@ -1,11 +1,24 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/Documentation, Style/SingleLineMethods, Layout/EmptyLineBetweenDefs
+
 require 'fileutils'
+
+class String
+  def black;          "\e[30m#{self}\e[0m" end
+  def red;            "\e[31m#{self}\e[0m" end
+  def green;          "\e[32m#{self}\e[0m" end
+  def brown;          "\e[33m#{self}\e[0m" end
+  def blue;           "\e[34m#{self}\e[0m" end
+  def magenta;        "\e[35m#{self}\e[0m" end
+  def cyan;           "\e[36m#{self}\e[0m" end
+  def gray;           "\e[37m#{self}\e[0m" end
+end
 
 def dolink(target, source)
   File.delete target if File.symlink? target # Nuke symlinks. We don't care about backing those up
   backup target if File.exist? target
-  system "ln -s #{source} #{target}"
+  sh "ln -s #{source} #{target}"
   puts "Linked #{source} -> #{target}"
 end
 
@@ -49,9 +62,35 @@ task :default do
   system 'rake -T'
 end
 
-desc 'Update all the git submodules in this repository'
-task :updatesubmodules do
-  system 'git submodule update --remote'
+desc 'Update everything that can be (safely) updated'
+task update: ['update:submodules', 'update:ohmyzsh', 'update:vundle']
+
+namespace :update do
+  desc 'Update oh-my-zsh'
+  task :ohmyzsh do
+    puts 'Update: oh-my-zsh'.green
+    Dir.chdir(File.expand_path('~/.oh-my-zsh')) do
+      sh 'sh ./tools/upgrade.sh'
+    end
+  end
+
+  desc 'Update vim Vundle plugins'
+  task :vundle do
+    puts 'Update: Vundle plugins'.green
+    sh 'sh ./vim/update-plugins.sh'
+  end
+
+  desc 'Update all the git submodules in this repository'
+  task :submodules do
+    puts 'Update: git submodules'.green
+    sh 'git pull --recurse-submodules'
+  end
+
+  desc 'Update Homebrew'
+  task :homebrew do
+    puts 'Update: Homebrew'.green
+    sh 'brew upgrade'
+  end
 end
 
 desc 'Install all dotfiles (are you really sure you want to do this?)'
@@ -61,3 +100,5 @@ desc 'Remove my customizations and restore system default dotfiles'
 task clean: []
 
 Dir.glob('*/*.rake').each { |r| load r }
+
+# rubocop:enable Style/Documentation, Style/SingleLineMethods, Layout/EmptyLineBetweenDefs

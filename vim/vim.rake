@@ -23,7 +23,7 @@ namespace :vim do
   end
 
   task :clean do
-    system "rm -rf #{home('.vim')}/*"
+    sh "rm -rf #{home('.vim')}/*"
     clean_restore home('.vimrc')
   end
 end

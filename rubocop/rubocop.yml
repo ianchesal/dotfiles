@@ -3,17 +3,26 @@
 #
 # Rubocop: https://github.com/bbatsov/rubocop#installation
 
-MethodLength:
+Metrics/ClassLength:
   Enabled: false
 
-LineLength:
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/LineLength:
   Max: 160
 
 Layout/ParameterAlignment:
   Enabled: false
 
-SpaceAroundOperators:
+Layout/SpaceAroundOperators:
   Enabled: false
 
-ClassLength:
-  Enabled: false
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
