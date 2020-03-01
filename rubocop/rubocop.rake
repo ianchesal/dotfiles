@@ -17,12 +17,12 @@ namespace :rubocop do
 
   desc 'Run Rubocop checks'
   task :check do
-    system("#{RUBOCOP} " + FILES_TO_CHECK.join(' '))
+    sh "#{RUBOCOP} " + FILES_TO_CHECK.join(' ')
   end
 
   desc 'Auto-correct Rubocop failures'
   task :auto_correct do
-    system("#{RUBOCOP} --auto-correct " + FILES_TO_CHECK.join(' '))
+    sh "#{RUBOCOP} --auto-correct " + FILES_TO_CHECK.join(' ')
   end
 end
 
