@@ -4,7 +4,7 @@ My dotfiles. What else were you expecting?
 
 ## Use
 
-    git clone --recursive git@github.com:ianchesal/dotfiles.git
+    git clone --recurse-submodules git@github.com:ianchesal/dotfiles.git
 
 You can link up some of the bits and pieces using the included `Rakefile`. See:
 
