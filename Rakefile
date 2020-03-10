@@ -63,35 +63,7 @@ task :default do
 end
 
 desc 'Update everything that can be (safely) updated'
-task update: ['update:submodules', 'update:ohmyzsh', 'update:vundle']
-
-namespace :update do
-  desc 'Update oh-my-zsh'
-  task :ohmyzsh do
-    puts 'Update: oh-my-zsh'.green
-    Dir.chdir(File.expand_path('~/.oh-my-zsh')) do
-      sh 'sh ./tools/upgrade.sh'
-    end
-  end
-
-  desc 'Update vim Vundle plugins'
-  task :vundle do
-    puts 'Update: Vundle plugins'.green
-    sh 'sh ./vim/update-plugins.sh'
-  end
-
-  desc 'Update all the git submodules in this repository'
-  task :submodules do
-    puts 'Update: git submodules'.green
-    sh 'git pull --recurse-submodules'
-  end
-
-  desc 'Update Homebrew'
-  task :homebrew do
-    puts 'Update: Homebrew'.green
-    sh 'brew upgrade'
-  end
-end
+task update: []
 
 desc 'Install all dotfiles (are you really sure you want to do this?)'
 task all: []

@@ -10,10 +10,17 @@ namespace :zsh do
     end
   end
 
-
   task :rc do
     dolink(home('.zshrc'), root('zsh', 'zshrc'))
     dolink(home('.zshenv'), root('zsh', 'zshenv'))
+  end
+
+  desc 'Update zsh and oh-my-zsh'
+  task :update do
+    puts 'Update: oh-my-zsh'.green
+    Dir.chdir(File.expand_path('~/.oh-my-zsh')) do
+      sh 'sh ./tools/upgrade.sh'
+    end
   end
 
   task :clean do
@@ -27,3 +34,4 @@ end
 
 task all: [:zsh]
 task clean: ['zsh:clean']
+task update: ['zsh:update']

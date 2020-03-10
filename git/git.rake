@@ -16,6 +16,12 @@ namespace :git do
     mkdir_if_needed home('.git_template')
   end
 
+  desc 'Update all the git submodules in this repository'
+  task :update do
+    puts 'Update: git submodules'.green
+    sh 'git pull --recurse-submodules'
+  end
+
   task :clean do
     clean_restore home('.gitignore')
     clean_restore home('.gitconfig')
@@ -24,3 +30,4 @@ end
 
 task all: [:git]
 task clean: ['git:clean']
+task update: ['git:update']

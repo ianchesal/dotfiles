@@ -22,6 +22,13 @@ namespace :vim do
     dolink('~/.config/nvim', '~/.vim')
   end
 
+  desc 'Update vim Vundle plugins'
+  task :update do
+    puts 'Update: Vundle plugins'.green
+    sh 'sh ./vim/update-plugins.sh'
+    sh 'vim +PluginInstall +qall'
+  end
+
   task :clean do
     sh "rm -rf #{home('.vim')}/*"
     clean_restore home('.vimrc')
@@ -30,3 +37,4 @@ end
 
 task all: [:vim]
 task clean: ['vim:clean']
+task update: ['vim:update']
