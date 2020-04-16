@@ -3,11 +3,14 @@
 # My regular brew packages...
 brew install \
   awscli \
-  fish \
+  bash-completion \
   ffmpeg \
+  fish \
   fzf \
   git \
+  jq \
   keychain \
+  mas \
   neovim \
   node \
   packer \
@@ -17,17 +20,15 @@ brew install \
   pyenv \
   pyenv-virtualenv \
   rbenv \
-  ruby-build \
   ripgrep \
+  ruby-build \
   terminal-notifier \
   tmux \
   tree \
   yarn \
-  zsh \
-  zsh-syntax-highlighting \
-  bash-completion \
   youtube-dl \
-  jq
+  zsh \
+  zsh-syntax-highlighting
 
 # brew install mysql
 # brew install postgres
