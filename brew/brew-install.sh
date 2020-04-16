@@ -13,9 +13,11 @@ brew install \
   packer \
   packer-completion \
   perl \
+  pipenv \
   pyenv \
   pyenv-virtualenv \
   rbenv \
+  ruby-build \
   ripgrep \
   terminal-notifier \
   tmux \
@@ -25,7 +27,7 @@ brew install \
   zsh-syntax-highlighting \
   bash-completion \
   youtube-dl \
-  hub
+  jq
 
 # brew install mysql
 # brew install postgres
