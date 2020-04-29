@@ -73,7 +73,7 @@ fi
 if whence npm > /dev/null; then
   _echo_green "npm detected"
   _echo_green "Installing neovim support for Node.js..."
-  npm install -g neovim
+  npm install --force -g neovim
 else
   _echo_red "No npm detected. Node.js support not installed."
 fi
