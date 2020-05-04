@@ -3,7 +3,7 @@
 if has("unix")
   let s:uname = system("uname")
   if has('nvim')
-    " let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
+    let g:python_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
     let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
   else
     let g:python_host_prog = '/usr/bin/python'
@@ -296,9 +296,6 @@ nmap ga <Plug>(EasyAlign)
 
 " deoplete configuration
 let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option({
-\ 'smart_case': v:true,
-\ })
 " Use tab-complete to navigate completions
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 

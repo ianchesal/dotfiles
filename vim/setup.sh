@@ -33,7 +33,7 @@ else
 fi
 
 
-python_versions=(3.8.1)
+python_versions=(3.8.2)
 
 for pyver in $python_versions; do
   _pyenv_has_version $pyver || {
@@ -45,7 +45,13 @@ for pyver in $python_versions; do
   pyenv virtualenv --force ${pyver} neovim${pyver%%.*}
   _echo_green "Activiating neovim${pyver%%.*} python virtualenv..."
   pyenv activate neovim${pyver%%.*}
+  # This ensures my work pip.conf and this venv can coexist peacefully
   _echo_green "Using: $(pyenv which python)"
+cat > "${VIRTUAL_ENV}/pip.conf" <<- EOM
+[global]
+index = https://pypi.python.org/
+index-url = https://pypi.python.org/simple
+EOM
   _echo_green "Upgrading pip and setuptools..."
   pip install --upgrade pip setuptools
   _echo_green "Installing pynvim support..."
