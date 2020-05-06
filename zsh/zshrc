@@ -85,7 +85,7 @@ plugins=(
   docker-compose
   fzf
   gcloud
-  git
+  gitfast
   golang
   gpg-agent
   heroku
