@@ -1,12 +1,5 @@
 desc 'Install vim and neovim dotfiles'
 task vim: ['vim:all']
-task :vim do
-  puts "Now run:\n\n"
-  puts "\tbrew uninstall vim; rbenv system; brew install vim"
-  puts "\tvim +PluginInstall +qall"
-  puts "\tcd ~/.vim/bundle/YouCompleteMe; ./install.sh"
-  puts "\nto complete the installation."
-end
 
 namespace :vim do
   task all: [:dir, :rc]
@@ -22,11 +15,11 @@ namespace :vim do
     dolink('~/.config/nvim', '~/.vim')
   end
 
-  desc 'Update vim Vundle plugins'
+  desc 'Update vim plugins'
   task :update do
-    puts 'Update: Vundle plugins'.green
-    sh 'sh ./vim/update-plugins.sh'
-    sh 'vim +PluginInstall +qall'
+    puts 'Update: vim-plug plugins'.green
+    sh 'vim +PlugUpgrade +qall'
+    sh 'vim +PlugUpdate +qall'
   end
 
   task :clean do

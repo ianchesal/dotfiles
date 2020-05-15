@@ -1,3 +1,3 @@
 function vim-update-plugins
-  vim +PluginInstall +qall
+  vim +PlugUpdate +qall
 end

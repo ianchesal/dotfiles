@@ -2,8 +2,6 @@
 # Bootstrap my work environment
 ########################################################
 
-alias vim-update-plugins='vim +PluginInstall +qall'
-
 pathadd() { case ":${PATH:=$1}:" in *:"$1":*) ;; *) PATH="$1:$PATH" ;; esac; }
 
 export HISTSIZE=1000000
