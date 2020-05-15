@@ -11,60 +11,61 @@ if has("unix")
 endif
 
 """"""""""""""""""""""
-" Vundle Setup
-set nocompatible                      " be iMproved, required
-filetype off                          " required
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" vim-plug Setup
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-""""""""""""""""""""""""
-" Vundle-Managed Plugins
-Plugin 'gmarik/Vundle.vim'            " let Vundle manage Vundle, required
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/syntastic'
-Plugin 'bling/vim-airline'
-Plugin 'tpope/vim-endwise'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-sensible'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-haml'
-" Plugin 'flazz/vim-colorschemes'
-" Plugin 'kien/ctrlp.vim'
-Plugin 'junegunn/fzf'
-Plugin 'jeetsukumaran/vim-buffergator'
-" Plugin 'godlygeek/tabular'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'nacitar/terminalkeys.vim'
-if !has('nvim')
-  Plugin 'drmikehenry/vim-fixkey'
-endif
-Plugin 'kana/vim-textobj-user'
-Plugin 'nelstrom/vim-textobj-rubyblock'
-" Plugin 'rizzatti/dash.vim'
-" Plugin 'plasticboy/vim-markdown'
-if has('nvim')
-  Plugin 'shougo/deoplete.nvim'
-  Plugin 'iamcco/markdown-preview.nvim'
-endif
-" Plugin 'ianchesal/myhelp.vim'
+" Helper for conditional evaluation of plugin loading
+" See: https://github.com/junegunn/vim-plug/wiki/tips#conditional-activation
+function! Cond(cond, ...)
+  let opts = get(a:000, 0, {})
+  return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
+endfunction
+
+call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/syntastic'
+Plug 'bling/vim-airline'
+Plug 'tpope/vim-endwise'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-haml'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'jeetsukumaran/vim-buffergator'
+Plug 'junegunn/vim-easy-align'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'nacitar/terminalkeys.vim'
+Plug 'kana/vim-textobj-user'
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
+Plug 'iamcco/markdown-preview.nvim', Cond(has('nvim'), { 'do': 'cd app & yarn install' })
+" Plug 'ianchesal/myhelp.vim'
 " LookML Syntax support
-Plugin 'thalesmello/lkml.vim'
+Plug 'thalesmello/lkml.vim'
 " Octave Syntax support
-" Plugin 'jvirtanen/vim-octave.git'
+" Plug 'jvirtanen/vim-octave.git'
 " Dracula theme: https://draculatheme.com/vim/
-Plugin 'dracula/vim'
+" Plug 'dracula/vim'
 " Nord theme: https://github.com/arcticicestudio/nord-vim
-Plugin 'arcticicestudio/nord-vim'
-" Fish shell file support
-" Plugin 'dag/vim-fish'
-call vundle#end()
+Plug 'arcticicestudio/nord-vim'
+if !has('nvim')
+  Plug 'drmikehenry/vim-fixkey'
+  " This technically works, but I don't want deoplete if I'm outside neovim
+  " right now
+  " Plug 'Shougo/deoplete.nvim'
+  " Plug 'roxma/nvim-yarp'
+  " Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+" Initialize plugin system
+call plug#end()
 
 """"""""""""""""""""""
 " Basic configuration

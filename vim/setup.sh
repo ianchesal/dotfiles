@@ -21,17 +21,12 @@ function _pyenv_has_version {
   pyenv versions | grep -q $1
 }
 
-if  [[ ! -d ~/.vim/bundle/Vundle.vim ]]; then
-  _echo_red "Missing Vundle"
-  _echo_green "Installing Vundle for vim..."
-  git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-else
-  _echo_green "Updating Vundle..."
-  pushd ~/.vim/bundle/Vundle.vim
-  git pull
+# I no longer use Vundle so remove any trace of it
+if  [[ -d ~/.vim/bundle ]]; then
+  pushd ~/.vim
+  rm -rf ./bundle
   popd
 fi
-
 
 python_versions=(3.8.2)
 
@@ -93,4 +88,4 @@ else
 fi
 
 _echo_green "Vim setup complete"
-_echo_green "Now run: vim +PluginInstall +qall; vim +checkhealth"
+_echo_green "Now run: vim +PlugInstall +qall; vim +checkhealth"

@@ -160,7 +160,7 @@ fi
 alias v="vim"
 alias v='vim'
 alias vi="vim"
-alias vim-update-plugins='vim +PluginInstall +qall'
+alias vim-update-plugins='vim +PlugUpdate +qall'
 
 # Curl Power Ups
 alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
