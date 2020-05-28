@@ -47,13 +47,13 @@ fi
 pathadd "${HOME}/.local/bin"
 
 # Go
-#export GOPATH="${HOME}/ode/go"
+#export GOPATH="${HOME}/src/go"
 pathadd $GOPATH/bin
 
 alias gpoh='git push origin HEAD'
 alias brake='bundle exec rake'
 
-source ~/ode/dotfiles/bash/aliases
+source ~/src/dotfiles/bash/aliases
 
 SSH_ENV="$HOME/.ssh/environment"
 
