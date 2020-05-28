@@ -13,9 +13,9 @@ export GIT_EDITOR=vim
 # to load different shells.
 pathadd() { case ":${PATH:=$1}:" in *:"$1":*) ;; *) PATH="$1:$PATH" ;; esac; }
 
-source ~/code/dotfiles/bash/colors.theme.bash
-source ~/code/dotfiles/bash/pure.theme.bash
-#source ~/code/dotfiles/bash/ianc.theme.bash
+source ~/src/dotfiles/bash/colors.theme.bash
+source ~/src/dotfiles/bash/pure.theme.bash
+#source ~/src/dotfiles/bash/ianc.theme.bash
 
 if type brew &>/dev/null; then
   HOMEBREW_PREFIX="$(brew --prefix)"
@@ -47,13 +47,13 @@ fi
 pathadd "${HOME}/.local/bin"
 
 # Go
-#export GOPATH="${HOME}/code/go"
+#export GOPATH="${HOME}/ode/go"
 pathadd $GOPATH/bin
 
 alias gpoh='git push origin HEAD'
 alias brake='bundle exec rake'
 
-source ~/code/dotfiles/bash/aliases
+source ~/ode/dotfiles/bash/aliases
 
 SSH_ENV="$HOME/.ssh/environment"
 
@@ -136,7 +136,7 @@ if [[ -f "${HOME}/.bash_local" ]]; then
 fi
 
 # Bat: https://github.com/sharkdp/bat#configuration-file
-export BAT_CONFIG_PATH="~/code/dotfiles/bat/bat.conf"
+export BAT_CONFIG_PATH="~/src/dotfiles/bat/bat.conf"
 
 # Opt out of Homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1

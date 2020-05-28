@@ -5,7 +5,7 @@
       "*.txt"
     ]
   core:
-    projectHome: "/Users/ian/code"
+    projectHome: "/Users/ian/src"
     telemetryConsent: "limited"
     themes: [
       "one-dark-ui"

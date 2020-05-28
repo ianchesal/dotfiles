@@ -2,7 +2,7 @@
 
 I've simplified all of this down to a shell script. Run:
 
-    cd ~/code/dotfiles
+    cd ~/src/dotfiles
     ./vim/setup.sh
 
 and it will run all the virtualenv setup that needs to be run for pyenv, rbenv and node.

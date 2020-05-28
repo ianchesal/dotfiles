@@ -66,7 +66,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # zsh Completions from Homebrew
 # This needs to be done before compinit is called, so that means
 # before oh-my-zsh is loaded.
-FPATH=${HOME}/code/dotfiles/zsh/completions:$FPATH
+FPATH=${HOME}/src/dotfiles/zsh/completions:$FPATH
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -126,13 +126,13 @@ export TERM='xterm-256color'
 
 
 # PROMPT CONFIG
-fpath+=$HOME/code/dotfiles/zsh/pure
+fpath+=$HOME/src/dotfiles/zsh/pure
 autoload -U promptinit
 promptinit
 prompt pure
 
 # ALIASES
-alias atom-update-packages="cd ~/code/dotfiles; rake atom:packages"
+alias atom-update-packages="cd ~/src/dotfiles; rake atom:packages"
 alias atom-update-plugins=atom-update-packages
 alias atom="/Applications/Atom.app/Contents/Resources/app/atom.sh"
 alias be='bundle exec'
