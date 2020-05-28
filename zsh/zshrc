@@ -409,8 +409,8 @@ if _has jq > /dev/null; then
 fi
 
 # Localized configuration
-if [ -d ~/.zsh.d ]; then
-  for config (~/.zsh.d/*.zsh) source $config
+if [ -f "${HOME}/.zsh_local" ]; then
+  source "${HOME}/.zsh_local"
 fi
 
 # SYNTAX HIGHLIGHTING CONFIG
