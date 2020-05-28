@@ -11,14 +11,14 @@ Not a dotfile, but a setup script for weechat.
 To enable Slack support you'll need the [wee-slack](https://github.com/wee-slack/wee-slack) plugin. I do:
 
 
-    pushd ~/code
+    pushd ~/src
     git clone git@github.com:wee-slack/wee-slack.git
     popd
     mkdir -p ~/.weechat/python/autoload
     pushd ~/.weechat/python/autoload
-    ln -s ~/code/wee-slack/wee_slack.py
+    ln -s ~/src/wee-slack/wee_slack.py
     pushd ~/.weechat
-    ln -s ~/code/wee-slack/weemoji.json
+    ln -s ~/src/wee-slack/weemoji.json
     popd
     popd
 
@@ -28,7 +28,7 @@ Then register your Slack API keys in weechat according to the wee-slack document
 
 To configure weechat the way I like you can run `weechat` and then enter:
 
-    /eval /exec -oc cat ${env:HOME}/code/dotfiles/weechat/myweechat.conf
+    /eval /exec -oc cat ${env:HOME}/src/dotfiles/weechat/myweechat.conf
 
 ## Troubleshooting
 

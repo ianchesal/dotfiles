@@ -56,7 +56,7 @@ set -U EDITOR vim
 set -U GREP_OPTIONS --color=auto
 
 # bat: https://github.com/sharkdp/bat#configuration-file
-set -U BAT_CONFIG_PATH ~/code/dotfiles/bat/bat.conf
+set -U BAT_CONFIG_PATH ~/src/dotfiles/bat/bat.conf
 
 # Opt out of Homebrew analytics
 set -U HOMEBREW_NO_ANALYTICS 1

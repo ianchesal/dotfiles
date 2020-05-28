@@ -141,7 +141,7 @@ alias v='vim'
 alias vim-update-plugins='vim +PlugUpdate +qall'
 alias which-command=whence
 alias atom="/Applications/Atom.app/Contents/Resources/app/atom.sh"
-alias atom-update-packages="cd ~/code/dotfiles; rake atom:plugins"
+alias atom-update-packages="cd ~/src/dotfiles; rake atom:plugins"
 alias atom-update-plugins=atom-update-plugins
 alias vscode=code
 if command -v nvim >/dev/null 2>&1; then

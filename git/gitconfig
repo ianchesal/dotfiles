@@ -2,4 +2,4 @@
 	name = Ian Chesal
 	email = ian.chesal@gmail.com
 [include]
-  path = ~/code/dotfiles/git/gitconfig.common
+  path = ~/src/dotfiles/git/gitconfig.common

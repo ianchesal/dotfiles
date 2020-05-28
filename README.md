@@ -4,7 +4,11 @@ My dotfiles. What else were you expecting?
 
 ## Use
 
+    mkdir -p ~/src
+    pushd ~/src
     git clone --recurse-submodules git@github.com:ianchesal/dotfiles.git
+    cd dotfiles
+    rake all
 
 You can link up some of the bits and pieces using the included `Rakefile`. See:
 
