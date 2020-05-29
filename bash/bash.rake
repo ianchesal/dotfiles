@@ -2,7 +2,7 @@ desc 'Install bash dotfiles'
 task bash: ['bash:all']
 
 namespace :bash do
-  task all: [:rc, :inputrc, :profile]
+  task all: [:inputrc, :profile]
 
   task :rc do
     dolink(home('.bashrc'), root('bash', 'bashrc'))
