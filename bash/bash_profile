@@ -105,15 +105,14 @@ if [[ -f "/usr/local/bin/perl" ]]; then
 fi
 
 # Python and pyenv and pipenv
-PYENV_ROOT=/usr/local/opt/pyenv
-if [[ -f "${HOME}/.pyenv/bin/pyenv" ]]; then
-  PYENV_ROOT=${HOME}/.pyenv
-  pathadd ${PYENV_ROOT}/bin
+command -v pyenv &> /dev/null && FOUND_PYENV=1 || FOUND_PYENV=0
+if [[ $FOUND_PYENV -eq 1 ]]; then
   eval "$(pyenv init -)"
+  export PYENV_ROOT=$(pyenv root)
 fi
-export PYENV_ROOT
 if type pipenv &>/dev/null; then
   eval "$(pipenv --completion)"
+  export PIPENV_IGNORE_VIRTUALENVS=1
 fi
 
 # Ruby and rbenv
