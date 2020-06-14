@@ -242,6 +242,15 @@ function listpaths {
   echo "$PATH" | tr ':' '\n'
 }
 
+fuction git_master_to_main() {
+  git checkout master
+  git pull
+  git branch -m master main
+  git push -u origin main
+  git branch -u origin/main main
+}
+
+
 # FZF CONFIG
 if _has fzf; then
 
