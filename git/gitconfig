@@ -3,3 +3,5 @@
 	email = ian.chesal@gmail.com
 [include]
   path = ~/src/dotfiles/git/gitconfig.common
+[alias]
+	new = !git init && git symbolic-ref HEAD refs/heads/main
