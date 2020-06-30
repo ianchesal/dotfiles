@@ -55,7 +55,7 @@ Plug 'thalesmello/lkml.vim'
 " Plug 'dracula/vim'
 " Nord theme: https://github.com/arcticicestudio/nord-vim
 Plug 'arcticicestudio/nord-vim'
-Plug 'psf/black'
+Plug 'psf/black', { 'tag': '*' }
 if !has('nvim')
   Plug 'drmikehenry/vim-fixkey'
   " This technically works, but I don't want deoplete if I'm outside neovim
