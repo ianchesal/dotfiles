@@ -26,33 +26,27 @@ function! Cond(cond, ...)
 endfunction
 
 call plug#begin('~/.vim/plugged')
+Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/syntastic'
 Plug 'bling/vim-airline'
 Plug 'tpope/vim-endwise'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-haml'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'junegunn/vim-easy-align'
-Plug 'cakebaker/scss-syntax.vim'
 Plug 'nacitar/terminalkeys.vim'
-Plug 'kana/vim-textobj-user'
-Plug 'nelstrom/vim-textobj-rubyblock'
+" Plug 'kana/vim-textobj-user'
+" Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
 Plug 'iamcco/markdown-preview.nvim', Cond(has('nvim'), { 'do': 'cd app & yarn install' })
 " Plug 'ianchesal/myhelp.vim'
 " LookML Syntax support
 Plug 'thalesmello/lkml.vim'
-" Octave Syntax support
-" Plug 'jvirtanen/vim-octave.git'
-" Dracula theme: https://draculatheme.com/vim/
-" Plug 'dracula/vim'
 " Nord theme: https://github.com/arcticicestudio/nord-vim
 Plug 'arcticicestudio/nord-vim'
 if !has('nvim')
