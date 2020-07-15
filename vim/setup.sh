@@ -52,13 +52,15 @@ EOM
   _echo_green "Installing pynvim support..."
   pip install pynvim
   if [ ${pyver%%.*} -eq 3 ]; then
-    _echo_green "Installing flake8..."
-    pip install flake8
-    if [[ -f ~/bin/flake8 ]]; then
-      rm -f ~/bin/flake8
-    fi
-    ln -s $(pyenv which flake8) ~/bin/flake8
-    ls -lah ~/bin/flake8
+    for pypackage in (flake8 pylint); do
+      _echo_green "Installing ${pypackage}..."
+      pip install ${pypackage}
+      if [[ -f ~/bin/${pypackage} ]]; then
+        rm -f ~/bin/${pypackage}
+      fi
+      ln -s $(pyenv which ${pypackage}) ~/bin/${pypackage}
+      ls -lah ~/bin/${pypackage}
+    done
   fi
   pyenv deactivate
 done
