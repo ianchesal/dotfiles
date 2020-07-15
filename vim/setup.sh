@@ -58,8 +58,6 @@ EOM
       if [[ -f ~/bin/${pypackage} ]]; then
         rm -f ~/bin/${pypackage}
       fi
-      ln -s $(pyenv which ${pypackage}) ~/bin/${pypackage}
-      ls -lah ~/bin/${pypackage}
     done
   fi
   pyenv deactivate
