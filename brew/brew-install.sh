@@ -16,7 +16,6 @@ brew install \
   packer \
   packer-completion \
   perl \
-  pipenv \
   pyenv \
   pyenv-virtualenv \
   rbenv \
