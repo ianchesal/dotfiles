@@ -1,7 +1,7 @@
 desc 'Install Python and related dependencies'
 task python: ['python:all']
 
-PYTHON_VERSION = '3.8.2'
+PYTHON_VERSION = '3.8.3'
 
 namespace :python do
   task all: [:install, :activate, :rc, :update]
