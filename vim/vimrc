@@ -45,7 +45,6 @@ Plug 'editorconfig/editorconfig-vim'
 " Plug 'kana/vim-textobj-user'
 " Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
-Plug 'iamcco/markdown-preview.nvim', Cond(has('nvim'), { 'do': 'cd app & yarn install' })
 " Plug 'ianchesal/myhelp.vim'
 " LookML Syntax support
 Plug 'thalesmello/lkml.vim'
@@ -308,15 +307,6 @@ let g:fzf_layout = { 'down': '~30%' }
 
 " Use ripgrep for grep
 set grepprg=rg\ --vimgrep
-
-" markdown-preview.nvim
-" https://vimawesome.com/plugin/markdown-preview-nvim
-" https://github.com/iamcco/markdown-preview.nvim
-let g:mkdp_auto_start = 0
-let g:mkdp_auto_close = 1
-let g:mkdp_refresh_slow = 1
-let g:mkdp_command_for_global = 0
-let g:mkdp_open_to_the_world = 0
 
 """"""""""""""""""""""""""""""""
 " Syntastic Configuration
