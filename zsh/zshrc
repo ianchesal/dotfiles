@@ -160,7 +160,8 @@ alias vim-update-plugins='vim +PlugUpdate +qall'
 alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
 
 # Unalias stuff that gets set in oh-my-zsh plugins that I don't like
-unalias gob goc god gof gofa gog goi gol gom gop gopb gops gor got gov
+# Note: dumped the golang plugin for now
+#unalias gob goc god gof gofa gog goi gol gom gop gopb gops gor got gov
 
 # DOCKER CONFIG
 alias docker_clean_images='docker rmi $(docker images -a --filter=dangling=true -q)'
