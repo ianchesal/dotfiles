@@ -79,23 +79,17 @@ FPATH=${HOME}/src/dotfiles/zsh/completions:$FPATH
 plugins=(
   aws
   brew
-  colored-man-pages
-  cp
   docker
   docker-compose
   fzf
   gcloud
   gitfast
-  golang
   gpg-agent
-  heroku
   pipenv
   pyenv
-  python
   rake
   rbenv
   ripgrep
-  ruby
   vagrant
 )
 
