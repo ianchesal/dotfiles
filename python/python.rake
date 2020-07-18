@@ -8,6 +8,10 @@ namespace :python do
 
   desc 'Install Python and dependencies'
   task :install do
+    # Too many ways to install pyenv and it really depends on the OS
+    # so for now I'm just enforcing it exists and leaving install as
+    # a manual step if it doesn't exist.
+    abort 'Missing pyenv -- please install it!' unless which('pyenv')
     puts "Installing Python #{PYTHON_VERSION} with pyenv".green
     sh "pyenv install --skip-existing #{PYTHON_VERSION}"
   end
