@@ -36,3 +36,8 @@ brew install \
 brew install caskroom/cask/brew-cask
 brew cask install vagrant
 brew cask install virtualbox
+brew cask install kaleidoscope
+brew cask install xact
+brew cask install jdownloader
+brew cask install google-cloud-sdk
+brew cask install handbrake
