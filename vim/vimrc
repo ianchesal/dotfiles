@@ -41,7 +41,10 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'junegunn/vim-easy-align'
 Plug 'nacitar/terminalkeys.vim'
+Plug 'schickling/vim-bufonly'
+Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'editorconfig/editorconfig-vim'
+Plug 'Raimondi/delimitMate'
 " Plug 'kana/vim-textobj-user'
 " Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
@@ -96,6 +99,10 @@ set mouse=a
 
 noremap ; :
 
+" Space as leader
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
 syntax on
 
 filetype plugin indent on
@@ -137,9 +144,6 @@ function! RenameFile()
     endif
 endfunction
 map <leader>n :call RenameFile()<cr>
-
-" Strip trailing whitespace
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 """""""""""""""""""""""""""""
 " HIGHLIGHTING AND FILE TYPES
@@ -212,29 +216,13 @@ nmap <leader>h :bprevious<CR>
 
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
-nmap <leader>bq :bp <BAR> bd #<CR>
+nmap <leader>bq :Sayonara
+
+" Close all OTHER buffers except the current buffer
+nmap <leader>bo :BufOnly<CR>
 
 " Show all open buffers and their status
 nmap <leader>bl :ls<CR>
-
-" Setup some default ignores
-let g:ctrlp_custom_ignore = {
-      \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
-      \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
-      \}
-
-" Use the nearest .git directory as the cwd
-" This makes a lot of sense if you are working on a project that is in version
-" control. It also supports works with .svn, .hg, .bzr.
-let g:ctrlp_working_path_mode = 'r'
-
-" Use a leader instead of the actual named binding
-nmap <leader>p :CtrlP<cr>
-
-" Easy bindings for its various modes
-nmap <leader>bb :CtrlPBuffer<cr>
-nmap <leader>bm :CtrlPMixed<cr>
-nmap <leader>bs :CtrlPMRU<cr>
 
 """""""""""""""""""""""""""
 " NERDTree Configuration
@@ -246,6 +234,13 @@ map <C-n> :NERDTreeToggle<CR>
 
 " Close vim if the only thing left open is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" NERDTree close on open file
+let NERDTreeQuitOnOpen=1
+
+" NERDTree ignore
+let g:NERDTreeIgnore=['node_modules$[[dir]]', '\.DS_Store$', '.git$[[dir]]', '.next$[[dir]]', '.*\.egg-info$[[dir]]', '\.eggs$[[dir]]', '\.pytest_cache$[[dir]]', '^bazel-.*$[[dir]]']
+
 
 """""""""""""""""""""""""""
 " Buffergator Configuration
@@ -303,6 +298,7 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " nmap <Leader>p :Files<CR>
 set runtimepath+=/usr/local/opt/fzf
 nmap <C-p> :FZF<cr>
+nmap <leader>p :FZF<cr>
 let g:fzf_layout = { 'down': '~30%' }
 
 " Use ripgrep for grep
@@ -319,3 +315,17 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['pylint']
+
+""""""""""""""""""""""""""""""""
+" DelimitMate Configuration
+" let g:delimitMate_autoclose=1
+let g:delimitMate_jump_expansion=1
+let g:delimitMate_expand_space=1
+let g:delimitMate_expand_cr=2
+let g:delimitMate_expand_inside_quotes=1
+let g:delimitMate_balance_matchpairs=0
+
+""""""""""""""""""""""""""""""""
+" Sayonara Configuration
+" Sayonara behavior on certain file types
+let g:sayonara_filetypes={ 'nerdtree': 'NERDTreeClose' }
