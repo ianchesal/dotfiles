@@ -19,6 +19,7 @@ namespace :vim do
   task :update do
     puts 'Update: vim-plug plugins'.green
     sh 'vim +PlugUpgrade +qall'
+    sh 'vim +PlugInstall +qall'
     sh 'vim +PlugUpdate +qall'
   end
 
