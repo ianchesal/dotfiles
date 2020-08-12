@@ -45,6 +45,7 @@ Plug 'schickling/vim-bufonly'
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'Raimondi/delimitMate'
+Plug 'psf/black'
 " Plug 'kana/vim-textobj-user'
 " Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
@@ -329,3 +330,9 @@ let g:delimitMate_balance_matchpairs=0
 " Sayonara Configuration
 " Sayonara behavior on certain file types
 let g:sayonara_filetypes={ 'nerdtree': 'NERDTreeClose' }
+
+""""""""""""""""""""""""""""""""
+" Black Configuration
+let g:black_linelength = 100
+" To run Black on save...
+" autocmd BufWritePre *.py execute ':Black'
