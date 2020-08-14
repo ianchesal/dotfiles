@@ -400,6 +400,12 @@ if _has brew > /dev/null; then
   HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 fi
 
+# 1PASSWORD CLI
+# Replace this once the 1P plugin for oh-my-zsh gets merged
+if type op >/dev/null 2>&1; then
+  eval "$(op completion zsh)"; compdef _op op
+fi
+
 # JQ CONFIG
 # Some handy functions to make working with JSON simpler
 if _has jq > /dev/null; then
