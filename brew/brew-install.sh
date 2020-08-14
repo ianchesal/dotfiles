@@ -39,5 +39,6 @@ brew cask install virtualbox
 brew cask install kaleidoscope
 brew cask install xact
 brew cask install jdownloader
-brew cask install google-cloud-sdk
-brew cask install handbrake
+#brew cask install google-cloud-sdk
+#brew cask install handbrake
+brew cask install 1password-cli
