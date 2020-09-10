@@ -37,7 +37,6 @@ Plug 'tpope/vim-endwise'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'junegunn/vim-easy-align'
 Plug 'nacitar/terminalkeys.vim'
@@ -48,12 +47,15 @@ Plug 'Raimondi/delimitMate'
 Plug 'psf/black'
 " Plug 'kana/vim-textobj-user'
 " Plug 'nelstrom/vim-textobj-rubyblock'
-Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
 " Plug 'ianchesal/myhelp.vim'
 " LookML Syntax support
 Plug 'thalesmello/lkml.vim'
 " Nord theme: https://github.com/arcticicestudio/nord-vim
 Plug 'arcticicestudio/nord-vim'
+if has('nvim')
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
+endif
 if !has('nvim')
   Plug 'drmikehenry/vim-fixkey'
   " This technically works, but I don't want deoplete if I'm outside neovim
