@@ -1,6 +1,10 @@
 desc 'Install emacs dotfiles'
 task emacs: ['emacs:all']
 
+def batch_compile_prelude()
+  sh 'emacs -batch -f batch-byte-compile ~/.emacs.d/core/*.el'
+end
+
 namespace :emacs do
   task all: [:install, :update]
 
@@ -17,8 +21,9 @@ namespace :emacs do
         sh 'git pull'
       end
     end
+      batch_compile_prelude
   end
-
+  
   task :clean do
     if File.directory? home('.emacs.d')
       chdir home('.') do
