@@ -2,8 +2,10 @@
 
 # My regular brew packages...
 brew install \
+  aspell \
   awscli \
   bash-completion \
+  emacs \
   ffmpeg \
   fish \
   fzf \
