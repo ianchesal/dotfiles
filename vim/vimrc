@@ -29,7 +29,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'scrooloose/syntastic'
+Plug 'dense-analysis/ale'
+"Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'bling/vim-airline'
@@ -315,9 +316,24 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 1
 let g:syntastic_python_checkers = ['pylint']
+
+""""""""""""""""""""""""""""""""
+" ALE Configuration
+" Set this variable to 1 to fix files when you save them.
+let g:ale_fix_on_save = 0
+" Use ALE and also some plugin 'foobar' as completion sources for all code.
+" call deoplete#custom#option('sources', {
+" \ '_': ['ale'],
+" \})
+" How can I show errors or warnings in my statusline?
+" Set this. Airline will handle the rest.
+let g:airline#extensions#ale#enabled = 1
+" Use <leader>a(j|k) to jump between errors
+nmap <silent> <leader>aj :ALENext<cr>
+nmap <silent> <leader>ak :ALEPrevious<cr>
 
 """"""""""""""""""""""""""""""""
 " DelimitMate Configuration
