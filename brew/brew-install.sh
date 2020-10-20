@@ -10,6 +10,7 @@ brew install \
   fish \
   fzf \
   git \
+  git-delta \
   jq \
   keychain \
   mas \
