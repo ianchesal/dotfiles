@@ -33,11 +33,13 @@
 	publish = push -u
 	tree = log --graph --decorate --pretty=oneline --abbrev-commit
 [core]
-  pager = less -+F
+  pager = delta
   editor = vim
 	excludesfile = ~/.gitignore
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
   preloadindex = true
+[interactive]
+    diffFilter = delta --color-only
 [color]
 	status = auto
 	branch = auto
@@ -79,3 +81,12 @@
   fsckobjects = false
 [receive]
   fsckobjects = false
+[delta]
+    features = side-by-side line-numbers decorations
+    whitespace-error-style = 22 reverse
+	  side-by-side = true
+    syntax-theme = Nord
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
