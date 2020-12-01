@@ -19,7 +19,8 @@ namespace :zsh do
   task :update do
     puts 'Update: oh-my-zsh'.green
     Dir.chdir(File.expand_path('~/.oh-my-zsh')) do
-      sh 'sh ./tools/upgrade.sh'
+      puts "Skipping oh-my-zsh upgrade for now"
+      # sh 'sh ./tools/upgrade.sh'
     end
   end
 
