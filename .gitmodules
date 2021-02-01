@@ -7,3 +7,6 @@
 [submodule "zsh/pure"]
 	path = zsh/pure
 	url = https://github.com/sindresorhus/pure.git
+[submodule "zsh/powerlevel10k"]
+	path = zsh/powerlevel10k
+	url = https://github.com/romkatv/powerlevel10k.git
