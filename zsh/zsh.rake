@@ -13,6 +13,7 @@ namespace :zsh do
   task :rc do
     dolink(home('.zshrc'), root('zsh', 'zshrc'))
     dolink(home('.zshenv'), root('zsh', 'zshenv'))
+    dolink(home('.p10k.zsh'), root('zsh', 'p10k.zsh'))
   end
 
   desc 'Update zsh and oh-my-zsh'
