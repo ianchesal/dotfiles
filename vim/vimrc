@@ -113,8 +113,13 @@ filetype plugin indent on
 
 " Store temporary files in a central spot
 set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupdir=~/.vim/tmp,~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim/tmp,~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+
+" Persist undo for every edit session
+set undofile
+set undodir=~/.vim/undo
+set undolevels=10000
 
 """"""""""""""""
 " PRETTY COLORS
@@ -199,6 +204,8 @@ augroup END
 "
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
+" Show the buffer number too
+let g:airline#extensions#tabline#buffer_nr_show = 1
 " Show just the filename
 " let g:airline#extensions#tabline#fnamemod = ':t'
 " This allows buffers to be hidden if you've modified a buffer.
