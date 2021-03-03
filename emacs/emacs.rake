@@ -23,7 +23,7 @@ namespace :emacs do
     end
       batch_compile_prelude
   end
-  
+
   task :clean do
     if File.directory? home('.emacs.d')
       chdir home('.') do

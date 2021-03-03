@@ -38,8 +38,8 @@ curl -sL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer
 # Install pyenv, pyenv-virtualenv
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 # TODO: Figure out how to auto-install python verison I like
-# pyenv install 3.8.3
-# pyenv global 3.8.3
+# pyenv install 3.9.1
+# pyenv global 3.9.1
 
 # You need to install these fonts by hand to get PowerLine10k working and edit the
 # Windows Terminal settings.json file

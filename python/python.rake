@@ -1,7 +1,7 @@
 desc 'Install Python and related dependencies'
 task python: ['python:all']
 
-PYTHON_VERSION = '3.8.3'
+PYTHON_VERSION = '3.9.1'
 
 namespace :python do
   task all: [:install, :activate, :rc, :update]
@@ -18,13 +18,13 @@ namespace :python do
 
   task :activate do
     puts "Activating Python #{PYTHON_VERSION}".green
+    sh "pyenv rehash"
     sh "pyenv global #{PYTHON_VERSION}"
   end
 
   task :rc do
     dolink(home('.pylintrc'), root('python', 'pylintrc'))
   end
-
 
   desc 'Update Python packages'
   task update: [:activate] do
