@@ -28,7 +28,7 @@ if  [[ -d ~/.vim/bundle ]]; then
   popd
 fi
 
-python_versions=(3.8.3)
+python_versions=(3.9.1)
 
 for pyver in $python_versions; do
   _pyenv_has_version $pyver || {

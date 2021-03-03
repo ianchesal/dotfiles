@@ -1,8 +1,12 @@
 namespace :brew do
   desc 'Update homebrew installed packages'
   task :update do
-    puts 'Update: Homebrew'.green
-    sh 'brew upgrade'
+    if which('brew')
+      puts 'Update: Homebrew'.green
+      sh 'brew upgrade'
+    else
+      puts 'Skipping: Homebrew update -- no brew command found'.blue
+    end
   end
 end
 
