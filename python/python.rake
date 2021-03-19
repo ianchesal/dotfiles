@@ -32,6 +32,7 @@ namespace :python do
     sh 'pip install --upgrade pip'
     sh 'pip install --upgrade pipenv'
     sh 'pip install --upgrade pylint'
+    sh 'pyenv rehash'
   end
 
   task :clean do
