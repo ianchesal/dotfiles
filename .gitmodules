@@ -1,12 +1,6 @@
 [submodule "fonts/Meslo-Font"]
 	path = fonts/Meslo-Font
 	url = git@github.com:andreberg/Meslo-Font.git
-[submodule "rubymine/solarized"]
-	path = rubymine/solarized
-	url = git@github.com:dgt79/rubymine-colors-solarized.git
-[submodule "zsh/pure"]
-	path = zsh/pure
-	url = https://github.com/sindresorhus/pure.git
 [submodule "zsh/powerlevel10k"]
 	path = zsh/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
