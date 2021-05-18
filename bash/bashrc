@@ -28,6 +28,7 @@ shopt -s checkwinsize
 complete -C aws_completer aws
 
 pathadd /usr/local/bin
+pathadd /usr/local/sbin
 export PATH
 
 export NVM_DIR="$HOME/.nvm"
