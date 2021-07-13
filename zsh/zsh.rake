@@ -6,6 +6,8 @@ namespace :zsh do
     unless File.directory? home('.oh-my-zsh') do
       puts "Cloning oh-my-zsh to ~/.oh-my-zsh..."
       `git clone --depth=1 --branch master https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh`
+      puts "Clone PowerLevel10k to ~/.oh-my-zsh..."
+      `git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k`
     end
     end
   end
@@ -23,6 +25,10 @@ namespace :zsh do
       # puts "Skipping oh-my-zsh upgrade for now"
       sh 'sh ./tools/upgrade.sh' do |ok, res|
         # Do nothing, always successful
+      end
+      Dir.chdir('./custom/themes/powerlevel10k') do
+        puts 'Update: PowerLevel10k'.green
+        `git pull`
       end
     end
   end
