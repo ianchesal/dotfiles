@@ -1,6 +1,3 @@
 [submodule "fonts/Meslo-Font"]
 	path = fonts/Meslo-Font
 	url = git@github.com:andreberg/Meslo-Font.git
-[submodule "zsh/powerlevel10k"]
-	path = zsh/powerlevel10k
-	url = https://github.com/romkatv/powerlevel10k.git
