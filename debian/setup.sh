@@ -46,3 +46,6 @@ curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer 
 # http://iamnotmyself.com/2017/04/15/setting-up-powerline-shell-on-windows-subsystem-for-linux/
 # I like InconsolataGo NF from here:
 # https://www.nerdfonts.com/font-downloads
+
+# Mount points I need
+sudo mkdir /mnt/ian /mnt/media

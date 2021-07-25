@@ -120,7 +120,9 @@ export TERM='xterm-256color'
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
-#add_to_path "$PYENV_ROOT/bin"
+if ! command -v pyenv; then
+  add_to_path "$PYENV_ROOT/bin"
+fi
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
