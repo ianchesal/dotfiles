@@ -2,14 +2,12 @@ desc 'Install zsh dotfiles'
 task zsh: ['zsh:ohmyzsh', 'zsh:rc']
 
 namespace :zsh do
+
   task :ohmyzsh do
-    unless File.directory? home('.oh-my-zsh') do
-      puts "Cloning oh-my-zsh to ~/.oh-my-zsh..."
-      `git clone --depth=1 --branch master https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh`
-      puts "Clone PowerLevel10k to ~/.oh-my-zsh..."
-      `git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k`
-    end
-    end
+    puts "Cloning oh-my-zsh to ~/.oh-my-zsh..."
+    `git clone --depth=1 --branch master https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh`
+    puts "Clone PowerLevel10k to ~/.oh-my-zsh..."
+    `git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k`
   end
 
   task :rc do
