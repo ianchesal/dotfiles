@@ -120,7 +120,7 @@ export TERM='xterm-256color'
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
-if ! command -v pyenv; then
+if ! _has pyenv; then
   add_to_path "$PYENV_ROOT/bin"
 fi
 eval "$(pyenv init --path)"
@@ -406,7 +406,7 @@ fh() {
 }
 
 # HOMEBREW CONFIG
-if _has brew > /dev/null; then
+if _has brew; then
   # For the 5.0.x Homebrew'ed zsh installation...
   # unalias run-help
   autoload run-help
@@ -427,7 +427,7 @@ fi
 
 # JQ CONFIG
 # Some handy functions to make working with JSON simpler
-if _has jq > /dev/null; then
+if _has jq; then
   function jq-flatten() {
     jq -r '
     tostream
