@@ -161,6 +161,9 @@ alias vim-update-plugins='vim +PlugUpdate +qall'
 # Curl Power Ups
 alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
 
+# Do my job
+alias standup="vim ~/src/tmp/daily-standup.txt"
+
 # Unalias stuff that gets set in oh-my-zsh plugins that I don't like
 # Note: dumped the golang plugin for now
 #unalias gob goc god gof gofa gog goi gol gom gop gopb gops gor got gov
