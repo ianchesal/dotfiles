@@ -46,6 +46,8 @@ Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'Raimondi/delimitMate'
 Plug 'psf/black'
+" CSV Plugin: https://github.com/chrisbra/csv.vim
+Plug 'chrisbra/csv.vim'
 " Plug 'kana/vim-textobj-user'
 " Plug 'nelstrom/vim-textobj-rubyblock'
 " Plug 'ianchesal/myhelp.vim'
@@ -110,6 +112,7 @@ let mapleader=" "
 syntax on
 
 filetype plugin indent on
+filetype plugin on
 
 " Store temporary files in a central spot
 set backup
