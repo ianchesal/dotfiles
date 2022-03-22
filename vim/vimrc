@@ -109,6 +109,12 @@ noremap ; :
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
+" I am too old to relearn that Y copies from cursor position to the end of the line
+" I need it to copy the entire line into the butter
+if has('nvim')
+  nnoremap Y Y
+endif
+
 syntax on
 
 filetype plugin indent on
