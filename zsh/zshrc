@@ -84,6 +84,7 @@ FPATH=${HOME}/src/dotfiles/zsh/completions:$FPATH
 # NOTE: vi-mode and virtualenv are incompatible with the pure prompt
 #       and I should never use them!
 plugins=(
+  asdf
   aws
   brew
   docker
@@ -94,7 +95,6 @@ plugins=(
   gpg-agent
   pipenv
   rake
-  rbenv
   ripgrep
   vagrant
 )
@@ -382,7 +382,7 @@ fi
 if _has gcloud; then
   if [ "$(uname 2> /dev/null)" != "Linux" ]; then
     # Only need this on macOS
-    export CLOUDSDK_PYTHON=~/.pyenv/versions/gcloud-sdk/bin/python2
+    export CLOUDSDK_PYTHON=~/.pyenv/versions/gcloud-sdk/bin/python3
   fi
   # See: https://cloud.google.com/sdk/crypto
   # Required to work with legacy p12 keyfiles
