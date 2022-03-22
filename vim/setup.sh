@@ -28,7 +28,7 @@ if  [[ -d ~/.vim/bundle ]]; then
   popd
 fi
 
-python_versions=(3.9.1)
+python_versions=(3.9.11)
 
 for pyver in $python_versions; do
   _pyenv_has_version $pyver || {
@@ -48,12 +48,12 @@ index = https://pypi.python.org/
 index-url = https://pypi.python.org/simple
 EOM
   _echo_green "Upgrading pip and setuptools..."
-  pip install --upgrade pip setuptools
+  pip3 install --upgrade pip setuptools
   _echo_green "Installing pynvim support..."
-  pip install pynvim
+  pip3 install pynvim
   for pypackage in flake8 pylint; do
     _echo_green "Installing ${pypackage}..."
-    pip install ${pypackage}
+    pip3 install ${pypackage}
     if [[ -f ~/bin/${pypackage} ]]; then
       rm -f ~/bin/${pypackage}
     fi
