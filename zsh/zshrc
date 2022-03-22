@@ -1,5 +1,11 @@
+if [[ -a "/opt/homebrew/bin/brew" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+else
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=$HOME/bin:${PATH}
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
@@ -202,9 +208,11 @@ export GREP_COLOR='1;32'
 
 export LSCOLOR="Gxfxcxdxbxegedabagacad"
 
-if [[ -a "/usr/libexec/java_home" ]]; then
-  export JAVA_HOME="$(/usr/libexec/java_home)"
-fi
+# TODO: Figure out how to get this to work even if a Java version
+#       isn't installed.
+# if [[ -a "/usr/libexec/java_home" ]]; then
+#   export JAVA_HOME="$(/usr/libexec/java_home)"
+# fi
 
 if [[ -d "${HOME}/.aws/certs" ]]; then
   export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.aws/certs/*-pk.pem | /usr/bin/head -1)"
@@ -229,7 +237,7 @@ export LANGUAGE=en_US.UTF-8
 export LESSCHARSET=utf-8
 
 # Use Homebrew OpenSSL w/Ruby
-if [[ -a "/usr/local/bin/brew" ]]; then
+if ! _has brew; then
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 fi
 
@@ -413,7 +421,7 @@ if _has brew; then
   # For the 5.0.x Homebrew'ed zsh installation...
   # unalias run-help
   autoload run-help
-  HELPDIR=/usr/local/share/zsh/help
+  HELPDIR=${HOMEBREW_PREFIX}/share/zsh/help
 
   # Opt out of Homebrew analytics
   export HOMEBREW_NO_ANALYTICS=1
@@ -454,9 +462,9 @@ fi
 
 # SYNTAX HIGHLIGHTING CONFIG
 # This needs to be last in zshrc!
-if [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-  source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-  export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
+if [ -f ${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+  source ${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/highlighters
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
