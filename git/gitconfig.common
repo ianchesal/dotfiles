@@ -54,10 +54,6 @@
 	trustexitcode = true
 [difftool]
 	prompt = true
-[diff]
-	tool = ksdiff
-	renames = true
-  indentHeuristic = on
 [mergetool]
 	keepBackup = true
 [push]
