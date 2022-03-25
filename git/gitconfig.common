@@ -38,8 +38,6 @@
 	excludesfile = ~/.gitignore
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
   preloadindex = true
-[interactive]
-    diffFilter = delta --color-only
 [color]
 	status = auto
 	branch = auto
@@ -47,13 +45,6 @@
 	diff = auto
 [credential]
 	helper = osxkeychain
-[difftool "ksdiff"]
-	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
-[mergetool "ksdiff"]
-	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-	trustexitcode = true
-[difftool]
-	prompt = true
 [mergetool]
 	keepBackup = true
 [push]
@@ -67,22 +58,14 @@
 	conflictstyle = diff3
 [rebase]
 	autosquash = true
-[filter "media"]
-	clean = git media clean %f
-	smudge = git media smudge %f
-	required = true
-[transfer]
-  fsckobjects = true
-[fetch]
-  fsckobjects = false
-[receive]
-  fsckobjects = false
+[interactive]
+  diffFilter = delta --color-only
 [delta]
-    features = side-by-side line-numbers decorations
-    whitespace-error-style = 22 reverse
-	  side-by-side = true
-    syntax-theme = Nord
+  features = side-by-side line-numbers decorations
+  whitespace-error-style = 22 reverse
+  side-by-side = true
+  syntax-theme = Nord
 [delta "decorations"]
-    commit-decoration-style = bold yellow box ul
-    file-style = bold yellow ul
-    file-decoration-style = none
+  commit-decoration-style = bold yellow box ul
+  file-style = bold yellow ul
+  file-decoration-style = none
