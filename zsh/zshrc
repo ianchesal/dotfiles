@@ -462,6 +462,10 @@ if _has jq; then
     ) + " = " + (.[1] | @json)
     ' $*
   }
+
+  function uptime.as() {
+    curl --silent "https://get.uptime.is/api?sla=${1}" | jq .
+  }
 fi
 
 # Localized configuration
