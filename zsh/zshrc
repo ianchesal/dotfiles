@@ -104,6 +104,7 @@ plugins=(
   rake
   ripgrep
   vagrant
+  1password
 )
 
 source $ZSH/oh-my-zsh.sh
