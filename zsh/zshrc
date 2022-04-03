@@ -249,7 +249,7 @@ export LANGUAGE=en_US.UTF-8
 export LESSCHARSET=utf-8
 
 # Use Homebrew OpenSSL w/Ruby
-if ! _has brew; then
+if _has brew; then
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 fi
 
