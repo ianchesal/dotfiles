@@ -29,6 +29,10 @@ if  [[ -d ~/.vim/bundle ]]; then
 fi
 
 python_versions=(3.9.11)
+if [[ `uname` == "Linux" ]]; then
+  # No 3.9.11 available on my Debian for Windows Subsys install yet...
+  python_versions=(3.9.6)
+fi
 
 for pyver in $python_versions; do
   _pyenv_has_version $pyver || {
