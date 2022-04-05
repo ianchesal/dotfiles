@@ -1,7 +1,11 @@
 desc 'Install Python and related dependencies'
 task python: ['python:all']
 
-PYTHON_VERSION = '3.9.11'
+if RUBY_PLATFORM =~ /linux/ then
+  PYTHON_VERSION = '3.9.6'
+else
+  PYTHON_VERSION = '3.9.11'
+end
 
 namespace :python do
   task all: [:install, :activate, :rc, :update]
