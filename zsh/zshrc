@@ -104,6 +104,7 @@ plugins=(
   gcloud
   gitfast
   gpg-agent
+  kubectl
   pipenv
   rake
   ripgrep
