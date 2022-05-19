@@ -89,5 +89,10 @@ else
   _echo_red "No yarn detected. Node.js support not installed."
 fi
 
+# Install my plugin manager: vim-plug
+# https://github.com/junegunn/vim-plug
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
 _echo_green "Vim setup complete"
-_echo_green "Now run: vim +PlugInstall +qall; vim +checkhealth"
+_echo_green "Now run: rake vim; vim +PlugInstall +qall; vim +checkhealth"
