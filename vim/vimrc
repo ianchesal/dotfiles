@@ -58,6 +58,9 @@ Plug 'arcticicestudio/nord-vim'
 if has('nvim')
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
+  " Markdown preview plugin: https://github.com/iamcco/markdown-preview.nvim
+  " Assumes yarn and node are present on the system
+  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 endif
 if !has('nvim')
   Plug 'drmikehenry/vim-fixkey'
@@ -296,6 +299,24 @@ endif
 " Markdown Configuration
 " Don't automatically fold everything when opening a Markdown doc
 " let g:vim_markdown_folding_disabled=1
+
+"""""""""""""""""""""""""""
+" MarkdownPreview Configuration
+" set to 1, nvim will open the preview window after entering the markdown buffer
+" default: 0
+let g:mkdp_auto_start = 0
+" set to 1, the nvim will auto close current preview window when change
+" from markdown buffer to another buffer
+" default: 1
+let g:mkdp_auto_close = 1
+" set to 1, the vim will refresh markdown when save the buffer or
+" leave from insert mode, default 0 is auto refresh markdown as you edit or
+" move the cursor
+" default: 0
+let g:mkdp_refresh_slow = 0
+" set to 1, echo preview page url in command line when open preview page
+" default is 0
+let g:mkdp_echo_preview_url = 0
 
 """""""""""""""""""""""""""
 " Easy Align Configuration
