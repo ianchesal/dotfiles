@@ -10,7 +10,8 @@ namespace :asdf do
   end
 
   task :update do
-      sh 'asdf plugin update --all'
+    puts 'Update: asdf plugins'.green
+    sh 'asdf plugin update --all'
   end
 
   task :clean do
@@ -19,4 +20,5 @@ namespace :asdf do
 end
 
 task all: [:asdf]
+task update: ['asdf:update']
 task clean: ['asdf:clean']
