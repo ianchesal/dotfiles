@@ -9,6 +9,10 @@ namespace :asdf do
     dolink(home('.tool-versions'), root('asdf', 'tool-versions'))
   end
 
+  task :update do
+      sh 'asdf plugin update --all'
+  end
+
   task :clean do
     clean_restore home('.asdfrc')
   end
