@@ -16,7 +16,7 @@ namespace :git do
     mkdir_if_needed home('.git_template')
   end
 
-  tak :gitlocalpersonal do
+  task :gitlocalpersonal do
     dolink(home('.gitlocal'), root('git', 'gitlocal.personal'))
   end
 
