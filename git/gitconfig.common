@@ -32,6 +32,7 @@
 	reauthor = commit --amend --reset-author -C HEAD
 	publish = push -u
 	tree = log --graph --decorate --pretty=oneline --abbrev-commit
+	new = !git init && git symbolic-ref HEAD refs/heads/main
 [core]
   pager = delta
   editor = vim
@@ -69,3 +70,7 @@
   commit-decoration-style = bold yellow box ul
   file-style = bold yellow ul
   file-decoration-style = none
+
+[include]
+  path = ~/.gitlocal
+
