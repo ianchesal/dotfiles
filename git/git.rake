@@ -5,7 +5,7 @@ namespace :git do
   task all: [:gitconfig, :gitignore, :gittemplate]
 
   task :gitconfig do
-    dolink(home('.gitconfig'), root('git', 'gitconfig'))
+    dolink(home('.gitconfig'), root('git', 'gitconfig.common'))
   end
 
   task :gitignore do
@@ -14,6 +14,10 @@ namespace :git do
 
   task :gittemplate do
     mkdir_if_needed home('.git_template')
+  end
+
+  tak :gitlocalpersonal do
+    dolink(home('.gitlocal'), root('git', 'gitlocal.personal'))
   end
 
   desc 'Update all the git submodules in this repository'
