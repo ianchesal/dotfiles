@@ -140,7 +140,9 @@ if has("gui_running")
   set guioptions=egmrt
 endif
 
-set t_Co=256
+" Jun 13 2022 -- probably don't need this any more
+" See: https://stackoverflow.com/questions/15375992/vim-difference-between-t-co-256-and-term-xterm-256color-in-conjunction-with-tmu
+" set t_Co=256
 
 set background=dark
 " colorscheme solarized
