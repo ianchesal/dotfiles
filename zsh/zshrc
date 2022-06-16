@@ -165,7 +165,7 @@ fi
 alias vi="vim"
 alias vim-update-plugins='vim +PlugUpdate +qall'
 # Until this gets merged: https://github.com/ohmyzsh/ohmyzsh/pull/10994
-if [[ $TERM == "xterm-kitty" ]]; then
+if [[ "$TERM" == 'xterm-kitty' ]]; then
   alias kssh='kitty +kitten ssh'
   compdef kssh='ssh'
 fi
