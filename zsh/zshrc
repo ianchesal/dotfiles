@@ -121,6 +121,16 @@ _has() {
   return $( type $1 >/dev/null )
 }
 
+_brew_has() {
+  # Returns whether a homebrew package is installed or not
+  if _has brew; then
+    if brew list $1 &>/dev/null; then
+      return true
+    fi
+  fi
+  return false
+}
+
 add_to_path() {
   local DIR=$1
   if ! grep ":$DIR:" -q <<< ":$PATH:"; then
@@ -476,6 +486,11 @@ fi
 # Localized configuration
 if [ -f "${HOME}/.zsh_local" ]; then
   source "${HOME}/.zsh_local"
+fi
+
+# KUBERNETES CONFIG
+if _brew_has krew; then
+  add_to_path "${HOME}/.krew/bin"
 fi
 
 # SYNTAX HIGHLIGHTING CONFIG
