@@ -1,0 +1,14 @@
+[general]
+shell = "zsh"
+shell_options = ""
+
+[keymap]
+timemachine_go_to_past = "Down"
+timemachine_go_to_more_past = "Shift-Down"
+timemachine_go_to_future = "Up"
+timemachine_go_to_more_future = "Shift-Up"
+timemachine_go_to_now = "Ctrl-Shift-Up"
+timemachine_go_to_oldest = "Ctrl-Shift-Down"
+
+# [color]
+# background = "white" # Default value is inherit from terminal color.
