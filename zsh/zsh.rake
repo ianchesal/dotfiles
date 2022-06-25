@@ -1,5 +1,7 @@
+require 'pathname'
+
 desc 'Install zsh dotfiles'
-task zsh: ['zsh:ohmyzsh', 'zsh:rc']
+task zsh: ['zsh:ohmyzsh', 'zsh:rc', 'zsh:plugins']
 
 namespace :zsh do
 
@@ -14,6 +16,13 @@ namespace :zsh do
     dolink(home('.zshrc'), root('zsh', 'zshrc'))
     dolink(home('.zshenv'), root('zsh', 'zshenv'))
     dolink(home('.p10k.zsh'), root('zsh', 'p10k.zsh'))
+  end
+
+  task :plugins do
+    mkdir_if_needed home('.oh-my-zsh/custom/plugins')
+    Dir["zsh/plugins/*"].each do |pd|
+      dolink(home(".oh-my-zsh/custom/plugins/#{pd.split('/')[-1]}"), root(pd))
+    end
   end
 
   desc 'Update zsh and oh-my-zsh'
