@@ -94,29 +94,15 @@ FPATH=${HOME}/src/dotfiles/zsh/completions:$FPATH
 
 # NOTE: vi-mode and virtualenv are incompatible with the pure prompt
 #       and I should never use them!
+# These are plugins I generally always want in my environment.
+# This list is as short as possible.
 plugins=(
-  asdf
-  aws
-  brew
-  docker
-  docker-compose
-  dq
-  fzf
-  gcloud
   gitfast
-  gpg-agent
-  kubectl
   pipenv
   rake
-  ripgrep
-  vagrant
-  1password
 )
 
-source $ZSH/oh-my-zsh.sh
-
-# USER CONFIG
-# This function is useful
+# FUNCTIONS
 _has() {
   # Returns whether the given command is executable or aliased.
   return $( type $1 >/dev/null )
@@ -139,6 +125,24 @@ add_to_path() {
   fi
 }
 
+# I want to keep my oh-my-zsh plugins list as short as possible so only add
+# certain things to the list if we have those commands on our system.
+if _has asdf; then plugins+=(asdf); fi
+if _has aws; then plugins+=(aws); fi
+if _has brew; then plugins+=(brew); fi
+if _has docker; then plugins+=(docker docker-compose); fi
+if _has fzf; then plugins+=(fzf); fi
+if _has gcloud; then plugins+=(gcloud); fi
+if _has gpg-agent; then plugins+=(gpg-agent); fi
+if _has kubectl; then plugins+=(kubectl); fi
+if _has rg; then plugins+=(ripgrep); fi
+if _has vagrant; then plugins+=(vagrant); fi
+if _has op; then plugins+=(1password); fi
+if [ -d "/Applications/Dash.app" ]; then plugins+=(dq); fi
+
+source $ZSH/oh-my-zsh.sh
+
+# USER CONFIG
 # Correct a bad $SHELL setting
 if [[ $SHELL == *"bash"* ]]; then
   export SHELL=/usr/local/bin/zsh
