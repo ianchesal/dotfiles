@@ -100,6 +100,7 @@ plugins=(
   gitfast
   pipenv
   rake
+  vi-mode
 )
 
 # FUNCTIONS
@@ -501,6 +502,11 @@ fi
 if _brew_has krew; then
   add_to_path "${HOME}/.krew/bin"
 fi
+
+# VI MODE
+export VI_MODE_SET_CURSOR=true
+export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+
 
 # SYNTAX HIGHLIGHTING CONFIG
 # This needs to be last in zshrc!
