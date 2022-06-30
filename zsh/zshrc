@@ -135,6 +135,7 @@ if _has docker; then plugins+=(docker docker-compose); fi
 if _has fzf; then plugins+=(fzf); fi
 if _has gcloud; then plugins+=(gcloud); fi
 if _has gpg-agent; then plugins+=(gpg-agent); fi
+if _has helm; then plugins+=(helm); fi
 if _has kubectl; then plugins+=(kubectl); fi
 if _has rg; then plugins+=(ripgrep); fi
 if _has vagrant; then plugins+=(vagrant); fi
