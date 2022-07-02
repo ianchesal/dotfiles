@@ -97,9 +97,17 @@ FPATH=${HOME}/src/dotfiles/zsh/completions:$FPATH
 # These are plugins I generally always want in my environment.
 # This list is as short as possible.
 plugins=(
+  1password
+  asdf
+  brew
+  docker
+  docker-compose
+  fzf
   gitfast
+  gpg-agent
   pipenv
   rake
+  ripgrep
   vi-mode
 )
 
@@ -128,18 +136,12 @@ add_to_path() {
 
 # I want to keep my oh-my-zsh plugins list as short as possible so only add
 # certain things to the list if we have those commands on our system.
-if _has asdf; then plugins+=(asdf); fi
 if _has aws; then plugins+=(aws); fi
-if _has brew; then plugins+=(brew); fi
 if _has docker; then plugins+=(docker docker-compose); fi
-if _has fzf; then plugins+=(fzf); fi
 if _has gcloud; then plugins+=(gcloud); fi
-if _has gpg-agent; then plugins+=(gpg-agent); fi
 if _has helm; then plugins+=(helm); fi
 if _has kubectl; then plugins+=(kubectl); fi
-if _has rg; then plugins+=(ripgrep); fi
 if _has vagrant; then plugins+=(vagrant); fi
-if _has op; then plugins+=(1password); fi
 if [ -d "/Applications/Dash.app" ]; then plugins+=(dq); fi
 
 source $ZSH/oh-my-zsh.sh
