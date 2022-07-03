@@ -8,5 +8,6 @@ You'll want to install at least the ruby plugin:
 
 ```sh
 asdf plugin add ruby
+asdf plugin add nodejs
 ```
 
