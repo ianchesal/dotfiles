@@ -44,8 +44,6 @@
 	branch = auto
 	interactive = auto
 	diff = auto
-[credential]
-	helper = osxkeychain
 [mergetool]
 	keepBackup = true
 [push]
@@ -74,3 +72,5 @@
 [include]
   path = ~/.gitlocal
 
+[pull]
+	ff = only
