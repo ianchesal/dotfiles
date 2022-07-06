@@ -1,5 +1,5 @@
 desc 'Install tmux dotfiles'
-task tmux: ['tmux:conf', 'tmux:plugins']
+task tmux: ['tmux:conf']
 
 namespace :tmux do
   task :conf do
