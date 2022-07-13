@@ -108,7 +108,6 @@ plugins=(
   pipenv
   rake
   ripgrep
-  vi-mode
 )
 
 # FUNCTIONS
