@@ -65,3 +65,6 @@ mattmc3/zshrc.d
 zsh-users/zsh-autosuggestions
 #zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-history-substring-search
+
+### fuzzy stuff
+marlonrichert/zsh-autocomplete
