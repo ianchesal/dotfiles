@@ -11,10 +11,8 @@ fi
 # See: https://cloud.google.com/sdk/crypto
 # Required to work with legacy p12 keyfiles
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
-if _has kubectl; then
-  # See: https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
-  export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-fi
+# See: https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 if [[ -z "${CLOUDSDK_HOME}" ]]; then
   search_locations=(
