@@ -43,7 +43,7 @@ fi
 alias grep="grep --color=auto --exclude-dir={CVS,.git,.hg,.svn}"
 
 # more ways to ls
-alias ll='ls -lh'
+alias ll='ls -lah'
 alias la='ls -lAh'
 alias ldot='ls -ld .*'
 
@@ -88,19 +88,17 @@ alias zdot='cd $ZDOTDIR'
 
 
 # FROM MY OLD zshrc FILE !!!
-alias be='bundle exec'
-alias ber='bundle exec ruby'
 #alias emacs="vim"
 alias please='sudo $(fc -ln -1)'
+alias gau='git add -u'
 alias gci='git commit --verbose'
 alias gcis='git commit --gpg-sign --verbose'
 alias gd='git diff --color=always'
-alias gpoh='git push origin HEAD'
 alias gpfoh='git push --force origin HEAD'
-alias gri='git rebase -i'
+alias gpoh='git push origin HEAD'
 alias grep='grep --color=auto -E'
+alias gri='git rebase -i'
 alias gss='git status --short --branch'
-alias ll='ls -lah'
 alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
@@ -123,6 +121,3 @@ alias tkss='tmux kill-session -t'
 
 # Curl Power Ups
 alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
-
-# Do my job
-alias standup="vim ~/src/tmp/daily-standup.txt"
