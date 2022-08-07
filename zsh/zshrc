@@ -171,7 +171,7 @@ if _has nvim; then
   alias vim=nvim
 fi
 alias vi="vim"
-alias vim-update-plugins='vim +PlugUpdate +qall'
+#alias vim-update-plugins='vim +PlugUpdate +qall'
 # Until this gets merged: https://github.com/ohmyzsh/ohmyzsh/pull/10994
 if [[ "$TERM" == 'xterm-kitty' ]]; then
   alias kssh='kitty +kitten ssh'
@@ -210,7 +210,7 @@ unset FOUND_PYENV
 export PIPENV_IGNORE_VIRTUALENVS=1
 
 # Perl
-if [[ -a "/usr/local/bin/perl" ]]; then
+if _has perl; then
   export PERL_MB_OPT="--install_base \"/Users/ianc/.perl5\""
   export PERL_MM_OPT="INSTALL_BASE=/Users/ianc/.perl5"
   export PERL5LIB=${HOME}/.perl5/lib/perl5
