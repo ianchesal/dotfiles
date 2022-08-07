@@ -7,6 +7,13 @@ _has() {
   return $( type $1 >/dev/null )
 }
 
+add_to_path() {
+  local DIR=$1
+  if ! grep ":$DIR:" -q <<< ":$PATH:"; then
+    export PATH=$PATH:$DIR
+  fi
+}
+
 function rpg {
   rg -p "$@" | less -R
 }
