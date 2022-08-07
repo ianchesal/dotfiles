@@ -16,7 +16,7 @@ namespace :zsh do
   desc 'Update zsh and antidote'
   task :update do
     puts 'Update: antidote'.green
-    sh 'antidote update'
+    sh 'zsh -i -c \'antidote update && exit\''
   end
 
   task :clean do
