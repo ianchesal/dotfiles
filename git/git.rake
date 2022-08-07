@@ -34,4 +34,4 @@ end
 
 task all: [:git]
 task clean: ['git:clean']
-task update: ['git:update']
+#task update: ['git:update']
