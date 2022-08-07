@@ -1,0 +1,7 @@
+#!/bin/zsh
+#
+##? dq - Command line interface to the Dash.app
+##?
+##? usage: dq <search>
+#
+open -a Dash.app dash://"$*"
