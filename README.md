@@ -6,7 +6,7 @@ My dotfiles. What else were you expecting?
 
     mkdir -p ~/src
     pushd ~/src
-    git clone --recurse-submodules git@github.com:ianchesal/dotfiles.git
+    git clone git@github.com:ianchesal/dotfiles.git
     cd dotfiles
     rake all
 
