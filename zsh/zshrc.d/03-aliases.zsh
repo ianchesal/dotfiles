@@ -23,13 +23,13 @@ alias -g .....='../../../..'
 alias -g ......='../../../../..'
 
 # single character shortcuts - be sparing!
-alias _=sudo
-alias d='dirs -v'
-alias l=ls
+#alias _=sudo
+#alias d='dirs -v'
+#alias l=ls
 
 # mask built-ins with better defaults
-alias cp='cp -i'
-alias mv='mv -i'
+#alias cp='cp -i'
+#alias mv='mv -i'
 alias rm='rm -i'
 alias mkdir='mkdir -p'
 alias ping='ping -c 5'
@@ -48,7 +48,7 @@ alias la='ls -lAh'
 alias ldot='ls -ld .*'
 
 # fix typos
-alias quit='exit'
+#alias quit='exit'
 alias cd..='cd ..'
 
 # tar
@@ -83,6 +83,7 @@ alias history="fc -li"
 # misc
 alias please=sudo
 alias zshrc='${EDITOR:-vim} "${ZDOTDIR:-$HOME}"/.zshrc'
+alias zshrcd='${EDITOR:-vim} "${ZDOTDIR:-$HOME}"/zshrc.d'
 alias zbench='for i in {1..10}; do /usr/bin/time zsh -lic exit; done'
 alias zdot='cd $ZDOTDIR'
 
@@ -107,11 +108,6 @@ if _has nvim; then
   alias vim=nvim
 fi
 #alias vim-update-plugins='vim +PlugUpdate +qall'
-# Until this gets merged: https://github.com/ohmyzsh/ohmyzsh/pull/10994
-if [[ "$TERM" == 'xterm-kitty' ]]; then
-  alias kssh='kitty +kitten ssh'
-  compdef kssh='ssh'
-fi
 alias ta='tmux attach -t'
 alias tad='tmux attach -d -t'
 alias ts='tmux new-session -s'
