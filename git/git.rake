@@ -23,7 +23,7 @@ namespace :git do
   desc 'Update all the git submodules in this repository'
   task :update do
     puts 'Update: git submodules'.green
-    sh 'git pull --recurse-submodules'
+    puts 'Just kidding. There are no submodules in this repo.'
   end
 
   task :clean do
