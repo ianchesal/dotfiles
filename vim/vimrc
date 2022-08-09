@@ -43,7 +43,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'nacitar/terminalkeys.vim'
 Plug 'schickling/vim-bufonly'
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
-Plug 'editorconfig/editorconfig-vim'
+" Plug 'editorconfig/editorconfig-vim'
 Plug 'Raimondi/delimitMate'
 Plug 'psf/black'
 " CSV Plugin: https://github.com/chrisbra/csv.vim
@@ -231,13 +231,13 @@ set hidden
 " See: https://joshldavis.com/2014/04/05/vim-tab-madness-buffers-vs-tabs/
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
-nmap <leader>T :enew<cr>
+"nmap <leader>T :enew<cr>
 
 " Move to the next buffer
-nmap <leader>l :bnext<CR>
+"nmap <leader>l :bnext<CR>
 
 " Move to the previous buffer
-nmap <leader>h :bprevious<CR>
+"nmap <leader>h :bprevious<CR>
 
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
@@ -247,7 +247,7 @@ nmap <leader>bq :Sayonara
 nmap <leader>bo :BufOnly<CR>
 
 " Show all open buffers and their status
-nmap <leader>bl :ls<CR>
+"nmap <leader>bl :ls<CR>
 
 """""""""""""""""""""""""""
 " NERDTree Configuration
@@ -276,13 +276,13 @@ let g:buffergator_viewport_split_policy = 'R'
 let g:buffergator_suppress_keymaps = 1
 
 " Looper buffers
-"let g:buffergator_mru_cycle_loop = 1
+let g:buffergator_mru_cycle_loop = 1
 
 " Go to the previous buffer open
-nmap <leader>jj :BuffergatorMruCyclePrev<cr>
+nmap <leader>j :BuffergatorMruCyclePrev<cr>
 
 " Go to the next buffer open
-nmap <leader>kk :BuffergatorMruCycleNext<cr>
+nmap <leader>k :BuffergatorMruCycleNext<cr>
 
 " View the entire list of buffers open
 nmap <leader>bl :BuffergatorOpen<cr>
