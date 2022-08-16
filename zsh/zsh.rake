@@ -18,7 +18,8 @@ namespace :zsh do
   desc 'Update zsh and antidote'
   task :update do
     puts 'Update: antidote'.green
-    sh 'zsh -i -c \'antidote update && antidote bundle <~/.zsh/.zsh_plugins.txt >~/.zsh/.zsh_plugins.zsh; exit\''
+    File.delete home('.zsh/.zsh_plugins.zsh') if File.exist? home('.zsh/.zsh_plugins.zsh')
+    sh 'zsh -i -c \'antidote update; exit\''
   end
 
   task :clean do
