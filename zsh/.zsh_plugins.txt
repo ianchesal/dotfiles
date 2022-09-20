@@ -68,3 +68,5 @@ zsh-users/zsh-history-substring-search
 
 ### fuzzy stuff
 #marlonrichert/zsh-autocomplete
+# https://github.com/reegnz/jq-zsh-plugin -- AWESOME jq-repl command
+reegnz/jq-zsh-plugin
