@@ -118,3 +118,13 @@ alias tkss='tmux kill-session -t'
 
 # Curl Power Ups
 alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
+
+# Terraform
+alias tf='terraform'
+alias tfa='terraform apply'
+alias tfd='terraform destroy'
+alias tff='terraform fmt'
+alias tfi='terraform init'
+alias tfo='terraform output'
+alias tfp='terraform plan'
+alias tfv='terraform validate'
