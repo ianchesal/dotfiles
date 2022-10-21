@@ -55,6 +55,7 @@ Plug 'chrisbra/csv.vim'
 Plug 'thalesmello/lkml.vim'
 " Nord theme: https://github.com/arcticicestudio/nord-vim
 Plug 'arcticicestudio/nord-vim'
+Plug 'flazz/vim-colorschemes'
 if has('nvim')
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
