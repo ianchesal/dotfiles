@@ -7,11 +7,16 @@ export FZF_DEFAULT_OPTS='
 
 # Nord colors for fzf
 # Generated here: https://minsw.github.io/fzf-color-picker/
+#export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+#    --color=fg:#e5e9f0,bg:#3b4252,hl:#81a1c1
+#    --color=fg+:#e5e9f0,bg+:#3b4252,hl+:#81a1c1
+#    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
+#    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
+# Molokai colors for fzf
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-    --color=fg:#e5e9f0,bg:#3b4252,hl:#81a1c1
-    --color=fg+:#e5e9f0,bg+:#3b4252,hl+:#81a1c1
-    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
-    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
+    --color fg:252,bg:233,hl:67,fg+:252,bg+:235,hl+:81
+    --color info:144,prompt:161,spinner:135,pointer:135,marker:118'
+
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)

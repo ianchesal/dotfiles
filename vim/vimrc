@@ -147,9 +147,9 @@ endif
 
 set background=dark
 " colorscheme solarized
-" colorscheme molokai
+colorscheme molokai
 " colorscheme dracula
-colorscheme nord
+" colorscheme nord
 
 " call togglebg#map("<F3>")
 
