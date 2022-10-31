@@ -56,6 +56,7 @@ Plug 'thalesmello/lkml.vim'
 " Nord theme: https://github.com/arcticicestudio/nord-vim
 Plug 'arcticicestudio/nord-vim'
 Plug 'flazz/vim-colorschemes'
+Plug 'dracula/vim', { 'as': 'dracula' }
 if has('nvim')
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'Shougo/deoplete.nvim', Cond(has('nvim'), { 'do': ':UpdateRemotePlugins' })
@@ -145,7 +146,7 @@ endif
 " See: https://stackoverflow.com/questions/15375992/vim-difference-between-t-co-256-and-term-xterm-256color-in-conjunction-with-tmu
 " set t_Co=256
 
-set background=dark
+" set background=dark
 " colorscheme solarized
 colorscheme molokai
 " colorscheme nord
