@@ -101,6 +101,10 @@ alias gpoh='git push origin HEAD'
 alias grep='grep --color=auto -E'
 alias gri='git rebase -i'
 alias gss='git status --short --branch'
+alias gco='git checkout'
+alias gcob='git checkout -b'
+alias gbd='git branch -d'
+alias gbD='git branch -D'
 alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
