@@ -35,6 +35,7 @@ alias mkdir='mkdir -p'
 alias ping='ping -c 5'
 alias type='type -a'
 alias vi=vim
+alias v=vim
 if [[ "$OSTYPE" == darwin* ]]; then
   alias ls="ls -G"
 else
