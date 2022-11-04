@@ -48,6 +48,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'psf/black'
 " CSV Plugin: https://github.com/chrisbra/csv.vim
 Plug 'chrisbra/csv.vim'
+Plug 'hashivim/vim-terraform'
 " Plug 'kana/vim-textobj-user'
 " Plug 'nelstrom/vim-textobj-rubyblock'
 " Plug 'ianchesal/myhelp.vim'
