@@ -395,3 +395,15 @@ let g:sayonara_filetypes={ 'nerdtree': 'NERDTreeClose' }
 let g:black_linelength = 100
 " To run Black on save...
 " autocmd BufWritePre *.py execute ':Black'
+
+""""""""""""""""""""""""""""""""
+" Terraform Configuration
+silent! autocmd! filetypedetect BufRead,BufNewFile *.tf
+autocmd BufRead,BufNewFile *.hcl set filetype=hcl
+autocmd BufRead,BufNewFile .terraformrc,terraform.rc set filetype=hcl
+autocmd BufRead,BufNewFile *.tf,*.tfvars set filetype=terraform
+autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=json
+" Format on save
+let g:terraform_fmt_on_save=1
+" Format on align
+let g:terraform_align=1
