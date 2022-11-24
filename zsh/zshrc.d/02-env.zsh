@@ -50,16 +50,14 @@ export COPYFILE_DISABLE=true
 export VI_MODE_SET_CURSOR=true
 export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 
-# I don't think I need this anymore. Just carrying it over from my old zshrc
-
 # HISTORY CONFIG
-# HISTFILE=~/.zsh_history
-# HISTSIZE=10000
-# SAVEHIST=10000
-# HISTDUP=erase               # Erase duplicates in the history file
-# setopt    appendhistory     # Append history to the history file (no overwriting)
-# setopt    sharehistory      # Share history across terminals
-# setopt    incappendhistory  # Immediately append to the history file, not just when a term is killed
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+HISTDUP=erase               # Erase duplicates in the history file
+setopt    appendhistory     # Append history to the history file (no overwriting)
+setopt    sharehistory      # Share history across terminals
+setopt    incappendhistory  # Immediately append to the history file, not just when a term is killed
 
 # Language
 # export LC_COLLATE=en_US.UTF-8
@@ -73,4 +71,10 @@ export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 # export LANGUAGE=en_US.UTF-8
 # export LESSCHARSET=utf-8
 
+# vi-mode
+set -o vi
 
+# Hit v to enter visual edit mode
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
