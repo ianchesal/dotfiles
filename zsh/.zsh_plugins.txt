@@ -7,7 +7,7 @@
 romkatv/powerlevel10k kind:fpath
 
 ### benchmarking plugins
-romkatv/zsh-bench kind:path
+# romkatv/zsh-bench kind:path
 
 ### oh-my-zsh plugins
 ohmyzsh/ohmyzsh path:lib/clipboard.zsh
@@ -24,6 +24,7 @@ ohmyzsh/ohmyzsh path:plugins/vagrant
 # - belak/zsh-utils path:environment
 # - sorin-ionescu/prezto path:modules/environment
 mattmc3/zephyr path:plugins/environment
+jeffreytse/zsh-vi-mode
 
 ### terminal plugins
 # - zimfw/termtitle
