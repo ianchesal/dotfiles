@@ -24,7 +24,6 @@ ohmyzsh/ohmyzsh path:plugins/vagrant
 # - belak/zsh-utils path:environment
 # - sorin-ionescu/prezto path:modules/environment
 mattmc3/zephyr path:plugins/environment
-jeffreytse/zsh-vi-mode
 
 ### terminal plugins
 # - zimfw/termtitle
@@ -58,6 +57,10 @@ mattmc3/zephyr path:plugins/completions
 
 ### fish-like lazy-load functions
 mattmc3/zfunctions
+
+### vi-mode stuff
+# - jeffreytse/zsh-vi-mode
+softmoth/zsh-vim-mode
 
 ### fish-like conf.d
 mattmc3/zshrc.d

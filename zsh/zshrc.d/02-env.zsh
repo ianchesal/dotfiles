@@ -46,10 +46,6 @@ export LSCOLOR="Gxfxcxdxbxegedabagacad"
 # I forget what this does...
 export COPYFILE_DISABLE=true
 
-# VI MODE
-export VI_MODE_SET_CURSOR=true
-export VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
-
 # HISTORY CONFIG
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -71,10 +67,7 @@ setopt    incappendhistory  # Immediately append to the history file, not just w
 # export LANGUAGE=en_US.UTF-8
 # export LESSCHARSET=utf-8
 
-# vi-mode
-set -o vi
-
-# Hit v to enter visual edit mode
-autoload -z edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
+# VI MODE
+# autoload -z edit-command-line
+# le -N edit-command-line
+# bindkey -M vicmd v edit-command-line
