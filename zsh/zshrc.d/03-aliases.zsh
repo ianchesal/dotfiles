@@ -104,6 +104,7 @@ alias gri='git rebase -i'
 alias gss='git status --short --branch'
 alias gco='git checkout'
 alias gcob='git checkout -b'
+alias gb='git branch'
 alias gbd='git branch -d'
 alias gbD='git branch -D'
 alias rsync-copy="rsync -avz --progress -h"
