@@ -91,22 +91,23 @@ alias zdot='cd $ZDOTDIR'
 
 # FROM MY OLD zshrc FILE !!!
 #alias emacs="vim"
-alias please='sudo $(fc -ln -1)'
 alias gau='git add -u'
+alias gb='git branch'
+alias gbD='git branch -D'
+alias gbd='git branch -d'
 alias gci='git commit --verbose'
 alias gcis='git commit --gpg-sign --verbose'
+alias gco='git checkout'
+alias gcob='git checkout -b'
 alias gd='git diff --color=always'
 alias glsut='git ls-files --others --exclude-standard'
+alias gp='git pull'
 alias gpfoh='git push --force origin HEAD'
 alias gpoh='git push origin HEAD'
 alias grep='grep --color=auto -E'
 alias gri='git rebase -i'
 alias gss='git status --short --branch'
-alias gco='git checkout'
-alias gcob='git checkout -b'
-alias gb='git branch'
-alias gbd='git branch -d'
-alias gbD='git branch -D'
+alias please='sudo $(fc -ln -1)'
 alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
