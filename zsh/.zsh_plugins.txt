@@ -53,7 +53,7 @@ mattmc3/zephyr path:plugins/colors
 # - belak/zsh-utils path:completion
 # - sorin-ionescu/prezto path:modules/completion
 zsh-users/zsh-completions
-mattmc3/zephyr path:plugins/completions
+mattmc3/zephyr path:plugins/completion
 
 ### fish-like lazy-load functions
 mattmc3/zfunctions
