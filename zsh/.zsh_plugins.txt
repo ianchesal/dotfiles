@@ -47,7 +47,7 @@ mattmc3/zephyr path:plugins/directory
 
 ### color plugins
 # - sorin-ionescu/prezto path:modules/spectrum
-mattmc3/zephyr path:plugins/colors
+mattmc3/zephyr path:plugins/color
 
 ### completion plugins
 # - belak/zsh-utils path:completion
