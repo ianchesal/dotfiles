@@ -90,7 +90,8 @@ alias zdot='cd $ZDOTDIR'
 
 
 # FROM MY OLD zshrc FILE !!!
-#alias emacs="vim"
+#alias emacs="vim
+alias unfuck-mutagen='git clean -df'
 alias gau='git add -u'
 alias gb='git branch'
 alias gbD='git branch -D'
