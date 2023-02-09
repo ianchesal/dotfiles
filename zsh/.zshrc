@@ -28,11 +28,4 @@ if [ -f "${HOME}/.zsh_local" ]; then
   source "${HOME}/.zsh_local"
 fi
 
-# SYNTAX HIGHLIGHTING CONFIG
-# This needs to be last in zshrc!
-if [ -f ${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-  source ${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-  export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/highlighters
-fi
-
 # zprof

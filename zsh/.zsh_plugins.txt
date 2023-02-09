@@ -67,7 +67,7 @@ mattmc3/zshrc.d
 
 ### fish-like core plugins
 #zsh-users/zsh-autosuggestions
-#zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-history-substring-search
 
 ### fuzzy stuff
