@@ -33,7 +33,7 @@ olets/zsh-window-title
 ### editor plugins
 # - belak/zsh-utils path:editor
 # - sorin-ionescu/prezto path:modules/editor
-mattmc3/zephyr path:plugins/editor
+# - mattmc3/zephyr path:plugins/editor # This one gave me issues with syntax highlighting
 
 ### history plugins
 # - belak/zsh-utils path:history
@@ -67,10 +67,12 @@ mattmc3/zshrc.d
 
 ### fish-like core plugins
 #zsh-users/zsh-autosuggestions
-zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-history-substring-search
 
 ### fuzzy stuff
 #marlonrichert/zsh-autocomplete
 # https://github.com/reegnz/jq-zsh-plugin -- AWESOME jq-repl command
 reegnz/jq-zsh-plugin
+
+# This needs to come last
+zsh-users/zsh-syntax-highlighting
