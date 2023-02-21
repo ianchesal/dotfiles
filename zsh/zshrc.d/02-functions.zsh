@@ -49,3 +49,13 @@ function heic2jpg() {
     fi
   done
 }
+
+function dotenv() {
+  # Loads a .env file from the cwd if one exists
+  if [ -f ".env" ]; then
+   set -o allexport
+   source .env
+   set +o allexport
+  fi
+
+}
