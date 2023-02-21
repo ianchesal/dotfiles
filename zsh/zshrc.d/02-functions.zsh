@@ -22,7 +22,7 @@ function listpaths {
   echo "$PATH" | tr ':' '\n'
 }
 
-fuction git_master_to_main() {
+function git_master_to_main() {
   git checkout master
   git pull
   git branch -m master main
