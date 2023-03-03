@@ -1,5 +1,5 @@
 export FZF_DEFAULT_OPTS='
---preview "[[ $(file --mime {}) =~ binary ]] &&
+-m --preview "[[ $(file --mime {}) =~ binary ]] &&
              echo {} is a binary file ||
              (highlight -O ansi {} ||
              cat {}) 2> /dev/null | head -$LINES"'
