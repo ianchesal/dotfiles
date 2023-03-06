@@ -93,6 +93,7 @@ alias zdot='cd $ZDOTDIR'
 #alias emacs="vim
 alias unfuck-mutagen='git clean -df'
 alias gau='git add -u'
+alias gap='git add -p'
 alias gb='git branch'
 alias gbD='git branch -D'
 alias gbd='git branch -d'
