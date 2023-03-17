@@ -36,10 +36,6 @@ function heic2jpg() {
   # data.
   for i in $*; do
     ext=$(echo $i:t:e | tr '[:upper:]' '[:lower:]')
-    if [[ "$ext" != "heic" ]]; then
-      echo "Skipping ${i}: not a HEIC file"
-      continue
-    fi
     jpgfile="$i:r".jpg
     echo "Converting ${i} --> ${jpgfile}"
     mogrify -format jpg ${i}
