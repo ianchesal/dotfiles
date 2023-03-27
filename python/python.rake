@@ -1,11 +1,11 @@
 desc 'Install Python and related dependencies'
 task python: ['python:all']
 
-if RUBY_PLATFORM =~ /linux/ then
-  PYTHON_VERSION = '3.9.6'
-else
-  PYTHON_VERSION = '3.9.11'
-end
+PYTHON_VERSION = if RUBY_PLATFORM =~ /linux/
+                   '3.9.6'
+                 else
+                   '3.9.11'
+                 end
 
 namespace :python do
   task all: [:install, :activate, :rc, :update]
@@ -22,7 +22,7 @@ namespace :python do
 
   task :activate do
     puts "Activating Python #{PYTHON_VERSION}".green
-    sh "pyenv rehash"
+    sh 'pyenv rehash'
     sh "pyenv global #{PYTHON_VERSION}"
   end
 

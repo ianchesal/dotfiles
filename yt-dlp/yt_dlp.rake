@@ -4,11 +4,11 @@ task ytdlp: ['ytdlp:conf']
 namespace :ytdlp do
   task :conf do
     mkdir_if_needed home('.config/yt-dlp/')
-    dolink(home(".config/yt-dlp/config"), root('yt-dlp/yt-dlp.conf'))
+    dolink(home('.config/yt-dlp/config'), root('yt-dlp/yt-dlp.conf'))
   end
 
   task :clean do
-    clean_restore home(".config/yt-dlp/config")
+    clean_restore home('.config/yt-dlp/config')
   end
 end
 

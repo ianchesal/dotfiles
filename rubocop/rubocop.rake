@@ -1,6 +1,9 @@
 desc 'Install all Rubocop-related dotfiles'
 task rubocop: ['rubocop:all']
 
+RUBOCOP = 'rubocop --display-cop-names --color'.freeze
+FILES_TO_CHECK = %w[Rakefile].freeze
+
 namespace :rubocop do
   task all: [:rubocop]
 
@@ -11,9 +14,6 @@ namespace :rubocop do
   task :clean do
     clean_restore home('.rubocop.yml')
   end
-
-  RUBOCOP = 'rubocop --display-cop-names --color'.freeze
-  FILES_TO_CHECK = %w(Rakefile).freeze
 
   desc 'Run Rubocop checks'
   task :check do

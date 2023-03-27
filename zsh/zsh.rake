@@ -5,7 +5,7 @@ task zsh: ['zsh:dotzsh', 'zsh:rc']
 
 namespace :zsh do
   task :dotzsh do
-    puts "Creating symlink ~/.zsh..."
+    puts 'Creating symlink ~/.zsh...'
     dolink(home('.zsh'), root('zsh'))
     mkdir_if_needed home('.cache')
     mkdir_if_needed home('.cache/completions')
@@ -18,7 +18,7 @@ namespace :zsh do
   desc 'Update zsh and antidote'
   task :update do
     puts 'Update: antidote'.green
-    File.delete home('.zsh/.zsh_plugins.zsh') if File.exist? home('.zsh/.zsh_plugins.zsh')
+    FileUtils.rm_f home('.zsh/.zsh_plugins.zsh')
     sh 'zsh -i -c \'antidote update; exit\''
   end
 

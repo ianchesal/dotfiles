@@ -1,7 +1,7 @@
 desc 'Install emacs dotfiles'
 task emacs: ['emacs:all']
 
-def batch_compile_prelude()
+def batch_compile_prelude
   sh 'emacs -batch -f batch-byte-compile ~/.emacs.d/core/*.el'
 end
 
@@ -21,7 +21,7 @@ namespace :emacs do
         sh 'git pull'
       end
     end
-      batch_compile_prelude
+    batch_compile_prelude
   end
 
   task :clean do

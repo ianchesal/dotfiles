@@ -10,4 +10,3 @@ namespace :ctags do
     clean_restore home('.ctags')
   end
 end
-

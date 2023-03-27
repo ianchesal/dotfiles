@@ -1,0 +1,16 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'brew/Brewfile'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 99
+
+Layout/LineLength:
+  Max: 200
