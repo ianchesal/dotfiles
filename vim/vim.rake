@@ -23,6 +23,7 @@ namespace :vim do
     mkdir_if_needed home('.vim/ftplugin')
     mkdir_if_needed home('.vim/lua')
     dolink('~/.config/nvim', '~/.vim')
+    sh 'rm -f ~/.vim/.vim' # I have no idea why this keeps getting created
   end
 
   desc 'Update vim plugins'
