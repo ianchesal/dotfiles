@@ -7,7 +7,7 @@ namespace :tmux do
   end
 
   task :plugins do
-    puts "Cloning tmp to ~/.tmux/plugins/tmp..."
+    puts 'Cloning tmp to ~/.tmux/plugins/tmp...'
     mkdir_if_needed home('.tmux/plugins')
     `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
   end

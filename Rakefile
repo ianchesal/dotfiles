@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/Documentation, Style/SingleLineMethods, Layout/EmptyLineBetweenDefs
+# rubocop:disable Style/Documentation, Style/SingleLineMethods
 
 require 'fileutils'
 
@@ -36,7 +36,7 @@ end
 def find_backup(target)
   index = 0
   index += 1 while File.exist? target + ".#{index}"
-  target + ".#{index-1}"
+  target + ".#{index - 1}"
 end
 
 def backup(target)
@@ -84,4 +84,4 @@ task clean: []
 
 Dir.glob('*/*.rake').each { |r| load r }
 
-# rubocop:enable Style/Documentation, Style/SingleLineMethods, Layout/EmptyLineBetweenDefs
+# rubocop:enable Style/Documentation, Style/SingleLineMethods

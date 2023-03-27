@@ -1,9 +1,9 @@
 desc 'Install Atom dotfiles'
 task atom: ['atom:all']
 
-namespace :atom do
-  CONFIG_FILES = %w(config.cson init.coffee keymap.cson snippets.cson styles.less).freeze
+CONFIG_FILES = %w[config.cson init.coffee keymap.cson snippets.cson styles.less].freeze
 
+namespace :atom do
   task all: [:dir, :packages, :conf_files]
 
   task :dir do
