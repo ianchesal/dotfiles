@@ -28,7 +28,7 @@ endfunction
 call plug#begin('~/.vim/plugged')
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+"Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
 "Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
@@ -70,6 +70,8 @@ if has('nvim')
   " Markdown preview plugin: https://github.com/iamcco/markdown-preview.nvim
   " Assumes yarn and node are present on the system
   Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+  " A better gitgutter
+  Plug 'lewis6991/gitsigns.nvim'
 endif
 " Plugins to install when it's not a NeoVIM vim
 if !has('nvim')
