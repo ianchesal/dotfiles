@@ -327,11 +327,13 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
+"""""""""""""""""""""""""""
 " deoplete configuration
 let g:deoplete#enable_at_startup = 1
 " Use tab-complete to navigate completions
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
+"""""""""""""""""""""""""""
 " fzf configuration
 " This is a wild noremap for me! I've been use ; for : for a long time
 " so let's see if this trips me up or makes me superhuman.
