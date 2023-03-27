@@ -84,8 +84,6 @@ set expandtab     " Expand tabs to spaces
 set tabstop=2
 set bs=2          " Fix backspace key to work under screen
 set shiftwidth=2
-set number        " Enable line numbering
-" set relativenumber " Enable relative line numbering for easier jump calculations
 set autoindent    " When you press enter you stay at the current indent
 set wildmode=longest,list " Better tab completion for :e and friends
 set wildignore=*.rbc,.git,*.o,*.gem
@@ -413,3 +411,10 @@ autocmd BufRead,BufNewFile *.tfstate,*.tfstate.backup set filetype=json
 let g:terraform_fmt_on_save=1
 " Format on align
 let g:terraform_align=1
+
+
+""""""""""""""""""""""""""""""""
+" Lua (Neovim)
+if has('nvim')
+  lua require('config')
+endif

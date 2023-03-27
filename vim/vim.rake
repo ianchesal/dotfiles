@@ -7,6 +7,10 @@ namespace :vim do
   task :rc do
     dolink(home('.vimrc'), root('vim', 'vimrc'))
     dolink(home('.config/nvim/init.vim'), root('vim', 'vimrc'))
+    Dir.glob('vim/lua/*.lua') do |pfile|
+      pfile = File.basename(pfile)
+      dolink(home(".vim/lua/#{pfile}"), root('vim', 'lua', pfile))
+    end
     Dir.glob('vim/ftplugin/*.vim') do |pfile|
       pfile = File.basename(pfile)
       dolink(home(".vim/ftplugin/#{pfile}"), root('vim', 'ftplugin', pfile))
@@ -17,6 +21,7 @@ namespace :vim do
     mkdir_if_needed home('.config')
     mkdir_if_needed home('.vim')
     mkdir_if_needed home('.vim/ftplugin')
+    mkdir_if_needed home('.vim/lua')
     dolink('~/.config/nvim', '~/.vim')
   end
 
