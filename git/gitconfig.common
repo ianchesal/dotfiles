@@ -37,7 +37,7 @@
 	com = "!f(){ git checkout $(git main-branch) $@;}; f"
 [core]
   pager = delta
-  editor = vim
+  editor = nvim
 	excludesfile = ~/.gitignore
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
   preloadindex = true
