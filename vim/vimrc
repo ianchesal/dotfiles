@@ -28,9 +28,7 @@ endfunction
 call plug#begin('~/.vim/plugged')
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-fugitive'
-"Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
-"Plug 'scrooloose/syntastic'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'bling/vim-airline'
@@ -38,28 +36,19 @@ Plug 'tpope/vim-endwise'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
-Plug 'jeetsukumaran/vim-buffergator'
 Plug 'junegunn/vim-easy-align'
 Plug 'nacitar/terminalkeys.vim'
 Plug 'schickling/vim-bufonly'
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
-" Plug 'editorconfig/editorconfig-vim'
 Plug 'Raimondi/delimitMate'
 Plug 'psf/black'
-" CSV Plugin: https://github.com/chrisbra/csv.vim
-Plug 'chrisbra/csv.vim'
 Plug 'hashivim/vim-terraform'
-" Plug 'kana/vim-textobj-user'
-" Plug 'nelstrom/vim-textobj-rubyblock'
-" Plug 'ianchesal/myhelp.vim'
 " LookML Syntax support
 Plug 'thalesmello/lkml.vim'
 " Nord theme: https://github.com/arcticicestudio/nord-vim
 Plug 'arcticicestudio/nord-vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'dracula/vim', { 'as': 'dracula' }
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'junegunn/fzf.vim'
 " NeoVIM Specific Plugins
 if has('nvim')
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -76,11 +65,6 @@ endif
 " Plugins to install when it's not a NeoVIM vim
 if !has('nvim')
   Plug 'drmikehenry/vim-fixkey'
-  " This technically works, but I don't want deoplete if I'm outside neovim
-  " right now
-  " Plug 'Shougo/deoplete.nvim'
-  " Plug 'roxma/nvim-yarp'
-  " Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 " Initialize plugin system
@@ -112,9 +96,29 @@ set winwidth=81    " Ideal minimum window width of 80 chars
 
 set clipboard=unnamed " Allow clipboard sharing with OS X. See: http://stackoverflow.com/a/680271/259811
 
+if has("wsl")
+  let g:clipboard = {
+        \   'name': 'WslClipboard',
+        \   'copy': {
+        \      '+': 'clip.exe',
+        \      '*': 'clip.exe',
+        \    },
+        \   'paste': {
+        \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        \   },
+        \   'cache_enabled': 0,
+        \ }
+endif
+
 set gfn=Monofur:h14
 
 set mouse=a
+
+" Make arrow keys work in tmux sessions
+if &term =~ '256color'
+  set t_ut=
+endif
 
 noremap ; :
 
@@ -277,36 +281,6 @@ let g:NERDTreeIgnore=['node_modules$[[dir]]', '\.DS_Store$', '.git$[[dir]]', '.n
 
 
 """""""""""""""""""""""""""
-" Buffergator Configuration
-" Use the right side of the screen
-let g:buffergator_viewport_split_policy = 'R'
-
-" I want my own keymappings...
-let g:buffergator_suppress_keymaps = 1
-
-" Looper buffers
-let g:buffergator_mru_cycle_loop = 1
-
-" Go to the previous buffer open
-nmap <leader>j :BuffergatorMruCyclePrev<cr>
-
-" Go to the next buffer open
-nmap <leader>k :BuffergatorMruCycleNext<cr>
-
-" View the entire list of buffers open
-nmap <leader>bl :BuffergatorOpen<cr>
-
-" Shared bindings from Solution #1 from earlier
-nmap <leader>T :enew<cr>
-nmap <leader>bq :bp <BAR> bd #<cr>
-
-
-" Make arrow keys work in tmux sessions
-if &term =~ '256color'
-  set t_ut=
-endif
-
-"""""""""""""""""""""""""""
 " Markdown Configuration
 " Don't automatically fold everything when opening a Markdown doc
 " let g:vim_markdown_folding_disabled=1
@@ -343,39 +317,8 @@ let g:deoplete#enable_at_startup = 1
 " Use tab-complete to navigate completions
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
-"""""""""""""""""""""""""""
-" fzf configuration
-" This is a wild noremap for me! I've been use ; for : for a long time
-" so let's see if this trips me up or makes me superhuman.
-" nmap ; :Buffers<CR>
-"set runtimepath+=/usr/local/opt/fzf
-"nnoremap <silent <C-p> :Files<cr>
-"nnoremap <silent> <Leader>p :Files<CR>
-"nnoremap <silent> <Leader>b :Buffers<CR>
-"nnoremap <silent> <Leader>f :Rg<CR>
-"nnoremap <silent> <Leader>/ :BLines<CR>
-"nnoremap <silent> <Leader>' :Marks<CR>
-"nnoremap <silent> <Leader>g :Commits<CR>
-"nnoremap <silent> <Leader>H :Helptags<CR>
-"nnoremap <silent> <Leader>hh :History<CR>
-"nnoremap <silent> <Leader>h: :History:<CR>
-"nnoremap <silent> <Leader>h/ :History/<CR>
-let g:fzf_layout = { 'down': '~30%' }
-
 " Use ripgrep for grep
 set grepprg=rg\ --vimgrep
-
-""""""""""""""""""""""""""""""""
-" Syntastic Configuration
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 1
-let g:syntastic_python_checkers = ['pylint']
 
 """"""""""""""""""""""""""""""""
 " ALE Configuration
