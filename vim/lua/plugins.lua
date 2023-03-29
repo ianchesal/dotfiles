@@ -1,1 +1,1 @@
--- Empty on purpose for now
+require('gitsigns').setup()
