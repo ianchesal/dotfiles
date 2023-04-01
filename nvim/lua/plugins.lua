@@ -13,9 +13,25 @@ local packer_bootstrap = ensure_packer()
 
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
-  -- My plugins here
-  -- use 'foo1/bar1.nvim'
-  -- use 'foo2/bar2.nvim'
+  use 'arcticicestudio/nord-vim'
+  use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/plenary.nvim'}}
+  use 'nvim-treesitter/nvim-treesitter'
+  use {
+	  'nvim-tree/nvim-tree.lua',
+	  requires = {
+      'nvim-tree/nvim-web-devicons',
+    },
+	  config = function()
+      require'nvim-tree'.setup {}
+    end
+  }
+  use 'tpope/vim-fugitive'
+  use 'tpope/vim-surround'
+  use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'}}
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+  }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
