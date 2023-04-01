@@ -41,7 +41,7 @@ Plug 'nacitar/terminalkeys.vim'
 Plug 'schickling/vim-bufonly'
 Plug 'mhinz/vim-sayonara', { 'on': 'Sayonara' }
 Plug 'Raimondi/delimitMate'
-Plug 'psf/black'
+"Plug 'psf/black'
 Plug 'hashivim/vim-terraform'
 " LookML Syntax support
 Plug 'thalesmello/lkml.vim'
