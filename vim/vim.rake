@@ -35,6 +35,8 @@ namespace :vim do
   end
 
   task :clean do
+    sh "rm -rf #{home('.config/nvim')}"
+    sh "rf -rf #{home('.local/share/nvim')}"
     sh "rm -rf #{home('.vim')}/*"
     clean_restore home('.vimrc')
   end
