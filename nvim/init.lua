@@ -1,64 +1,20 @@
 local set = vim.opt
 local cmd = vim.cmd
 local o = vim.o
+local g = vim.g
 local map = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 
--- disable netrw at the very start of your init.lua (strongly advised)
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- Global stuff
+g.python3_host_prog = '~/.pyenv/versions/neovim3/bin/python'
+g.markdown_fenced_languages = {
+  "bash=sh",
+  "python",
+  "lua",
+  "nushell",
+}
 
 require('plugins')
-require('gitsigns').setup()
-
-require('lualine').setup({
-  options = {
-    theme = 'nord',
-  }
-})
-
-require('nvim-tree').setup ({
-  view = {
-    width = 40,
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = true,
-  }
-})
-
-require('telescope').setup({
-  extensions = {
-    project = {
-      base_dirs = {
-	      -- {'~/src', max_depth = 4},
-        {'~/.config', max_depth = 2},
-      },
-      hidden_files = true
-    }
-  }
-})
-
-require'nvim-treesitter.configs'.setup({
-  ensure_installed = { "lua", "vim", "vimdoc", "query", "ruby", "python", "terraform", "yaml", "json", "bash", "markdown" },
-  sync_install = false,
-  autoinstall = true,
-  highlight = {
-    enable = true,
-    custom_captures = {
-      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-      ["foo.bar"] = "Identifier",
-    },
-    disable = {"c"},
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-})
-
 
 -- Mappings
 map( 'n', '<Space>', '', {})
@@ -74,6 +30,15 @@ map( 'n', '<s-tab>', ':bp<cr>', options)
 -- I am too old to relearn that Y copies from cursor position to the end of the line
 -- I need it to copy the entire line into the buffer
 cmd[[noremap Y Y]]
+-- Paste over currently selected text without yanking it
+keymap("v", "p", '"_dP')
+-- prevent typo when pressing `wq` or `q`
+cmd [[
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
+cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
+cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
+]]
 
 -- Telescope bindings
 local builtin = require('telescope.builtin')
@@ -87,17 +52,36 @@ vim.keymap.set('n', '<leader>fm', builtin.marks, {})
 map( 'n', '<leader>gg', ':Git<cr>', options)
 
 -- Some basic options
-set.clipboard = 'unnamedplus'
-set.tabstop = 2
-set.shiftwidth = 2
+set.autoread = true
+set.background = 'dark'
+set.completeopt = {'menuone', 'noinsert', 'noselect'}  -- completion options (for deoplete)
+-- set.cursorline = true               -- highlight current line
+set.encoding = "utf-8"
+set.expandtab = true                -- spaces instead of tabs
+set.hidden = true                   -- enable background buffers
+set.ignorecase = true               -- ignore case in search
+set.joinspaces = false              -- no double spaces with join
+set.list = true                     -- show some invisible characters
+set.mouse = "nv"                    -- Enable mouse in normal and visual modes
+set.number = true                   -- show line numbers
+-- set.relativenumber = true           -- number relative to current line
+set.scrolloff = 4                   -- lines of context
+set.shiftround = true               -- round indent
+set.shiftwidth = 2                  -- size of indent
+set.sidescrolloff = 8               -- columns of context
+set.smartcase = true                -- do not ignore case with capitals
+set.smartindent = true              -- insert indents automatically
+set.splitbelow = true               -- put new windows below current
+set.splitright = true               -- put new vertical splits to right
+set.wildmode = {'list', 'longest'}  -- command-line completion mode
+set.clipboard = 'unnamedplus'       -- share clipboard with OS X and then some
+set.modeline = false                -- disable modeline support, it's annoying
 set.softtabstop = 2
-set.expandtab = true
-set.number = true
-set.modeline = false
+set.tabstop = 2
+set.wrap = false                    -- don't wrap long lines, i have a big...screen
 
--- Nord looks better without these for whatever reason...
--- set.termguicolors = true
--- o.termguicolors = true
+cmd[[filetype plugin on]]
+cmd[[autocmd FocusGained * checktime]]
 
 -- Colorschemes
 cmd[[colorscheme nord]]
