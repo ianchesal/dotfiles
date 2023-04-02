@@ -19,7 +19,7 @@ namespace :nvim do
 
   task :clean do
     sh "rm -rf #{home('.config/nvim')}"
-    sh "rf -rf #{home('.local/share/nvim')}"
+    sh "rm -rf #{home('.local/share/nvim')}"
   end
 end
 
