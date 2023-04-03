@@ -51,6 +51,9 @@ vim.keymap.set('n', '<leader>fm', builtin.marks, {})
 -- Fugitive bindings
 map( 'n', '<leader>gg', ':Git<cr>', options)
 
+-- Bufdelete bindings
+map( 'n', '<leader>bq', ':Bdelete<cr>', options)
+
 -- Some basic options
 set.autoread = true
 set.background = 'dark'
@@ -61,7 +64,7 @@ set.expandtab = true                -- spaces instead of tabs
 set.hidden = true                   -- enable background buffers
 set.ignorecase = true               -- ignore case in search
 set.joinspaces = false              -- no double spaces with join
-set.list = true                     -- show some invisible characters
+-- set.list = true                     -- show some invisible characters
 set.mouse = "nv"                    -- Enable mouse in normal and visual modes
 set.number = true                   -- show line numbers
 -- set.relativenumber = true           -- number relative to current line
@@ -82,6 +85,9 @@ set.wrap = false                    -- don't wrap long lines, i have a big...scr
 
 cmd[[filetype plugin on]]
 cmd[[autocmd FocusGained * checktime]]
+
+-- Deoplete config
+cmd[[let g:deoplete#enable_at_startup = 1]]
 
 -- Colorschemes
 cmd[[colorscheme nord]]

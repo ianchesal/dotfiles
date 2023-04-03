@@ -15,7 +15,17 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use 'arcticicestudio/nord-vim'
   use 'tpope/vim-fugitive'
-  use 'tpope/vim-surround'
+  use 'tpope/vim-endwise'
+  use 'farmergreg/vim-lastplace' -- Better than the usual autocmd stuff
+  -- use 'tpope/vim-surround' -- trying mini.nvim/surround instead
+
+  use {
+    'famiu/bufdelete.nvim',
+    config = function()
+      require('bufdelete').setup()
+    end,
+  }
+
 
   use {
     'nvim-telescope/telescope.nvim',
@@ -37,7 +47,7 @@ return require('packer').startup(function(use)
         additional_vim_regex_highlighting = false,
         autoinstall = true,
         highlight = { enable = true },
-        endwise = { enable = true },
+        -- endwise = { enable = true }, -- Can't get this to work <shrug>
         indent = { enable = true },
       }
 
@@ -53,14 +63,15 @@ return require('packer').startup(function(use)
     end,
   }
 
-  use {
-    'windwp/nvim-autopairs',
-    requires = 'nvim-treesitter',
-    -- module = { 'nvim-autopairs.completion.cmp', 'nvim-autopairs' },
-    config = function()
-      require('config.autopairs').setup()
-    end,
-  }
+-- Trying mini.pairs instead
+--   use {
+--     'windwp/nvim-autopairs',
+--     requires = 'nvim-treesitter',
+--     -- module = { 'nvim-autopairs.completion.cmp', 'nvim-autopairs' },
+--     config = function()
+--       require('config.autopairs').setup()
+--     end,
+--   }
 
   use {
     'RRethy/nvim-treesitter-endwise',
@@ -70,7 +81,7 @@ return require('packer').startup(function(use)
   }
 
   use {
-    "nathom/filetype.nvim",
+    'nathom/filetype.nvim',
     config = function()
       require("filetype").setup {
         overrides = {
@@ -101,13 +112,44 @@ return require('packer').startup(function(use)
   }
 
   use {
-    'nvim-lualine/lualine.nvim',
-    after = 'nvim-treesitter',
-    requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+    'Shougo/deoplete.nvim',
+    run = ':UpdateRemotePlugins',
+  }
+
+  use('dense-analysis/ale')
+
+-- Trying mini.statusline and mini.tabline instead
+--   use {
+--     'nvim-lualine/lualine.nvim',
+--     after = 'nvim-treesitter',
+--     requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+--     config = function()
+--       require("config.lualine").setup()
+--     end,
+--   }
+  use {
+    'echasnovski/mini.nvim',
     config = function()
-      require("config.lualine").setup()
+      require('mini.comment').setup()
+      -- require('mini.completion').setup()
+      require('mini.indentscope').setup()
+      require('mini.pairs').setup()
+      require('mini.statusline').setup()
+      require('mini.surround').setup()
+      require('mini.tabline').setup()
+      require('mini.trailspace').setup()
     end,
   }
+
+-- Can't get this to work...
+--   use {
+--     'iamcco/markdown-preview.nvim',
+--     run = "cd app && npm install",
+--     setup = function()
+--       vim.g.mkdp_filetypes = { 'markdown' }
+--     end,
+--     ft = {'markdown'},
+--   }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
