@@ -34,6 +34,8 @@ return require('packer').startup(function(use)
     config = function()
       require("nvim-treesitter.configs").setup {
         ensure_installed = "all",
+        -- These are a PIA on ARM64
+        ignore_install = { 'norg' },
         highlight = {
           enable = true,
         },
