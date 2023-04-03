@@ -6,14 +6,14 @@ namespace :nvim do
 
   task :dir do
     mkdir_if_needed home('.config')
-    dolink(home('.config/nvim'), root('nvim'))
+    sh "git clone https://github.com/NvChad/NvChad #{home('.config/nvim')} --depth 1"
+    dolink(home('.config/nvim/lua/custom'), root('nvim/custom'))
   end
 
   desc 'Update plugins'
   task :update do
-    puts 'Update: neovim plugins with packer'.green
-    sh "nvim -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
-    sh "nvim -c 'TSInstallSync all' -c q"
+    puts 'Update: NvChad for Neovim'.green
+    sh "nvim -c 'NvChadUpdate' -c q"
   end
 
   task :clean do
