@@ -30,6 +30,8 @@ map( 'n', '<s-tab>', ':bp<cr>', options)
 -- I am too old to relearn that Y copies from cursor position to the end of the line
 -- I need it to copy the entire line into the buffer
 cmd[[noremap Y Y]]
+-- I should figure out the lua way to do this one
+cmd[[noremap ; :]]
 -- Paste over currently selected text without yanking it
 keymap("v", "p", '"_dP')
 -- prevent typo when pressing `wq` or `q`
