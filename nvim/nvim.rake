@@ -12,9 +12,8 @@ namespace :nvim do
   desc 'Update plugins'
   task :update do
     puts 'Update: neovim plugins with packer'.green
-    # It'll be something like this...
-    # sh "nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
-    # sh "nvim --headless -c 'autocmd User TSUPdate quitall' "
+    sh "nvim -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
+    sh "nvim -c 'TSInstallSync all' -c q"
   end
 
   task :clean do
