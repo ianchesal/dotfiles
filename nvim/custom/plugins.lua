@@ -78,11 +78,6 @@ local plugins = {
   },
 
   {
-    'famiu/bufdelete.nvim',
-    lazy = false,
-  },
-
-  {
     'tpope/vim-fugitive',
     lazy = false,
   },
