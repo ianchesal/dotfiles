@@ -29,8 +29,30 @@ local plugins = {
   },
 
   {
+    'RRethy/nvim-treesitter-endwise',
+    lazy = false,
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter",
-    opts = overrides.treesitter,
+    -- opts = overrides.treesitter,
+    opts = {
+      ensure_installed = {
+        'bash',
+        'javascript',
+        'json',
+        'lua',
+        'markdown',
+        'python',
+        'ruby',
+        'terraform',
+        'typescript',
+        'vim',
+      },
+      endwise = {
+        enable = true,
+      },
+    },
   },
 
   {
@@ -46,6 +68,31 @@ local plugins = {
       require("better_escape").setup()
     end,
   },
+
+  {
+    'echasnovski/mini.surround',
+    lazy = false,
+    config = function()
+      require('mini.surround').setup()
+    end
+  },
+
+  {
+    'famiu/bufdelete.nvim',
+    lazy = false,
+  },
+
+  {
+    'tpope/vim-fugitive',
+    lazy = false,
+  },
+
+  {
+    'farmergreg/vim-lastplace',
+    lazy = false,
+  }
+
+
 
   -- To make a plugin not be loaded
   -- {

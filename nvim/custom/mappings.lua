@@ -1,9 +1,17 @@
 ---@type MappingsTable
 local M = {}
 
+M.disabled = {
+  n = {
+    ['<leader>b'] = '',
+  }
+}
+
 M.general = {
   n = {
     [";"] = { ":", "enter command mode", opts = { nowait = true } },
+    ["<leader>bq"] = {"<cmd> Bdelete <CR>", "Delete buffer", opts = { noremap = true } },
+    ["<leader>gg"] = {"<cmd> Git <CR>", "git fugitive", opts = { noremap = true } },
   },
 }
 
