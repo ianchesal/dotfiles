@@ -42,6 +42,6 @@ namespace :vim do
   end
 end
 
-task all: [:vim]
-task clean: ['vim:clean']
-task update: ['vim:update']
+# task all: [:vim]
+# task clean: ['vim:clean']
+# task update: ['vim:update']
