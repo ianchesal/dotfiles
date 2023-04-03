@@ -17,15 +17,8 @@ return require('packer').startup(function(use)
   use 'tpope/vim-fugitive'
   use 'tpope/vim-endwise'
   use 'farmergreg/vim-lastplace' -- Better than the usual autocmd stuff
+  use 'famiu/bufdelete.nvim'
   -- use 'tpope/vim-surround' -- trying mini.nvim/surround instead
-
-  use {
-    'famiu/bufdelete.nvim',
-    config = function()
-      require('bufdelete').setup()
-    end,
-  }
-
 
   use {
     'nvim-telescope/telescope.nvim',
