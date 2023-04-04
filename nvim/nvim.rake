@@ -13,8 +13,8 @@ namespace :nvim do
   desc 'Update plugins'
   task :update do
     puts 'Update: NvChad for Neovim'.green
-    sh "nvim -c 'NvChadUpdate' -c q"
-    sh "nvim -c 'TSInstallSync all' -c q"
+    # sh "nvim -c 'NvChadUpdate' -c q"
+    # sh "nvim -c 'TSInstallSync all' -c q"
   end
 
   task :clean do
