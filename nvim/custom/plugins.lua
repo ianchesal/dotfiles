@@ -35,35 +35,7 @@ local plugins = {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		-- opts = overrides.treesitter,
-		opts = {
-			-- Minimal set of treesitter parsers to install
-			ensure_installed = {
-				"bash",
-				"git_rebase",
-				"gitcommit",
-				"gitignore",
-				"javascript",
-				"jq",
-				"json",
-				"jsonnet",
-				"lua",
-				"markdown",
-				"python",
-				"ruby",
-				"terraform",
-				"typescript",
-				"vim",
-				"yaml",
-			},
-			-- Never install these parses
-			ignore_install = {
-				"norg",
-			},
-			endwise = {
-				enable = false,
-			},
-		},
+		opts = overrides.treesitter,
 	},
 
 	{
