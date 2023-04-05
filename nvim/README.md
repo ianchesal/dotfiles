@@ -17,7 +17,7 @@ set up your machine).
 * neovim
 * tree-sitter
 * ripgrep
-* ruby (for the LSP support)
+* ruby (for the LSP support, and NeoVIM gem installed)
 * python (with a neovim3 pyenv/venv created)
 
 At some point I might write the equivalent of my ../vim/setup.sh file -- but not now.
