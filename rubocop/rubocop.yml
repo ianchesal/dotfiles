@@ -9,7 +9,7 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 160
 
 Layout/ParameterAlignment:
