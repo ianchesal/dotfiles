@@ -30,7 +30,7 @@ local plugins = {
 
 	{
 		"RRethy/nvim-treesitter-endwise",
-		lazy = false,
+		lazy = true,
 	},
 
 	{
@@ -61,7 +61,7 @@ local plugins = {
 				"norg",
 			},
 			endwise = {
-				enable = true,
+				enable = false,
 			},
 		},
 	},
