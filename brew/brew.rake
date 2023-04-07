@@ -3,7 +3,7 @@ namespace :brew do
   task :update do
     if which('brew')
       puts 'Update: Homebrew'.green
-      sh 'brew upgrade --force'
+      sh 'brew upgrade --force --ignore-pinned'
     else
       puts 'Skipping: Homebrew update -- no brew command found'.blue
     end
