@@ -31,7 +31,7 @@ local sources = {
 	lint.rubocop,
 
 	-- YAML
-	formatting.yq,
+	-- formatting.yq,
 
 	-- Bash, zsh
 	formatting.shfmt,
