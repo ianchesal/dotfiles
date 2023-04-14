@@ -9,3 +9,7 @@ zstyle ':completion:*' matcher-list '' \
   'm:{a-z\-}={A-Z\_}' \
   'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{a-z\-}={A-Z\_}' \
   'r:|?=** m:{a-z\-}={A-Z\_}'
+
+# Don't complete users. It's annoying.
+# See: https://unix.stackexchange.com/questions/57408/why-is-zsh-oh-my-zsh-completing-directories-that-dont-exist
+zstyle ':completion:*' users asgeo1 root ianchesal
