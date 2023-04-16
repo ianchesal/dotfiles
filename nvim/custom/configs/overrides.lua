@@ -1,5 +1,16 @@
 local M = {}
 
+M.telescope = {
+	-- Use <leader>fa instead ;)
+	-- pickers = {
+	-- 	find_files = {
+	-- 		hidden = true,
+	-- 		no_ignore = true,
+	-- 		follow = true,
+	-- 	},
+	-- },
+}
+
 M.treesitter = {
 	ensure_installed = {
 		"bash",
