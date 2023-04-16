@@ -22,6 +22,11 @@ local plugins = {
 		end, -- Override to setup mason-lspconfig
 	},
 
+	{
+		"nvim-telescope/telescope.nvim",
+		opts = overrides.telescope,
+	},
+
 	-- override plugin configs
 	{
 		"williamboman/mason.nvim",
@@ -76,6 +81,14 @@ local plugins = {
 		config = function()
 			require("luasnip").filetype_extend("ruby", { "rails" })
 		end,
+	},
+
+	{
+		-- For working with Ruby blocks
+		-- See: https://github.com/chrisgrieser/nvim-various-textobjs#list-of-text-objects
+		"chrisgrieser/nvim-various-textobjs",
+		opts = { useDefaultKeymaps = true },
+		lazy = false,
 	},
 
 	-- To make a plugin not be loaded
