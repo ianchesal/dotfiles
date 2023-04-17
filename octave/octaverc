@@ -1,3 +1,0 @@
-edit mode sync
-edit home .
-EDITOR('vim > /dev/tty 2>&1 < /dev/tty %s')
