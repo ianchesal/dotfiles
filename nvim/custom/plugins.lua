@@ -91,13 +91,18 @@ local plugins = {
 		lazy = false,
 	},
 
-  {
-    "iamcco/markdown-preview.nvim",
-    config = function()
-      vim.fn["mkdp#util#install"]()
-    end,
-    lazy = false,
-  },
+	{
+		"iamcco/markdown-preview.nvim",
+		config = function()
+			vim.fn["mkdp#util#install"]()
+		end,
+		lazy = false,
+	},
+
+	{
+		"github/copilot.vim",
+		lazy = false,
+	},
 
 	-- To make a plugin not be loaded
 	-- {
