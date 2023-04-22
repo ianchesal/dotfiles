@@ -2,33 +2,22 @@ desc 'Install git dotfiles'
 task git: ['git:all']
 
 namespace :git do
-  task all: [:gitconfig, :gitignore, :gittemplate]
+  task all: [:dir]
 
-  task :gitconfig do
-    dolink(home('.gitconfig'), root('git', 'gitconfig.common'))
+  task :dir do
+    mkdir_if_needed home('.config')
+    dolink(home('.config/git'), root('git'))
   end
 
-  task :gitignore do
-    dolink(home('.gitignore'), root('git', 'gitignore'))
-  end
-
-  task :gittemplate do
-    mkdir_if_needed home('.git_template')
-  end
-
-  task :gitlocalpersonal do
-    dolink(home('.gitlocal'), root('git', 'gitlocal.personal'))
+  task :clean do
+    sh "rm -f #{home('.config/git')}"
+    sh "rm -rf #{home('.local/state/git')}"
   end
 
   desc 'Update all the git submodules in this repository'
   task :update do
     puts 'Update: git submodules'.green
     puts 'Just kidding. There are no submodules in this repo.'
-  end
-
-  task :clean do
-    clean_restore home('.gitignore')
-    clean_restore home('.gitconfig')
   end
 end
 
