@@ -1,5 +1,5 @@
 [init]
-	templatedir = ~/.git_template
+	templatedir = ~/.local/state/git/templates
 [alias]
 	c = commit -m
 	a = add
@@ -38,7 +38,7 @@
 [core]
   pager = delta
   editor = nvim
-	excludesfile = ~/.gitignore
+	excludesfile = ~/.config/git/gitignore
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
   preloadindex = true
 [color]
@@ -72,7 +72,7 @@
   file-decoration-style = none
 
 [include]
-  path = ~/.gitlocal
+  path = ~/.config/git/local
 
 [pull]
 	ff = only
