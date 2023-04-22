@@ -38,7 +38,6 @@
 [core]
   pager = delta
   editor = nvim
-	excludesfile = ~/.config/git/gitignore
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
   preloadindex = true
 [color]
