@@ -15,28 +15,6 @@ class String
   def gray;           "\e[37m#{self}\e[0m" end
 end
 
-module OS
-  def self.windows?
-    (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
-  end
-
-  def self.mac?
-    (/darwin/ =~ RUBY_PLATFORM) != nil
-  end
-
-  def self.unix?
-    !OS.windows?
-  end
-
-  def self.linux?
-    OS.unix? and !OS.mac?
-  end
-
-  def self.jruby?
-    RUBY_ENGINE == 'jruby'
-  end
-end
-
 def dolink(target, source)
   File.delete target if File.symlink? target # Nuke symlinks. We don't care about backing those up
   backup target if File.exist? target
