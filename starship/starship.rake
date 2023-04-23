@@ -7,12 +7,12 @@ namespace :starship do
   task :toml do
     mkdir_if_needed home('.config')
     dolink(home('.config/starship.toml'), root('starship/starship.toml'))
-    sh 'curl -sS https://starship.rs/install.sh | sh'
+    sh 'curl -sS https://starship.rs/install.sh | sh' unless OS.mac?
   end
 
   desc 'Update starship'
   task :update do
-    sh 'curl -sS https://starship.rs/install.sh | sh'
+    sh 'curl -sS https://starship.rs/install.sh | sh' unless OS.mac?
   end
 
   task :clean do
