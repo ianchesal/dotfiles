@@ -9,20 +9,6 @@ format = " took [$duration]($style)"
 truncation_length = 10
 format = "[$path]($style)[$lock_symbol]($lock_style) "
 
-[gcloud]
-# symbol = '️🇬️ '
-
-[gcloud.region_aliases]
-us-central1 = 'uc1'
-asia-northeast1 = 'an1'
-europe-west3 = 'ew3'
-
-[gcloud.project_aliases]
-persona-web-development = 'web-dev'
-persona-web-staging = 'web-staging'
-persona-web = 'web'
-persona-internal-tools = 'internal-tools'
-
 [git_branch]
 format = "[$symbol$branch]($style) "
 # symbol = "🍣 "
