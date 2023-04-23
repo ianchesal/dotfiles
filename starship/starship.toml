@@ -10,7 +10,8 @@ truncation_length = 10
 format = "[$path]($style)[$lock_symbol]($lock_style) "
 
 [gcloud]
-# symbol = '️🇬️ '
+format = 'on [$symbol$account(@$domain)(\($project\))]($style) '
+symbol = '️🇬️ '
 
 [gcloud.region_aliases]
 us-central1 = 'uc1'
@@ -55,6 +56,9 @@ format = "[$hostname]($style) in "
 # trim_at = "-"
 style = "bold dimmed white"
 # disabled = false
+
+[kubernetes]
+disabled = false
 
 [username]
 style_user = "bold dimmed white"
