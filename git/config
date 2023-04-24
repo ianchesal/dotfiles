@@ -84,5 +84,9 @@
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
 
+[user]
+	name = Ian Chesal
+	email = ian@withpersona.com
+
 [include]
   path = local
