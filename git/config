@@ -85,4 +85,4 @@
 	trustExitCode = true
 
 [include]
-  path = ~/.config/git/local
+  path = local
