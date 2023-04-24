@@ -70,9 +70,6 @@
   file-style = bold yellow ul
   file-decoration-style = none
 
-[include]
-  path = ~/.config/git/local
-
 [pull]
 	ff = only
 [filter "lfs"]
@@ -86,3 +83,6 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+
+[include]
+  path = ~/.config/git/local
