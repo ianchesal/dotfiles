@@ -18,3 +18,6 @@ cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('
 
 -- nvim 0.9.x turns editorconfig support by default, turn it off by doing:
 -- vim.g.editorconfig = false
+-- disable netrw at the very
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
