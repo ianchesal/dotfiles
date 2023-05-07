@@ -5,8 +5,10 @@ task zsh: ['zsh:dotzsh', 'zsh:rc']
 
 namespace :zsh do
   task :dotzsh do
-    puts 'Creating symlink ~/.zsh...'
-    dolink(home('.zsh'), root('zsh'))
+    puts 'Creating symlink ~/.config/zsh...'
+    mkdir_if_needed home('.config')
+    mkdir_if_needed home('.local/share/zsh')
+    dolink(home('.config/zsh'), root('zsh'))
     mkdir_if_needed home('.cache')
     mkdir_if_needed home('.cache/completions')
   end
@@ -18,13 +20,14 @@ namespace :zsh do
   desc 'Update zsh and antidote'
   task :update do
     puts 'Update: antidote'.green
-    FileUtils.rm_f home('.zsh/.zsh_plugins.zsh')
+    FileUtils.rm_f home('.config/zsh/.zsh_plugins.zsh')
     sh 'zsh -i -c \'antidote update; exit\''
   end
 
   task :clean do
     clean_restore home('.zshenv')
-    clean_restore home('.zsh')
+    FileUtils.rm_f home('.config/zsh')
+    FileUtils.rm_f home('.local/share/zsh')
   end
 end
 
