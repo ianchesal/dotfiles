@@ -47,7 +47,7 @@ export LSCOLOR="Gxfxcxdxbxegedabagacad"
 export COPYFILE_DISABLE=true
 
 # HISTORY CONFIG
-HISTFILE=~/.zsh_history
+HISTFILE=~/.local/share/zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 HISTDUP=erase               # Erase duplicates in the history file
