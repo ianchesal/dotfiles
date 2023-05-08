@@ -1,8 +1,6 @@
 desc 'Install neovim dotfiles'
 task nvim: ['nvim:all']
 
-GEMS = %w[neovim solargraph].freeze
-
 namespace :nvim do
   task all: [:dir, :deps]
 
@@ -12,14 +10,8 @@ namespace :nvim do
     dolink(home('.config/nvim/lua/custom'), root('nvim/custom'))
   end
 
-  task :deps do
-    GEMS.each { |g| sh "gem install #{g}" }
-  end
-
-  desc 'Update plugins'
-  task :update do
+  task update: 'lsp:update' do
     puts 'Update: NvChad for Neovim'.green
-    GEMS.each { |g| sh "gem update #{g}" }
     # sh "nvim -c 'NvChadUpdate' -c q"
     # sh "nvim -c 'TSInstallSync all' -c q"
   end

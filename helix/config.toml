@@ -1,4 +1,4 @@
-theme = "tokyonight"
+theme = "github_dark"
 
 [editor]
 shell = ["zsh", "-c"]

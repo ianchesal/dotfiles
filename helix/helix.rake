@@ -1,18 +1,30 @@
 desc 'Install helix editor configuration'
-task helix: ['helix:conf']
+task helix: ['helix:binary', 'helix:conf']
 
 namespace :helix do
+  task :binary do
+    Dir.chdir(File.expand_path('~/src')) do
+      sh 'git clone https://github.com/helix-editor/helix' unless File.directory?('helix')
+      Dir.chdir('helix') do
+        sh 'git pull'
+        sh 'cargo install --path helix-term --locked'
+      end
+    end
+  end
+
+  task update: 'lsp:update' do
+    Dir.chdir(File.expand_path('~/src')) do
+      sh 'git clone https://github.com/helix-editor/helix' unless File.directory?('helix')
+      Dir.chdir('helix') do
+        sh 'git pull'
+        sh 'cargo install --path helix-term --locked'
+      end
+    end
+  end
+
   task :conf do
     mkdir_if_needed home('.config')
     dolink(home('.config/helix'), root('helix'))
-  end
-
-  task :lsp do
-    sh 'npm i -g bash-language-server'
-    sh 'npm install -g dockerfile-language-server-nodejs'
-    sh 'npm i -g vscode-langservers-extracted'
-    sh 'npm install --location=global pyright'
-    sh 'cargo install taplo-cli --locked --features lsp'
   end
 
   task :clean do
@@ -21,5 +33,6 @@ namespace :helix do
   end
 end
 
-task all: [:helix]
-task clean: ['helix:clean']
+# task all: [:helix]
+# task update: ['helix:update']
+# task clean: ['helix:clean']
