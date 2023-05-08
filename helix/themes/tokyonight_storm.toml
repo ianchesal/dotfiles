@@ -1,8 +1,0 @@
-# Author: Paul Graydon <p.y.graydon@gmail.com>
-
-inherits = "tokyonight"
-
-[palette]
-background = "#24283b"
-background_highlight = "#373d5a"
-background_menu = "#1f2335"
