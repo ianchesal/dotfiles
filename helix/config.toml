@@ -1,0 +1,8 @@
+theme = "tokyonight"
+
+[editor]
+shell = ["zsh", "-c"]
+cursorline = true
+bufferline = "always"
+true-color = true
+rulers = [80,120]
