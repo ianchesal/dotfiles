@@ -21,3 +21,6 @@ cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('
 -- disable netrw at the very
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- copilot.lua
+-- vim.g.copilot_assume_mapped = true
