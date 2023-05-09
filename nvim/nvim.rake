@@ -2,7 +2,7 @@ desc 'Install neovim dotfiles'
 task nvim: ['nvim:all']
 
 namespace :nvim do
-  task all: [:dir, :deps]
+  task all: [:dir]
 
   task :dir do
     mkdir_if_needed home('.config')
