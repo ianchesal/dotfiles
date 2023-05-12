@@ -1648,5 +1648,9 @@
 # Tell `p10k configure` which file it should overwrite.
 typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 
+# Fix double prompt madness
+# See: https://github.com/romkatv/powerlevel10k#horrific-mess-when-resizing-terminal-window
+typeset -g POWERLEVEL9K_TERM_SHELL_INTEGRATION=true
+
 (( ${#p10k_config_opts} )) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'
