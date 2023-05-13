@@ -179,6 +179,7 @@ vim.keymap.set("n", "<leader>gg", "<cmd>Git<CR>", { desc = "git fugitive", norem
 vim.keymap.set("n", "<c-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle nvim-tree", noremap = true })
 
 -- Buffers
+vim.keymap.set("n", "<leader>bf", "vim.lsp.buf.format()", { desc = "Format current buffer", noremap = true })
 vim.keymap.set("n", "<leader>bn", "<cmd>enew<CR>", { desc = "Create a new empty buffer", noremap = true })
 vim.keymap.set("n", "<leader>bd", "<cmd>Bdelete<CR>", { desc = "Delete current buffer", noremap = true })
 vim.keymap.set("n", "<leader>bw", "<cmd>Bwipeout<CR>", { desc = "Wipeout current buffer", noremap = true })
@@ -305,7 +306,6 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
     vim.lsp.buf.format()
   end, { desc = "Format current buffer with LSP" })
-  nmap("<leader>bf", vim.lsp.buf.format(), "[B]uffer [F]ormat")
 end
 
 -- Enable the following language servers
