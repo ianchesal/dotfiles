@@ -188,7 +188,28 @@ vim.keymap.set("n", "<leader>bw", "<cmd>Bwipeout<CR>", { desc = "Wipeout current
 -- See `:help nvim-treesitter`
 require("nvim-treesitter.configs").setup({
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { "c", "cpp", "go", "lua", "python", "rust", "tsx", "typescript", "vimdoc", "vim" },
+  ensure_installed = {
+    "bash",
+    "c",
+    "cpp",
+    "gitcommit",
+    "go",
+    "go",
+    "json",
+    "jsonnet",
+    "lua",
+    "make",
+    "python",
+    "python",
+    "ruby",
+    "rust",
+    "toml",
+    "tsx",
+    "typescript",
+    "vim",
+    "vimdoc",
+    "yaml",
+  },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
