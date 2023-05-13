@@ -18,6 +18,7 @@
   "mini.surround": { "branch": "main", "commit": "ea2e9c4cdbddc826dc6eeac69b035f8220f65de5" },
   "mini.tabline": { "branch": "main", "commit": "d92d66c47148e6349d501a46d4615548634be192" },
   "neodev.nvim": { "branch": "main", "commit": "7c6999ba7d8fdf36991b0aeed034b0cb299ce1eb" },
+  "null-ls.nvim": { "branch": "main", "commit": "08bb00c7c2cd58c72e02cf54e4b9cbfe14b03e09" },
   "nvim-autopairs": { "branch": "master", "commit": "7747bbae60074acf0b9e3a4c13950be7a2dff444" },
   "nvim-cmp": { "branch": "main", "commit": "d153771162bd9795d9f7142df5c674b61066a585" },
   "nvim-lspconfig": { "branch": "master", "commit": "df58d91c9351a9dc5be6cf8d54f49ab0d9a64e73" },
