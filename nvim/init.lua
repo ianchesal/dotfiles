@@ -361,9 +361,10 @@ require("neodev").setup()
 local null_ls = require("null-ls")
 local formatting = null_ls.builtins.formatting
 local lint = null_ls.builtins.diagnostics
+local hover = null_ls.builtins.hover
 local null_ls_sources = {
   -- webdev stuff
-  formatting.deno_fmt,                                                     -- picked deno for ts/js files as its very fast!
+  formatting.deno_fmt,                                                    -- picked deno for ts/js files as its very fast!
   formatting.prettier.with({ filetypes = { "html", "markdown", "css" } }), -- so prettier works only on these filetypes
 
   -- Lua
@@ -387,6 +388,9 @@ local null_ls_sources = {
   -- Bash, zsh
   formatting.shfmt,
   lint.shellcheck,
+
+  -- I dun spel gud
+  -- hover.dictionary,
 }
 -- Format on save from here: https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Formatting-on-save#sync-formatting
 -- local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
