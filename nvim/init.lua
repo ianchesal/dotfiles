@@ -321,6 +321,14 @@ local servers = {
   },
 }
 
+-- Uncomment this if you want LSP to format files before they're saved
+-- I can't decide if I love or hate this. It's certainly made a bunch
+-- of my git commits bigger thanks to reformatting on save. You can
+-- always <leader>bf to format a buffer any time.
+-- vim.cmd[[ autocmd BufWritePre * lua vim.lsp.buf.format() ]]
+-- Auto-format Terraform on save
+vim.cmd [[ autocmd BufWritePre *.tf lua vim.lsp.buf.format() ]]
+
 -- Setup neovim lua configuration
 require('neodev').setup()
 
