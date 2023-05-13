@@ -139,6 +139,8 @@ require('telescope').setup {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+        -- Close file finder on single press of Esc key
+        ['<Esc>'] = require('telescope.actions').close,
       },
     },
   },
@@ -161,7 +163,8 @@ end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
+-- I've got ff in my brain now for [F]ind [F]iles
+vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
@@ -169,7 +172,6 @@ vim.keymap.set('n', '<leader>sk', require('telescope.builtin').keymaps, { desc =
 
 -- Toggle autoformatting off/on
 vim.keymap.set('n', '<leader>af', '<cmd>KickstartFormatToggle<CR>', { desc = "Toggle auto-formatting", noremap = true })
-vim.keymap.set('n', '<leader>bf', '<cmd>Format<CR>', { desc = "Format current buffer with LSP", noremap = true })
 
 -- Git
 vim.keymap.set('n', '<leader>gg', "<cmd>Git<CR>", { desc = "git fugitive", noremap = true })
@@ -297,6 +299,7 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
+  nmap('<leader>bf', vim.lsp.buf.format(), '[B]uffer [F]ormat')
 end
 
 -- Enable the following language servers
