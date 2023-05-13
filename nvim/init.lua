@@ -175,6 +175,9 @@ vim.keymap.set("n", "<leader>af", "<cmd>KickstartFormatToggle<CR>", { desc = "To
 -- Git
 vim.keymap.set("n", "<leader>gg", "<cmd>Git<CR>", { desc = "git fugitive", noremap = true })
 
+-- null-ls
+vim.keymap.set("n", "<leader>ln", "<cmd>NullLsInfo<CR>", { desc = "NullLS Information" })
+
 -- nvim-tree
 vim.keymap.set("n", "<c-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle nvim-tree", noremap = true })
 
