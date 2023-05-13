@@ -3,10 +3,12 @@ task lsp: ['lsp:install']
 
 GEMS = %w[neovim solargraph].freeze
 NPMS = %w[bash-language-server dockerfile-language-server-nodejs vscode-langservers-extracted pyright].freeze
+CARGOS = %w[stylua].freeze
 
 namespace :lsp do
   task :install do
-    # puts 'Install: cargo-based LSP servers'.green
+    puts 'Install: cargo-based LSP servers'.green
+    CARGOS.each { |g| sh "cargo install #{g}" }
     # sh 'cargo install taplo-cli --locked --features lsp'
     # puts 'Install: npm-based LSP servers'.green
     # NPMS.each { |g| sh "npm install --location=global #{g}" }
@@ -15,7 +17,8 @@ namespace :lsp do
   end
 
   task :update do
-    # puts 'Update: cargo-based LSP servers'.green
+    puts 'Update: cargo-based LSP servers'.green
+    CARGOS.each { |g| sh "cargo install #{g}" }
     # sh 'cargo update --package taplo-cli'
     # puts 'Update: npm-based LSP servers'.green
     # NPMS.each { |g| sh "npm update --location=global #{g}" }
@@ -24,7 +27,8 @@ namespace :lsp do
   end
 
   task :clean do
-    # puts 'Uninstall: cargo-based LSP servers'.green
+    puts 'Uninstall: cargo-based LSP servers'.green
+    CARGOS.each { |g| sh "cargo uninstall #{g}" }
     # sh 'cargo uninstall taplo-cli'
     # puts 'Uninstall: npm-based LSP servers'.green
     # NPMS.each { |g| sh "npm uninstall #{g}" }
