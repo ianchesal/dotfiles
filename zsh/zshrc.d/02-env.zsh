@@ -55,6 +55,9 @@ setopt    appendhistory     # Append history to the history file (no overwriting
 setopt    sharehistory      # Share history across terminals
 setopt    incappendhistory  # Immediately append to the history file, not just when a term is killed
 
+# My bin directory
+add_to_path "$HOME/bin"
+
 # Language
 # export LC_COLLATE=en_US.UTF-8
 # export LC_CTYPE=en_US.UTF-8
