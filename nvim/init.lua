@@ -20,6 +20,14 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Some OS detectors
+local is_wsl = (function()
+  local output = vim.fn.systemlist("uname -r")
+  return not not string.find(output[1] or "", "WSL")
+end)()
+local is_mac = vim.fn.has("macunix") == 1
+local is_linux = not is_wsl and not is_mac
+
 require("lazy").setup({
   -- General philsophy here is to only put plugins here that do not require any configuration. If there's
   -- any configuration required it should go in its own file under lua/plugins so if it fails to load it
@@ -61,6 +69,24 @@ vim.o.mouse = "a"
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.o.clipboard = "unnamedplus"
+if is_wsl then
+  -- This is NeoVim's recommended way to solve clipboard sharing if you use WSL
+  -- See: https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl
+  vim.cmd([[
+  let g:clipboard = {
+  \   'name': 'WslClipboard',
+  \   'copy': {
+  \      '+': 'clip.exe',
+  \      '*': 'clip.exe',
+  \    },
+  \   'paste': {
+  \      '+': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+  \      '*': 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+  \   },
+  \   'cache_enabled': 0,
+  \ }
+  ]])
+end
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -83,8 +109,16 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"
 
+-- I had this in my old vimrc
+vim.o.complete = ".,w,b,u,t,i,kspell"
+vim.o.visualbell = true
+
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+-- Keep minimum rows/cols on screen at all times
+vim.o.scrolloff = 5
+vim.o.sidescrolloff = 5
 
 -- [[ Basic Keymaps ]]
 
