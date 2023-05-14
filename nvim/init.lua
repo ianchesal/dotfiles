@@ -228,7 +228,7 @@ vim.keymap.set("n", "<leader>ln", "<cmd>NullLsInfo<CR>", { desc = "NullLS Inform
 vim.keymap.set("n", "<c-n>", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle nvim-tree", noremap = true })
 
 -- Buffers
-vim.keymap.set("n", "<leader>bf", "vim.lsp.buf.format()", { desc = "Format current buffer", noremap = true })
+vim.keymap.set("n", "<leader>bf", vim.lsp.buf.format, { desc = "Format current buffer", noremap = true })
 vim.keymap.set("n", "<leader>bn", "<cmd>enew<CR>", { desc = "Create a new empty buffer", noremap = true })
 vim.keymap.set("n", "<leader>bd", "<cmd>Bdelete<CR>", { desc = "Delete current buffer", noremap = true })
 vim.keymap.set("n", "<leader>bw", "<cmd>Bwipeout<CR>", { desc = "Wipeout current buffer", noremap = true })
@@ -244,6 +244,7 @@ require("nvim-treesitter.configs").setup({
     "gitcommit",
     "go",
     "go",
+    "hcl",
     "json",
     "jsonnet",
     "lua",
@@ -252,6 +253,7 @@ require("nvim-treesitter.configs").setup({
     "python",
     "ruby",
     "rust",
+    "terraform",
     "toml",
     "tsx",
     "typescript",
@@ -441,6 +443,9 @@ local null_ls_sources = {
   -- Bash, zsh
   formatting.shfmt,
   lint.shellcheck,
+
+  -- Packer
+  formatting.packer,
 
   -- I dun spel gud
   -- hover.dictionary,
