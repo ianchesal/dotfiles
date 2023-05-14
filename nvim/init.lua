@@ -120,6 +120,18 @@ vim.o.termguicolors = true
 vim.o.scrolloff = 5
 vim.o.sidescrolloff = 5
 
+-- Split below and right
+vim.o.splitbelow = true
+vim.o.splitright = true
+
+-- No wrap
+vim.o.wrap = false
+
+-- EXPERIMENTAL: Stuff I'm trying out
+if vim.fn.has("nvim-0.9.0") == 1 then
+  vim.o.splitkeep = "screen"
+end
+
 -- [[ Basic Keymaps ]]
 
 vim.cmd([[noremap ; :]])
