@@ -421,9 +421,8 @@ local servers = {
   -- rust_analyzer = {},
   solargraph = {},
   taplo = {},
-  terraformls = {
-    filetypes = { "terraform", "tf", "tfvars" },
-  },
+  terraformls = {},
+  tflint = {},
   tsserver = {},
   yamlls = {},
 }
