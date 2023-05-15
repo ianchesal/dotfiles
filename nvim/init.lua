@@ -340,7 +340,7 @@ require("nvim-treesitter.configs").setup({
 
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
   -- to define small helper and utility functions so you don't have to repeat yourself
   -- many times.
@@ -354,6 +354,11 @@ local on_attach = function(_, bufnr)
 
     vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
   end
+
+  -- local format = function()
+  --   vim.lsp.buf.format({ id = client.id, async = true })
+  -- end
+  -- vim.keymap.set({ "x", "n" }, "gq", format, { buffer = bufnr, desc = "Format current buffer" })
 
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
   nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
@@ -389,27 +394,34 @@ end
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
-  clangd = {},
-  cssls = {},
-  -- gopls = {},
-  pyright = {},
-  -- rust_analyzer = {},
-  tsserver = {},
-  solargraph = {},
   bashls = {
     filetypes = { "sh", "zsh" },
   },
-
+  clangd = {},
+  cssls = {},
+  denols = {},
+  dockerls = {},
+  docker_compose_language_service = {},
+  -- gopls = {},
+  helm_ls = {},
+  jsonls = {},
+  jsonnet_ls = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
     },
   },
-  -- Terraform
+  marksman = {},
+  pyright = {},
+  -- rust_analyzer = {},
+  solargraph = {},
+  taplo = {},
   terraformls = {
-    filetypes = { "terraform", "tf" },
+    filetypes = { "terraform", "tf", "tfvars" },
   },
+  tsserver = {},
+  yamlls = {},
 }
 
 -- Setup neovim lua configuration
@@ -422,34 +434,26 @@ local lint = null_ls.builtins.diagnostics
 local hover = null_ls.builtins.hover
 local null_ls_sources = {
   -- webdev stuff
-  formatting.deno_fmt,                                                    -- picked deno for ts/js files as its very fast!
-  formatting.prettier.with({ filetypes = { "html", "markdown", "css" } }), -- so prettier works only on these filetypes
-
+  formatting.deno_fmt,
+  formatting.prettier.with({ filetypes = { "html", "markdown", "css" } }),
   -- Lua
-  formatting.stylua,
-
+  -- formatting.stylua,
   -- cpp
-  formatting.clang_format,
-
+  -- formatting.clang_format,
   -- Terraform
-  formatting.terraform_fmt,
+  -- formatting.terraform_fmt,
   lint.terraform_validate,
-
   -- Ruby w/Rubocop
-  formatting.rubocop,
+  -- formatting.rubocop,
   -- formatting.rubyfmt,
-  lint.rubocop,
-
+  -- lint.rubocop,
   -- YAML
   -- formatting.yq,
-
   -- Bash, zsh
-  formatting.shfmt,
-  lint.shellcheck,
-
+  -- formatting.shfmt,
+  -- lint.shellcheck,
   -- Packer
   formatting.packer,
-
   -- I dun spel gud
   -- hover.dictionary,
 }
@@ -475,8 +479,8 @@ null_ls.setup({
 })
 
 -- Auto-format Terraform on save
-vim.cmd([[ autocmd BufWritePre *.tf lua vim.lsp.buf.format() ]])
-vim.cmd([[ autocmd BufWritePre *.tfvars lua vim.lsp.buf.format() ]])
+vim.cmd([[ autocmd BufWritePre *.tf lua vim.lsp.buf.format ]])
+vim.cmd([[ autocmd BufWritePre *.tfvars lua vim.lsp.buf.format ]])
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -496,6 +500,22 @@ mason_lspconfig.setup_handlers({
       on_attach = on_attach,
       settings = servers[server_name],
     })
+  end,
+})
+
+-- Do any server-specific setup here
+local lspconfig = require("lspconfig")
+lspconfig.solargraph.setup({
+  settings = {
+    solargraph = {
+      diagnostics = true,
+    },
+  },
+})
+
+lspconfig.terraformls.setup({
+  on_attach = function(client, _)
+    client.server_capabilities.documentFormattingProvider = false
   end,
 })
 
