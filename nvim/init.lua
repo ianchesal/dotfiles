@@ -445,7 +445,7 @@ local null_ls_sources = {
   -- cpp
   -- formatting.clang_format,
   -- Terraform
-  -- formatting.terraform_fmt,
+  formatting.terraform_fmt,
   lint.terraform_validate,
   -- Ruby w/Rubocop
   -- formatting.rubocop,
@@ -483,8 +483,8 @@ null_ls.setup({
 })
 
 -- Auto-format Terraform on save
-vim.cmd([[ autocmd BufWritePre *.tf lua vim.lsp.buf.format ]])
-vim.cmd([[ autocmd BufWritePre *.tfvars lua vim.lsp.buf.format ]])
+vim.cmd([[ autocmd BufWritePre *.tf lua vim.lsp.buf.format() ]])
+vim.cmd([[ autocmd BufWritePre *.tfvars lua vim.lsp.buf.format() ]])
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
