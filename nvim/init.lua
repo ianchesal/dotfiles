@@ -157,6 +157,10 @@ vim.cmd([[nnoremap <silent> <Esc> <Esc>:noh<CR>]])
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Don't care about these
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
