@@ -2,7 +2,7 @@ desc 'Install LSP servers'
 task lsp: ['lsp:install']
 
 GEMS = %w[neovim solargraph].freeze
-NPMS = %w[neovim].freeze
+NPMS = %w[neovim prettier].freeze
 CARGOS = %w[stylua].freeze
 
 namespace :lsp do
