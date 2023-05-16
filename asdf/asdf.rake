@@ -7,10 +7,18 @@ namespace :asdf do
   task :asdf do
     dolink(home('.asdfrc'), root('asdf', 'asdfrc'))
     dolink(home('.tool-versions'), root('asdf', 'tool-versions'))
+    sh 'asdf plugin add ruby || true'
+    sh 'asdf plugin add nodejs || true'
+    sh 'asdf plugin add terraform || true'
+    sh 'asdf plugin add golang || true'
+    sh 'asdf plugin add packer || true'
+    sh 'asdf plugin add rust || true'
     sh 'asdf install ruby'
     sh 'asdf install nodejs'
     sh 'asdf install terraform'
     sh 'asdf install packer'
+    sh 'asdf install golang'
+    sh 'asdf install rust'
   end
 
   task :update do
