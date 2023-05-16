@@ -5,4 +5,5 @@ BROWSE
 git/local
 karabiner/automatic_backups
 package-lock.json
+package.json
 nvim/lazy-lock.json
