@@ -2,6 +2,9 @@
 ASDF_DIR="${ASDF_DIR:-$HOME/.asdf}"
 ASDF_COMPLETIONS="$ASDF_DIR/completions"
 
+# For golang compatibility
+export ASDF_GOLANG_MOD_VERSION_ENABLED=true
+
 # If not found, check for archlinux/AUR package (/opt/asdf-vm/)
 if [[ ! -f "$ASDF_DIR/asdf.sh" || ! -f "$ASDF_COMPLETIONS/asdf.bash" ]] && [[ -f "/opt/asdf-vm/asdf.sh" ]]; then
   ASDF_DIR="/opt/asdf-vm"

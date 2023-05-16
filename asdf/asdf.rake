@@ -7,6 +7,10 @@ namespace :asdf do
   task :asdf do
     dolink(home('.asdfrc'), root('asdf', 'asdfrc'))
     dolink(home('.tool-versions'), root('asdf', 'tool-versions'))
+    sh 'asdf install ruby'
+    sh 'asdf install nodejs'
+    sh 'asdf install terraform'
+    sh 'asdf install packer'
   end
 
   task :update do
@@ -15,6 +19,7 @@ namespace :asdf do
   end
 
   task :clean do
+    sh "rm -f #{home('.tool-versions')}"
     clean_restore home('.asdfrc')
   end
 end
