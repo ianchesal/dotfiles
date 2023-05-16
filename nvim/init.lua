@@ -220,7 +220,7 @@ vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { de
 vim.keymap.set("n", "<leader>sk", require("telescope.builtin").keymaps, { desc = "[S]earch [K]eymaps" })
 
 -- Toggle autoformatting off/on
-vim.keymap.set("n", "<leader>af", "<cmd>KickstartFormatToggle<CR>", { desc = "Toggle auto-formatting", noremap = true })
+vim.keymap.set("n", "<leader>tf", "<cmd>KickstartFormatToggle<CR>", { desc = "Toggle auto-formatting", noremap = true })
 
 -- Git
 vim.keymap.set("n", "<leader>gg", "<cmd>Git<CR>", { desc = "git fugitive", noremap = true })
