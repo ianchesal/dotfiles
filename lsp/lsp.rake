@@ -3,7 +3,7 @@ task lsp: ['lsp:install']
 
 GEMS = %w[neovim solargraph].freeze
 NPMS = %w[neovim].freeze
-CARGOS = %w[stylua].freeze
+CARGOS = %w[stylua tree-sitter-cli].freeze
 
 namespace :lsp do
   task :install do
