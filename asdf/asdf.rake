@@ -23,6 +23,8 @@ namespace :asdf do
   end
 
   task :update do
+    puts 'Update: asdf'.green
+    sh 'asdf update'
     puts 'Update: asdf plugins'.green
     sh 'asdf plugin update --all'
   end
