@@ -65,6 +65,10 @@ vim.wo.number = true
 -- Enable mouse mode
 vim.o.mouse = "a"
 
+-- Why would you want 8?
+vim.tabstop = 2
+-- TODO: Consider using https://github.com/FotiadisM/tabset.nvim
+
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
