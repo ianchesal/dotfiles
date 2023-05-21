@@ -13,7 +13,6 @@ romkatv/powerlevel10k kind:fpath
 ohmyzsh/ohmyzsh path:lib/clipboard.zsh
 ohmyzsh/ohmyzsh path:plugins/extract
 ohmyzsh/ohmyzsh path:plugins/magic-enter
-ohmyzsh/ohmyzsh path:plugins/fzf
 ohmyzsh/ohmyzsh path:plugins/docker
 ohmyzsh/ohmyzsh path:plugins/docker-compose
 # I have not clue if these actually work via antidote -- need to test them all
@@ -71,6 +70,7 @@ zsh-users/zsh-history-substring-search
 
 ### fuzzy stuff
 #marlonrichert/zsh-autocomplete
+unixorn/fzf-zsh-plugin
 # https://github.com/reegnz/jq-zsh-plugin -- AWESOME jq-repl command
 reegnz/jq-zsh-plugin
 
