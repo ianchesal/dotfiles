@@ -1,21 +1,31 @@
 desc 'Install tmux dotfiles'
-task tmux: ['tmux:conf']
+task tmux: ['tmux:dir', 'tmux:plugins']
 
 namespace :tmux do
-  task :conf do
-    dolink(home('.tmux.conf'), root('tmux', 'tmux.conf'))
+  task :dir do
+    mkdir_if_needed home('.config')
+    dolink(home('.config/tmux'), root('tmux'))
   end
 
   task :plugins do
     puts 'Cloning tmp to ~/.tmux/plugins/tmp...'
     mkdir_if_needed home('.tmux/plugins')
-    `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
+    `git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm`
+  end
+
+  task :update do
+    puts 'Updating tmux plugins...'.green
+    # TODO: Actually update the tmux plugins
   end
 
   task :clean do
-    clean_restore home('.tmux.conf')
+    sh "rm -f #{home('.config/tmux')}"
+    sh "rm -rf #{home('.local/share/tmux')}"
+    sh "rm -rf #{home('.local/state/tmux')}"
+    sh "rm -rf #{home('.cache/tmux')}"
   end
 end
 
 task all: [:tmux]
+task update: ['tmux:update']
 task clean: ['tmux:clean']
