@@ -42,6 +42,10 @@ require("lazy").setup({
   -- Detect tabstop and shiftwidth automatically
   "tpope/vim-sleuth",
 
+  -- Make tmux and nvim play nice together
+  "christoomey/vim-tmux-navigator",
+  "preservim/vimux",
+
   -- Useful plugin to show you pending keybinds.
   { "folke/which-key.nvim",          opts = {} },
 
@@ -187,6 +191,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = highlight_group,
   pattern = "*",
 })
+
+-- [[ Configure Vimux ]]
+vim.keymap.set("n", "<leader>vp", ":VimuxPromptCommand<cr>", { desc = "Run shell command" })
+vim.keymap.set("n", "<leader>vl", ":VimuxRunLastCommand<cr>", { desc = "Run last shell command" })
+vim.keymap.set("n", "<leader>vi", ":VimuxInspectRunner<cr>", { desc = "Inspect shell" })
+vim.keymap.set("n", "<leader>vz", ":VimuxZoomRunner<cr>", { desc = "Zoom shell" })
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
