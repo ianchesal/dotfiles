@@ -193,10 +193,14 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- [[ Configure Vimux ]]
-vim.keymap.set("n", "<leader>vp", ":VimuxPromptCommand<cr>", { desc = "Run shell command" })
+vim.keymap.set("n", "<leader>vp", ":VimuxPromptCommand<cr>", { desc = "Run command in tmux shell" })
 vim.keymap.set("n", "<leader>vl", ":VimuxRunLastCommand<cr>", { desc = "Run last shell command" })
-vim.keymap.set("n", "<leader>vi", ":VimuxInspectRunner<cr>", { desc = "Inspect shell" })
-vim.keymap.set("n", "<leader>vz", ":VimuxZoomRunner<cr>", { desc = "Zoom shell" })
+vim.keymap.set("n", "<leader>vi", ":VimuxInspectRunner<cr>", { desc = "Inspect tmux shell" })
+vim.keymap.set("n", "<leader>vz", ":VimuxZoomRunner<cr>", { desc = "Zoom tmux shell" })
+vim.keymap.set("n", "<leader>vk", ":VimuxCloseRunner<cr>", { desc = "Close tmux shell" })
+vim.keymap.set("n", "<leader>vb", ":VimuxInterruptRunner<cr>", { desc = "Interrupt command running in tmux shell" })
+vim.g.VimuxHeight = "30"
+vim.g.VimuxCloseOnExit = 1
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
