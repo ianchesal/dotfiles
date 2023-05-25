@@ -8,3 +8,4 @@ package-lock.json
 package.json
 nvim/lazy-lock.json
 /tmux/plugins
+/lazygit/state.yml
