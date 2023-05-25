@@ -1,0 +1,17 @@
+gui:
+  authorColors:
+    'Ian Chesal': 'green'
+    '*': '#0000ff'
+  branchColors:
+    'production': 'red'
+  showIcons: true
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+os:
+  editPreset: 'nvim'
+notARepository: 'quit'
+update:
+  method: 'never' # brew keeps it up to date
+confirmOnQuit: false
