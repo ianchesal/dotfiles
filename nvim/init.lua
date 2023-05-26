@@ -532,7 +532,13 @@ local lspconfig = require("lspconfig")
 lspconfig.solargraph.setup({
   settings = {
     solargraph = {
-      diagnostics = true,
+      autoformat = false,
+      completion = true,
+      diagnostic = true,
+      folding = true,
+      references = true,
+      rename = true,
+      symbols = true
     },
   },
 })
