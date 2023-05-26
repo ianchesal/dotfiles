@@ -1,6 +1,6 @@
-ruby 2.7.8
-nodejs 16.15.1
-terraform 1.4.6
+ruby 3.1.1
+nodejs 18.16.0
+terraform 1.2.1
 golang 1.20.4
 packer 1.8.7
 rust 1.69.0
