@@ -1,7 +1,7 @@
 desc 'Install LSP servers'
 task lsp: ['lsp:install']
 
-GEMS = %w[neovim solargraph].freeze
+GEMS = %w[neovim solargraph rubocop rubocop-rails rubocop-rspec].freeze
 NPMS = %w[neovim prettier].freeze
 CARGOS = %w[stylua].freeze
 
