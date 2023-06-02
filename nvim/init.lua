@@ -57,6 +57,9 @@ require("lazy").setup({
   { import = "plugins" },
 }, {})
 
+-- [[ Color Scheme Selection ]]
+vim.cmd("colorscheme nightfox")
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
