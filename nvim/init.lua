@@ -218,6 +218,11 @@ require("telescope").setup({
       },
     },
   },
+  pickers = {
+    colorscheme = {
+      enable_preview = true,
+    },
+  }
 })
 
 -- Enable telescope fzf native, if installed
@@ -242,6 +247,7 @@ vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { de
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
 vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
 vim.keymap.set("n", "<leader>sk", require("telescope.builtin").keymaps, { desc = "[S]earch [K]eymaps" })
+vim.keymap.set("n", "<leader>sc", require("telescope.builtin").colorscheme, { desc = "[S]earch [C]olorschemes" })
 
 -- Toggle autoformatting off/on
 vim.keymap.set("n", "<leader>tf", "<cmd>KickstartFormatToggle<CR>", { desc = "Toggle auto-formatting", noremap = true })
