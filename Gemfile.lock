@@ -26,6 +26,8 @@ GEM
     neovim (0.9.0)
       msgpack (~> 1.1)
       multi_json (~> 1.0)
+    nokogiri (1.15.2-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.15.2-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.15.2-x86_64-linux)
@@ -90,6 +92,7 @@ GEM
     yard (0.9.34)
 
 PLATFORMS
+  arm64-darwin-22
   x86_64-darwin-22
   x86_64-linux
 
