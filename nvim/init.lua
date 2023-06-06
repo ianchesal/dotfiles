@@ -42,18 +42,21 @@ require("lazy").setup({
   -- Detect tabstop and shiftwidth automatically
   "tpope/vim-sleuth",
 
+  -- Ruby indentation niceness
+  { "RRethy/nvim-treesitter-endwise", lazy = false },
+
   -- Make tmux and nvim play nice together
   "christoomey/vim-tmux-navigator",
   "preservim/vimux",
 
   -- Useful plugin to show you pending keybinds.
-  { "folke/which-key.nvim",          opts = {} },
+  { "folke/which-key.nvim",           opts = {} },
 
   -- "gc" to comment visual regions/lines
-  { "numToStr/Comment.nvim",         opts = {} },
+  { "numToStr/Comment.nvim",          opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { "nvim-telescope/telescope.nvim", version = "*", dependencies = { "nvim-lua/plenary.nvim" } },
+  { "nvim-telescope/telescope.nvim",  version = "*", dependencies = { "nvim-lua/plenary.nvim" } },
   { import = "plugins" },
 }, {})
 
@@ -73,7 +76,7 @@ vim.wo.number = true
 vim.o.mouse = "a"
 
 -- Why would you want 8?
-vim.tabstop = 2
+vim.o.tabstop = 2
 -- TODO: Consider using https://github.com/FotiadisM/tabset.nvim
 
 -- Sync clipboard between OS and Neovim.
@@ -101,6 +104,9 @@ end
 
 -- Enable break indent
 vim.o.breakindent = true
+
+-- Indentation
+vim.o.cindent = true
 
 -- Save undo history
 vim.o.undofile = true
@@ -360,6 +366,12 @@ require("nvim-treesitter.configs").setup({
     },
   },
 })
+
+require('nvim-treesitter.configs').setup {
+  endwise = {
+    enable = true,
+  },
+}
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
