@@ -1,7 +1,6 @@
 desc 'Install LSP servers'
 task lsp: ['lsp:install']
 
-GEMS = %w[neovim solargraph rubocop rubocop-rails rubocop-rspec].freeze
 NPMS = %w[neovim prettier].freeze
 CARGOS = %w[stylua].freeze
 
@@ -13,7 +12,7 @@ namespace :lsp do
     puts 'Install: npm-based LSP servers'.green
     NPMS.each { |g| sh "npm install --location=global #{g}" }
     puts 'Install: gem-based LSP servers'.green
-    GEMS.each { |g| sh "gem install #{g}" }
+    sh 'bundle install'
   end
 
   task :update do
@@ -23,7 +22,7 @@ namespace :lsp do
     puts 'Update: npm-based LSP servers'.green
     NPMS.each { |g| sh "npm update --location=global #{g}" }
     puts 'Update: gem-based LSP servers'.green
-    GEMS.each { |g| sh "gem update #{g}" }
+    sh 'bundle update'
   end
 
   task :clean do
@@ -33,7 +32,11 @@ namespace :lsp do
     puts 'Uninstall: npm-based LSP servers'.green
     NPMS.each { |g| sh "npm uninstall #{g}" }
     puts 'Uninstall: gem-based LSP servers'.green
-    GEMS.each { |g| sh "gem uninstall #{g}" }
+    sh 'rm -f Gemfile Gemfile.lock'
+    sh 'touch Gemfile Gemfile.lock'
+    sh 'bundle clean --force'
+    sh 'rm -f Gemfile Gemfile.lock'
+    sh 'git restore Gemfile Gemfile.lock'
   end
 end
 
