@@ -40,7 +40,7 @@ GEM
     rack (3.0.7)
     rainbow (3.1.1)
     rbs (2.8.4)
-    regexp_parser (2.8.0)
+    regexp_parser (2.8.1)
     reverse_markdown (2.1.1)
       nokogiri
     rexml (3.2.5)
