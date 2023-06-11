@@ -201,6 +201,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   pattern = "*",
 })
 
+-- [[ Configure Lazy/Mason ]]
+vim.keymap.set("n", "<leader>ll", ":Lazy<cr>", { desc = "Open Lazy management interface" })
+vim.keymap.set("n", "<leader>lm", ":Mason<cr>", { desc = "Open Mason management interface" })
+vim.keymap.set("n", "<leader>li", ":LspInfo<cr>", { desc = "Open LspInfo interface" })
+
 -- [[ Configure Vimux ]]
 vim.keymap.set("n", "<leader>vp", ":VimuxPromptCommand<cr>", { desc = "Run command in tmux shell" })
 vim.keymap.set("n", "<leader>vl", ":VimuxRunLastCommand<cr>", { desc = "Run last shell command" })
