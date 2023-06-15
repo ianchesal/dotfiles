@@ -55,6 +55,9 @@ require("lazy").setup({
   -- "gc" to comment visual regions/lines
   { "numToStr/Comment.nvim",          opts = {} },
 
+  -- Highlight git merge conflicts, work with Git conflicts from withing neovim
+  -- { 'akinsho/git-conflict.nvim',      version = "*", config = true },
+
   -- Fuzzy Finder (files, lsp, etc)
   { "nvim-telescope/telescope.nvim",  version = "*", dependencies = { "nvim-lua/plenary.nvim" } },
   { import = "plugins" },
