@@ -1,9 +1,10 @@
--- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-surround.md
+-- https://github.com/kylechui/nvim-surround
 return {
-  'echasnovski/mini.surround',
-  version = false,
-  lazy = false,
+  "kylechui/nvim-surround",
+  event = "VeryLazy",
   config = function()
-    require('mini.surround').setup()
+    require("nvim-surround").setup({
+      -- Configuration here, or leave empty to use defaults
+    })
   end
 }
