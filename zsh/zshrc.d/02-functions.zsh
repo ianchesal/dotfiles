@@ -55,3 +55,10 @@ function dotenv() {
   fi
 
 }
+
+function debug:config_files() {
+  # Prints all the files that a program opens on startup
+  # Helpful for figuring out where a program is reading
+  # configuration from.
+  strace -f "$1" 2>&1 | grep openat
+}
