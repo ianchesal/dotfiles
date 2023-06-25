@@ -40,7 +40,8 @@ else
   export EDITOR='vim'
 fi
 
-export GREP_COLOR='1;32'
+# export GREP_COLOR='1;32'
+export GREP_COLORS='mt=1;32'
 export LSCOLOR="Gxfxcxdxbxegedabagacad"
 
 # I forget what this does...
