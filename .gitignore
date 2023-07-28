@@ -7,6 +7,7 @@ karabiner/automatic_backups
 package-lock.json
 package.json
 nvim/lazy-lock.json
+nvim.old/lazy-lock.json
 /tmux/plugins
 /lazygit/state.yml
 Gemfile.lock
