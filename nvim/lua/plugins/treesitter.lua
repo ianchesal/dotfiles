@@ -1,8 +1,25 @@
 return {
-  -- Highlight, edit, and navigate code
-  'nvim-treesitter/nvim-treesitter',
-  dependencies = {
-    'nvim-treesitter/nvim-treesitter-textobjects',
+  -- add more treesitter parsers
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "bash",
+        "javascript",
+        "json",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "ruby",
+        "terraform",
+        "terraform",
+        "tsx",
+        "vim",
+        "yaml",
+        "git_rebase",
+        "gitcommit",
+        "gitignore",
+      },
+    },
   },
-  build = ":TSUpdate",
 }
