@@ -18,17 +18,6 @@ opt.breakindent = true
 -- opt.cindent = true
 opt.visualbell = true
 
--- I am too old to re-learn how to yank and paste a whole line in vim
-vim.cmd([[noremap Y Y]])
-
--- Allow me to typo q and w
-vim.cmd([[
-cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
-cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
-cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
-cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
-]])
-
 -- WSL Clipboard support
 if is_wsl then
   -- This is NeoVim's recommended way to solve clipboard sharing if you use WSL
@@ -52,3 +41,7 @@ end
 -- Don't care about these
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python3_provider = 0
+
+-- Don't need netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
