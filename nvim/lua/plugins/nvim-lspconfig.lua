@@ -10,7 +10,7 @@ return {
         diagnosticls = {},
         dockerls = {},
         helm_ls = {},
-        json_ls = {},
+        jsonls = {},
         jsonnet_ls = {},
         lua_ls = {
           Lua = {
@@ -22,10 +22,7 @@ return {
         rubocop = {},
         sqlls = {},
         solargraph = {},
-        shellcheck = {},
-        shlint = {},
         terraformls = {},
-        tflint = {},
         tsserver = {},
         yamlls = {},
       },
