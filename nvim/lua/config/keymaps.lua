@@ -21,3 +21,24 @@ vim.keymap.set("n", "<leader>vk", ":VimuxCloseRunner<cr>", { desc = "Close tmux 
 vim.keymap.set("n", "<leader>vb", ":VimuxInterruptRunner<cr>", { desc = "Interrupt command running in tmux shell" })
 vim.g.VimuxHeight = "30"
 vim.g.VimuxCloseOnExit = 1
+
+-- I prefer these keymaps for Lazy and Mason and LSP interactions
+vim.keymap.del("n", "<leader>l")
+vim.keymap.del("n", "<leader>cm")
+-- vim.keymap.del("n", "<leader>cl")
+vim.keymap.set("n", "<leader>ll", ":Lazy<cr>", { desc = "Open Lazy management interface" })
+vim.keymap.set("n", "<leader>lm", ":Mason<cr>", { desc = "Open Mason management interface" })
+vim.keymap.set("n", "<leader>li", ":LspInfo<cr>", { desc = "Open LspInfo interface" })
+vim.keymap.set("n", "<leader>lr", ":LspRestart<cr>", { desc = "Restart LSP" })
+vim.keymap.set("n", "<leader>lg", ":LspLog<cr>", { desc = "Open LSP logs" })
+
+-- I am too old to re-learn how to yank and paste a whole line in vim
+vim.cmd([[noremap Y Y]])
+
+-- Allow me to typo q and w
+vim.cmd([[
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
+cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
+cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
+]])
