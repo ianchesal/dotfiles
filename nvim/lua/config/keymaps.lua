@@ -24,13 +24,20 @@ vim.g.VimuxCloseOnExit = 1
 
 -- I prefer these keymaps for Lazy and Mason and LSP interactions
 vim.keymap.del("n", "<leader>l")
-vim.keymap.del("n", "<leader>cm")
 -- vim.keymap.del("n", "<leader>cl")
+vim.keymap.set("n", "<leader>lg", ":LspLog<cr>", { desc = "Open LSP logs" })
+vim.keymap.set("n", "<leader>li", ":LspInfo<cr>", { desc = "Open LspInfo interface" })
 vim.keymap.set("n", "<leader>ll", ":Lazy<cr>", { desc = "Open Lazy management interface" })
 vim.keymap.set("n", "<leader>lm", ":Mason<cr>", { desc = "Open Mason management interface" })
-vim.keymap.set("n", "<leader>li", ":LspInfo<cr>", { desc = "Open LspInfo interface" })
+vim.keymap.set("n", "<leader>ln", "<cmd>NullLsInfo<CR>", { desc = "NullLS Information" })
 vim.keymap.set("n", "<leader>lr", ":LspRestart<cr>", { desc = "Restart LSP" })
-vim.keymap.set("n", "<leader>lg", ":LspLog<cr>", { desc = "Open LSP logs" })
+
+-- MarkdownPreview
+vim.keymap.set("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", { desc = "Toggle Markdown preview" })
+
+-- Tab to move to between buffers
+vim.keymap.set("n", "<Tab>", ":bnext<CR>", { silent = true })
+vim.keymap.set("n", "<S-Tab>", ":bprev<CR>", { silent = true })
 
 -- I am too old to re-learn how to yank and paste a whole line in vim
 vim.cmd([[noremap Y Y]])

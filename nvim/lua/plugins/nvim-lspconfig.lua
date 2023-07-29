@@ -2,6 +2,10 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
+      -- Automatically format on save
+      autoformat = true,
+      -- Useful for debugging formatter issues
+      format_notify = true,
       servers = {
         bashls = {
           filetypes = { "sh", "zsh" },
