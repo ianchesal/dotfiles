@@ -6,6 +6,8 @@
 -- TODO(ian): There's likely a better way to do this.
 -- Only switch to TMuxNavgivate if we're in a tmux session
 
+local Util = require("lazyvim.util")
+
 vim.keymap.del("n", "<C-h>")
 vim.keymap.del("n", "<C-j>")
 vim.keymap.del("n", "<C-k>")
@@ -40,8 +42,13 @@ vim.keymap.set("n", "<leader>lr", ":LspRestart<cr>", { desc = "Restart LSP" })
 vim.keymap.set("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", { desc = "Toggle Markdown preview" })
 
 -- Tab to move to between buffers
-vim.keymap.set("n", "<Tab>", ":bnext<CR>", { silent = true })
-vim.keymap.set("n", "<S-Tab>", ":bprev<CR>", { silent = true })
+if Util.has("bufferline.nvim") then
+  vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
+  vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+else
+  vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+  vim.keymap.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+end
 
 -- I am too old to re-learn how to yank and paste a whole line in vim
 vim.cmd([[noremap Y Y]])
