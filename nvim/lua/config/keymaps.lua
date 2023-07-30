@@ -7,47 +7,48 @@
 -- Only switch to TMuxNavgivate if we're in a tmux session
 
 local Util = require("lazyvim.util")
-
-vim.keymap.del("n", "<C-h>")
-vim.keymap.del("n", "<C-j>")
-vim.keymap.del("n", "<C-k>")
-vim.keymap.del("n", "<C-l>")
-vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
-vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
-vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>")
+local map = vim.keymap
 
 -- Only set this up if we're in a tmux session
 if os.getenv("TMUX") then
-  vim.keymap.set("n", "<leader>vp", ":VimuxPromptCommand<cr>", { desc = "Run command in tmux shell" })
-  vim.keymap.set("n", "<leader>vl", ":VimuxRunLastCommand<cr>", { desc = "Run last shell command" })
-  vim.keymap.set("n", "<leader>vi", ":VimuxInspectRunner<cr>", { desc = "Inspect tmux shell" })
-  vim.keymap.set("n", "<leader>vz", ":VimuxZoomRunner<cr>", { desc = "Zoom tmux shell" })
-  vim.keymap.set("n", "<leader>vk", ":VimuxCloseRunner<cr>", { desc = "Close tmux shell" })
-  vim.keymap.set("n", "<leader>vb", ":VimuxInterruptRunner<cr>", { desc = "Interrupt command running in tmux shell" })
+  map.del("n", "<C-h>")
+  map.del("n", "<C-j>")
+  map.del("n", "<C-k>")
+  map.del("n", "<C-l>")
+  map.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
+  map.set("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
+  map.set("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>")
+
+  map.set("n", "<leader>vp", ":VimuxPromptCommand<cr>", { desc = "Run command in tmux shell" })
+  map.set("n", "<leader>vl", ":VimuxRunLastCommand<cr>", { desc = "Run last shell command" })
+  map.set("n", "<leader>vi", ":VimuxInspectRunner<cr>", { desc = "Inspect tmux shell" })
+  map.set("n", "<leader>vz", ":VimuxZoomRunner<cr>", { desc = "Zoom tmux shell" })
+  map.set("n", "<leader>vk", ":VimuxCloseRunner<cr>", { desc = "Close tmux shell" })
+  map.set("n", "<leader>vb", ":VimuxInterruptRunner<cr>", { desc = "Interrupt command running in tmux shell" })
   vim.g.VimuxHeight = "30"
   vim.g.VimuxCloseOnExit = 1
 end
 
 -- I prefer these keymaps for Lazy and Mason and LSP interactions
-vim.keymap.del("n", "<leader>l")
--- vim.keymap.del("n", "<leader>cl")
-vim.keymap.set("n", "<leader>lg", ":LspLog<cr>", { desc = "Open LSP logs" })
-vim.keymap.set("n", "<leader>li", ":LspInfo<cr>", { desc = "Open LspInfo interface" })
-vim.keymap.set("n", "<leader>ll", ":Lazy<cr>", { desc = "Open Lazy management interface" })
-vim.keymap.set("n", "<leader>lm", ":Mason<cr>", { desc = "Open Mason management interface" })
-vim.keymap.set("n", "<leader>ln", "<cmd>NullLsInfo<CR>", { desc = "NullLS Information" })
-vim.keymap.set("n", "<leader>lr", ":LspRestart<cr>", { desc = "Restart LSP" })
+map.del("n", "<leader>l")
+-- map.del("n", "<leader>cl")
+map.set("n", "<leader>lg", ":LspLog<cr>", { desc = "Open LSP logs" })
+map.set("n", "<leader>li", ":LspInfo<cr>", { desc = "Open LspInfo interface" })
+map.set("n", "<leader>ll", ":Lazy<cr>", { desc = "Open Lazy management interface" })
+map.set("n", "<leader>lm", ":Mason<cr>", { desc = "Open Mason management interface" })
+map.set("n", "<leader>ln", "<cmd>NullLsInfo<CR>", { desc = "NullLS Information" })
+map.set("n", "<leader>lr", ":LspRestart<cr>", { desc = "Restart LSP" })
 
 -- MarkdownPreview
-vim.keymap.set("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", { desc = "Toggle Markdown preview" })
+map.set("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", { desc = "Toggle Markdown preview" })
 
 -- Tab to move to between buffers
 if Util.has("bufferline.nvim") then
-  vim.keymap.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
-  vim.keymap.set("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+  map.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
+  map.set("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
 else
-  vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
-  vim.keymap.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+  map.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+  map.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 end
 
 -- I am too old to re-learn how to yank and paste a whole line in vim
