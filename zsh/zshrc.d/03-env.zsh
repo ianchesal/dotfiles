@@ -44,6 +44,9 @@ fi
 export GREP_COLORS='mt=1;32'
 export LSCOLOR="Gxfxcxdxbxegedabagacad"
 
+# For Terminal.app
+export CLICOLOR=1
+
 # I forget what this does...
 export COPYFILE_DISABLE=true
 
