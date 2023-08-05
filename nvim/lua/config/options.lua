@@ -7,8 +7,8 @@ local is_wsl = (function()
   local output = vim.fn.systemlist("uname -r")
   return not not string.find(output[1] or "", "WSL")
 end)()
-local is_mac = vim.fn.has("macunix") == 1
-local is_linux = not is_wsl and not is_mac
+-- local is_mac = vim.fn.has("macunix") == 1
+-- local is_linux = not is_wsl and not is_mac
 
 local opt = vim.opt
 
@@ -41,7 +41,3 @@ end
 -- Don't care about these
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python3_provider = 0
-
--- Don't need netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
