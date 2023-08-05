@@ -1,16 +1,23 @@
-if true then
-  return {}
-end
-
 return {
-  -- add gruvbox
-  { "ellisonleao/gruvbox.nvim" },
+  {
+    "AlexvZyl/nordic.nvim",
+    "bluz71/vim-moonfly-colors",
+    "bluz71/vim-nightfly-colors",
+    "catppuccin/nvim",
+    "ellisonleao/gruvbox.nvim",
+    "jacoborus/tender.vim",
+    "mcchrish/zenbones.nvim",
+    "navarasu/onedark.nvim",
+    "projekt0n/github-nvim-theme",
+    "rebelot/kanagawa.nvim",
+    "rktjmp/lush.nvim",
+    "rmehri01/onenord.nvim",
+  },
 
-  -- Configure LazyVim to load gruvbox
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
+      colorscheme = "tokyonight",
     },
   },
 }
