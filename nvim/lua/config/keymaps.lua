@@ -18,6 +18,7 @@ if os.getenv("TMUX") then
   map.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
   map.set("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
   map.set("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>")
+  map.set("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>")
 
   map.set("n", "<leader>vp", ":VimuxPromptCommand<cr>", { desc = "Run command in tmux shell" })
   map.set("n", "<leader>vl", ":VimuxRunLastCommand<cr>", { desc = "Run last shell command" })
