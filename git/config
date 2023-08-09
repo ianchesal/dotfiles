@@ -40,6 +40,7 @@
   editor = nvim
 # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
   preloadindex = true
+	excludesfile = /Users/ianchesal/.gitignore_global
 [color]
 	status = auto
 	branch = auto
