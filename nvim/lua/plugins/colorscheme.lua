@@ -12,12 +12,13 @@ return {
     "rebelot/kanagawa.nvim",
     "rktjmp/lush.nvim",
     "rmehri01/onenord.nvim",
+    "EdenEast/nightfox.nvim",
   },
 
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "tokyonight",
+      colorscheme = "moonfly",
     },
   },
 }
