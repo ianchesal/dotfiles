@@ -40,6 +40,9 @@ map.set("n", "<leader>lm", ":Mason<cr>", { desc = "Open Mason management interfa
 map.set("n", "<leader>ln", "<cmd>NullLsInfo<CR>", { desc = "NullLS Information" })
 map.set("n", "<leader>lr", ":LspRestart<cr>", { desc = "Restart LSP" })
 
+-- Hardtime
+map.set("n", "<leader>uh", ":Hardtime toggle<cr>", { desc = "Toggle Hardtime" })
+
 -- MarkdownPreview
 map.set("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", { desc = "Toggle Markdown preview" })
 
