@@ -1,7 +1,7 @@
 desc 'Install Python and related dependencies'
 task python: ['python:all']
 
-PYTHON_VERSION = '3.10.12'.freeze
+PYTHON_VERSION = '3.11.4'.freeze
 
 namespace :python do
   task all: [:install, :activate, :rc, :update]
