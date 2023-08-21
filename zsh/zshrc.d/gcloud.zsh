@@ -4,10 +4,10 @@
 # This was set up with:
 #     pyenv install 2.7.16
 #     pyenv virtualenv 2.7.16 gcloud-sdk
-if [ "$(uname 2> /dev/null)" != "Linux" ]; then
-  # Only need this on macOS
-  export CLOUDSDK_PYTHON=~/.pyenv/versions/gcloud-sdk/bin/python3
-fi
+# if [ "$(uname 2> /dev/null)" != "Linux" ]; then
+#   # Only need this on macOS
+#   export CLOUDSDK_PYTHON=~/.pyenv/versions/gcloud-sdk/bin/python3
+# fi
 # See: https://cloud.google.com/sdk/crypto
 # Required to work with legacy p12 keyfiles
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
