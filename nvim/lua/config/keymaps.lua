@@ -34,7 +34,8 @@ end
 map.del("n", "<leader>gg")
 map.del("n", "<leader>gG")
 map.set("n", "<leader>gg", ":Git<cr>", { desc = "fugitive" })
-map.set("n", "<leader>ga", ":Git add %:p<cr>", { desc = "Add current file" })
+map.set("n", "<leader>ga", ":Git add %:p<cr>", { desc = "add current file" })
+map.set("n", "<leader>gp", ":Git push origin HEAD<cr>", { desc = "push orgin HEAD" })
 
 -- I prefer these keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
