@@ -30,6 +30,12 @@ if os.getenv("TMUX") then
   vim.g.VimuxCloseOnExit = 1
 end
 
+-- Git fugitive for me
+map.del("n", "<leader>gg")
+map.del("n", "<leader>gG")
+map.set("n", "<leader>gg", ":Git<cr>", { desc = "fugitive" })
+map.set("n", "<leader>ga", ":Git add %:p<cr>", { desc = "Add current file" })
+
 -- I prefer these keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
 -- map.del("n", "<leader>cl")
