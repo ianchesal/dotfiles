@@ -34,6 +34,7 @@ end
 map.del("n", "<leader>gg")
 map.del("n", "<leader>gG")
 map.set("n", "<leader>gg", ":Git<cr>", { desc = "fugitive" })
+map.set("n", "<leader>gl", ":Git log<cr>", { desc = "view logs" })
 map.set("n", "<leader>ga", ":Git add %:p<cr>", { desc = "add current file" })
 map.set("n", "<leader>gp", ":Git push origin HEAD<cr>", { desc = "push orgin HEAD" })
 
