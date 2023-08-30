@@ -1,3 +1,0 @@
-return {
-  -- "weizheheng/ror.nvim",
-}
