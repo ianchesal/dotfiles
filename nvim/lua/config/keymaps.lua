@@ -48,8 +48,19 @@ map.set("n", "<leader>lm", ":Mason<cr>", { desc = "Open Mason management interfa
 map.set("n", "<leader>ln", "<cmd>NullLsInfo<CR>", { desc = "NullLS Information" })
 map.set("n", "<leader>lr", ":LspRestart<cr>", { desc = "Restart LSP" })
 
--- Hardtime
-map.set("n", "<leader>uh", ":Hardtime toggle<cr>", { desc = "Toggle Hardtime" })
+-- Copilot
+local copilot_on = true
+vim.api.nvim_create_user_command("CopilotToggle", function()
+  if copilot_on then
+    vim.cmd("Copilot disable")
+    print("Copilot OFF")
+  else
+    vim.cmd("Copilot enable")
+    print("Copilot ON")
+  end
+  copilot_on = not copilot_on
+end, { nargs = 0 })
+map.set("", "<leader>ug", ":CopilotToggle<CR>", { noremap = true, silent = true })
 
 -- MarkdownPreview
 map.set("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", { desc = "Toggle Markdown preview" })
