@@ -18,8 +18,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      -- colorscheme = "moonfly",
-      colorscheme = "duckbones",
+      colorscheme = "moonfly",
     },
   },
 }
