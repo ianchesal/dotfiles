@@ -11,3 +11,4 @@ nvim.old/lazy-lock.json
 /tmux/plugins
 /lazygit/state.yml
 Gemfile.lock
+Brewfile.lock.json
