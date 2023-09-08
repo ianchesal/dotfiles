@@ -13,11 +13,6 @@ namespace :tmux do
     `git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm`
   end
 
-  task :update do
-    puts 'Updating tmux plugins...'.green
-    # TODO: Actually update the tmux plugins
-  end
-
   task :clean do
     sh "rm -f #{home('.config/tmux')}"
     sh "rm -rf #{home('.local/share/tmux')}"
@@ -27,5 +22,4 @@ namespace :tmux do
 end
 
 task all: [:tmux]
-task update: ['tmux:update']
 task clean: ['tmux:clean']
