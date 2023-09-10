@@ -1,11 +1,13 @@
 # eza: https://github.com/eza-community/eza
 if _has eza; then
+  unalias l
   unalias ls
   unalias ll
   unalias la
   unalias ldot
 
   alias ls=eza
+  alias l=eza
   alias l1='ls -1 --group-directories-first'
   alias ll='ls -l'
   alias la='ls -la'

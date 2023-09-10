@@ -44,6 +44,7 @@ fi
 alias grep="grep --color=auto --exclude-dir={CVS,.git,.hg,.svn}"
 
 # more ways to ls
+alias l=ls
 alias ll='ls -lah'
 alias la='ls -lAh'
 alias ldot='ls -ld .*'
