@@ -1,16 +1,16 @@
 return {
   {
-    "AlexvZyl/nordic.nvim",
+    -- "AlexvZyl/nordic.nvim",
     "EdenEast/nightfox.nvim",
     "bluz71/vim-moonfly-colors",
     "bluz71/vim-nightfly-colors",
-    "catppuccin/nvim",
-    "ellisonleao/gruvbox.nvim",
-    "jacoborus/tender.vim",
-    "mcchrish/zenbones.nvim",
+    -- "catppuccin/nvim",
+    -- "ellisonleao/gruvbox.nvim",
+    -- "jacoborus/tender.vim",
+    -- "mcchrish/zenbones.nvim",
     "projekt0n/github-nvim-theme",
-    "rebelot/kanagawa.nvim",
-    "rktjmp/lush.nvim",
+    -- "rebelot/kanagawa.nvim",
+    -- "rktjmp/lush.nvim",
   },
 
   {
