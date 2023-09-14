@@ -74,6 +74,9 @@ else
   map.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 end
 
+-- Make U the redo command
+map.set("n", "U", "<C-r>")
+
 -- I am too old to re-learn how to yank and paste a whole line in vim
 vim.cmd([[noremap Y Y]])
 
