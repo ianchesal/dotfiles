@@ -6,12 +6,12 @@ if _has eza; then
   unalias la
   unalias ldot
 
-  alias ls=eza
-  alias l=eza
-  alias l1='ls -1 --group-directories-first'
-  alias ll='ls -l'
-  alias la='ls -la'
-  alias lg='ls -la --git'
+  alias l1='eza -1 --group-directories-first'
+  alias l='eza -1 --group-directories-first'
+  alias la='eza -la --group-directories-first'
+  alias lg='eza -la --git --group-directories-first'
+  alias ll='eza -l --group-directories-first'
+  alias ls='eza -1 --group-directories-first'
 
   et() {
     eza -alT --git -I'.git|node_modules|.mypy_cache|.pytest_cache|.venv' --color=always "$@" | less -R;
