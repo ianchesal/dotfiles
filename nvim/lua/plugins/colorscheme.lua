@@ -1,32 +1,33 @@
 return {
-  {
-    -- "AlexvZyl/nordic.nvim",
-    "EdenEast/nightfox.nvim",
-    "bluz71/vim-moonfly-colors",
-    "bluz71/vim-nightfly-colors",
-    -- "catppuccin/nvim",
-    -- "ellisonleao/gruvbox.nvim",
-    -- "jacoborus/tender.vim",
-    -- "mcchrish/zenbones.nvim",
-    "projekt0n/github-nvim-theme",
-    -- "rebelot/kanagawa.nvim",
-    -- "rktjmp/lush.nvim",
-  },
+  -- {
+  --   --  This theme doesn't support everything I use in LazyVim
+  --   -- Use it but stuff doesn't quite pop as well
+  --   "navarasu/onedark.nvim",
+  --   opts = {
+  --     style = "darker", -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+  --     lualine = {
+  --       transparent = true,
+  --     },
+  --   },
+  -- },
+
+  -- {
+  --   "catppuccin/nvim",
+  --   name = "catppuccin",
+  -- },
 
   {
-    "navarasu/onedark.nvim",
+    "folke/tokyonight.nvim",
+    name = "tokyonight",
     opts = {
-      style = "darker", -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
-      lualine = {
-        transparent = true,
-      },
+      style = "night"
     },
   },
 
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "onedark",
+      colorscheme = "tokyonight-night",
     },
   },
 }
