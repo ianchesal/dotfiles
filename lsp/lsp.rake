@@ -41,5 +41,5 @@ namespace :lsp do
 end
 
 task all: [:lsp]
-task update: ['lsp:update']
+# task update: ['lsp:update']
 task clean: ['lsp:clean']
