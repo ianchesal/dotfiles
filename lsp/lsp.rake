@@ -16,13 +16,13 @@ namespace :lsp do
   end
 
   task :update do
-    puts 'Update: cargo-based LSP servers'.green
-    CARGOS.each { |g| sh "cargo install #{g}" }
-    sh 'cargo install --bins tree-sitter-cli'
-    puts 'Update: npm-based LSP servers'.green
-    NPMS.each { |g| sh "npm update --location=global #{g}" }
-    puts 'Update: gem-based LSP servers'.green
-    sh 'bundle update'
+    # puts 'Update: cargo-based LSP servers'.green
+    # CARGOS.each { |g| sh "cargo install #{g}" }
+    # sh 'cargo install --bins tree-sitter-cli'
+    # puts 'Update: npm-based LSP servers'.green
+    # NPMS.each { |g| sh "npm update --location=global #{g}" }
+    # puts 'Update: gem-based LSP servers'.green
+    # sh 'bundle update'
   end
 
   task :clean do
