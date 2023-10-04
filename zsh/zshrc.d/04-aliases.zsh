@@ -111,6 +111,7 @@ alias gpoh='git push origin HEAD'
 alias grep='grep --color=auto -E'
 alias gri='git rebase -i'
 alias gss='git status --short --branch'
+alias gsp='git stash push -u'
 alias please='sudo $(fc -ln -1)'
 alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
