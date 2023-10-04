@@ -26,12 +26,12 @@ return {
       dashboard.button("q", " " .. " Quit", ":qa<CR>"),
     }
     for _, button in ipairs(dashboard.section.buttons.val) do
-      button.opts.hl = "DashboardShortCut"
-      button.opts.hl_shortcut = "DashboardKey"
+      button.opts.hl = "AlphaButtons"
+      button.opts.hl_shortcut = "AlphaShortcut"
     end
-    dashboard.section.header.opts.hl = "GlyphPalette9"
-    dashboard.section.buttons.opts.hl = "DashboardIcon"
-    dashboard.section.footer.opts.hl = "DashboardFooter"
+    dashboard.section.header.opts.hl = "GlyphPalette9" -- Red for meatboy using tokyonight
+    -- dashboard.section.buttons.opts.hl = "DashboardIcon"
+    dashboard.section.footer.opts.hl = "AlphaFooter"
     dashboard.opts.layout[1].val = 8
     return dashboard
   end,
