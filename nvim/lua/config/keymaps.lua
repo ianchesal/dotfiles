@@ -66,13 +66,13 @@ map.set("", "<leader>ug", ":CopilotToggle<CR>", { noremap = true, silent = true 
 map.set("n", "<leader>mp", ":MarkdownPreviewToggle<cr>", { desc = "Toggle Markdown preview" })
 
 -- Tab to move to between buffers
-if Util.has("bufferline.nvim") then
-  map.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
-  map.set("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
-else
-  map.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
-  map.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-end
+-- if Util.has("bufferline.nvim") then
+--   map.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
+--   map.set("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+-- else
+--   map.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+--   map.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+-- end
 
 -- Make U the redo command
 map.set("n", "U", "<C-r>")
