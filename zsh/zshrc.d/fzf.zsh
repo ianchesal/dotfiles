@@ -1,10 +1,3 @@
-export FZF_DEFAULT_OPTS='
--m --preview "[[ $(file --mime {}) =~ binary ]] &&
-             echo {} is a binary file ||
-             (highlight -O ansi {} ||
-             cat {}) 2> /dev/null | head -$LINES"'
-
-
 # Nord colors for fzf
 # Generated here: https://minsw.github.io/fzf-color-picker/
 #export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
@@ -13,7 +6,7 @@ export FZF_DEFAULT_OPTS='
 #    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
 #    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
 # Molokai colors for fzf
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+export FZF_DEFAULT_OPTS='
     --color fg:252,bg:233,hl:67,fg+:252,bg+:235,hl+:81
     --color info:144,prompt:161,spinner:135,pointer:135,marker:118'
 
