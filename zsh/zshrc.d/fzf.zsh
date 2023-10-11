@@ -17,7 +17,7 @@ export FZF_DEFAULT_OPTS='
 fe() {
   local files
   IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
-  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+  [[ -n "$files" ]] && ${EDITOR:-nvim} "${files[@]}"
 }
 
 # Modified version where you can press
@@ -29,7 +29,7 @@ fo() {
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then
-    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-nvim} "$file"
   fi
 }
 
