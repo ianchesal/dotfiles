@@ -5,8 +5,14 @@
 ### variables
 SHELL_SESSIONS_DISABLE=1
 KEYTIMEOUT=1
-export EDITOR="vim"
-export VISUAL="vim"
+
+if _has nvim; then
+  export EDITOR="nvim"
+  export VISUAL="nvim"
+else
+  export EDITOR="vim"
+  export VISUAL="vim"
+fi
 
 if (( ! $+commands[brew] )); then
   if [[ -x /opt/homebrew/bin/brew ]]; then
@@ -31,14 +37,6 @@ if [[ -z "$HOMEBREW_PREFIX" ]]; then
 fi
 
 unset brew_location
-
-# Preferred editor for local and remote sessions
-# (Yes, I know it's vim in both cases...)
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='vim'
-fi
 
 # export GREP_COLOR='1;32'
 export GREP_COLORS='mt=1;32'
