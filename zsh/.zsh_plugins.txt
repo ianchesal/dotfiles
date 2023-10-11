@@ -64,16 +64,18 @@ softmoth/zsh-vim-mode
 ### fish-like conf.d
 mattmc3/zshrc.d
 
+### fuzzy stuff
+# marlonrichert/zsh-autocomplete
+unixorn/fzf-zsh-plugin
+Aloxaf/fzf-tab
+Freed-Wu/fzf-tab-source
+# https://github.com/reegnz/jq-zsh-plugin -- AWESOME jq-repl command
+# reegnz/jq-zsh-plugin
+
 ### fish-like core plugins
 #zsh-users/zsh-autosuggestions
 zsh-users/zsh-history-substring-search
 
-### fuzzy stuff
-#marlonrichert/zsh-autocomplete
-unixorn/fzf-zsh-plugin
-Aloxaf/fzf-tab
-# https://github.com/reegnz/jq-zsh-plugin -- AWESOME jq-repl command
-# reegnz/jq-zsh-plugin
-
-# This needs to come last
-zsh-users/zsh-syntax-highlighting
+# These need to come last
+zdharma-continuum/fast-syntax-highlighting
+# zsh-users/zsh-syntax-highlighting
