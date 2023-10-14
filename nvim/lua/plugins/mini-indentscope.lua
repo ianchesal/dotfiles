@@ -1,6 +1,6 @@
 return {
   "echasnovski/mini.indentscope",
-  config = {
+  opts = {
     draw = {
       animation = require("mini.indentscope").gen_animation.none(),
     },
