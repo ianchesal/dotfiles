@@ -1,0 +1,3 @@
+return {
+  "google/vim-jsonnet",
+}
