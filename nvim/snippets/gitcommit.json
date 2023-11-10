@@ -1,0 +1,18 @@
+{
+  "persona commit body": {
+    "prefix": "persona",
+    "body": [
+      "${1:description}",
+      "",
+      "**Potential Risk**",
+      "",
+      "Worst Case Incident: SEV${2:level}",
+      "",
+      "${3:risk}",
+      "",
+      "**Testing Strategy**",
+      "",
+      "$0"
+    ]
+  }
+}
