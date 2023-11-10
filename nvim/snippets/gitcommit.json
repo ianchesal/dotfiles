@@ -14,5 +14,23 @@
       "",
       "$0"
     ]
+  },
+  "commit potential risk": {
+    "prefix": "risk",
+    "body": [
+      "**Potential Risk**",
+      "",
+      "Worst Case Incident: SEV${1:level}",
+      "",
+      "$0"
+    ]
+  },
+  "commit testing strategy": {
+    "prefix": "testing",
+    "body": [
+      "**Testing Strategy**",
+      "",
+      "$0"
+    ]
   }
 }
