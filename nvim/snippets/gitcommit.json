@@ -26,11 +26,17 @@
     ]
   },
   "commit testing strategy": {
-    "prefix": "testing",
+    "prefix": "test",
     "body": [
       "**Testing Strategy**",
       "",
       "$0"
+    ]
+  },
+  "commit testing strategy for terraform changes": {
+    "prefix": "testtf",
+    "body": [
+      "Plan review. Manual testing post-apply. $0"
     ]
   }
 }
