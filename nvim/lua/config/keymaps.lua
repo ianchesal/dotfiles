@@ -49,7 +49,7 @@ map.set("n", "<leader>ln", "<cmd>NullLsInfo<CR>", { desc = "NullLS Information" 
 map.set("n", "<leader>lr", ":LspRestart<cr>", { desc = "Restart LSP" })
 
 -- Copilot
-local copilot_on = true
+local copilot_on = false -- I start with Copilot OFF
 vim.api.nvim_create_user_command("CopilotToggle", function()
   if copilot_on then
     vim.cmd("Copilot disable")
