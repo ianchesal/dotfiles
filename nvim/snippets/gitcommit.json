@@ -36,7 +36,9 @@
   "commit testing strategy for terraform changes": {
     "prefix": "testtf",
     "body": [
-      "Plan review. Manual testing post-apply. $0"
+      "**Testing Strategy**",
+      "",
+      "Plan review. Manual testing post-apply.$0"
     ]
   }
 }
