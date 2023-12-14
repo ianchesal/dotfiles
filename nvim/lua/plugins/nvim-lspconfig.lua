@@ -23,6 +23,9 @@ return {
           },
         },
         marksman = {},
+        -- regols is not maanged by Mason. i install it with `brew install kitagry/tap/regols`.
+        -- See: https://github.com/kitagry/regols
+        regols = {},
         rubocop = {
           -- See: https://docs.rubocop.org/rubocop/usage/lsp.html
           cmd = { "bundle", "exec", "rubocop", "--lsp" },
