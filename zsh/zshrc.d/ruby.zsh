@@ -1,6 +1,6 @@
 # Use Homebrew OpenSSL w/Ruby
 if _has brew; then
-  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
 fi
 
 alias rake='noglob rake'                    # allows square brackts for rake task invocation
