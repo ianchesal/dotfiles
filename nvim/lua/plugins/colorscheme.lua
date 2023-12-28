@@ -30,19 +30,30 @@ return {
     priority = 1000,
     config = function()
       require("cyberdream").setup({
-        transparent = true, -- enable transparent background
-        italic_comments = true, -- italicize comments
+        transparent = false, -- enable transparent background
+        italic_comments = false, -- italicize comments
         hide_fillchars = true, -- replace all fillchars with ' ' for the ultimate clean look
+        borderless_telescope = false, -- remove borders from telescope windows
+        theme = {
+          colors = {
+            -- Use a slightly darker green
+            green = "#06c258",
+          },
+
+          highlights = {
+            -- Set indent scope to blue (instead of pink)
+            MiniIndentScopeSymbol = { fg = "#5ea1ff" },
+          },
+        },
       })
-      -- vim.cmd("colorscheme cyberdream") -- set the colorscheme
     end,
   },
 
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "tokyonight-night",
-      -- colorscheme = "cyberdream",
+      -- colorscheme = "tokyonight-night",
+      colorscheme = "cyberdream",
     },
   },
 }
