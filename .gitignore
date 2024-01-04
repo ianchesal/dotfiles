@@ -10,5 +10,6 @@ package-lock.json
 /nvim/lazyvim.json
 /tmux/plugins
 /lazygit/state.yml
+/node_modules
 Gemfile.lock
 Brewfile.lock.json
