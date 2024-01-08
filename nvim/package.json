@@ -10,7 +10,7 @@
           "gitcommit",
           "NeogitCommitMessage"
         ],
-        "path": "./gitcommit.json"
+        "path": "snippets/gitcommit.json"
       }
     ]
   }
