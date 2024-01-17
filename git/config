@@ -34,7 +34,7 @@
 	tree = log --graph --decorate --pretty=oneline --abbrev-commit
 	new = !git init && git symbolic-ref HEAD refs/heads/main
 	main-branch = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
-	com = "!f(){ git checkout $(git main-branch) $@;}; f"
+	com = "!f(){ git switch $(git main-branch) $@;}; f"
 [core]
   pager = delta
   editor = nvim
