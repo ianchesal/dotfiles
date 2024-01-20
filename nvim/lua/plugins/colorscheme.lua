@@ -1,21 +1,24 @@
+local cyberdream_dashboard = {
+  -- These are Cyberdream colours. I like them better on the Dashboard
+  -- even when I'm using another theme.
+  DashboardHeader = { fg = "#bd5eff" },
+  DashboardFooter = { fg = "#5ef1ff" },
+  -- dashboard-nvim: doom theme
+  DashboardShortCut = { fg = "#ffbd5e" },
+  DashboardDesc = { fg = "#ffbd5e" },
+  DashboardKey = { fg = "#5eff6c" },
+  DashboardIcon = { fg = "#5ea1ff" },
+  -- dashboard-nvim: hyper theme
+  DashboardProjectTitle = { fg = "#5ea1ff" },
+  DashboardProjectTitleIcon = { fg = "#ffbd5e" },
+  DashboardProjectIcon = { fg = "#ffbd5e" },
+  DashboardMruTitle = { fg = "#5ea1ff" },
+  DashboardMruIcon = { fg = "#ffbd5e" },
+  DashboardFiles = { fg = "#5ef1ff" },
+  DashboardShortCutIcon = { fg = "#ff5ea0" },
+}
+
 return {
-  -- {
-  --   --  This theme doesn't support everything I use in LazyVim
-  --   -- Use it but stuff doesn't quite pop as well
-  --   "navarasu/onedark.nvim",
-  --   opts = {
-  --     style = "darker", -- Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
-  --     lualine = {
-  --       transparent = true,
-  --     },
-  --   },
-  -- },
-
-  -- {
-  --   "catppuccin/nvim",
-  --   name = "catppuccin",
-  -- },
-
   -- {
   --   "folke/tokyonight.nvim",
   --   name = "tokyonight",
@@ -58,6 +61,7 @@ return {
       lualine = {
         transparent = true,
       },
+      highlights = cyberdream_dashboard,
     },
   },
 
