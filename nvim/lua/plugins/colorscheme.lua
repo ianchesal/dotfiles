@@ -50,9 +50,22 @@ return {
   },
 
   {
+    "navarasu/onedark.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {
+      style = "deep",
+      lualine = {
+        transparent = true,
+      },
+    },
+  },
+
+  {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "tokyonight-night",
+      -- colorscheme = "tokyonight-night",
+      colorscheme = "onedark",
       -- colorscheme = "cyberdream",
     },
   },
