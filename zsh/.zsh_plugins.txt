@@ -4,7 +4,7 @@
 
 ### prompt plugins
 # sindresorhus/pure kind:fpath
-romkatv/powerlevel10k kind:fpath
+# romkatv/powerlevel10k kind:fpath
 
 ### benchmarking plugins
 # romkatv/zsh-bench kind:path

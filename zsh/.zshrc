@@ -19,6 +19,9 @@ if [ -f "${HOME}/.zsh_local" ]; then
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/p10k.zsh.
-[[ ! -f ~/.config/zsh/p10k.zsh ]] || source ~/.config/zsh/p10k.zsh
+# [[ ! -f ~/.config/zsh/p10k.zsh ]] || source ~/.config/zsh/p10k.zsh
+
+# Starship
+eval "$(starship init zsh)"
 
 # zprof
