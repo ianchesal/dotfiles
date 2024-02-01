@@ -13,9 +13,6 @@ fi
 source $ZDOTDIR/.antidote/antidote.zsh
 antidote load
 
-# To customize prompt, run `p10k configure` or edit ~/.zsh/.p10k.zsh.
-[[ ! -f ~/.zsh/.p10k.zsh ]] || source ~/.zsh/.p10k.zsh
-
 # Localized configuration
 if [ -f "${HOME}/.zsh_local" ]; then
   source "${HOME}/.zsh_local"
