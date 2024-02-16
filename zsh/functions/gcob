@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+##? gcob -  Checkout or create new git branch
+##?
+##? usage: gcob <branchname>
+
+# function gcob {
+readonly branchname=${1:?"You must specify a branch name"}
+if git show-ref --quiet refs/heads/$branchname; then
+  echo "Switching to existing local branch: $branchname"
+  git switch $branchname
+else
+  echo "Creating new local branch: $branchname"
+  git checkout -b $branchname
+fi
+# }
