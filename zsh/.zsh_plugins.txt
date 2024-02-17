@@ -17,6 +17,7 @@ ohmyzsh/ohmyzsh path:plugins/magic-enter
 # ohmyzsh/ohmyzsh path:plugins/docker-compose
 # I have not clue if these actually work via antidote -- need to test them all
 # ohmyzsh/ohmyzsh path:plugins/aws
+ohmyzsh/ohmyzsh path:plugins/terraform
 # ohmyzsh/ohmyzsh path:plugins/vagrant
 
 ### environment plugins
