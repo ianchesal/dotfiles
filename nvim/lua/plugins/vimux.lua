@@ -1,3 +1,4 @@
 return {
-  "preservim/vimux",
+  "ianchesal/vimux",
+  branch = "latesttmux",
 }
