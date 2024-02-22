@@ -10,7 +10,8 @@ namespace :nvim do
   end
 
   task update: 'lsp:update' do
-    # All this is done inside vim with Lazy and Mason now
+    # This file gets big. Nuke it regularly.
+    sh "rm -f #{home('.local/state/nvim/lsp.log')}"
   end
 
   task :clean do
