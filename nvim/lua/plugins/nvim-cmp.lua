@@ -2,7 +2,7 @@ local cmp = require("cmp")
 
 return {
   "hrsh7th/nvim-cmp",
-  config = {
+  opts = {
     enabled = function()
       local context = require("cmp.config.context")
       local disabled = false
