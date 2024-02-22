@@ -8,7 +8,7 @@ return {
     "nvim-telescope/telescope.nvim", -- optional
     -- "ibhagwan/fzf-lua", -- optional
   },
-  config = {
+  opts = {
     graph_style = "unicode",
     kind = "split",
   },
