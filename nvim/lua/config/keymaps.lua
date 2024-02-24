@@ -30,11 +30,13 @@ if os.getenv("TMUX") then
   vim.g.VimuxCloseOnExit = 1
 end
 
--- Neogit
+-- Git fugitive for me
 map.del("n", "<leader>gg")
 map.del("n", "<leader>gG")
-map.set("n", "<leader>gg", ":Neogit<cr>", { desc = "neogit" })
-map.set("n", "<leader>gc", ":Neogit commit<cr>", { desc = "commit" })
+map.set("n", "<leader>gg", ":Git<cr>", { desc = "fugitive" })
+map.set("n", "<leader>gl", ":Git log<cr>", { desc = "view logs" })
+map.set("n", "<leader>ga", ":Git add %:p<cr>", { desc = "add current file" })
+map.set("n", "<leader>gp", ":Git push origin HEAD<cr>", { desc = "push orgin HEAD" })
 
 -- I prefer these keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
