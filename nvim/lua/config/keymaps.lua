@@ -156,6 +156,32 @@ my_keymaps["t"] = {
   },
 }
 
+-- Other.nvim
+my_keymaps["f"] = {
+  o = {
+    o = {
+      "<cmd>Other<cr>",
+      "Open other file",
+    },
+    h = {
+      "<cmd>OtherSplit<cr>",
+      "Open other file (horizontal split)",
+    },
+    v = {
+      "<cmd>OtherVSplit<cr>",
+      "Open other file (vertical split)",
+    },
+    c = {
+      "<cmd>OtherClear<cr>",
+      "Clear other file mapping",
+    },
+    t = {
+      "<cmd>Other test<cr>",
+      "Open other test file",
+    },
+  },
+}
+
 -- Make U the redo command
 -- map.set("n", "U", "<C-r>")
 
