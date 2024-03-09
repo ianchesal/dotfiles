@@ -123,9 +123,21 @@ map.set("", "<leader>ug", ":CopilotToggle<CR>", { noremap = true, silent = true 
 -- Telescope
 my_keymaps["t"] = {
   name = "telescope",
+  a = {
+    "<cmd>Telescope marks<cr>",
+    "Search marks",
+  },
+  h = {
+    "<cmd>Telescope help_tags<cr>",
+    "Search vim help",
+  },
   k = {
     "<cmd>Telescope keymaps<cr>",
     "Seach keymaps",
+  },
+  M = {
+    "<cmd>Telescope man_pages<cr>",
+    "Search man pages",
   },
   t = {
     name = "terraform",
