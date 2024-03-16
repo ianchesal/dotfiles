@@ -69,6 +69,10 @@ my_keymaps["g"] = {
     "<cmd>Git push origin HEAD<cr>",
     "Push: origin --> HEAD",
   },
+  f = {
+    "<cmd>Telescope git_file_history<cr>",
+    "File history (current file)",
+  },
 }
 
 -- I prefer different keymaps for Lazy and Mason and LSP interactions
