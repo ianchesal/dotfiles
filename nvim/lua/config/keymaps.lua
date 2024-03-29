@@ -65,10 +65,10 @@ my_keymaps["g"] = {
     "<cmd>Git add %:p<cr>",
     "Add current file",
   },
-  p = {
-    "<cmd>Git push origin HEAD<cr>",
-    "Push: origin --> HEAD",
-  },
+  -- p = {
+  --   "<cmd>Git push origin HEAD<cr>",
+  --   "Push: origin --> HEAD",
+  -- },
   f = {
     "<cmd>Telescope git_file_history<cr>",
     "File history (current file)",
