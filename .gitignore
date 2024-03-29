@@ -7,7 +7,6 @@ karabiner/automatic_backups
 package-lock.json
 /package.json
 /nvim/lazy-lock.json
-/nvim/lazyvim.json
 /tmux/plugins
 /lazygit/state.yml
 /node_modules
