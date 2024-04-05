@@ -3,4 +3,5 @@ return {
   -- { "kdheepak/lazygit.nvim",  enabled = false },
   -- { "echasnovski/mini.pairs", enabled = false },
   { "nvimtools/none-ls.nvim", enabled = false },
+  { "nvimdev/dashboard-nvim", enabled = false },
 }
