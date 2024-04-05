@@ -61,6 +61,9 @@ alias untar="tar -xf"
 alias timestamp="date '+%Y-%m-%d %H:%M:%S'"
 alias datestamp="date '+%Y-%m-%d'"
 
+# tmux
+tmux='TERM=screen-256color tmux -2' # Makes Termina.app work
+
 # find
 #alias fd='find . -type d -name'
 #alias ff='find . -type f -name'
