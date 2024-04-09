@@ -17,9 +17,9 @@ return {
   --     require("dap-ruby").setup()
   --   end,
   -- },
-  {
-    "olimorris/neotest-rspec",
-  },
+  -- {
+  --   "olimorris/neotest-rspec",
+  -- },
   -- {
   --   "mfussenegger/nvim-dap",
   --   optional = true,
@@ -29,5 +29,33 @@ return {
   --       require("dap-ruby").setup()
   --     end,
   --   },
+  -- },
+  {
+    -- https://github.com/rgroli/other.nvim
+    "rgroli/other.nvim",
+    lazy = false,
+    config = function()
+      require("other-nvim").setup({
+        mappings = {
+          "livewire",
+          "angular",
+          "laravel",
+          "rails",
+          "golang",
+        },
+      })
+    end,
+  },
+  -- {
+  --   "pgr0ss/vimux-ruby-test",
+  --   dependencies = {
+  --     "preservim/vimux",
+  --   },
+  --   init = function()
+  --     -- vim.g.vimux_ruby_cmd_unit_test = "p "
+  --     -- vim.g.vimux_ruby_cmd_all_tests = "p rspec specs"
+  --     vim.g.vimux_ruby_file_relative_paths = 1
+  --     vim.g.vimux_ruby_clear_console_on_run = 0 -- Set to 1 to clear the vimux console
+  --   end,
   -- },
 }
