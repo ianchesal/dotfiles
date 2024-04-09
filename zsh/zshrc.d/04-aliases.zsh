@@ -93,29 +93,33 @@ alias zbench='for i in {1..10}; do /usr/bin/time zsh -lic exit; done'
 alias zdot='cd $ZDOTDIR'
 
 
-# FROM MY OLD zshrc FILE !!!
-#alias emacs="vim
+# git
 alias unfuck-mutagen='git clean -df'
-alias gau='git add -u'
 alias gap='git add -p'
+alias gau='git add -u'
 alias gb='git branch'
 alias gbD='git branch -D'
 alias gbd='git branch -d'
 alias gci='git commit --verbose'
 alias gcis='git commit --gpg-sign --verbose'
 alias gco='git switch'
-alias gcom='git com'
 alias gcob='git switch -c'
+alias gcom='git com'
 alias gd='git diff --color=always'
+alias gfu='git fixup'
 alias glsut='git ls-files --others --exclude-standard'
 alias gp='git pull'
 alias gpfoh='git push --force origin HEAD'
 alias gpoh='git push origin HEAD'
 alias grep='grep --color=auto -E'
 alias gri='git rebase -i'
-alias gss='git status --short --branch'
 alias gsp='git stash push -u'
+alias gss='git status --short --branch'
+
+# misc
 alias please='sudo $(fc -ln -1)'
+
+# rsync
 alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
@@ -123,7 +127,8 @@ alias rsync-update="rsync -avzu --progress -h"
 if _has nvim; then
   alias vim=nvim
 fi
-#alias vim-update-plugins='vim +PlugUpdate +qall'
+
+# tmux
 alias ta='tmux attach -t'
 alias tad='tmux attach -d -t'
 alias ts='tmux new-session -s'

@@ -1,86 +1,102 @@
 [init]
 	templatedir = ~/.local/state/git/templates
+
 [alias]
-	c = commit -m
 	a = add
-	g = grep
-	di = diff
-	dic = diff --cached
-	pl = pull
-	ps = push
-	plre = pull --rebase
-	st = status
-	out = log origin..HEAD
-	ci = commit -v
-	co = checkout
-	cp = cherry-pick
-	b = branch
-	changed = diff --name-status -r
 	add-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
 	au = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; git add `f`"
+	b = branch
+	c = commit -m
 	ch = diff --name-status -r
+	changed = diff --name-status -r
+	ci = commit -v
+	co = checkout
+	com = "!f(){ git switch $(git main-branch) $@;}; f"
 	cosu = !sh -c 'git checkout $0 && git submodule update --init'
+	cp = cherry-pick
+	di = diff
+	dic = diff --cached
+	g = grep
 	ignored = "!git ls-files --others --exclude-standard"
+	integrate = merge --no-ff
+	lastauthor = log -1 --format='%Cgreen%an <%ae>'
 	lg = log --all --graph --abbrev-commit --date=relative --pretty=format:'%C(bold blue)%h - %C(reset)%C(green)(%ar)%C(reset) - %s %C(dim)- %an%C(reset)%C(yellow)%d'
 	lgb = log --graph --abbrev-commit --date=relative --pretty=format:'%C(bold blue)%h - %C(reset)%C(green)(%ar)%C(reset) - %s %C(dim)- %an%C(reset)%C(yellow)%d'
-	track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
-	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
-	touchdown = merge --no-ff
-	integrate = merge --no-ff
-	td = merge --no-ff
-	lastauthor = log -1 --format='%Cgreen%an <%ae>'
-	reauthor = commit --amend --reset-author -C HEAD
-	publish = push -u
-	tree = log --graph --decorate --pretty=oneline --abbrev-commit
-	new = !git init && git symbolic-ref HEAD refs/heads/main
 	main-branch = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
-	com = "!f(){ git switch $(git main-branch) $@;}; f"
+	new = !git init && git symbolic-ref HEAD refs/heads/main
+	out = log origin..HEAD
+	pl = pull
+	plre = pull --rebase
+	ps = push
+	publish = push -u
+	reauthor = commit --amend --reset-author -C HEAD
+	st = status
+	td = merge --no-ff
+	touchdown = merge --no-ff
+	track = !sh -c 'git branch --track "$0" "origin/$0" && git checkout "$0"'
+	tree = log --graph --decorate --pretty=oneline --abbrev-commit
+	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+  fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
+
 [core]
-  pager = delta
-  editor = nvim
-# http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
-  preloadindex = true
 	excludesfile = /Users/ianchesal/.gitignore_global
+  editor = nvim
+  pager = delta
+  # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
+  preloadindex = true
+
 [color]
-	status = auto
 	branch = auto
-	interactive = auto
 	diff = auto
+	interactive = auto
+	status = auto
+
 [mergetool]
 	keepBackup = true
+
 [push]
 	default = matching
+
 [branch]
 	autosetuprebase = always
+
 [status]
 	showUntrackedFiles = all
+
 [merge]
 	summary = true
 	conflictstyle = diff3
+
 [rebase]
 	autosquash = true
+
 [interactive]
   diffFilter = delta --color-only
+
 [delta]
   features = side-by-side line-numbers decorations
-  whitespace-error-style = 22 reverse
   side-by-side = true
   syntax-theme = Nord
+  whitespace-error-style = 22 reverse
+
 [delta "decorations"]
   commit-decoration-style = bold yellow box ul
-  file-style = bold yellow ul
   file-decoration-style = none
+  file-style = bold yellow ul
 
 [pull]
 	ff = only
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+	smudge = git-lfs smudge -- %f
+
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
+
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
