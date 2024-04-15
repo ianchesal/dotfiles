@@ -143,6 +143,7 @@ fi
 # Curl Power Ups
 alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
 alias myip="curl -s http://whatismyip.akamai.com/"
+alias curl-test-site="curl --silent --show-error --dump-header - $1 -o /dev/null"
 
 alias pstree='ps -auxwf'
 
