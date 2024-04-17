@@ -16,7 +16,7 @@ return {
       "lua-language-server",
       "marksman",
       "prettierd",
-      -- "ruby-lsp",
+      "ruby-lsp",
       "rubocop",
       "shellcheck",
       "shfmt",
