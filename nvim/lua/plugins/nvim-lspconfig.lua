@@ -28,7 +28,7 @@ return {
         regols = {},
         -- This should be renamed to `ruby_lsp` once this PR gets merged
         -- https://github.com/williamboman/mason-lspconfig.nvim/pull/395
-        ruby_ls = {
+        ruby_lsp = {
           -- cmd = { "bundle", "exec", "ruby-lsp" },
           -- init_options = {
           --   formatter = "auto",
