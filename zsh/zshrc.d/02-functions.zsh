@@ -67,3 +67,8 @@ function crafting-old-sandboxes() {
   JQ_QUERY=".[] | select((.spec.op_state.state == \"SUSPENDED\") and (.meta.updated_at <= \"$(date -v-27d +'%Y-%m-%d')\")) | {creator: .meta.owner.name, sandbox: .meta.name, updated_at: .meta.updated_at}"
   cs sandbox list -o json | jq $JQ_QUERY
 }
+
+function clean-nvim-logs() {
+  rm -f ~/.local/state/nvim/log
+  rm -f ~/.local/state/nvim/*.log
+}
