@@ -62,7 +62,7 @@ alias timestamp="date '+%Y-%m-%d %H:%M:%S'"
 alias datestamp="date '+%Y-%m-%d'"
 
 # tmux
-alias tmux='TERM=screen-256color tmux -2' # Makes Termina.app work
+# alias tmux='TERM=screen-256color tmux -2' # Makes Termina.app work
 
 # find
 #alias fd='find . -type d -name'
