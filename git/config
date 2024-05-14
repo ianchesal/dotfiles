@@ -107,3 +107,5 @@
 
 [include]
   path = local
+[hub]
+	protocol = https
