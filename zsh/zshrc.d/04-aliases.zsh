@@ -93,9 +93,6 @@ alias zbench='for i in {1..10}; do /usr/bin/time zsh -lic exit; done'
 alias zdot='cd $ZDOTDIR'
 
 # git
-if _has hub; then
-  eval "$(hub alias -s)"
-fi
 alias unfuck-mutagen='git clean -df'
 alias gap='git add -p'
 alias gau='git add -u'
