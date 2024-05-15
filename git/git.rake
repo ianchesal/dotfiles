@@ -27,14 +27,13 @@ namespace :git do
   desc 'Update all the git submodules in this repository'
   task :update do
     if which('gh')
-      puts 'Updating gh extensions'
+      puts 'Updating gh extensions'.green
       sh 'gh extension upgrade --all'
     end
-    puts 'Update: git submodules'.green
-    puts 'Just kidding. There are no submodules in this repo.'
   end
 end
 
 task all: [:git]
+task update: ['git:update']
 task clean: ['git:clean']
 # task update: ['git:update']
