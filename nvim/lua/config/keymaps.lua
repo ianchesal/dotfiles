@@ -186,6 +186,14 @@ my_keymaps["f"] = {
   },
 }
 
+-- UI Things
+my_keymaps["u"] = {
+  N = {
+    "<cmd>NoiceAll<cr>",
+    "Show all Noice notifications",
+  },
+}
+
 -- Make U the redo command
 -- map.set("n", "U", "<C-r>")
 
