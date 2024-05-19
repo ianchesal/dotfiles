@@ -206,8 +206,8 @@ else
   map.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 end
 
--- I am too old to re-learn how to yank and paste a whole line in vim
-vim.cmd([[noremap Y Y]])
+-- -- I am too old to re-learn how to yank and paste a whole line in vim
+-- vim.cmd([[noremap Y Y]])
 
 -- Allow me to typo q and w
 vim.cmd([[
