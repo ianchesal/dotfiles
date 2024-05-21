@@ -14,7 +14,6 @@ return {
       "json-lsp",
       "jsonnet-language-server",
       "lua-language-server",
-      "marksman",
       "prettierd",
       "ruby-lsp",
       "rubocop",
