@@ -207,7 +207,7 @@ else
 end
 
 -- -- I am too old to re-learn how to yank and paste a whole line in vim
--- vim.cmd([[noremap Y Y]])
+vim.cmd([[noremap Y Y]])
 
 -- Allow me to typo q and w
 vim.cmd([[
