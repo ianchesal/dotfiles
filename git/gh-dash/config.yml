@@ -1,0 +1,18 @@
+repoPaths:
+  :owner/:repo: ~/src/:owner/:repo
+  persona-id/*: ~/src/persona/:repo
+  ianchesal/dotfiles: ~/src/dotfiles
+
+keybindings:
+  prs:
+    - key: c
+      command: >
+        tmux new-window -c {{.RepoPath}} '
+          gh pr checkout {{.PrNumber}} &&
+          nvim -c ":DiffviewOpen master...{{.HeadRefName}}"
+        '
+    - key: v
+      command: >
+        cd {{.RepoPath}} &&
+        code . &&
+        gh pr checkout {{.PrNumber}}
