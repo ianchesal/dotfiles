@@ -1,6 +1,6 @@
 repoPaths:
   :owner/:repo: ~/src/:owner/:repo
-  persona-id/*: ~/src/persona/:repo
+  persona-id/*: ~/src/persona/*
   ianchesal/dotfiles: ~/src/dotfiles
 
 keybindings:
