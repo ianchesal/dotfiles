@@ -7,20 +7,26 @@ namespace :git do
   task :dir do
     mkdir_if_needed home('.config')
     dolink(home('.config/git'), root('git'))
+    dolink(home('.config/gh'), root('git/gh'))
+    dolink(home('.config/gh-dash'), root('git/gh-dash'))
   end
 
   task :setup_gh do
     if which('gh')
       puts 'Installing gh extensions'
       sh 'gh extension install gennaro-tedesco/gh-f'
-      puts 'Setting up gh aliases'
-      sh 'gh alias set prs "f -p"'
-      sh 'gh alias set l "f -l"'
+      sh 'gh extension install dlvhdr/gh-dash'
+      # These are in gh/config.yml now
+      # puts 'Setting up gh aliases'
+      # sh 'gh alias set prs "f -p"'
+      # sh 'gh alias set l "f -l"'
     end
   end
 
   task :clean do
     sh "rm -f #{home('.config/git')}"
+    sh "rm -f #{home('.config/gh')}"
+    sh "rm -f #{home('.config/gh-dash')}"
     sh "rm -rf #{home('.local/state/git')}"
   end
 
