@@ -5,7 +5,6 @@
     "lazyvim.plugins.extras.coding.yanky",
     "lazyvim.plugins.extras.dap.core",
     "lazyvim.plugins.extras.editor.mini-diff",
-    "lazyvim.plugins.extras.editor.trouble-v3",
     "lazyvim.plugins.extras.formatting.prettier",
     "lazyvim.plugins.extras.lang.docker",
     "lazyvim.plugins.extras.lang.json",
@@ -22,5 +21,5 @@
   "news": {
     "NEWS.md": "4964"
   },
-  "version": 5
+  "version": 6
 }
