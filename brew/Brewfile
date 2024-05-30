@@ -1,5 +1,6 @@
 tap "homebrew/bundle"
 tap "kitagry/tap"
+brew "autojump"
 brew "bash-completion"
 brew "bat"
 brew "eza"
