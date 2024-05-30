@@ -1,3 +1,5 @@
 # Requires: brew install autojump
 # See: https://github.com/wting/autojump
-[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+if type brew >/dev/null; then
+	[ -f "$(brew --prefix)/etc/profile.d/autojump.sh" ] && . "$(brew --prefix)/etc/profile.d/autojump.sh"
+fi
