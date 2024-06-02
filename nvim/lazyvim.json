@@ -14,11 +14,12 @@
     "lazyvim.plugins.extras.lang.yaml",
     "lazyvim.plugins.extras.linting.eslint",
     "lazyvim.plugins.extras.test.core",
+    "lazyvim.plugins.extras.ui.edgy",
     "lazyvim.plugins.extras.ui.mini-indentscope",
     "lazyvim.plugins.extras.util.mini-hipatterns"
   ],
   "news": {
-    "NEWS.md": "4964"
+    "NEWS.md": "5204"
   },
   "version": 6
 }
