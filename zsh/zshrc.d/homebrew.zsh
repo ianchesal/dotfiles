@@ -20,5 +20,5 @@ fi
 # Gnu Util installed in homebrew?
 GNUTILS_PATH="$(brew --prefix)/opt/grep/libexec/gnubin"
 if [ -d "$GNUTILS_PATH" ]; then
-  export PATH="$GNUTILS_PATH":$PATH
+  add_to_path $GNUTILS_PATH
 fi
