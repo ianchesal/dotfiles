@@ -42,7 +42,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
 else
   alias ls="ls --color=auto"
 fi
-alias grep="grep --color=auto --exclude-dir={CVS,.git,.hg,.svn}"
+# alias grep="grep --color=auto --exclude-dir={CVS,.git,.hg,.svn}"
 
 # more ways to ls
 alias l=ls
@@ -111,7 +111,7 @@ alias glsut='git ls-files --others --exclude-standard'
 alias gp='git pull'
 alias gpfoh='git push --force origin HEAD'
 alias gpoh='git push origin HEAD'
-alias grep='grep --color=auto -E'
+# alias grep='grep --color=auto -E'
 alias gri='git rebase --interactive'
 alias grim='git rebase --interactive --autosquash $(git main-branch)'
 alias gsp='git stash push -u'
@@ -157,3 +157,7 @@ alias tfo='terraform output'
 alias tfp='terraform plan'
 alias tfpl='terraform providers lock -platform=darwin_arm64 -platform=linux_amd64'
 alias tfv='terraform validate'
+
+# Something keeps aliasing grep and I can't figure out where
+# it's coming from so brute force fix for now
+unalias grep
