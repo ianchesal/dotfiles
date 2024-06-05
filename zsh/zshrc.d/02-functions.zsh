@@ -4,12 +4,12 @@
 
 _has() {
   # Returns whether the given command is executable or aliased.
-  return $( type $1 >/dev/null )
+  return $(type $1 >/dev/null)
 }
 
 add_to_path() {
   local DIR=$1
-  if ! grep ":$DIR:" -q <<< ":$PATH:"; then
+  if ! grep ":$DIR:" -q <<<":$PATH:"; then
     export PATH=$PATH:$DIR
   fi
 }
@@ -49,9 +49,9 @@ function heic2jpg() {
 function dotenv() {
   # Loads a .env file from the cwd if one exists
   if [ -f ".env" ]; then
-   set -o allexport
-   source .env
-   set +o allexport
+    set -o allexport
+    source .env
+    set +o allexport
   fi
 
 }
@@ -71,4 +71,8 @@ function crafting-old-sandboxes() {
 function clean-nvim-logs() {
   rm -f ~/.local/state/nvim/log
   rm -f ~/.local/state/nvim/*.log
+}
+
+function print-path() {
+  echo "$PATH" | tr ':' '\n'
 }

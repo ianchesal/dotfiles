@@ -39,7 +39,7 @@ fi
 unset brew_location
 
 # export GREP_COLOR='1;32'
-export GREP_COLORS='mt=1;32'
+# export GREP_COLORS='mt=1;32'
 export LSCOLOR="Gxfxcxdxbxegedabagacad"
 
 # For Terminal.app
