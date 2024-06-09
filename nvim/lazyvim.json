@@ -6,6 +6,7 @@
     "lazyvim.plugins.extras.editor.mini-diff",
     "lazyvim.plugins.extras.formatting.prettier",
     "lazyvim.plugins.extras.lang.docker",
+    "lazyvim.plugins.extras.lang.git",
     "lazyvim.plugins.extras.lang.json",
     "lazyvim.plugins.extras.lang.markdown",
     "lazyvim.plugins.extras.lang.terraform",
@@ -18,7 +19,7 @@
     "lazyvim.plugins.extras.util.mini-hipatterns"
   ],
   "news": {
-    "NEWS.md": "5950"
+    "NEWS.md": "6077"
   },
   "version": 6
 }
