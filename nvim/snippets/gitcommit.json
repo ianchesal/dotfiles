@@ -1,6 +1,6 @@
 {
   "persona commit body": {
-    "prefix": "persona",
+    "prefix": "commitper",
     "body": [
       "${1:description}",
       "",
@@ -24,6 +24,10 @@
       "",
       "$0"
     ]
+  },
+  "commit potential risk 4": {
+    "prefix": "risk4",
+    "body": ["**Potential Risk**", "", "Worst Case Incident: SEV4", "", "$0"]
   },
   "commit testing strategy": {
     "prefix": "testper",
