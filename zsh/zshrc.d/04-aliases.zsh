@@ -118,7 +118,8 @@ alias gsp='git stash push -u'
 alias gss='git status --short --branch'
 
 # github
-alias ghpc='gh pr create --fill --label auto-assign-reviewers --assignee @me --reviewer persona-id/infrastructure'
+alias ghpca='gh pr create --fill --label auto-assign-reviewers --assignee @me'
+alias ghpci='gh pr create --fill --assignee @me --reviewer persona-id/infrastructure'
 
 # misc
 alias please='sudo $(fc -ln -1)'
