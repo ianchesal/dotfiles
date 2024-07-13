@@ -2,8 +2,8 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 
 local util = require("lazyvim.util")
+local wk = require("which-key")
 local map = vim.keymap
-local my_keymaps = {}
 
 -- Only set this up if we're in a tmux session
 if os.getenv("TMUX") then
@@ -15,35 +15,6 @@ if os.getenv("TMUX") then
   map.set("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
   map.set("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>")
   map.set("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>")
-
-  my_keymaps["v"] = {
-    name = "vimux",
-    p = {
-      "<cmd>VimuxPromptCommand<cr>",
-      "Run command in tmux shell",
-    },
-    l = {
-      "<cmd>VimuxRunLastCommand<cr>",
-      "Run last shell command",
-    },
-    i = {
-      "<cmd>VimuxInspectRunner<cr>",
-      "Inspect tmux shell",
-    },
-    z = {
-      "<cmd>VimuxZoomRunner<cr>",
-      "Zoom tmux shell",
-    },
-    k = {
-      "<cmd>VimuxCloseRunner<cr>",
-      "Close tmux shell",
-    },
-    b = {
-      "<cmd>VimuxInterruptRunner<cr>",
-      "Interrupt command running in tmux shell",
-    },
-  }
-
   vim.g.VimuxHeight = "30"
   vim.g.VimuxCloseOnExit = 1
 end
@@ -51,64 +22,9 @@ end
 -- Git fugitive for me
 map.del("n", "<leader>gg")
 map.del("n", "<leader>gG")
-my_keymaps["g"] = {
-  name = "git",
-  g = {
-    "<cmd>Git<cr>",
-    "Fugitive",
-  },
-  l = {
-    "<cmd>Git log<cr>",
-    "View logs",
-  },
-  a = {
-    "<cmd>Git add %:p<cr>",
-    "Add current file",
-  },
-  -- p = {
-  --   "<cmd>Git push origin HEAD<cr>",
-  --   "Push: origin --> HEAD",
-  -- },
-  f = {
-    "<cmd>Telescope git_file_history<cr>",
-    "File history (current file)",
-  },
-}
 
 -- I prefer different keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
-my_keymaps["l"] = {
-  -- Mason and LSP
-  name = "lsp",
-  g = {
-    "<cmd>LspLog<cr>",
-    "Open LSP logs",
-  },
-  h = {
-    "<cmd>LazyHealth<cr>",
-    "Health diagnostics",
-  },
-  i = {
-    "<cmd>LspInfo<cr>",
-    "Open LspInfo interface",
-  },
-  l = {
-    "<cmd>Lazy<cr>",
-    "Open Lazy management interface",
-  },
-  m = {
-    "<cmd>Mason<cr>",
-    "Open Mason management interface",
-  },
-  -- n = {
-  --   "<cmd>NullLsInfo<cr>",
-  --   "NullLS Information",
-  -- },
-  r = {
-    "<cmd>LspRestart<cr>",
-    "Restart all LSPs",
-  },
-}
 
 -- Copilot
 local copilot_on = false -- I start with Copilot OFF
@@ -123,76 +39,6 @@ vim.api.nvim_create_user_command("CopilotToggle", function()
   copilot_on = not copilot_on
 end, { nargs = 0 })
 map.set("", "<leader>ug", ":CopilotToggle<CR>", { noremap = true, silent = true })
-
--- Telescope
-my_keymaps["t"] = {
-  name = "telescope",
-  a = {
-    "<cmd>Telescope marks<cr>",
-    "Search marks",
-  },
-  h = {
-    "<cmd>Telescope help_tags<cr>",
-    "Search vim help",
-  },
-  k = {
-    "<cmd>Telescope keymaps<cr>",
-    "Seach keymaps",
-  },
-  M = {
-    "<cmd>Telescope man_pages<cr>",
-    "Search man pages",
-  },
-  t = {
-    name = "terraform",
-    t = {
-      "<cmd>Telescope terraform_doc<cr>",
-      "Search Terraform documents",
-    },
-    m = {
-      "<cmd>Telescope terraform_doc modules<cr>",
-      "Search Terraform modules",
-    },
-    g = {
-      "<cmd>Telescope terraform_doc full_name=hashicorp/google<cr>",
-      "Search Terraform: google provider",
-    },
-  },
-}
-
--- Other.nvim
-my_keymaps["f"] = {
-  o = {
-    o = {
-      "<cmd>Other<cr>",
-      "Open other file",
-    },
-    h = {
-      "<cmd>OtherSplit<cr>",
-      "Open other file (horizontal split)",
-    },
-    v = {
-      "<cmd>OtherVSplit<cr>",
-      "Open other file (vertical split)",
-    },
-    c = {
-      "<cmd>OtherClear<cr>",
-      "Clear other file mapping",
-    },
-    t = {
-      "<cmd>Other test<cr>",
-      "Open other test file",
-    },
-  },
-}
-
--- UI Things
-my_keymaps["u"] = {
-  N = {
-    "<cmd>NoiceAll<cr>",
-    "Show all Noice notifications",
-  },
-}
 
 -- Make U the redo command
 -- map.set("n", "U", "<C-r>")
@@ -217,4 +63,43 @@ cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('
 cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
 ]])
 
-require("which-key").register(my_keymaps, { prefix = "<leader>" })
+wk.add({
+  { "<leader>foc", "<cmd>OtherClear<cr>", desc = "Clear other file mapping" },
+  { "<leader>foh", "<cmd>OtherSplit<cr>", desc = "Open other file (horizontal split)" },
+  { "<leader>foo", "<cmd>Other<cr>", desc = "Open other file" },
+  { "<leader>fot", "<cmd>Other test<cr>", desc = "Open other test file" },
+  { "<leader>fov", "<cmd>OtherVSplit<cr>", desc = "Open other file (vertical split)" },
+  { "<leader>g", group = "git" },
+  { "<leader>ga", "<cmd>Git add %:p<cr>", desc = "Add current file" },
+  { "<leader>gf", "<cmd>Telescope git_file_history<cr>", desc = "File history (current file)" },
+  { "<leader>gg", "<cmd>Git<cr>", desc = "Fugitive" },
+  { "<leader>gl", "<cmd>Git log<cr>", desc = "View logs" },
+  { "<leader>l", group = "lsp" },
+  { "<leader>lg", "<cmd>LspLog<cr>", desc = "Open LSP logs" },
+  { "<leader>lh", "<cmd>LazyHealth<cr>", desc = "Health diagnostics" },
+  { "<leader>li", "<cmd>LspInfo<cr>", desc = "Open LspInfo interface" },
+  { "<leader>ll", "<cmd>Lazy<cr>", desc = "Open Lazy management interface" },
+  { "<leader>lm", "<cmd>Mason<cr>", desc = "Open Mason management interface" },
+  { "<leader>lr", "<cmd>LspRestart<cr>", desc = "Restart all LSPs" },
+  { "<leader>t", group = "telescope" },
+  { "<leader>tM", "<cmd>Telescope man_pages<cr>", desc = "Search man pages" },
+  { "<leader>ta", "<cmd>Telescope marks<cr>", desc = "Search marks" },
+  { "<leader>th", "<cmd>Telescope help_tags<cr>", desc = "Search vim help" },
+  { "<leader>tk", "<cmd>Telescope keymaps<cr>", desc = "Seach keymaps" },
+  { "<leader>tt", group = "terraform" },
+  {
+    "<leader>ttg",
+    "<cmd>Telescope terraform_doc full_name=hashicorp/google<cr>",
+    desc = "Search Terraform: google provider",
+  },
+  { "<leader>ttm", "<cmd>Telescope terraform_doc modules<cr>", desc = "Search Terraform modules" },
+  { "<leader>ttt", "<cmd>Telescope terraform_doc<cr>", desc = "Search Terraform documents" },
+  { "<leader>uN", "<cmd>NoiceAll<cr>", desc = "Show all Noice notifications" },
+  { "<leader>v", group = "vimux" },
+  { "<leader>vb", "<cmd>VimuxInterruptRunner<cr>", desc = "Interrupt command running in tmux shell" },
+  { "<leader>vi", "<cmd>VimuxInspectRunner<cr>", desc = "Inspect tmux shell" },
+  { "<leader>vk", "<cmd>VimuxCloseRunner<cr>", desc = "Close tmux shell" },
+  { "<leader>vl", "<cmd>VimuxRunLastCommand<cr>", desc = "Run last shell command" },
+  { "<leader>vp", "<cmd>VimuxPromptCommand<cr>", desc = "Run command in tmux shell" },
+  { "<leader>vz", "<cmd>VimuxZoomRunner<cr>", desc = "Zoom tmux shell" },
+})
