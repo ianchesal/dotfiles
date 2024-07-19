@@ -21,5 +21,5 @@ namespace :ytdlp do
 end
 
 task all: [:ytdlp]
-task update: ['ytdltp:update']
+task update: ['ytdlp:update']
 task clean: ['ytdlp:clean']
