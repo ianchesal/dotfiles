@@ -54,7 +54,7 @@ mattmc3/zephyr path:plugins/color
 # - sorin-ionescu/prezto path:modules/completion
 # zsh-users/zsh-completions
 mattmc3/zephyr path:plugins/completion
-mattmc3/zephyr path:plugins/homebrew
+# mattmc3/zephyr path:plugins/homebrew # DO NOT USE -- it is broken
 mattmc3/zephyr path:plugins/macos
 mattmc3/zephyr path:plugins/utility
 
