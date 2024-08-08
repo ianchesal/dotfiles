@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+##? rpg - Ripgrep with the -p option and piped to less
+##?
+##? usage: rpg [<pattern>]
+
+#function rpg {
+rg -p "$@" | less -R
+#}

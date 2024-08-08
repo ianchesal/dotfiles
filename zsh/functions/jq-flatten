@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+##? jq-flatten - Flatten JSON output
+##?
+##? usage: jq-flatten <data>
+
+jq -r '
+tostream
+| select(length > 1)
+| (
+.[0] | map(
+if type == "number"
+then "[" + tostring + "]"
+else "." + .
+end
+) | join("")
+) + " = " + (.[1] | @json)
+' $*
