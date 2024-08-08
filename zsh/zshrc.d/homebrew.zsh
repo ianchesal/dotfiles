@@ -13,12 +13,12 @@ HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$(brew --prefix)/share/zsh/site-functions:$FPATH
 
-  autoload -Uz compinit
-  compinit
+  # autoload -Uz compinit
+  # compinit
 fi
 
 # Gnu Util installed in homebrew?
 GNUTILS_PATH="$(brew --prefix)/opt/grep/libexec/gnubin"
 if [ -d "$GNUTILS_PATH" ]; then
-  path=($GNUTILS_PATH "$path[@]")
+  path=($GNUTILS_PATH $path)
 fi

@@ -129,7 +129,7 @@ alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
 alias rsync-update="rsync -avzu --progress -h"
-if _has nvim; then
+if type nvim >/dev/null; then
   alias vim=nvim
 fi
 
@@ -140,7 +140,7 @@ alias ts='tmux new-session -s'
 alias tl='tmux list-sessions'
 alias tksv='tmux kill-server'
 alias tkss='tmux kill-session -t'
-if _has lazygit; then
+if type lazygit >/dev/null; then
   alias lg=lazygit
 fi
 
@@ -164,4 +164,4 @@ alias tfv='terraform validate'
 
 # Something keeps aliasing grep and I can't figure out where
 # it's coming from so brute force fix for now
-unalias grep
+# unalias grep

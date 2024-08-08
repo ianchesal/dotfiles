@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+##? heic2jpg - Convert HEIC images to JPG
+##?
+##? usage: heic2jpg <files>
+
+#function heic2jpg() {
+for i in $*; do
+  ext=$(echo $i:t:e | tr '[:upper:]' '[:lower:]')
+  jpgfile="$i:r".jpg
+  echo "Converting ${i} --> ${jpgfile}"
+  mogrify -format jpg ${i}
+  exiftool -all= ${jpgfile}
+  if [[ -f "${jpgfile}_original" ]]; then
+    rm "${jpgfile}_original"
+  fi
+done
+#}

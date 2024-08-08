@@ -1,8 +1,7 @@
 # Use Homebrew OpenSSL w/Ruby
-if _has brew; then
+if type brew >/dev/null; then
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
 fi
-
 alias rake='noglob rake'                    # allows square brackts for rake task invocation
 alias 'bin/rake'='noglob bin/rake'          # support use of binstub
 alias brake='noglob bundle exec rake'       # execute the bundled rake gem

@@ -1,7 +1,3 @@
-if [ -f "${HOME}/.krew/bin" ]; then
-  add_to_path "${HOME}/.krew/bin"
-fi
-
 if (( $+commands[kubectl] )); then
   # If the completion file does not exist, generate it and then source it
   # Otherwise, source it and regenerate in the background

@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+##? clean_nvim_logs - Clean up nvim log files
+##?
+##? usage: clean_nvim_logs
+
+rm -f ~/.local/state/nvim/log
+rm -f ~/.local/state/nvim/*.log
