@@ -1,9 +1,0 @@
-#!/bin/zsh
-
-##? listpaths - Lists the paths in PATH
-##?
-##? usage: listpaths
-
-#function listpaths {
-echo "$PATH" | tr ':' '\n'
-#}
