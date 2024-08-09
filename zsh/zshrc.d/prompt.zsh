@@ -2,8 +2,7 @@
 # prompt
 #
 
-if [[ ! -d "$ZDOTDIR/powerlevel10k" ]]; then
-  git clone https://github.com/romkatv/powerlevel10k.git $ZDOTDIR/powerlevel10k
-fi
+[[ -d "$ZDOTDIR/plugins/powerlevel10k" ]] ||
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZDOTDIR/plugins/powerlevel10k
 
-source "$ZDOTDIR/powerlevel10k/powerlevel10k.zsh-theme"
+source "$ZDOTDIR/plugins/powerlevel10k/powerlevel10k.zsh-theme"
