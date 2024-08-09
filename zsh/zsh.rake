@@ -17,10 +17,12 @@ namespace :zsh do
     dolink(home('.zshenv'), root('zsh', '.zshenv'))
   end
 
-  desc 'Update zsh and antidote'
+  desc 'Update zsh and plugins'
   task :update do
-    puts 'Update: powerlevel10k'.green
-    sh 'cd zsh/powerlevel10k && git pull'
+    %w[powerlevel10k fast-syntax-highlighting zephyr zsh-vim-mode zsh-history-substring-search fzf-zsh-plugin fzf-tab fzf-tab-source].each do |plugin|
+      puts "Update: #{plugin}".green
+      sh "cd zsh/plugins/#{plugin} && git pull"
+    end
     # puts 'Update: antidote'.green
     # FileUtils.rm_f home('.config/zsh/.zsh_plugins.zsh')
     # sh 'zsh -i -c \'antidote update; exit\''

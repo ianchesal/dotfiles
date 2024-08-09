@@ -16,6 +16,13 @@ if [ -f "${HOME}/.zsh_local" ]; then
   source "${HOME}/.zsh_local"
 fi
 
+# Do this almost last
+autoload -Uz compinit
+compinit
+
+# And then load this plugin
+source ${ZDOTDIR:-~}/plugins/fzf-tab/fzf-tab.plugin.zsh
+
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/p10k.zsh.
 [[ ! -f ${ZDOTDIR}/p10k.zsh ]] || source ${ZDOTDIR}/p10k.zsh
 

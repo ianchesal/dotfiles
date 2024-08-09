@@ -50,12 +50,7 @@ export COPYFILE_DISABLE=true
 
 # HISTORY CONFIG
 HISTFILE=~/.local/share/zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-HISTDUP=erase               # Erase duplicates in the history file
-setopt    appendhistory     # Append history to the history file (no overwriting)
-setopt    sharehistory      # Share history across terminals
-setopt    incappendhistory  # Immediately append to the history file, not just when a term is killed
+# Mostly this is configured in zsh/zshrc.d/zephyr.zsh
 
 # My bin directory
 path+="$HOME/bin"
