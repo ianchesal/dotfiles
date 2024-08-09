@@ -6,7 +6,7 @@
 SHELL_SESSIONS_DISABLE=1
 KEYTIMEOUT=1
 
-if type nvim>/dev/null; then
+if _has nvim; then
   export EDITOR="nvim"
   export VISUAL="nvim"
 else
@@ -58,7 +58,7 @@ setopt    sharehistory      # Share history across terminals
 setopt    incappendhistory  # Immediately append to the history file, not just when a term is killed
 
 # My bin directory
-path+="$HOME/bin"
+add_to_path "$HOME/bin"
 
 # Language
 # export LC_COLLATE=en_US.UTF-8

@@ -1,4 +1,4 @@
-command -v pyenv &>/dev/null && FOUND_PYENV=1 || FOUND_PYENV=0
+command -v pyenv &> /dev/null && FOUND_PYENV=1 || FOUND_PYENV=0
 if [[ $FOUND_PYENV -eq 1 ]]; then
   export PYENV_ROOT=$(pyenv root)
 else
@@ -7,15 +7,15 @@ fi
 unset FOUND_PYENV
 export PIPENV_IGNORE_VIRTUALENVS=1
 
-if ! type pyenv >/dev/null; then
-  path+=("$PYENV_ROOT/bin")
+if ! _has pyenv; then
+  add_to_path "$PYENV_ROOT/bin"
 fi
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
 # Pipenv completion
 _pipenv() {
-  eval $(env COMMANDLINE="${words[1, $CURRENT]}" _PIPENV_COMPLETE=complete-zsh pipenv)
+  eval $(env COMMANDLINE="${words[1,$CURRENT]}" _PIPENV_COMPLETE=complete-zsh pipenv)
 }
 compdef _pipenv pipenv
 
