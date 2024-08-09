@@ -2,24 +2,8 @@
 # functions
 #
 
-_has() {
-  # Returns whether the given command is executable or aliased.
-  return $(type $1 >/dev/null)
-}
-
-add_to_path() {
-  local DIR=$1
-  if ! grep ":$DIR:" -q <<<":$PATH:"; then
-    export PATH=$PATH:$DIR
-  fi
-}
-
 function rpg {
   rg -p "$@" | less -R
-}
-
-function listpaths {
-  echo "$PATH" | tr ':' '\n'
 }
 
 function git_master_to_main() {
@@ -71,8 +55,4 @@ function debug:config_files() {
 function clean-nvim-logs() {
   rm -f ~/.local/state/nvim/log
   rm -f ~/.local/state/nvim/*.log
-}
-
-function print-path() {
-  echo "$PATH" | tr ':' '\n'
 }
