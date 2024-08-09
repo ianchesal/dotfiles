@@ -12,3 +12,4 @@ package-lock.json
 /node_modules
 Gemfile.lock
 Brewfile.lock.json
+/zsh/powerlevel10k

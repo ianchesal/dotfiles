@@ -2,9 +2,8 @@
 # prompt
 #
 
-# expand parameters in prompt variables
-setopt PROMPT_SUBST
+if [[ ! -d "$ZDOTDIR/powerlevel10k" ]]; then
+  git clone https://github.com/romkatv/powerlevel10k.git $ZDOTDIR/powerlevel10k
+fi
 
-autoload -Uz promptinit && promptinit
-# prompt pure
-prompt powerlevel10k
+source "$ZDOTDIR/powerlevel10k/powerlevel10k.zsh-theme"

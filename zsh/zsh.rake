@@ -19,9 +19,11 @@ namespace :zsh do
 
   desc 'Update zsh and antidote'
   task :update do
-    puts 'Update: antidote'.green
-    FileUtils.rm_f home('.config/zsh/.zsh_plugins.zsh')
-    sh 'zsh -i -c \'antidote update; exit\''
+    puts 'Update: powerlevel10k'.green
+    sh 'cd zsh/powerlevel10k && git pull'
+    # puts 'Update: antidote'.green
+    # FileUtils.rm_f home('.config/zsh/.zsh_plugins.zsh')
+    # sh 'zsh -i -c \'antidote update; exit\''
     # sh 'rm -f ~/.config/zsh/.zcompdump*; compinit'
   end
 
