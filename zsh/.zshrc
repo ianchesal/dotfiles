@@ -7,6 +7,13 @@
 
 # zmodload zsh/zprof
 
+# Initialize the auto-completion system
+autoload -Uz compinit
+for dump in ${ZDOTDIR}/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
+
 # Sort and source all scripts in zshrd.d
 for rc in ${ZDOTDIR}/zshrc.d/*.{z,}sh(.); do
   # ignore files that begin with ~
@@ -14,19 +21,12 @@ for rc in ${ZDOTDIR}/zshrc.d/*.{z,}sh(.); do
   source "$rc"
 done
 
-# Localized configuration
+# Load any local-to-the-host configuration
 if [ -f "${HOME}/.zsh_local" ]; then
   source "${HOME}/.zsh_local"
 fi
 
-# Do this almost last
-autoload -Uz compinit
-for dump in ${ZDOTDIR}/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
-
-# And then load this plugin
+# Load this plugin last
 source ${ZDOTDIR:-~}/plugins/fzf-tab/fzf-tab.plugin.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/p10k.zsh.
