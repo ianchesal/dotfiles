@@ -66,8 +66,3 @@ path+="$HOME/bin"
 # export LANG=en_US.UTF-8
 # export LANGUAGE=en_US.UTF-8
 # export LESSCHARSET=utf-8
-
-# VI MODE
-# autoload -z edit-command-line
-# le -N edit-command-line
-# bindkey -M vicmd v edit-command-line
