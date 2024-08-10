@@ -5,7 +5,7 @@
 #   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 # fi
 
-zmodload zsh/zprof
+# zmodload zsh/zprof
 
 # Sort and source all scripts in zshrd.d
 for rc in ${ZDOTDIR}/zshrc.d/*.{z,}sh(.); do
@@ -32,4 +32,4 @@ source ${ZDOTDIR:-~}/plugins/fzf-tab/fzf-tab.plugin.zsh
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/p10k.zsh.
 [[ ! -f ${ZDOTDIR}/p10k.zsh ]] || source ${ZDOTDIR}/p10k.zsh
 
-zprof
+# zprof
