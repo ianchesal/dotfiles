@@ -15,13 +15,15 @@
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 export CLOUDSDK_HOME="$HOME/src/google-cloud-sdk"
 
-if (( ${+CLOUDSDK_HOME} )); then
-  if (( ! $+commands[gcloud] )); then
-    # Only source this if GCloud isn't already on the path
-    if [[ -f "${CLOUDSDK_HOME}/path.zsh.inc" ]]; then
-      source "${CLOUDSDK_HOME}/path.zsh.inc"
+if [[ -d $CLOUDSDK_HOME ]]; then
+  if (( ${+CLOUDSDK_HOME} )); then
+    if (( ! $+commands[gcloud] )); then
+      # Only source this if GCloud isn't already on the path
+      if [[ -f "${CLOUDSDK_HOME}/path.zsh.inc" ]]; then
+        source "${CLOUDSDK_HOME}/path.zsh.inc"
+      fi
     fi
+    source "${CLOUDSDK_HOME}/completion.zsh.inc"
+    export CLOUDSDK_HOME
   fi
-  source "${CLOUDSDK_HOME}/completion.zsh.inc"
-  export CLOUDSDK_HOME
 fi
