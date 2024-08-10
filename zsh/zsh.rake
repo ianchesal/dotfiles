@@ -19,20 +19,21 @@ namespace :zsh do
 
   desc 'Update zsh and plugins'
   task :update do
-    %w[powerlevel10k fast-syntax-highlighting zephyr zsh-vim-mode zsh-history-substring-search fzf-zsh-plugin fzf-tab fzf-tab-source].each do |plugin|
-      puts "Update: #{plugin}".green
-      sh "cd zsh/plugins/#{plugin} && git pull"
+    Dir.chdir('zsh/plugins') do
+      Dir.glob('*').select { |f| File.directory? f }.each do |plugin|
+        Dir.chdir(plugin) do
+          puts "Update zsh plugin: #{plugin}".green
+          sh 'git pull'
+        end
+      end
     end
-    # puts 'Update: antidote'.green
-    # FileUtils.rm_f home('.config/zsh/.zsh_plugins.zsh')
-    # sh 'zsh -i -c \'antidote update; exit\''
-    # sh 'rm -f ~/.config/zsh/.zcompdump*; compinit'
   end
 
   task :clean do
     clean_restore home('.zshenv')
     FileUtils.rm_f home('.config/zsh')
     FileUtils.rm_f home('.local/share/zsh')
+    FileUtils.rm_rf('zsh/plugins')
   end
 end
 

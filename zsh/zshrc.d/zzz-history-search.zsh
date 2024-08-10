@@ -1,7 +1,3 @@
-#
-# history-substring-search
-#
-
 # start typing + [Up-Arrow] - fuzzy find history forward
 if [[ "${terminfo[kcuu1]}" != "" ]]; then
   autoload -U up-line-or-beginning-search
