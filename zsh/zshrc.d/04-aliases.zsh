@@ -46,7 +46,7 @@ fi
 
 # more ways to ls
 alias l=ls
-alias ll='ls -lah'
+alias ll='ls -lAh'
 alias la='ls -lAh'
 alias ldot='ls -ld .*'
 
@@ -63,7 +63,7 @@ alias timestamp="date '+%Y-%m-%d %H:%M:%S'"
 alias datestamp="date '+%Y-%m-%d'"
 
 # tmux
-# alias tmux='TERM=screen-256color tmux -2' # Makes Termina.app work
+# alias tmux='TERM=screen-256color tmux -2' # Makes Terminal.app work
 
 # find
 #alias fd='find . -type d -name'
@@ -93,16 +93,19 @@ alias zshrcd='${EDITOR:-vim} "${ZDOTDIR:-$HOME}"/zshrc.d'
 alias zbench='for i in {1..10}; do /usr/bin/time zsh -lic exit; done'
 alias zdot='cd $ZDOTDIR'
 
+# fzf stuff
+alias fe='fzf-find-edit'
+
 # git
 alias unfuck-mutagen='git clean -df'
 alias gap='git add -p'
 alias gau='git add -u'
-alias gb='git branch'
+alias gb='fzf-git-branch'
 alias gbD='git branch -D'
 alias gbd='git branch -d'
 alias gci='git commit --verbose'
 alias gcis='git commit --gpg-sign --verbose'
-alias gco='git switch'
+alias gco='fzf-git-branch'
 alias gcob='git switch -c'
 alias gcom='git com'
 alias gd='git diff --color=always'

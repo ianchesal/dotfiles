@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+##? fh - repeat a command from your history
+##?
+##? usage: fh <pattern>
+
+print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
