@@ -10,7 +10,7 @@ if type eza >/dev/null; then
   alias l='eza -1 --group-directories-first'
   alias la='eza -la --group-directories-first'
   alias lg='eza -la --git --group-directories-first'
-  alias ll='eza -l --group-directories-first'
+  alias ll='eza -la --group-directories-first'
   alias ls='eza -1 --group-directories-first'
 
   et() {
