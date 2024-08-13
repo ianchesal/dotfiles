@@ -3,6 +3,17 @@ repoPaths:
   persona-id/*: ~/src/persona/*
   ianchesal/dotfiles: ~/src/dotfiles
 
+prSections:
+  - title: My Pull Requests
+    filters: is:open author:@me
+    layout:
+      author:
+        hidden: true
+  - title: Needs My Review
+    filters: is:pr is:open review-requested:@me draft:false review:required
+  - title: Involved
+    filters: is:pr is:open involves:@me -author:@me
+
 keybindings:
   prs:
     - key: c
