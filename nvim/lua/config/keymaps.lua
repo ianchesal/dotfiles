@@ -52,15 +52,18 @@ else
   map.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 end
 
--- -- I am too old to re-learn how to yank and paste a whole line in vim
+-- Shift is a PIA to hit
+vim.cmd([[nnoremap ; :]])
+
+-- I am too old to re-learn how to yank and paste a whole line in vim
 vim.cmd([[noremap Y Y]])
 
 -- Allow me to typo q and w
 vim.cmd([[
-cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
-cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
-cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
-cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
+command -complete=file -bang -nargs=? W  :w<bang> <args>
+command -complete=file -bang -nargs=? Wq :wq<bang> <args>
+command -complete=file -bang -nargs=? Q :q<bang> <args>
+command -complete=file -bang -nargs=? WQ :wq<bang> <args>
 ]])
 
 wk.add({
