@@ -1,4 +1,6 @@
 namespace :brew do
+  ENV['HOMEBREW_NO_ENV_HINTS'] = '1'
+
   desc 'Update homebrew installed packages'
   task :update do
     if which('brew')
