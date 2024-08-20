@@ -27,7 +27,10 @@ if [ -f "${HOME}/.zsh_local" ]; then
 fi
 
 # Load this plugin last
-source ${ZDOTDIR:-~}/plugins/fzf-tab/fzf-tab.plugin.zsh
+if type fzf >/dev/null; then
+  source <(fzf --zsh)
+  source ${ZDOTDIR:-~}/plugins/fzf-tab/fzf-tab.plugin.zsh
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/p10k.zsh.
 [[ ! -f ${ZDOTDIR}/p10k.zsh ]] || source ${ZDOTDIR}/p10k.zsh
