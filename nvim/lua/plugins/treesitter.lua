@@ -30,6 +30,10 @@ return {
         "yaml",
       },
       endwise = { enable = true },
+      indent = {
+        enable = true,
+        disable = { "ruby" },
+      },
     },
   },
 }
