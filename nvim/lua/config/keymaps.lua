@@ -75,8 +75,15 @@ wk.add({
   { "<leader>g", group = "git" },
   { "<leader>ga", "<cmd>Git add %:p<cr>", desc = "Add current file" },
   { "<leader>gf", "<cmd>Telescope git_file_history<cr>", desc = "File history (current file)" },
+  -- Plugin config is in ../plugins/fugitive.lua
   { "<leader>gg", "<cmd>Git<cr>", desc = "Fugitive" },
   { "<leader>gl", "<cmd>Git log<cr>", desc = "View logs" },
+  -- Plugin config is in ../plugins/diffview.lua
+  { "<leader>gd", group = "Diffview" },
+  { "<leader>gdc", "<cmd>DiffviewClose<cr>", mode = { "n", "i", "v" }, desc = "Close Diffview" },
+  { "<leader>gdd", "<cmd>DiffviewOpen<cr>", mode = { "n", "i", "v" }, desc = "Open Diffview" },
+  { "<leader>gdf", "<cmd>DiffviewToggleFiles<cr>", mode = { "n", "i", "v" }, desc = "Toggle Diffview file view" },
+  { "<leader>gdr", "<cmd>DiffviewRefresh<cr>", mode = { "n", "i", "v" }, desc = "Refresh Diffview" },
   { "<leader>l", group = "lsp" },
   { "<leader>lg", "<cmd>LspLog<cr>", desc = "Open LSP logs" },
   { "<leader>lh", "<cmd>LazyHealth<cr>", desc = "Health diagnostics" },
