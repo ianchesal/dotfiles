@@ -9,9 +9,10 @@ namespace :nvim do
     dolink(home('.config/nvim'), root('nvim'))
   end
 
-  task update: 'lsp:update' do
+  task :update do
     # This file gets big. Nuke it regularly.
     sh "rm -f #{home('.local/state/nvim/lsp.log')}"
+    sh 'nvim --headless "+Lazy! sync" +MasonUpdate +qa'
   end
 
   task :clean do

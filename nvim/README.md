@@ -1,9 +1,10 @@
 # 💤 LazyVim
 
-A starter template for [LazyVim](https://github.com/LazyVim/LazyVim). Refer to
-the [documentation](https://lazyvim.github.io/installation) to get started.
+A saner way to have a complex and rich NeoVIM experience!
 
 ## See Also
+
+The official [documentation](https://lazyvim.github.io/installation) for LavyVim.
 
 This guy was using LazyVim before going to LunarVim and I've found his
 configurations very helpful as a reference for how to tweak stuff. The LazyVim
