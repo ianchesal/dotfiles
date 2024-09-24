@@ -17,6 +17,7 @@ return {
       -- colorscheme = "catppuccin",
       colorscheme = "tokyonight-night",
       -- colorscheme = "onedark",
+      -- colorscheme = "quiet",
     },
   },
 }
