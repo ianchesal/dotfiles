@@ -30,22 +30,22 @@ return {
   --     end,
   --   },
   -- },
-  {
-    -- https://github.com/rgroli/other.nvim
-    "rgroli/other.nvim",
-    lazy = false,
-    config = function()
-      require("other-nvim").setup({
-        mappings = {
-          "livewire",
-          "angular",
-          "laravel",
-          "rails",
-          "golang",
-        },
-      })
-    end,
-  },
+  -- {
+  --   -- https://github.com/rgroli/other.nvim
+  --   "rgroli/other.nvim",
+  --   lazy = false,
+  --   config = function()
+  --     require("other-nvim").setup({
+  --       mappings = {
+  --         "livewire",
+  --         "angular",
+  --         "laravel",
+  --         "rails",
+  --         "golang",
+  --       },
+  --     })
+  --   end,
+  -- },
   -- {
   --   "pgr0ss/vimux-ruby-test",
   --   dependencies = {
