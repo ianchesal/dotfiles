@@ -14,8 +14,6 @@ opt.confirm = false
 opt.breakindent = true
 -- opt.cindent = true
 opt.visualbell = true
--- Make snappier
-opt.timeoutlen = 50
 
 -- WSL Clipboard support
 if is_wsl then
