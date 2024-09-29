@@ -84,7 +84,6 @@ wk.add({
   { "<leader>gdd", "<cmd>DiffviewOpen<cr>", mode = { "n", "i", "v" }, desc = "Open Diffview" },
   { "<leader>gdf", "<cmd>DiffviewToggleFiles<cr>", mode = { "n", "i", "v" }, desc = "Toggle Diffview file view" },
   { "<leader>gdr", "<cmd>DiffviewRefresh<cr>", mode = { "n", "i", "v" }, desc = "Refresh Diffview" },
-  { "<leader>k", "<cmd>lua require('kubectl').toggle()<cr>", mode = { "n" }, desc = "Kubernetes" },
   { "<leader>l", group = "lsp" },
   { "<leader>lg", "<cmd>LspLog<cr>", desc = "Open LSP logs" },
   { "<leader>lh", "<cmd>LazyHealth<cr>", desc = "Health diagnostics" },
