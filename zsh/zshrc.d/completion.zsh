@@ -10,6 +10,8 @@ zstyle ':completion:*' matcher-list '' \
   'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{a-z\-}={A-Z\_}' \
   'r:|?=** m:{a-z\-}={A-Z\_}'
 
+zstyle ':completion:*' menu no
+
 # Don't complete users. It's annoying.
 # See: https://unix.stackexchange.com/questions/57408/why-is-zsh-oh-my-zsh-completing-directories-that-dont-exist
 zstyle ':completion:*' users asgeo1 root ianchesal
@@ -24,5 +26,6 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # preview directory's content with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'

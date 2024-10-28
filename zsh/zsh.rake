@@ -19,14 +19,9 @@ namespace :zsh do
 
   desc 'Update zsh and plugins'
   task :update do
-    Dir.chdir('zsh/plugins') do
-      Dir.glob('*').select { |f| File.directory? f }.each do |plugin|
-        Dir.chdir(plugin) do
-          puts "Update zsh plugin: #{plugin}".green
-          sh 'git pull'
-        end
-      end
-    end
+    puts 'TODO: Figure this out'
+    # sh 'zinit self-update'
+    # sh 'zinit update'
   end
 
   task :clean do
