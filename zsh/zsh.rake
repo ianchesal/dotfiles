@@ -19,6 +19,7 @@ namespace :zsh do
 
   desc 'Update zsh and plugins'
   task :update do
+    puts 'Updating zinit'.green
     puts 'TODO: Figure this out'
     # sh 'zinit self-update'
     # sh 'zinit update'
