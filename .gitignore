@@ -8,7 +8,6 @@ BROWSE
 /karabiner/automatic_backups
 /lazygit/state.yml
 /node_modules
-/nvim/lazy-lock.json
 /package-lock.json
 /package.json
 /tmux/plugins
