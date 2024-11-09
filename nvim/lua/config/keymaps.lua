@@ -19,10 +19,6 @@ if os.getenv("TMUX") then
   vim.g.VimuxCloseOnExit = 1
 end
 
--- Git fugitive for me
-map.del("n", "<leader>gg")
-map.del("n", "<leader>gG")
-
 -- I prefer different keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
 
@@ -73,11 +69,7 @@ wk.add({
   { "<leader>fot", "<cmd>Other test<cr>", desc = "Open other test file" },
   { "<leader>fov", "<cmd>OtherVSplit<cr>", desc = "Open other file (vertical split)" },
   { "<leader>g", group = "git" },
-  { "<leader>ga", "<cmd>Git add %:p<cr>", desc = "Add current file" },
   { "<leader>gf", "<cmd>Telescope git_file_history<cr>", desc = "File history (current file)" },
-  -- Plugin config is in ../plugins/fugitive.lua
-  { "<leader>gg", "<cmd>Git<cr>", desc = "Fugitive" },
-  { "<leader>gl", "<cmd>Git log<cr>", desc = "View logs" },
   -- Plugin config is in ../plugins/diffview.lua
   { "<leader>gd", group = "Diffview" },
   { "<leader>gdc", "<cmd>DiffviewClose<cr>", mode = { "n", "i", "v" }, desc = "Close Diffview" },
