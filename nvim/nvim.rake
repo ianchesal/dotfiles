@@ -12,7 +12,7 @@ namespace :nvim do
   task :update do
     # This file gets big. Nuke it regularly.
     sh "rm -f #{home('.local/state/nvim/lsp.log')}"
-    sh 'nvim --headless "+Lazy! sync" +qa'
+    # sh 'nvim --headless "+Lazy! sync" +qa'
   end
 
   task :clean do
