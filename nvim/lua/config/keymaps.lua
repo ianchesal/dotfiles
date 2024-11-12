@@ -21,6 +21,11 @@ end
 
 -- I prefer different keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
+-- I'm trying out Neogit in place of Lazygit
+map.del("n", "<leader>gg")
+map.del("n", "<leader>gG")
+map.del("n", "<leader>gl")
+map.del("n", "<leader>gL")
 
 -- Copilot
 -- local copilot_on = false -- I start with Copilot OFF
@@ -70,6 +75,9 @@ wk.add({
   { "<leader>fov", "<cmd>OtherVSplit<cr>", desc = "Open other file (vertical split)" },
   { "<leader>g", group = "git" },
   { "<leader>gf", "<cmd>Telescope git_file_history<cr>", desc = "File history (current file)" },
+  -- Neogit instead of LazyGit
+  { "<leader>gg", "<cmd>Neogit cwd=%:p:h<cr>", desc = "Neogit" },
+  { "<leader>gl", "<cmd>Neogit cwd=%:p:h log<cr>", desc = "Neogit logs" },
   -- Plugin config is in ../plugins/diffview.lua
   { "<leader>gd", group = "Diffview" },
   { "<leader>gdc", "<cmd>DiffviewClose<cr>", mode = { "n", "i", "v" }, desc = "Close Diffview" },
