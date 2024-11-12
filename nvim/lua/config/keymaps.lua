@@ -77,6 +77,7 @@ wk.add({
   { "<leader>gf", "<cmd>Telescope git_file_history<cr>", desc = "File history (current file)" },
   -- Neogit instead of LazyGit
   { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
+  { "<leader>gl", "<cmd>lua require('neogit').action('log', 'log_current')()<cr>", desc = "Neogit logs" },
   -- Plugin config is in ../plugins/diffview.lua
   { "<leader>gd", group = "Diffview" },
   { "<leader>gdc", "<cmd>DiffviewClose<cr>", mode = { "n", "i", "v" }, desc = "Close Diffview" },
