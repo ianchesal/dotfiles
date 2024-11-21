@@ -21,11 +21,14 @@ end
 
 -- I prefer different keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
--- I'm trying out Neogit in place of Lazygit
-map.del("n", "<leader>gg")
-map.del("n", "<leader>gG")
-map.del("n", "<leader>gl")
-map.del("n", "<leader>gL")
+-- Delete git keymaps. I use NeoGit. LazyVim only adds these if it
+-- detects lazygit on the system.
+if vim.fn.executable("lazygit") == 1 then
+  map.del("n", "<leader>gg")
+  map.del("n", "<leader>gG")
+  map.del("n", "<leader>gl")
+  map.del("n", "<leader>gL")
+end
 
 -- Copilot
 -- local copilot_on = false -- I start with Copilot OFF
