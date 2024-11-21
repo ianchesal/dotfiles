@@ -20,7 +20,7 @@ return {
             cmd = "git diff --stat -B -M -C",
             height = 5,
             indent = 2,
-            ttl = 5 * 60,
+            ttl = 5,
           },
           {
             section = "startup",
