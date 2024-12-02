@@ -11,7 +11,10 @@ namespace :nvim do
 
   task :update do
     # This file gets big. Nuke it regularly.
-    sh "rm -f #{home('.local/state/nvim/lsp.log')}"
+    %w[lsp.log noice.log mason.log conform.log neotest.log nio.log log].each do |logfile|
+      path = ".local/state/nvim/#{logfile}"
+      sh "rm -f #{home(path)}"
+    end
     # sh 'nvim --headless "+Lazy! sync" +qa'
   end
 
