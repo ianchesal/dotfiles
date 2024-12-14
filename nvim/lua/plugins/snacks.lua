@@ -4,10 +4,10 @@ return {
     opts = {
       dashboard = {
         sections = {
-          -- {
-          --   section = "header",
-          --   padding = 2,
-          -- },
+          {
+            section = "header",
+            padding = 2,
+          },
           {
             section = "keys",
             padding = 2,
