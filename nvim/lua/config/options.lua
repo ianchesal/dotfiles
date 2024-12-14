@@ -36,3 +36,6 @@ end
 -- Don't care about these
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python3_provider = 0
+
+-- Disable all animations
+-- vim.g.snacks_animate = false
