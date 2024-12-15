@@ -1,9 +1,9 @@
 return {
   "saghen/blink.cmp",
   opts = {
-    -- keymap = {
-    --   preset = "default",
-    -- },
+    keymap = {
+      preset = "super-tab",
+    },
     enabled = function()
       local disabled = false
       disabled = disabled or (vim.tbl_contains({ "markdown" }, vim.bo.filetype))
