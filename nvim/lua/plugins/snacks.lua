@@ -2,6 +2,10 @@ return {
   {
     "folke/snacks.nvim",
     opts = {
+      scroll = {
+        -- Disable the smooth scrolling effect
+        enabled = false,
+      },
       dashboard = {
         sections = {
           {
