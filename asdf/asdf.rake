@@ -24,7 +24,8 @@ namespace :asdf do
 
   task :update do
     puts 'Update: asdf'.green
-    sh 'asdf update'
+    # This is no longer supported
+    # sh 'asdf update'
     puts 'Update: asdf plugins'.green
     sh 'asdf plugin update --all'
   end
