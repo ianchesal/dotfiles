@@ -40,5 +40,9 @@
       "",
       "$0Plan review. Manual testing post-apply."
     ]
+  },
+  "dotfiles dependency updates": {
+    "prefix": "dfdu",
+    "body": ["Deps updates$0"]
   }
 }
