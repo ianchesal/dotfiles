@@ -1,4 +1,4 @@
-ruby 3.1.5
+ruby 3.1.6
 nodejs 18.20.3
 golang 1.21.5
 packer 1.10.0
