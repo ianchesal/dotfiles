@@ -1,31 +1,15 @@
-# Find where asdf should be installed
-ASDF_DIR="${ASDF_DIR:-$HOME/.asdf}"
-ASDF_COMPLETIONS="$ASDF_DIR/completions"
+if type asdf >/dev/null; then
+  # Find where asdf should be installed
+  ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
 
-# For golang compatibility
-export ASDF_GOLANG_MOD_VERSION_ENABLED=true
+  # For golang compatibility
+  export ASDF_GOLANG_MOD_VERSION_ENABLED=true
 
-# If not found, check for archlinux/AUR package (/opt/asdf-vm/)
-if [[ ! -f "$ASDF_DIR/asdf.sh" || ! -f "$ASDF_COMPLETIONS/asdf.bash" ]] && [[ -f "/opt/asdf-vm/asdf.sh" ]]; then
-  ASDF_DIR="/opt/asdf-vm"
-  ASDF_COMPLETIONS="$ASDF_DIR"
-fi
+  if type brew >/dev/null; then
+    brew_prefix="$(brew --prefix asdf)"
+    ASDF_COMPLETIONS="${brew_prefix}/etc/bash_completion.d"
+    unset brew_prefix
+  fi
 
-# If not found, check for Homebrew package
-if [[ ! -f "$ASDF_DIR/asdf.sh" || ! -f "$ASDF_COMPLETIONS/asdf.bash" ]] && (( $+commands[brew] )); then
-  brew_prefix="$(brew --prefix asdf)"
-  ASDF_DIR="${brew_prefix}/libexec"
-  ASDF_COMPLETIONS="${brew_prefix}/etc/bash_completion.d"
-  unset brew_prefix
-fi
-
-# Load command
-if [[ -f "$ASDF_DIR/asdf.sh" ]]; then
-  . "$ASDF_DIR/asdf.sh"
-
-  # Load completions
-  # IAN: This isn't working in zsh so don't do it for now
-  #if [[ -f "$ASDF_COMPLETIONS/asdf.bash" ]]; then
-  #  . "$ASDF_COMPLETIONS/asdf.bash"
-  #fi
+  path=("$ASDF_DATA_DIR/shims" "$path[@]")
 fi

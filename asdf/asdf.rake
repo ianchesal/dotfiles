@@ -5,7 +5,6 @@ namespace :asdf do
   task all: [:asdf]
 
   task :asdf do
-    sh 'git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3' unless File.exist?(home('.asdf'))
     dolink(home('.asdfrc'), root('asdf', 'asdfrc'))
     dolink(home('.tool-versions'), root('asdf', 'tool-versions'))
     sh 'asdf plugin add ruby || true'
