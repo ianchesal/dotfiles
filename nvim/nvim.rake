@@ -10,12 +10,27 @@ namespace :nvim do
   end
 
   task :update do
-    # This file gets big. Nuke it regularly.
+    # These files get big. Nuke them regularly.
     %w[lsp.log noice.log mason.log conform.log neotest.log nio.log log].each do |logfile|
       path = ".local/state/nvim/#{logfile}"
       sh "rm -f #{home(path)}"
     end
-    # sh 'nvim --headless "+Lazy! sync" +qa'
+    sh 'nvim --headless "+Lazy! sync" +qa'
+    sh 'nvim --headless "+MasonUpdate" +qa'
+  end
+
+  desc 'Check for and commit nvim dependency updates'
+  task :commit do
+    lazy_lock = root('nvim', 'lazy-lock.json')
+    if system("git diff --quiet HEAD -- #{lazy_lock}")
+      puts 'No changes to nvim dependencies'.green
+    else
+      puts 'Found changes in nvim dependencies. Committing...'.blue
+      system("git add #{lazy_lock}")
+      system('git commit -m "Deps updates"')
+      system('git push')
+      puts 'Successfully committed and pushed dependency updates'.green
+    end
   end
 
   task :clean do
