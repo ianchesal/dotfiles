@@ -25,7 +25,9 @@ namespace :nvim do
     if system("git diff --quiet HEAD -- #{lazy_lock}")
       puts 'No changes to nvim dependencies'.green
     else
-      puts 'Found changes in nvim dependencies. Committing...'.blue
+      puts 'Found changes in nvim dependencies:'.blue
+      system("git diff #{lazy_lock}")
+      puts "\nCommitting changes...".blue
       system("git add #{lazy_lock}")
       system('git commit -m "Deps updates"')
       system('git push')
