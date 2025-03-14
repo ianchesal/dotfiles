@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+ROOT_DIR=$(dirname "$SCRIPT_DIR")
+
+mkdir -p ~/.config
+
+# Symlink in just the bare minimum I need in a Coder workspace
+ln -s "$ROOT_DIR/asdf/asdfrc" ~/.asdfrc
+ln -s "$ROOT_DIR/asdf/tool-versions" ~/.tool-versions
+ln -s "$ROOT_DIR/git/gh" ~/.config/gh
+ln -s "$ROOT_DIR/git/gh-dash" ~/.config/gh-dash
+ln -s "$ROOT_DIR/nvim" ~/.config/test-nvim
+ln -s "$ROOT_DIR/ripgrep" ~/.config/ripgrep
+ln -s "$ROOT_DIR/tmux" ~/.config/tmux
+ln -s "$ROOT_DIR/zsh" ~/.config/zsh
+ln -s "$ROOT_DIR/zsh/.zshenv" ~/.zshenv
