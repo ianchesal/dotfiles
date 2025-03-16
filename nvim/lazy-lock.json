@@ -12,7 +12,7 @@
   "flash.nvim": { "branch": "main", "commit": "3c942666f115e2811e959eabbdd361a025db8b63" },
   "friendly-snippets": { "branch": "main", "commit": "efff286dd74c22f731cdec26a70b46e5b203c619" },
   "fzf-lua": { "branch": "main", "commit": "03eed634a3b1f4a4dc53f928868566b0b697dabe" },
-  "grug-far.nvim": { "branch": "main", "commit": "0ec6c3a9ef63703975e800d7386b6114863e1f9d" },
+  "grug-far.nvim": { "branch": "main", "commit": "9f7166f7b8ad6698c90d2974ade911417faad410" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "lazydev.nvim": { "branch": "main", "commit": "2367a6c0a01eb9edb0464731cc0fb61ed9ab9d2c" },
   "lualine.nvim": { "branch": "master", "commit": "b8b60c7f1d0d95ad74ee215b2291280b30482476" },
