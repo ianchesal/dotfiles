@@ -17,7 +17,7 @@ if (( ! $+commands[brew] )); then
   elif [[ -x "$HOME/.linuxbrew/bin/brew" ]]; then
     brew_location="$HOME/.linuxbrew/bin/brew"
   else
-    return
+    puts "No Homebrew found -- experience will be degraded"
   fi
 fi
 
