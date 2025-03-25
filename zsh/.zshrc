@@ -17,13 +17,15 @@ if (( ! $+commands[brew] )); then
   elif [[ -x "$HOME/.linuxbrew/bin/brew" ]]; then
     brew_location="$HOME/.linuxbrew/bin/brew"
   else
-    puts "No Homebrew found -- experience will be degraded"
+    echo "No Homebrew found -- experience will be degraded"
   fi
 fi
 
 if [[ -z "$HOMEBREW_PREFIX" ]]; then
   if [[ -z $brew_location ]]; then
-    eval "$(brew shellenv)"
+    if type brew &>/dev/null; then
+      eval "$(brew shellenv)"
+    fi
   else
     eval "$("$brew_location" shellenv)"
   fi
