@@ -4,6 +4,8 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 ROOT_DIR=$(dirname "$SCRIPT_DIR")
 
 mkdir -p ~/.config
+mkdir -p ~/.cache
+mkdir -p ~/.local/share
 
 # Symlink in just the bare minimum I need in a Coder workspace
 ln -s "$ROOT_DIR/asdf/asdfrc" ~/.asdfrc
