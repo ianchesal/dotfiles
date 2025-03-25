@@ -10,8 +10,10 @@ ln -s "$ROOT_DIR/asdf/asdfrc" ~/.asdfrc
 ln -s "$ROOT_DIR/asdf/tool-versions" ~/.tool-versions
 ln -s "$ROOT_DIR/git/gh" ~/.config/gh
 ln -s "$ROOT_DIR/git/gh-dash" ~/.config/gh-dash
-ln -s "$ROOT_DIR/nvim" ~/.config/test-nvim
+ln -s "$ROOT_DIR/nvim" ~/.config/nvim
 ln -s "$ROOT_DIR/ripgrep" ~/.config/ripgrep
 ln -s "$ROOT_DIR/tmux" ~/.config/tmux
 ln -s "$ROOT_DIR/zsh" ~/.config/zsh
+rm -f ~/.zshrc ~/.zshenv
 ln -s "$ROOT_DIR/zsh/.zshenv" ~/.zshenv
+ln -s "$ROOT_DIR/zsh/.zshrc" ~/.zshrc
