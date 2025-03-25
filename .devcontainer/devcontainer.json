@@ -1,0 +1,21 @@
+{
+  "name": "Debian Development Environment",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["vscodevim.vim", "asdf-vm.asdf-vscode"]
+    }
+  },
+  "remoteUser": "vscode",
+  "postCreateCommand": "git config --global core.editor 'nvim'",
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.config,target=/home/vscode/.config,type=bind,consistency=cached"
+  ]
+}
