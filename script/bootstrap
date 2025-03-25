@@ -14,6 +14,5 @@ ln -s "$ROOT_DIR/nvim" ~/.config/nvim
 ln -s "$ROOT_DIR/ripgrep" ~/.config/ripgrep
 ln -s "$ROOT_DIR/tmux" ~/.config/tmux
 ln -s "$ROOT_DIR/zsh" ~/.config/zsh
-rm -f ~/.zshrc ~/.zshenv
+rm -f ~/.zshrc ~/.zshenv ~/.zprofile ~/.zcomp*
 ln -s "$ROOT_DIR/zsh/.zshenv" ~/.zshenv
-ln -s "$ROOT_DIR/zsh/.zshrc" ~/.zshrc
