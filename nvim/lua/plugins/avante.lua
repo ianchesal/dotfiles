@@ -4,13 +4,12 @@ return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = true,
-    commit = "51eb8fc2d92c5e1ab26a92b379a810e2a04e21c9", -- set this if you want to always pull the latest change
-    -- version = "latest", -- set this if you want to always pull the latest change
+    -- commit = "51eb8fc2d92c5e1ab26a92b379a810e2a04e21c9", -- set this if you want to pin to a commit
+    version = false, -- set this if you want to always pull the latest change
     enabled = function(_, _)
       local api_key = os.getenv("ANTHROPIC_API_KEY")
       return api_key ~= nil and api_key ~= ""
     end,
-    enabled = true,
     opts = {
       -- add any opts here
       mappings = {
