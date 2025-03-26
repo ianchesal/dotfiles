@@ -15,6 +15,7 @@ ln -s "$ROOT_DIR/git/gh-dash" ~/.config/gh-dash
 ln -s "$ROOT_DIR/nvim" ~/.config/nvim
 ln -s "$ROOT_DIR/ripgrep" ~/.config/ripgrep
 ln -s "$ROOT_DIR/tmux" ~/.config/tmux
-ln -s "$ROOT_DIR/zsh" ~/.config/zsh
-rm -f ~/.zshrc ~/.zshenv ~/.zprofile ~/.zcomp*
-ln -s "$ROOT_DIR/zsh/.zshenv" ~/.zshenv
+# For now I 'm not going to bring my my zsh setup'
+# ln -s "$ROOT_DIR/zsh" ~/.config/zsh
+# rm -f ~/.zshrc ~/.zshenv ~/.zprofile ~/.zcomp*
+# ln -s "$ROOT_DIR/zsh/.zshenv" ~/.zshenv
