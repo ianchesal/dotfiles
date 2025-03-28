@@ -29,26 +29,6 @@ return {
       ["<C-D>"] = { "scroll_documentation_down", "fallback" },
       ["<C-e>"] = { "hide", "fallback" },
       ["<CR>"] = { "accept", "fallback" },
-      ["<Tab>"] = {
-        "snippet_forward",
-        "select_next",
-        function(cmp)
-          if has_words_before() or vim.api.nvim_get_mode().mode == "c" then
-            return cmp.show()
-          end
-        end,
-        "fallback",
-      },
-      ["<S-Tab>"] = {
-        "snippet_backward",
-        "select_prev",
-        function(cmp)
-          if vim.api.nvim_get_mode().mode == "c" then
-            return cmp.show()
-          end
-        end,
-        "fallback",
-      },
     },
   },
 }
