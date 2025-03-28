@@ -14,6 +14,9 @@ return {
       return not disabled
     end,
     -- Stolen from AstroVim
+    -- Fixes a long standing bug I've been experiencing where hitting return at
+    -- the end of a line would select the top value in the autocomplete list.
+    -- It was driving me mad.
     completion = {
       list = { selection = { preselect = false, auto_insert = true } },
     },
