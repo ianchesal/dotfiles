@@ -63,29 +63,6 @@
       "overflow": "hide",
       "segments": [
         {
-          "type": "kubectl",
-          "style": "powerline",
-          "foreground": "p:terminal-magenta",
-          "properties": {
-            "context_aliases": {
-              "arn:aws:eks:eu-west-1:1234567890:cluster/posh": "posh"
-            }
-          }
-        },
-        {
-          "type": "gcp",
-          "style": "powerline",
-          "foreground": "p:light-sky-blue"
-        },
-        {
-          "type": "terraform",
-          "style": "powerline",
-          "foreground": "p:terminal-magenta",
-          "properties": {
-            "fetch_version": true
-          }
-        },
-        {
           "type": "node",
           "style": "plain",
           "foreground": "p:pistachio-green",
@@ -161,6 +138,26 @@
     "template": "> ",
     "newline": true
   },
+  "tooltips": [
+    {
+      "type": "aws",
+      "tips": ["aws"],
+      "style": "powerline",
+      "foreground": "p:light-sky-blue"
+    },
+    {
+      "type": "gcp",
+      "tips": ["gcloud", "gsutil"],
+      "style": "powerline",
+      "foreground": "p:light-sky-blue"
+    },
+    {
+      "type": "kubectl",
+      "tips": ["kubectl", "k", "kubectx", "kubens"],
+      "style": "powerline",
+      "foreground": "p:terminal-magenta"
+    }
+  ],
   "final_space": true,
   "version": 3,
   "terminal_background": "p:t-background"
