@@ -37,13 +37,12 @@
           "properties": {
             "style": "powerlevel"
           },
-          "template": "<b>{{ .Path }}</b> <p:light-sky-blue>\u26a1</>"
+          "template": "<b>{{ .Path }}</b> "
         },
         {
           "type": "git",
           "style": "plain",
-          "foreground": "p:white-blue",
-          "template": "{{ .HEAD}}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }} <p:terminal-green>{{ if gt .Behind 0 }}\u2193{{ end }}{{ if gt .Ahead 0 }}\u2191{{ end }}</>",
+          "template": "on <p:pistachio-green>{{ .HEAD}}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}</> <p:terminal-green>{{ if gt .Behind 0 }}\u2193{{ end }}{{ if gt .Ahead 0 }}\u2191{{ end }}</>",
           "properties": {
             "fetch_status": true,
             "commit_icon": "@",
