@@ -28,14 +28,14 @@
           "style": "plain",
           "background": "transparent",
           "foreground": "p:terminal-blue",
-          "template": "\u279c "
+          "template": "\n"
         },
         {
           "type": "path",
           "style": "plain",
-          "foreground": "p:terminal-magenta",
+          "foreground": "p:terminal-blue",
           "properties": {
-            "style": "folder"
+            "style": "powerlevel"
           },
           "template": "<b>{{ .Path }}</b> <p:light-sky-blue>\u26a1</>"
         },
@@ -68,6 +68,29 @@
       "alignment": "right",
       "overflow": "hide",
       "segments": [
+        {
+          "type": "kubectl",
+          "style": "powerline",
+          "foreground": "p:terminal-magenta",
+          "properties": {
+            "context_aliases": {
+              "arn:aws:eks:eu-west-1:1234567890:cluster/posh": "posh"
+            }
+          }
+        },
+        {
+          "type": "gcp",
+          "style": "powerline",
+          "foreground": "p:light-sky-blue"
+        },
+        {
+          "type": "terraform",
+          "style": "powerline",
+          "foreground": "p:terminal-magenta",
+          "properties": {
+            "fetch_version": true
+          }
+        },
         {
           "type": "node",
           "style": "plain",
@@ -103,15 +126,6 @@
           "style": "plain",
           "foreground": "p:light-sky-blue",
           "template": "\uFCD1 {{ .Full}}"
-        },
-        {
-          "type": "command",
-          "style": "plain",
-          "foreground": "p:white-blue",
-          "properties": {
-            "command": "git log --pretty=format:%cr -1 || date +%H:%M:%S",
-            "shell": "bash"
-          }
         }
       ],
       "type": "prompt"
@@ -121,9 +135,10 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "p:pistachio-green",
+          "foreground": "p:terminal-magenta",
+          "background": "transparent",
           "style": "plain",
-          "template": "\u25b6",
+          "template": "\u276f",
           "type": "text"
         }
       ],
@@ -136,9 +151,9 @@
     "template": "\u279c "
   },
   "transient_prompt": {
-    "background": "p:t-background",
-    "foreground": "p:terminal-blue",
-    "template": "\u279c ",
+    "background": "transparent",
+    "foreground": "p:terminal-magenta",
+    "template": "\u276f ",
     "newline": true
   },
   "final_space": true,
