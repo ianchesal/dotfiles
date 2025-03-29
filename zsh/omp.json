@@ -140,10 +140,10 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "p:terminal-magenta",
+          "foreground": "p:pistachio-green",
           "background": "transparent",
           "style": "plain",
-          "template": "\u276f",
+          "template": ">",
           "type": "text"
         }
       ],
@@ -152,13 +152,13 @@
   ],
   "secondary_prompt": {
     "background": "transparent",
-    "foreground": "p:terminal-magenta",
-    "template": "\u276f\u276f "
+    "foreground": "p:pistachio-green",
+    "template": "> "
   },
   "transient_prompt": {
     "background": "transparent",
-    "foreground": "p:terminal-magenta",
-    "template": "\u276f ",
+    "foreground": "p:pistachio-green",
+    "template": "> ",
     "newline": true
   },
   "final_space": true,
