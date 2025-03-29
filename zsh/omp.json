@@ -130,7 +130,7 @@
   "secondary_prompt": {
     "background": "transparent",
     "foreground": "p:pistachio-green",
-    "template": "> "
+    "template": ">> "
   },
   "transient_prompt": {
     "background": "transparent",
