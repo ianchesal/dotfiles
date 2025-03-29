@@ -121,6 +121,17 @@
           "style": "plain",
           "foreground": "p:light-sky-blue",
           "template": "\uFCD1 {{ .Full}}"
+        },
+        {
+          "type": "executiontime",
+          "style": "powerline",
+          "foreground": "p:terminal-yellow"
+        },
+        {
+          "type": "session",
+          "style": "powerline",
+          "foreground": "p:terminal-yellow",
+          "template": "{{ if .SSHSession }}\ueba9 {{ .UserName }}@{{ .HostName }}{{ end }}"
         }
       ],
       "type": "prompt"
@@ -142,8 +153,8 @@
   ],
   "secondary_prompt": {
     "background": "transparent",
-    "foreground": "p:terminal-blue",
-    "template": "\u279c "
+    "foreground": "p:terminal-magenta",
+    "template": "\u276f\u276f "
   },
   "transient_prompt": {
     "background": "transparent",
