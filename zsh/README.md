@@ -13,8 +13,8 @@ So, liberally borrowed, you could say.
 
 See:
 
- - zdotdir: https://github.com/getantidote/zdotdir
- - antidote: https://getantidote.github.io/
+* zinit: https://github.com/zdharma-continuum/zinit
+* zdotdir: https://github.com/getantidote/zdotdir
 
 ## Debugging zsh startup time
 
