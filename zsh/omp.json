@@ -53,7 +53,7 @@
           "type": "status",
           "style": "plain",
           "foreground": "p:terminal-red",
-          "template": " \uf00d"
+          "template": "x"
         }
       ],
       "type": "prompt"
