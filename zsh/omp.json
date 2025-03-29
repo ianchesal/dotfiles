@@ -131,7 +131,7 @@
           "type": "session",
           "style": "powerline",
           "foreground": "p:terminal-yellow",
-          "template": "{{ if .SSHSession }}\ueba9 {{ .UserName }}@{{ .HostName }}{{ end }}"
+          "template": "{{ if .SSHSession }} {{ .UserName }}@{{ .HostName }}{{ end }}"
         }
       ],
       "type": "prompt"
