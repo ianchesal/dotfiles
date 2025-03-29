@@ -39,6 +39,7 @@ return {
         -- auto_apply_diff_after_generation = false,
         enable_claude_text_editor_tool_mode = true, -- support_paste_from_clipboard = false,
         -- minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+        enable_git_integration = false,
       },
       hints = { enabled = true },
       ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
