@@ -42,17 +42,12 @@
         {
           "type": "git",
           "style": "plain",
-          "foreground": "p:light-sky-blue",
-          "foreground_templates": [
-            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:terminal-red{{ end }}",
-            "{{ if and (gt .Ahead 0) (gt .Behind 0)}}p:light-sky-blue {{ end }}",
-            "{{ if gt .Ahead 0 }}p:terminal-blue{{ end }}",
-            "{{ if gt .Behind 0 }}p:celeste-blue{{ end }}"
-          ],
-          "template": "({{ .HEAD}})",
+          "foreground": "p:white-blue",
+          "template": "{{ .HEAD}}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }} <p:terminal-green>{{ if gt .Behind 0 }}\u2193{{ end }}{{ if gt .Ahead 0 }}\u2191{{ end }}</>",
           "properties": {
             "fetch_status": true,
-            "branch_icon": "\ue725 "
+            "commit_icon": "@",
+            "branch_icon": ""
           }
         },
         {
