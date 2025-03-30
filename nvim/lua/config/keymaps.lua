@@ -85,6 +85,12 @@ wk.add({
   { "<leader>gdc", "<cmd>DiffviewClose<cr>", mode = { "n", "i", "v" }, desc = "Close Diffview" },
   { "<leader>gdd", "<cmd>DiffviewOpen<cr>", mode = { "n", "i", "v" }, desc = "Open Diffview" },
   { "<leader>gdf", "<cmd>DiffviewToggleFiles<cr>", mode = { "n", "i", "v" }, desc = "Toggle Diffview file view" },
+  {
+    "<leader>gdh",
+    "<cmd>DiffviewFileHistory<cr>",
+    mode = { "n", "i", "v" },
+    desc = "Toggle Diffview file history view",
+  },
   { "<leader>gdr", "<cmd>DiffviewRefresh<cr>", mode = { "n", "i", "v" }, desc = "Refresh Diffview" },
   { "<leader>l", group = "lsp" },
   { "<leader>lg", "<cmd>LspLog<cr>", desc = "Open LSP logs" },
