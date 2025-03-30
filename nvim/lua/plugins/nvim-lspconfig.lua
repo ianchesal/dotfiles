@@ -8,9 +8,7 @@ return {
       format_notify = true,
       inlay_hints = { enabled = false },
       servers = {
-        bashls = {
-          filetypes = { "sh", "zsh" },
-        },
+        bashls = {},
         denols = {},
         diagnosticls = {},
         dockerls = {},
