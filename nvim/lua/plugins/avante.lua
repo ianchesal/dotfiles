@@ -50,6 +50,8 @@ return {
         model = "claude-3-5-sonnet-latest",
         temperature = 0,
         max_tokens = 8192,
+        -- See: https://github.com/yetone/avante.nvim?tab=readme-ov-file#disable-tools
+        -- disable_tools = true, -- disable tools!
       },
       ---Specify the special dual_boost mode
       ---1. enabled: Whether to enable dual_boost mode. Default to false.
