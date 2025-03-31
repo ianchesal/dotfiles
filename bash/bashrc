@@ -2,7 +2,7 @@
 # Bootstrap my work environment
 ########################################################
 
-pathadd() { case ":${PATH:=$1}:" in *:"$1":*) ;; *) PATH="$1:$PATH" ;; esac; }
+pathadd() { case ":${PATH:=$1}:" in *:"$1":*) ;; *) PATH="$1:$PATH" ;; esac }
 
 export HISTSIZE=1000000
 # Don't put duplicate lines in the history.
@@ -10,27 +10,9 @@ export HISTCONTROL=ignoredups
 # ... and ignore same successive entries.
 export HISTCONTROL=ignoreboth
 
-# Python and pyenv
-PYENV_ROOT=/usr/local/opt/pyenv
-if [[ -f "${HOME}/.pyenv/bin/pyenv" ]]; then
-  PYENV_ROOT=${HOME}/.pyenv
-  pathadd ${PYENV_ROOT}/bin
-  echo $PATH
-  echo $path
-  eval "$(pyenv init -)"
-fi
-export PYENV_ROOT
-
 # After each command, update LINES and COLUMNS to reflect the current window size
 shopt -s checkwinsize
-
-# AWS command line completion
-complete -C aws_completer aws
 
 pathadd /usr/local/bin
 pathadd /usr/local/sbin
 export PATH
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

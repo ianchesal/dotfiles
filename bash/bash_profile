@@ -12,125 +12,36 @@ export GIT_EDITOR=vim
 # to load different shells.
 pathadd() { case ":${PATH:=$1}:" in *:"$1":*) ;; *) PATH="$1:$PATH" ;; esac }
 
-source ~/src/dotfiles/bash/colors.theme.bash
-source ~/src/dotfiles/bash/pure.theme.bash
-#source ~/src/dotfiles/bash/ianc.theme.bash
-
-if type brew &>/dev/null; then
-	HOMEBREW_PREFIX="$(brew --prefix)"
-	if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
-		source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-	else
-		for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
-			[[ -r "$COMPLETION" ]] && source "$COMPLETION"
-		done
-	fi
-else
-	if [[ -f "/usr/local/etc/bash_completion" ]]; then
-		source /usr/local/etc/bash_completion
-	else
-		if [[ -d "/usr/local/etc/bash_completion.d" ]]; then
-			BASH_COMPLETION_DIR=/usr/local/etc/bash_completion.d
-		elif [[ -d "/etc/bash_completion.d" ]]; then
-			BASH_COMPLETION_DIR=/etc/bash_completion.d
-		fi
-		if ! [[ -z "$BASH_COMPLETION_DIR" ]]; then
-			for f in ${BASH_COMPLETION_DIR}/*; do
-				source $f
-			done
-		fi
-	fi
-fi
-
 # ~/.local support
 pathadd "${HOME}/.local/bin"
-
-# Go
-#export GOPATH="${HOME}/src/go"
-pathadd $GOPATH/bin
 
 alias gpoh='git push origin HEAD'
 alias brake='bundle exec rake'
 
 source ~/src/dotfiles/bash/aliases
 
-SSH_ENV="$HOME/.ssh/environment"
+if type asdf >/dev/null; then
+  # Find where asdf should be installed
+  ASDF_DATA_DIR="${ASDF_DATA_DIR:-$HOME/.asdf}"
 
-function start_agent {
-	echo "Initialising new SSH agent..."
-	/usr/bin/ssh-agent | sed 's/^echo/#echo/' >"${SSH_ENV}"
-	echo succeeded
-	chmod 600 "${SSH_ENV}"
-	. "${SSH_ENV}" >/dev/null
-	/usr/bin/ssh-add
-}
+  # For golang compatibility
+  export ASDF_GOLANG_MOD_VERSION_ENABLED=true
 
-# Source SSH settings, if applicable
-if [[ $(uname) != "Darwin" ]]; then
-	if [ -f "${SSH_ENV}" ]; then
-		. "${SSH_ENV}" >/dev/null
-		#ps ${SSH_AGENT_PID} doesn't work under cywgin
-		ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ >/dev/null || {
-			start_agent
-		}
-	else
-		start_agent
-	fi
+  path=("$ASDF_DATA_DIR/shims" "$path[@]")
 fi
 
-# vim: filetype=sh
-#pathadd /usr/local/sbin
-#export PATH
-
-# List tmux sessions
-TMUX_SESSIONS=$(tmux ls 2>/dev/null)
-if ! [[ -z "$TMUX_SESSIONS" ]]; then
-	echo "---------- tmux sessions ----------"
-	tmux ls
-	echo "-----------------------------------"
-fi
-
-if [[ -d "/usr/local/go/bin" ]]; then
-	export PATH=/usr/local/go/bin:$PATH
-	export PATH=/usr/local/opt/go/libexec/bin:$PATH
-	export GOROOT=/usr/local/opt/go/libexec
-fi
-
-# Perl
-if [[ -f "/usr/local/bin/perl" ]]; then
-	export PERL_MB_OPT="--install_base \"/Users/ianc/.perl5\""
-	export PERL_MM_OPT="INSTALL_BASE=/Users/ianc/.perl5"
-	export PERL5LIB=${HOME}/.perl5/lib/perl5
-fi
-
-# Python and pyenv and pipenv
-command -v pyenv &>/dev/null && FOUND_PYENV=1 || FOUND_PYENV=0
-if [[ $FOUND_PYENV -eq 1 ]]; then
-	eval "$(pyenv init -)"
-	export PYENV_ROOT=$(pyenv root)
-fi
-if type pipenv &>/dev/null; then
-	eval "$(pipenv --completion)"
-	export PIPENV_IGNORE_VIRTUALENVS=1
-fi
-
-# Ruby and rbenv
-if [[ -d "${HOME}/.rbenv/bin" ]]; then
-	pathadd ${HOME}/.rbenv/bin
-	eval "$(${HOME}/.rbenv/bin/rbenv init -)"
-	if [[ -e "/usr/local/bin/brew" ]]; then
-		export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
-	fi
-fi
-
-# Hub
-# if [[ -f "/usr/local/bin/hub" ]]; then
-#   eval "$(hub alias -s)"
+# if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+#   eval "$(oh-my-posh init bash --config ${HOME}/.config/ohmyposh/ohmyposh.json)"
 # fi
+source ~/src/dotfiles/bash/colors.theme.bash
+source ~/src/dotfiles/bash/pure.theme.bash
 
 # Localized setup
 if [[ -f "${HOME}/.bash_local" ]]; then
-	source "${HOME}/.bash_local"
+  source "${HOME}/.bash_local"
+fi
+if [[ -f "${HOME}/.secrets" ]]; then
+  source "${HOME}/.secrets"
 fi
 
 # Bat: https://github.com/sharkdp/bat#configuration-file
@@ -141,10 +52,7 @@ export HOMEBREW_NO_ANALYTICS=1
 # Cleanup on install
 export HOMEBREW_INSTALL_CLEANUP=1
 # Cask options
-export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+# export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
 #export GOROOT=/usr/local/opt/go/libexec
 export PATH
-
-# GPG
-export GPG_TTY=$(tty)
