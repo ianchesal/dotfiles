@@ -164,3 +164,8 @@ alias tfo='terraform output'
 alias tfp='terraform plan'
 alias tfpl='terraform providers lock -platform=darwin_arm64 -platform=linux_amd64'
 alias tfv='terraform validate'
+
+# Docker/Podman compatibility
+if type podman >/dev/null; then
+  alias docker=podman
+fi
