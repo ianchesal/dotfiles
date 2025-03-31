@@ -48,12 +48,6 @@
             "commit_icon": "@",
             "branch_icon": ""
           }
-        },
-        {
-          "type": "status",
-          "style": "plain",
-          "foreground": "p:terminal-red",
-          "template": "x"
         }
       ],
       "type": "prompt"
@@ -61,6 +55,7 @@
     {
       "alignment": "right",
       "overflow": "hide",
+      "type": "prompt",
       "segments": [
         {
           "type": "node",
@@ -78,25 +73,25 @@
           "type": "python",
           "style": "plain",
           "foreground": "p:terminal-yellow",
-          "template": "\uE235 {{ .Full }}"
+          "template": "\uE235 {{ .Full }} "
         },
         {
           "type": "julia",
           "style": "plain",
           "foreground": "p:terminal-magenta",
-          "template": "\uE624 {{ .Full }}"
+          "template": "\uE624 {{ .Full }} "
         },
         {
           "type": "ruby",
           "style": "plain",
           "foreground": "p:terminal-red",
-          "template": "\uE791 {{ .Full}}"
+          "template": "\uE791 {{ .Full}} "
         },
         {
           "type": "go",
           "style": "plain",
           "foreground": "p:light-sky-blue",
-          "template": "\uFCD1 {{ .Full}}"
+          "template": "\uFCD1 {{ .Full}} "
         },
         {
           "type": "executiontime",
@@ -109,19 +104,18 @@
           "foreground": "p:terminal-yellow",
           "template": "{{ if .SSHSession }} {{ .UserName }}@{{ .HostName }}{{ end }}"
         }
-      ],
-      "type": "prompt"
+      ]
     },
     {
       "alignment": "left",
       "newline": true,
       "segments": [
         {
-          "foreground": "p:pistachio-green",
           "background": "transparent",
           "style": "plain",
           "template": ">",
-          "type": "text"
+          "type": "text",
+          "foreground": "p:terminal-magenta"
         }
       ],
       "type": "prompt"
@@ -129,14 +123,14 @@
   ],
   "secondary_prompt": {
     "background": "transparent",
-    "foreground": "p:pistachio-green",
+    "foreground": "p:terminal-magenta",
     "template": ">> "
   },
   "transient_prompt": {
     "background": "transparent",
-    "foreground": "p:pistachio-green",
     "template": "> ",
-    "newline": true
+    "newline": true,
+    "foreground": "p:terminal-magenta"
   },
   "tooltips": [
     {
