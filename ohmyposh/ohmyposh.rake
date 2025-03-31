@@ -7,7 +7,7 @@ namespace :ohmyposh do
     if which('brew')
       outdated = `brew outdated oh-my-posh`.strip
       unless outdated.empty?
-        puts "\n"
+        puts "\n\n"
         puts '*' * 80
         puts 'ATTENTION: oh-my-posh update available!'.green.bold
         puts "Current version: #{outdated}".yellow
