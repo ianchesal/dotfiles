@@ -70,7 +70,7 @@ zinit cdreplay -q
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/p10k.zsh.
 # [[ ! -f ${ZDOTDIR}/p10k.zsh ]] || source ${ZDOTDIR}/p10k.zsh
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  eval "$(oh-my-posh init zsh --config ${HOME}/.config/zsh/omp.json)"
+  eval "$(oh-my-posh init zsh --config ${HOME}/.config/ohmyposh/ohmyposh.json)"
 fi
 
 # Sort and source all scripts in zshrd.d
