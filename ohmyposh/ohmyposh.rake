@@ -5,20 +5,17 @@ namespace :ohmyposh do
   desc 'Check for oh-my-posh updates'
   task :check_update do
     if which('brew')
-      info = `brew info oh-my-posh`
-      if info =~ /(\d+\.\d+\.\d+).*Latest: (\d+\.\d+\.\d+)/
-        current_version = Regexp.last_match(1)
-        latest_version = Regexp.last_match(2)
-        if current_version != latest_version
-          puts "\n\n"
-          puts '*' * 80
-          puts 'ATTENTION: oh-my-posh update available!'.green.bold
-          puts "Current version: #{current_version}".yellow
-          puts "Latest version:  #{latest_version}".yellow
-          puts "Run 'rake ohmyposh:update' to update".yellow
-          puts '*' * 80
-          puts "\n"
-        end
+      outdated = `brew outdated --verbose oh-my-posh`.strip
+      if outdated.empty?
+        puts 'No update to oh-my-posh found'.blue
+      else
+        puts "\n\n"
+        puts '*'.green * 80
+        puts 'ATTENTION: oh-my-posh update available!'.yellow.bold
+        puts "Details: #{outdated}".yellow
+        puts "Run 'rake ohmyposh:update' to update".yellow
+        puts '*'.green * 80
+        puts "\n"
       end
     end
   end
