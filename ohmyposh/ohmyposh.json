@@ -113,7 +113,7 @@
         {
           "background": "transparent",
           "style": "plain",
-          "template": ">",
+          "template": "{{ if gt .Code 0 }}<p:terminal-red>></>{{ else }}<p:terminal-magenta>></>{{ end }}",
           "type": "text",
           "foreground": "p:terminal-magenta"
         }
