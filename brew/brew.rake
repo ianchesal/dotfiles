@@ -5,7 +5,7 @@ namespace :brew do
   task :update do
     if which('brew')
       puts 'Update: Homebrew'.green
-      outdated = `brew outdated --quiet | grep -v oh-my-posh`.strip
+      outdated = `brew outdated --quiet | grep -v oh-my-posh`.strip.split("\n").join(' ')
       if outdated.empty?
         puts 'No outdated formulas to upgrade'.blue
       else
