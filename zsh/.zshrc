@@ -83,4 +83,9 @@ if [ -f "${HOME}/.zsh_local" ]; then
   source "${HOME}/.zsh_local"
 fi
 
+# Load secrets
+if [ -f "${HOME}/.secrets" ]; then
+  source "${HOME}/.secrets"
+fi
+
 # zprof
