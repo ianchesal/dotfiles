@@ -35,4 +35,4 @@ end
 
 task all: [:zsh]
 task clean: ['zsh:clean']
-task update: ['zsh:update']
+# task update: ['zsh:update']
