@@ -26,7 +26,6 @@ NVIM_APPNAME=ianchesal/dotfiles/nvim nvim
 ### ai
 
 + [olimorris/codecompanion.nvim](https://dotfyle.com/plugins/olimorris/codecompanion.nvim)
-+ [yetone/avante.nvim](https://dotfyle.com/plugins/yetone/avante.nvim)
 ### bars-and-lines
 
 + [SmiteshP/nvim-navic](https://dotfyle.com/plugins/SmiteshP/nvim-navic)
@@ -128,7 +127,6 @@ NVIM_APPNAME=ianchesal/dotfiles/nvim nvim
 ### ai
 
 + [olimorris/codecompanion.nvim](https://dotfyle.com/plugins/olimorris/codecompanion.nvim)
-+ [yetone/avante.nvim](https://dotfyle.com/plugins/yetone/avante.nvim)
 ### bars-and-lines
 
 + [SmiteshP/nvim-navic](https://dotfyle.com/plugins/SmiteshP/nvim-navic)
