@@ -42,7 +42,7 @@ return {
       adapters = {
         -- TODO: Switch to reading this from 1Password using the `op` CLI which CodeCompanion supports
         --       See: https://codecompanion.olimorris.dev/configuration/adapters.html#setting-an-api-key
-        anthropic = function()
+        anthropic_claude35 = function()
           return require("codecompanion.adapters").extend("anthropic", {
             schema = {
               model = {
@@ -60,16 +60,34 @@ return {
             },
           })
         end,
+        anthropic_claude37 = function()
+          return require("codecompanion.adapters").extend("anthropic", {
+            schema = {
+              model = {
+                default = "claude-3-7-sonnet-latest",
+              },
+              max_tokens = {
+                default = 8192,
+              },
+              temperature = {
+                default = 0.2,
+              },
+            },
+            env = {
+              api_key = "ANTHROPIC_API_KEY",
+            },
+          })
+        end,
       },
       strategies = {
         chat = {
-          adapter = "anthropic",
+          adapter = "anthropic_claude35",
         },
         command = {
-          adapter = "anthropic",
+          adapter = "anthropic_claude35",
         },
         inline = {
-          adapter = "anthropic",
+          adapter = "anthropic_claude35",
         },
       },
     },
