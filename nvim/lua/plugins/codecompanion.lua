@@ -16,27 +16,15 @@ return {
       },
       {
         prefix .. "c",
-        "<cmd>CodeCompanionChat<cr>",
+        "<cmd>CodeCompanionChat Toggle<cr>",
         desc = "CodeCompanion chat mode",
         mode = { "n", "v" },
-      },
-      {
-        prefix .. "i",
-        "<cmd>CodeCompanion<cr>",
-        desc = "CodeCompanion inline prompt",
-        mode = { "n", "v", "x" },
       },
       {
         prefix .. ".",
         "<cmd>CodeCompanionChat Add<cr>",
         desc = "CodeCompanion add selection to current chat",
         mode = { "v" },
-      },
-      {
-        prefix .. "t",
-        "<cmd>CodeCompanionChat Toggle<cr>",
-        desc = "CodeCompanion toggle current chat",
-        mode = { "n" },
       },
     },
     opts = {
