@@ -73,9 +73,13 @@ return {
         },
       },
     },
+    init = function()
+      require("plugins.codecompanion.fidget-spinner"):init()
+    end,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
+      "j-hui/fidget.nvim",
     },
   },
   {
