@@ -14,7 +14,7 @@ return {
           provider = "default",
         },
         chat = {
-          auto_scroll = false,
+          auto_scroll = true,
           show_settings = true,
           show_token_count = true,
           start_in_insert_mode = false,
