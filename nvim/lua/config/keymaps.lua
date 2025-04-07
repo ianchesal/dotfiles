@@ -17,10 +17,31 @@ if os.getenv("TMUX") then
   map.set("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>")
   vim.g.VimuxHeight = "30"
   vim.g.VimuxCloseOnExit = 1
+  wk.add({
+    -- Vimux keymappings
+    -- Plugin config is in ../plugins/vimux.lua
+    { "<leader>dv", group = "vimux", icon = "" },
+    { "<leader>dvb", "<cmd>VimuxInterruptRunner<cr>", desc = "Interrupt command running in tmux shell" },
+    { "<leader>dvi", "<cmd>VimuxInspectRunner<cr>", desc = "Inspect tmux shell" },
+    { "<leader>dvk", "<cmd>VimuxCloseRunner<cr>", desc = "Close tmux shell" },
+    { "<leader>dvl", "<cmd>VimuxRunLastCommand<cr>", desc = "Run last shell command" },
+    { "<leader>dvp", "<cmd>VimuxPromptCommand<cr>", desc = "Run command in tmux shell" },
+    { "<leader>dvz", "<cmd>VimuxZoomRunner<cr>", desc = "Zoom tmux shell" },
+  })
 end
 
 -- I prefer different keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
+wk.add({
+  { "<leader>l", group = "lsp", icon = "" },
+  { "<leader>lg", "<cmd>LspLog<cr>", desc = "Open LSP logs" },
+  { "<leader>lh", "<cmd>LazyHealth<cr>", desc = "Health diagnostics" },
+  { "<leader>li", "<cmd>LspInfo<cr>", desc = "Open LspInfo interface" },
+  { "<leader>ll", "<cmd>Lazy<cr>", desc = "Open Lazy management interface" },
+  { "<leader>lm", "<cmd>Mason<cr>", desc = "Open Mason management interface" },
+  { "<leader>lr", "<cmd>LspRestart<cr>", desc = "Restart all LSPs" },
+})
+
 -- Delete git keymaps. I use NeoGit. LazyVim only adds these if it
 -- detects lazygit on the system.
 if vim.fn.executable("lazygit") == 1 then
@@ -29,6 +50,26 @@ if vim.fn.executable("lazygit") == 1 then
   map.del("n", "<leader>gl")
   map.del("n", "<leader>gL")
 end
+wk.add({
+  -- Neogit instead of LazyGit
+  -- Plugin config is in ../plugins/neogit.lua
+  { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
+  { "<leader>gl", "<cmd>lua require('neogit').action('log', 'log_current')()<cr>", desc = "Neogit logs" },
+
+  -- Diffview for working with diffs
+  -- Plugin config is in ../plugins/diffview.lua
+  { "<leader>gd", group = "Diffview" },
+  { "<leader>gdc", "<cmd>DiffviewClose<cr>", mode = { "n", "i", "v" }, desc = "Close Diffview" },
+  { "<leader>gdd", "<cmd>DiffviewOpen<cr>", mode = { "n", "i", "v" }, desc = "Open Diffview" },
+  { "<leader>gdf", "<cmd>DiffviewToggleFiles<cr>", mode = { "n", "i", "v" }, desc = "Toggle Diffview file view" },
+  {
+    "<leader>gdh",
+    "<cmd>DiffviewFileHistory<cr>",
+    mode = { "n", "i", "v" },
+    desc = "Toggle Diffview file history view",
+  },
+  { "<leader>gdr", "<cmd>DiffviewRefresh<cr>", mode = { "n", "i", "v" }, desc = "Refresh Diffview" },
+})
 
 -- Tab to move to between buffers
 if util.has("bufferline.nvim") then
@@ -54,34 +95,26 @@ command -complete=file -bang -nargs=? WQ :wq<bang> <args>
 ]])
 
 wk.add({
-  -- Neogit instead of LazyGit
-  { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
-  { "<leader>gl", "<cmd>lua require('neogit').action('log', 'log_current')()<cr>", desc = "Neogit logs" },
-  -- Plugin config is in ../plugins/diffview.lua
-  { "<leader>gd", group = "Diffview" },
-  { "<leader>gdc", "<cmd>DiffviewClose<cr>", mode = { "n", "i", "v" }, desc = "Close Diffview" },
-  { "<leader>gdd", "<cmd>DiffviewOpen<cr>", mode = { "n", "i", "v" }, desc = "Open Diffview" },
-  { "<leader>gdf", "<cmd>DiffviewToggleFiles<cr>", mode = { "n", "i", "v" }, desc = "Toggle Diffview file view" },
+  -- Plugin config is in ../plugins/codecompanion.lua
   {
-    "<leader>gdh",
-    "<cmd>DiffviewFileHistory<cr>",
-    mode = { "n", "i", "v" },
-    desc = "Toggle Diffview file history view",
+    "<leader>aa",
+    "<cmd>CodeCompanionActions<cr>",
+    desc = "CodeCompanion action palette",
+    mode = { "n", "v" },
   },
-  { "<leader>gdr", "<cmd>DiffviewRefresh<cr>", mode = { "n", "i", "v" }, desc = "Refresh Diffview" },
-  { "<leader>l", group = "lsp", icon = "" },
-  { "<leader>lg", "<cmd>LspLog<cr>", desc = "Open LSP logs" },
-  { "<leader>lh", "<cmd>LazyHealth<cr>", desc = "Health diagnostics" },
-  { "<leader>li", "<cmd>LspInfo<cr>", desc = "Open LspInfo interface" },
-  { "<leader>ll", "<cmd>Lazy<cr>", desc = "Open Lazy management interface" },
-  { "<leader>lm", "<cmd>Mason<cr>", desc = "Open Mason management interface" },
-  { "<leader>lr", "<cmd>LspRestart<cr>", desc = "Restart all LSPs" },
+  {
+    "<leader>ac",
+    "<cmd>CodeCompanionChat Toggle<cr>",
+    desc = "CodeCompanion chat mode",
+    mode = { "n", "v" },
+  },
+  {
+    "<leader>a.",
+    "<cmd>CodeCompanionChat Add<cr>",
+    desc = "CodeCompanion add selection to current chat",
+    mode = { "v" },
+  },
+
+  -- Handy for seeing errors that disappear too quickly
   { "<leader>uN", "<cmd>NoiceAll<cr>", desc = "Show all Noice notifications" },
-  { "<leader>v", group = "vimux", icon = "" },
-  { "<leader>vb", "<cmd>VimuxInterruptRunner<cr>", desc = "Interrupt command running in tmux shell" },
-  { "<leader>vi", "<cmd>VimuxInspectRunner<cr>", desc = "Inspect tmux shell" },
-  { "<leader>vk", "<cmd>VimuxCloseRunner<cr>", desc = "Close tmux shell" },
-  { "<leader>vl", "<cmd>VimuxRunLastCommand<cr>", desc = "Run last shell command" },
-  { "<leader>vp", "<cmd>VimuxPromptCommand<cr>", desc = "Run command in tmux shell" },
-  { "<leader>vz", "<cmd>VimuxZoomRunner<cr>", desc = "Zoom tmux shell" },
 })

@@ -7,26 +7,7 @@ return {
       local api_key = os.getenv("ANTHROPIC_API_KEY")
       return api_key ~= nil and api_key ~= ""
     end,
-    keys = {
-      {
-        prefix .. "a",
-        "<cmd>CodeCompanionActions<cr>",
-        desc = "CodeCompanion action palette",
-        mode = { "n", "v" },
-      },
-      {
-        prefix .. "c",
-        "<cmd>CodeCompanionChat Toggle<cr>",
-        desc = "CodeCompanion chat mode",
-        mode = { "n", "v" },
-      },
-      {
-        prefix .. ".",
-        "<cmd>CodeCompanionChat Add<cr>",
-        desc = "CodeCompanion add selection to current chat",
-        mode = { "v" },
-      },
-    },
+    -- Keymaps are in ../config/keymaps.lua
     opts = {
       display = {
         action_palette = {
