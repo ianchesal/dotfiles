@@ -9,8 +9,8 @@ local is_wsl = vim.fn.has("wsl") == 1
 
 local opt = vim.opt
 
-opt.autowrite = false
-opt.confirm = false
+-- opt.autowrite = true
+-- opt.confirm = true
 opt.breakindent = true
 -- opt.cindent = true
 opt.visualbell = true
