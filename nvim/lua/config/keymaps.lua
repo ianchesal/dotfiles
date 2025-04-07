@@ -30,23 +30,6 @@ if vim.fn.executable("lazygit") == 1 then
   map.del("n", "<leader>gL")
 end
 
--- Copilot
--- local copilot_on = false -- I start with Copilot OFF
--- vim.api.nvim_create_user_command("CopilotToggle", function()
---   if copilot_on then
---     vim.cmd("Copilot disable")
---     print("Copilot OFF")
---   else
---     vim.cmd("Copilot enable")
---     print("Copilot ON")
---   end
---   copilot_on = not copilot_on
--- end, { nargs = 0 })
--- map.set("", "<leader>ug", ":CopilotToggle<CR>", { noremap = true, silent = true })
-
--- Make U the redo command
--- map.set("n", "U", "<C-r>")
-
 -- Tab to move to between buffers
 if util.has("bufferline.nvim") then
   map.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
@@ -71,12 +54,6 @@ command -complete=file -bang -nargs=? WQ :wq<bang> <args>
 ]])
 
 wk.add({
-  { "<leader>foc", "<cmd>OtherClear<cr>", desc = "Clear other file mapping" },
-  { "<leader>foh", "<cmd>OtherSplit<cr>", desc = "Open other file (horizontal split)" },
-  { "<leader>foo", "<cmd>Other<cr>", desc = "Open other file" },
-  { "<leader>fot", "<cmd>Other test<cr>", desc = "Open other test file" },
-  { "<leader>fov", "<cmd>OtherVSplit<cr>", desc = "Open other file (vertical split)" },
-  { "<leader>g", group = "git" },
   -- Neogit instead of LazyGit
   { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
   { "<leader>gl", "<cmd>lua require('neogit').action('log', 'log_current')()<cr>", desc = "Neogit logs" },
@@ -92,7 +69,7 @@ wk.add({
     desc = "Toggle Diffview file history view",
   },
   { "<leader>gdr", "<cmd>DiffviewRefresh<cr>", mode = { "n", "i", "v" }, desc = "Refresh Diffview" },
-  { "<leader>l", group = "lsp" },
+  { "<leader>l", group = "lsp", icon = "" },
   { "<leader>lg", "<cmd>LspLog<cr>", desc = "Open LSP logs" },
   { "<leader>lh", "<cmd>LazyHealth<cr>", desc = "Health diagnostics" },
   { "<leader>li", "<cmd>LspInfo<cr>", desc = "Open LspInfo interface" },
@@ -100,7 +77,7 @@ wk.add({
   { "<leader>lm", "<cmd>Mason<cr>", desc = "Open Mason management interface" },
   { "<leader>lr", "<cmd>LspRestart<cr>", desc = "Restart all LSPs" },
   { "<leader>uN", "<cmd>NoiceAll<cr>", desc = "Show all Noice notifications" },
-  { "<leader>v", group = "vimux" },
+  { "<leader>v", group = "vimux", icon = "" },
   { "<leader>vb", "<cmd>VimuxInterruptRunner<cr>", desc = "Interrupt command running in tmux shell" },
   { "<leader>vi", "<cmd>VimuxInspectRunner<cr>", desc = "Inspect tmux shell" },
   { "<leader>vk", "<cmd>VimuxCloseRunner<cr>", desc = "Close tmux shell" },
