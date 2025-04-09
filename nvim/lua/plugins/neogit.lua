@@ -9,9 +9,18 @@ return {
     "ibhagwan/fzf-lua", -- optional
     -- "echasnovski/mini.pick", -- optional
   },
-  config = function()
-    require("neogit").setup({
-      kind = "floating",
-    })
-  end,
+  opts = {
+    kind = "floating",
+    disable_commit_confirmation = true,
+    graph_style = "unicode", -- "ascii" if this breaks in remote terminals
+    initial_branch_name = "ian/",
+    commit_editor = {
+      show_staged_diff = true,
+      staged_diff_split_kind = "split",
+    },
+    integrations = {
+      diffview = true,
+      fzf_lua = true,
+    },
+  },
 }
