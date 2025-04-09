@@ -46,16 +46,4 @@ return {
   --     })
   --   end,
   -- },
-  -- {
-  --   "pgr0ss/vimux-ruby-test",
-  --   dependencies = {
-  --     "preservim/vimux",
-  --   },
-  --   init = function()
-  --     -- vim.g.vimux_ruby_cmd_unit_test = "p "
-  --     -- vim.g.vimux_ruby_cmd_all_tests = "p rspec specs"
-  --     vim.g.vimux_ruby_file_relative_paths = 1
-  --     vim.g.vimux_ruby_clear_console_on_run = 0 -- Set to 1 to clear the vimux console
-  --   end,
-  -- },
 }

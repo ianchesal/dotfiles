@@ -15,19 +15,6 @@ if os.getenv("TMUX") then
   map.set("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
   map.set("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>")
   map.set("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>")
-  vim.g.VimuxHeight = "30"
-  vim.g.VimuxCloseOnExit = 1
-  wk.add({
-    -- Vimux keymappings
-    -- Plugin config is in ../plugins/vimux.lua
-    { "<leader>dv", group = "vimux", icon = "" },
-    { "<leader>dvb", "<cmd>VimuxInterruptRunner<cr>", desc = "Interrupt command running in tmux shell" },
-    { "<leader>dvi", "<cmd>VimuxInspectRunner<cr>", desc = "Inspect tmux shell" },
-    { "<leader>dvk", "<cmd>VimuxCloseRunner<cr>", desc = "Close tmux shell" },
-    { "<leader>dvl", "<cmd>VimuxRunLastCommand<cr>", desc = "Run last shell command" },
-    { "<leader>dvp", "<cmd>VimuxPromptCommand<cr>", desc = "Run command in tmux shell" },
-    { "<leader>dvz", "<cmd>VimuxZoomRunner<cr>", desc = "Zoom tmux shell" },
-  })
 end
 
 -- I prefer different keymaps for Lazy and Mason and LSP interactions
