@@ -95,6 +95,7 @@ command -complete=file -bang -nargs=? WQ :wq<bang> <args>
 ]])
 
 wk.add({
+  -- CodeCompanion keymaps
   -- Plugin config is in ../plugins/codecompanion.lua
   {
     "<leader>aa",
@@ -115,6 +116,15 @@ wk.add({
     mode = { "v" },
   },
 
+  -- Trouble/Quickfix addtional shortcuts
+  {
+    "<leader>xC",
+    "<cmd>cexpr []<cr>",
+    desc = "Clear Quickfix list",
+    icon = "󰶦",
+  },
+
+  -- Noice
   -- Handy for seeing errors that disappear too quickly
   { "<leader>uN", "<cmd>NoiceAll<cr>", desc = "Show all Noice notifications" },
 })
