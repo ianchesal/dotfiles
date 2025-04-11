@@ -109,7 +109,7 @@ When given a task:
       },
     },
     init = function()
-        require("plugins.codecompanion.fidget-spinner").setup()
+        require("plugins.codecompanion.snacks-notifications").setup()
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",

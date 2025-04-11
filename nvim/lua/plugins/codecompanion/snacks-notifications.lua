@@ -1,4 +1,4 @@
--- lua/plugins/codecompanion/fidget-spinner.lua
+-- lua/plugins/codecompanion/snacks-notifications.lua
 -- From: https://github.com/olimorris/codecompanion.nvim/discussions/912
 
 local M = {}
