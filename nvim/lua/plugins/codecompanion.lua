@@ -12,6 +12,10 @@ return {
         action_palette = {
           provider = "default",
         },
+        diff = {
+          enabled = true,
+          provider = "mini_diff",
+        },
         chat = {
           auto_scroll = true,
           show_settings = true,
@@ -109,7 +113,7 @@ When given a task:
       },
     },
     init = function()
-        require("plugins.codecompanion.snacks-notifications").setup()
+      require("plugins.codecompanion.snacks-notifications").setup()
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -124,4 +128,4 @@ When given a task:
       },
     },
   },
-}
+}
