@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+
+# Get the remote and URL being pushed to
+remote="$1"
+url="$2"
+
+# Get the range of commits being pushed
+z40=0000000000000000000000000000000000000000
+while read local_ref local_sha remote_ref remote_sha
+do
+    # Handle delete
+    if [[ "$local_sha" = $z40 ]]; then
+        continue
+    fi
+    
+    # Get the range of commits we're pushing
+    range=""
+    if [[ "$remote_sha" = $z40 ]]; then
+        # New branch, examine all commits
+        range="$local_sha"
+    else
+        # Update to existing branch, examine new commits
+        range="$remote_sha..$local_sha"
+    fi
+
+    # Look for fixup commits
+    fixup_commits=$(git log --format="%h %s" "$range" | grep -i "fixup!")
+    
+    if [[ -n "$fixup_commits" ]]; then
+        echo "ERROR: Found fixup commits that need to be squashed:"
+        echo "$fixup_commits"
+        echo "\nPlease squash these commits before pushing."
+        exit 1
+    fi
+done
+
+exit 0
