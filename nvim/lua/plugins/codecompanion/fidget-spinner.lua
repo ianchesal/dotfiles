@@ -98,7 +98,7 @@ local function finished(ev)
   end
 end
 
-function M.setup()
+M.setup = function()
   local group = vim.api.nvim_create_augroup("CodeCompanionSnacks", { clear = true })
 
   vim.api.nvim_create_autocmd("User", {
