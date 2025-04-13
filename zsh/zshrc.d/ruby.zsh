@@ -1,6 +1,10 @@
-# Use Homebrew OpenSSL w/Ruby
+# Use Homebrew dependencies w/Ruby
 if type brew >/dev/null; then
-  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
+  if [[ $(hostname) == "fractal-vbox" ]]; then
+    export RUBY_CONFIGURE_OPTS="--with-zlib-dir=$(brew --prefix zlib) --with-openssl-dir=$(brew --prefix openssl@3) --with-readline-dir=$(brew --prefix readline) --with-libyaml-dir=$(brew --prefix libyaml)"
+  else
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
+  fi
 fi
 
 alias rake='noglob rake'                    # allows square brackts for rake task invocation
