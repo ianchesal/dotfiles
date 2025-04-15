@@ -28,14 +28,14 @@ namespace :python do
 
   desc 'Update Python packages'
   task update: [:activate] do
-    if which('pyenv')
+    if which('pip')
       puts 'Update: Python and tools'.green
       sh 'pip install --upgrade pip'
       sh 'pip install --upgrade pipenv'
       sh 'pip install --upgrade pylint'
       sh 'pyenv rehash'
     else
-      puts 'Skipping -- no pyenv found'.yellow
+      puts 'Skipping -- no pip found'.yellow
     end
   end
 
