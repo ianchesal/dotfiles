@@ -94,3 +94,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Command status indicator in prompt color
 - Custom tooltips for AWS, GCP, and Kubernetes tools
 - Managed via Homebrew with update checks in rake tasks
+
+## Claude Configuration
+
+- Located in `.config/claude` following XDG directory structure
+- Global memory file stored in `.config/claude/CLAUDE.md` for persistent context across Claude Code sessions
+- Memory file maintains important context, preferences, and recurring tasks
+- Structure memory file with clear section headers and descriptive content
+- Memory file content should be concise and focused on high-value information
+- Never include project-specific terminology, conventions, and preferences. Project-specific things should go in a CLAUDE.md file in the root of the project.
+- Document complex workflows that should be remembered across sessions
