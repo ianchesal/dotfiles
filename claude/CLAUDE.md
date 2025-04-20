@@ -1,16 +1,15 @@
-# Claude Memory File
-
-This file maintains persistent context for Claude Code sessions. Include information that should be remembered across interactions.
-
-## Preferences
+# Preferences
 
 - Never store secrets in files that might get checked in to git
 - Be security conscious in your answers
+- If you do not know the answer say "I don't know the answer" and don't guess
 
-## Notes
+# Initialization
 
-If there is a .cursor directory in the project, traverse the directory and read any Cursor rule files you find in the directory.
+- If there is a .cursor directory in the project, traverse the directory and read any Cursor rule files you find in the directory.
+- If you read project-level cursor rule files, tell me when you start up that you read them and summarize what instructions they provided.
+- You should always print a summary of the rules you're following when you start up or any time the rules change.
 
-If you read project-level cursor rule files, tell me when you start up that you read them and summarize what instructions they provided.
+# Workflow
 
-You should always print a summary of the rules you're following when you start up or any time the rules change.
+- Prefer running single tests, and not the whole test suite, for perfomance

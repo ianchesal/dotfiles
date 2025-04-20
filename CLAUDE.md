@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Install specific configuration: `rake <tool>` (e.g., `rake tmux`, `rake nvim`, `rake zsh`, `rake git`, `rake kitty`, `rake ohmyposh`)
 - Remove customizations: `rake clean`
 - List all rake tasks: `rake -T`
-- Run Rubocop checks: `rake rubocop:check` 
+- Run Rubocop checks: `rake rubocop:check`
 - Auto-correct Rubocop issues: `rake rubocop:auto_correct`
 - Update configurations: `rake update`
 - Update Neovim plugins: `rake nvim:update`
