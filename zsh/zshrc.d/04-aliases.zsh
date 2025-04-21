@@ -169,6 +169,9 @@ alias tfv='terraform validate'
 alias codex='docker run -it --rm -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex'
 alias claude='docker run -it --rm -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw -v ${HOME}/.config/claude/CLAUDE.md:/home/codeuser/.claude/CLAUDE.md:rw -v $(pwd):/app:rw claude-code'
 
+# Dotfiles
+alias dfu=dotfiles_update
+
 # Docker/Podman compatibility
 if type podman >/dev/null; then
   alias docker=podman
