@@ -73,6 +73,10 @@ vim.cmd([[nnoremap ; :]])
 -- I am too old to re-learn how to yank and paste a whole line in vim
 vim.cmd([[noremap Y Y]])
 
+-- This let's me do ycc to comment current line out but duplicate it as well
+-- Works with a prefix number to yank-comment-copy more than one line.
+map.set("n", "ycc", '"yy" . v:count1 . "gcc\']p"', { remap = true, expr = true, desc = "yank-comment-copy" })
+
 -- Allow me to typo q and w
 vim.cmd([[
 command -complete=file -bang -nargs=? W  :w<bang> <args>
