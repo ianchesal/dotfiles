@@ -56,3 +56,34 @@ function clean-nvim-logs() {
   rm -f ~/.local/state/nvim/log
   rm -f ~/.local/state/nvim/*.log
 }
+
+function dotfiles_update() {
+  # Stop on any error
+  set -e
+
+  echo "\033[1;36m==> Updating your development environment...\033[0m"
+
+  cd ~/src/dotfiles
+
+  # Stash any local changes
+  if [[ -n "$(git status --porcelain)" ]]; then
+    echo "\033[1;33m==> Stashing local changes...\033[0m"
+    git stash push -m "dfu auto-stash"
+    local STASHED=1
+  fi
+
+  # Update everything
+  git pull
+  rake update
+  zinit update
+  rake ohmyposh:update
+
+  # Restore stashed changes if they exist
+  if [[ -n "$STASHED" ]]; then
+    echo "\033[1;33m==> Restoring local changes...\033[0m"
+    git stash pop
+  fi
+
+  echo "\033[1;32m==> Update complete! Reloading shell...\033[0m"
+  exec $SHELL
+}
