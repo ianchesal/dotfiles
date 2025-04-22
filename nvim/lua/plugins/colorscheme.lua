@@ -13,11 +13,11 @@ return {
       -- colorscheme = "catppuccin",
       -- colorscheme = "cyberdream",
       -- colorscheme = "github_dark_default",
-      colorscheme = "moonfly",
+      -- colorscheme = "moonfly",
       -- colorscheme = "onedark",
       -- colorscheme = "onedark_dark",
       -- colorscheme = "quiet",
-      -- colorscheme = "tokyonight-night",
+      colorscheme = "tokyonight-night",
     },
   },
 }
