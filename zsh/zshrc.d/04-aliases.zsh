@@ -136,6 +136,9 @@ if type nvim >/dev/null; then
   alias vim=nvim
 fi
 
+# tmux
+alias tl='tmux list-sessions'
+
 # Curl Power Ups
 alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
 alias myip="curl -s http://whatismyip.akamai.com/"
