@@ -97,6 +97,12 @@ function ta() {
   if [[ -n "$1" ]]; then
     tn "$1"
   else
+    # Check if there are any existing sessions
+    if ! tmux list-sessions &>/dev/null; then
+      echo "\033[1;33mNo existing tmux sessions found\033[0m"
+      return 1
+    fi
+    
     # No argument, use fzf to select from existing sessions
     local session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0)
     if [[ -n "$session" ]]; then
