@@ -68,7 +68,7 @@ function dotfiles_update() {
   # Stash any local changes
   if [[ -n "$(git status --porcelain)" ]]; then
     echo "\033[1;33m==> Stashing local changes...\033[0m"
-    git stash push -m "dfu auto-stash"
+    git stash push -u -m "dfu auto-stash"
     local STASHED=1
   fi
 
