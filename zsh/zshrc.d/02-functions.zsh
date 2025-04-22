@@ -87,3 +87,21 @@ function dotfiles_update() {
   echo "\033[1;32m==> Update complete! Reloading shell...\033[0m"
   exec $SHELL
 }
+
+function tn() {
+  local session=${1:-main}
+  tmux new-session -A -s "$session"
+}
+
+function ta() {
+  if [[ -n "$1" ]]; then
+    tn "$1"
+  else
+    # No argument, use fzf to select from existing sessions
+    local session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0)
+    if [[ -n "$session" ]]; then
+      tmux attach-session -d -t "$session"
+    fi
+  fi
+}
+

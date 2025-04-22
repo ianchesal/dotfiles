@@ -136,17 +136,6 @@ if type nvim >/dev/null; then
   alias vim=nvim
 fi
 
-# tmux
-alias ta='tmux attach -t'
-alias tad='tmux attach -d -t'
-alias ts='tmux new-session -s'
-alias tl='tmux list-sessions'
-alias tksv='tmux kill-server'
-alias tkss='tmux kill-session -t'
-if type lazygit >/dev/null; then
-  alias lg=lazygit
-fi
-
 # Curl Power Ups
 alias hstat="curl -o /dev/null --silent --head --write-out '%{http_code}\n'" $1
 alias myip="curl -s http://whatismyip.akamai.com/"
