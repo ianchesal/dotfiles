@@ -57,6 +57,26 @@ function clean-nvim-logs() {
   rm -f ~/.local/state/nvim/*.log
 }
 
+function __my_sleep_spinner() {
+  local seconds=${1:-60}
+  local frames=('-' '\' '|' '/')
+  local frame=0
+
+  # Hide cursor
+  tput civis
+
+  # Display spinner for specified seconds
+  for ((i=0; i<seconds; i++)); do
+    printf "\r${frames[$frame]} Waiting: %d/%d seconds" $((i+1)) "$seconds"
+    sleep 1
+    frame=$(( (frame+1) % 4 ))
+  done
+
+  # Show cursor again and add newline
+  tput cnorm
+  printf "\n"
+}
+
 function dotfiles_update() {
   # Stop on any error
   set -e
