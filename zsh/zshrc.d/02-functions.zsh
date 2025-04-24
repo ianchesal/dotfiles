@@ -127,3 +127,13 @@ function ta() {
   fi
 }
 
+function hb_update_node() {
+  if [[ "$(hostname)" == "tranquility" ]]; then
+    pushd ~/src/torrent-management/docker/
+    sudo docker compose -f docker-compose.homebridge.yml exec homebridge hb-service update-node
+    popd
+  else
+    echo "\033[1;31mThis command can only be run on tranquility\033[0m"
+    return 1
+  fi
+}
