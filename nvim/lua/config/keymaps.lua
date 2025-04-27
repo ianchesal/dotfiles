@@ -5,18 +5,6 @@ local util = require("lazyvim.util")
 local wk = require("which-key")
 local map = vim.keymap
 
--- Only set this up if we're in a tmux session
-if os.getenv("TMUX") then
-  map.del("n", "<C-h>")
-  map.del("n", "<C-j>")
-  map.del("n", "<C-k>")
-  map.del("n", "<C-l>")
-  map.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
-  map.set("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
-  map.set("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>")
-  map.set("n", "<C-l>", "<cmd>TmuxNavigateRight<cr>")
-end
-
 -- I prefer different keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
 wk.add({
