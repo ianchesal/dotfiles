@@ -8,8 +8,9 @@ local is_wsl = vim.fn.has("wsl") == 1
 -- local is_linux = not is_wsl and not is_mac
 
 local opt = vim.opt
+local g = vim.g
 
--- opt.autowrite = true
+opt.autowrite = true
 -- opt.confirm = true
 opt.breakindent = true
 -- opt.cindent = true
@@ -19,7 +20,7 @@ opt.visualbell = true
 if is_wsl then
   -- This is NeoVim's recommended way to solve clipboard sharing if you use WSL
   -- See: https://github.com/neovim/neovim/wiki/FAQ#how-to-use-the-windows-clipboard-from-wsl
-  vim.g.clipboard = {
+  g.clipboard = {
     name = "WslClipboard",
     copy = {
       ["+"] = "clip.exe",
@@ -33,9 +34,12 @@ if is_wsl then
   }
 end
 
+-- Save buffers when navigating to a tmux pane
+g.tmux_navigator_save_on_switch = 2
+
 -- Don't care about these
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_python3_provider = 0
+g.loaded_perl_provider = 0
+g.loaded_python3_provider = 0
 
 -- Disable all animations
--- vim.g.snacks_animate = false
+-- g.snacks_animate = false
