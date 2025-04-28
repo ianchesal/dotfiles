@@ -9,11 +9,11 @@ return {
     config = function()
       require("tokyonight").setup({
         style = "night",
-        -- transparent = false,
+        -- transparent = true,
         -- terminal_colors = false,
-        on_colors = function(colors)
-          colors.bg = "#000000" -- I like a very dark background
-        end,
+        -- on_colors = function(colors)
+        --   colors.bg = "#000000" -- I like a very dark background
+        -- end,
       })
     end,
   },
