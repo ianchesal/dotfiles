@@ -11,6 +11,7 @@ local opt = vim.opt
 local g = vim.g
 
 opt.autowrite = true
+opt.autoread = true
 -- opt.confirm = true
 opt.breakindent = true
 -- opt.cindent = true
