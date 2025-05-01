@@ -29,6 +29,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Method naming: Use descriptive names that reflect functionality
 - File organization: Group related files by tool/function in separate directories
 
+## AeroSpace Configuration
+
+- A tiling window manager that uses the tree paradigm made popular by the [i3 window manager](https://i3wm.org/)
+- Located in `.config/aerospace` following XDG directory structure
+- Uses a TOML format for configuration
+- The guide for how to configure AeroSpace can be found [here](https://nikitabobko.github.io/AeroSpace/guide)
+- The Github project for AeroSpace can be found [here](https://github.com/nikitabobko/AeroSpace)
+
 ## Neovim Configuration
 
 - Based on LazyVim with custom plugins and configurations
