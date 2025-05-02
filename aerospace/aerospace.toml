@@ -10,6 +10,45 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # Mouse follows focus when focused monitor changes
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
+# Automatically move windows to specific workspaces
+# Use `aerospace list-apps` to list running apps and get the
+# identifying names you can use here to organize things.
+[[on-window-detected]]
+    if.app-id = 'com.google.Chrome'
+    run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+    if.app-id = 'net.kovidgoyal.kitty'
+    run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+    if.app-id = 'com.tinyspeck.slackmacgap'
+    run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+    if.app-id = 'com.superhuman.electron'
+    run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+    if.app-id = 'com.linear'
+    run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+    if.app-id = 'com.apple.MobileSMS'
+    run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+    if.app-id = 'com.flexibits.fantastical2.mac'
+    run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+    if.app-id = 'us.zoom.xos'
+    run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+    if.app-id = 'md.obsidian'
+    run = 'move-node-to-workspace 5'
+
 [mode.main.binding]
     # See: https://nikitabobko.github.io/AeroSpace/goodies#open-a-new-window-with-applescript
     # alt-enter = '''exec-and-forget osascript -e '
@@ -25,10 +64,10 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
     alt-l =         'focus --boundaries-action wrap-around-the-workspace up'
     alt-semicolon = 'focus --boundaries-action wrap-around-the-workspace right'
 
-    alt-shift-j = 'move left'
-    alt-shift-k = 'move down'
-    alt-shift-l = 'move up'
-    alt-shift-semicolon = 'move right'
+    alt-shift-h = 'move left'
+    alt-shift-j = 'move down'
+    alt-shift-k = 'move up'
+    alt-shift-l = 'move right'
 
     # Consider using 'join-with' command as a 'split' replacement if you want to enable
     # normalizations
@@ -79,10 +118,20 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
     alt-r = 'mode resize'
 
-[mode.resize.binding]
+    # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
+    alt-tab = 'workspace-back-and-forth'
+    # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
+    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+    # See: https://nikitabobko.github.io/AeroSpace/commands#mode
+    alt-shift-semicolon = 'mode service'
+
+[mode.service.binding]
     h = 'resize width -50'
     j = 'resize height +50'
     k = 'resize height -50'
     l = 'resize width +50'
+    r = ['reload-config', 'mode main']
+    f = ['flatten-workspace-tree', 'mode main'] # gat back to safe
     enter = 'mode main'
     esc = 'mode main'
