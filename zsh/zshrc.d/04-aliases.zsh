@@ -157,14 +157,19 @@ alias tfp='terraform plan'
 alias tfpl='terraform providers lock -platform=darwin_arm64 -platform=linux_amd64'
 alias tfv='terraform validate'
 
-# AI Stuff
-alias codex='docker run -it --rm -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex'
-alias claude='docker run -it --rm -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw -v ${HOME}/.config/claude/CLAUDE.md:/home/codeuser/.claude/CLAUDE.md:rw -v $(pwd):/app:rw claude-code'
-
-# Dotfiles
-alias dfu=dotfiles_update
-
 # Docker/Podman compatibility
 if type podman >/dev/null; then
   alias docker=podman
 fi
+
+# AI Stuff
+if type podman >/dev/null; then
+  alias codex='podman run -it --rm --userns=keep-id -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex'
+  alias claude='podman run -it --rm --userns=keep-id -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw -v ${HOME}/.config/claude/CLAUDE.md:/home/codeuser/.claude/CLAUDE.md:rw -v $(pwd):/app:rw claude-code'
+else
+  alias codex='docker run -it --rm -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex'
+  alias claude='docker run -it --rm -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw -v ${HOME}/.config/claude/CLAUDE.md:/home/codeuser/.claude/CLAUDE.md:rw -v $(pwd):/app:rw claude-code'
+fi
+
+# Dotfiles
+alias dfu=dotfiles_update
