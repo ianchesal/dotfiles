@@ -33,10 +33,10 @@ run = 'move-node-to-workspace 2'
 if.app-id = 'com.linear'
 run = 'move-node-to-workspace 2'
 
-# Always float the Messages app
+# Always float the Messages app on any workspace
 [[on-window-detected]]
 if.app-id = 'com.apple.MobileSMS'
-run = ['move-node-to-workspace 2', 'layout floating']
+run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.flexibits.fantastical2.mac'
