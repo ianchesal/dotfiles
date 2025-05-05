@@ -137,3 +137,25 @@ function hb_update_node() {
     return 1
   fi
 }
+
+function claude() {
+  if type podman >/dev/null; then
+    LAUNCHER="podman run -it --rm --userns=keep-id"
+  else
+    LAUNCHER="docker run -it --rm"
+  fi
+  eval "$LAUNCHER -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw \
+    -v ${HOME}/.config/claude/todos:/home/codeuser/.claude/todos:rw \
+    -v ${HOME}/.config/claude/CLAUDE.md:/home/codeuser/.claude/CLAUDE.md:rw \
+    -v $(pwd):/app:rw \
+    claude-code $@"
+}
+
+function codex() {
+  if type podman >/dev/null; then
+    LAUNCHER="podman run -it --rm --userns=keep-id"
+  else
+    LAUNCHER="docker run -it --rm"
+  fi
+  eval "$LAUNCHER -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex $@"
+}
