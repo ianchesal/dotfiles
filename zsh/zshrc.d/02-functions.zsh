@@ -138,13 +138,17 @@ function hb_update_node() {
   fi
 }
 
-function claude() {
+function __ai_container_launcher() {
   if type podman >/dev/null; then
-    LAUNCHER="podman run -it --rm --userns=keep-id"
+    LAUNCHER="podman run --userns=keep-id"
   else
-    LAUNCHER="docker run -it --rm"
+    LAUNCHER="docker run"
   fi
-  eval "$LAUNCHER -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw \
+  echo $LAUNCHER
+}
+
+function claude() {
+  eval "$(__ai_container_launcher) --tty --interactive -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw \
     -v ${HOME}/.config/claude/todos:/home/codeuser/.claude/todos:rw \
     -v ${HOME}/.config/claude/CLAUDE.md:/home/codeuser/.claude/CLAUDE.md:rw \
     -v $(pwd):/app:rw \
@@ -152,10 +156,5 @@ function claude() {
 }
 
 function codex() {
-  if type podman >/dev/null; then
-    LAUNCHER="podman run -it --rm --userns=keep-id"
-  else
-    LAUNCHER="docker run -it --rm"
-  fi
-  eval "$LAUNCHER -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex $@"
+  eval "$(__ai_container_launcher) --rm --tty --interactive -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex $@"
 }
