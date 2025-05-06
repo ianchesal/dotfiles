@@ -24,6 +24,8 @@ if vim.fn.executable("lazygit") == 1 then
   map.del("n", "<leader>gG")
   map.del("n", "<leader>gl")
   map.del("n", "<leader>gL")
+  map.del("n", "<leader>gY")
+  map.del("n", "<leader>gS")
 end
 wk.add({
   -- Neogit instead of LazyGit
