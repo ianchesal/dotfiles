@@ -149,8 +149,7 @@ function __ai_container_launcher() {
 
 function claude() {
   eval "$(__ai_container_launcher) --tty --interactive -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw \
-    -v ${HOME}/.config/claude/todos:/home/codeuser/.claude/todos:rw \
-    -v ${HOME}/.config/claude/CLAUDE.md:/home/codeuser/.claude/CLAUDE.md:rw \
+    -v ${HOME}/.config/claude:/home/codeuser/.claude:rw \
     -v $(pwd):/app:rw \
     claude-code $@"
 }
