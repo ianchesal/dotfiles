@@ -1,7 +1,10 @@
-BROWSE
 .DS_Store
 /Gemfile.lock
 /brew/Brewfile.lock.json
+/claude/*.db
+/claude/claude.json
+/claude/statsig/*
+/claude/todos
 /git/local
 /irssi/*log
 /irssi/default.theme
@@ -26,3 +29,4 @@ BROWSE
 /zsh/.zsh_sessions/
 /zsh/plugins/
 /zsh/~*
+BROWSE
