@@ -138,6 +138,19 @@ function hb_update_node() {
   fi
 }
 
+function unfuck-podman-on-wsl() {
+  # I have to do this after every Windows machine restart to
+  # put rootless podman back in a useable state. Will figure
+  # out why later. For now...
+  if [[ -n "$TMUX" ]]; then
+    echo "Error: This function cannot be run from within a tmux session"
+    return 1
+  fi
+  rm -rf ~/.xdg/containers ~/.xdg/libpod/tmp && \
+  brew services restart podman && \
+  sudo mount -o remount,shared / /
+}
+
 function __ai_container_launcher() {
   if type podman >/dev/null; then
     LAUNCHER="podman run --userns=keep-id"
