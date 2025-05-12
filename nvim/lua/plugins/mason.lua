@@ -1,16 +1,7 @@
 return {
   {
-    -- https://github.com/LazyVim/LazyVim/pull/6053#issuecomment-2865604700
-    -- Fixes the LazyVim/Mason 2.0 incompatibility
-    -- Will dump this once u/folke has an official fix after he gets back
-    -- from his well-deserved vacation.
-    "LazyVim/LazyVim",
-    url = "https://github.com/dpetka2001/LazyVim",
-    branch = "fix/mason-v2",
-  },
-  {
     "mason-org/mason.nvim",
-    -- No need to pin to <v2 with the above fix
+    -- u/folke has pinned to 1.x in the main branch now
     -- version = "^1.0.0",
     opts = {
       ensure_installed = {
