@@ -38,20 +38,28 @@ if.app-id = 'com.flexibits.fantastical2.mac'
 run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
-if.app-id = 'us.zoom.xos'
-run = ['layout floating']
-
-[[on-window-detected]]
 if.app-id = 'md.obsidian'
-run = 'move-node-to-workspace 5'
+run = 'move-node-to-workspace 3'
 
 # Always float these
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = ['layout floating']
+
 [[on-window-detected]]
 if.app-id = 'com.apple.MobileSMS'
 run = ['layout floating']
 
 [[on-window-detected]]
+if.app-id = 'com.apple.findmy'
+run = ['layout floating']
+
+[[on-window-detected]]
 if.app-name-regex-substring = 'finder'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'us.zoom'
 run = ['layout floating']
 
 [gaps]
