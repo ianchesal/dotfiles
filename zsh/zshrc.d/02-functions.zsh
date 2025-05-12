@@ -104,6 +104,11 @@ function dotfiles_update() {
   exec $SHELL
 }
 
+# Find a window in aerospace and focus it
+function ff() {
+  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
+}
+
 function tn() {
   local session=${1:-main}
   tmux new-session -A -s "$session"
