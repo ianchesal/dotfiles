@@ -1,5 +1,5 @@
 {
-  "LazyVim": { "branch": "fix/mason-v2", "commit": "040be9b87a779a6411b7b28c85f56a6827115029" },
+  "LazyVim": { "branch": "fix/mason-v2", "commit": "6efced7b9f5d12e2b43ee0ac821acabfd1206a57" },
   "SchemaStore.nvim": { "branch": "main", "commit": "df87d16fc4ea7c2c67cfc00b513861738693fe07" },
   "blink.cmp": { "branch": "main", "commit": "4f38ce99a472932d5776337f08f7a8180f1f571a" },
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },
