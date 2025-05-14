@@ -62,6 +62,10 @@ run = ['layout floating']
 if.app-id = 'us.zoom.xos'
 run = ['layout floating']
 
+[[on-window-detected]]
+if.app-id = 'app.soulver.mac'
+run = ['layout floating']
+
 [gaps]
 inner.horizontal = 10
 inner.vertical = 10
