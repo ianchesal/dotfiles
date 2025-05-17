@@ -31,7 +31,11 @@ wk.add({
   -- Neogit instead of LazyGit
   -- Plugin config is in ../plugins/neogit.lua
   { "<leader>gg", "<cmd>Neogit<cr>", desc = "Neogit" },
-  { "<leader>gl", "<cmd>lua require('neogit').action('log', 'log_current')()<cr>", desc = "Neogit logs" },
+  {
+    "<leader>gl",
+    "<cmd>lua require('neogit').action('log', 'log_current')()<cr>",
+    desc = "Neogit logs (buffer)",
+  },
 
   -- Diffview for working with diffs
   -- Plugin config is in ../plugins/diffview.lua
