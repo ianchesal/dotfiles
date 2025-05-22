@@ -5,8 +5,7 @@ namespace :claude do
   task all: [:config, :install]
 
   task :config do
-    mkdir_if_needed home('.config')
-    dolink(home('.config/claude'), root('claude'))
+    dolink(home('.claude'), root('claude'))
   end
 
   task :install do
@@ -20,10 +19,10 @@ namespace :claude do
   end
 
   task :clean do
-    sh "rm -f #{home('.config/claude')}"
+    sh "rm -f #{home('.claude')}"
   end
 end
 
 task all: [:claude]
 task update: ['claude:update']
-task clean: ['claude:clean'
+task clean: ['claude:clean']
