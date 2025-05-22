@@ -1,5 +1,5 @@
 ruby 3.1.6
-nodejs 18.20.3
+nodejs 23.11.1
 golang 1.21.5
 packer 1.10.0
 rust 1.74.1

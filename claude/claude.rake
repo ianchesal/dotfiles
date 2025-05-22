@@ -9,6 +9,12 @@ namespace :claude do
     dolink(home('.config/claude'), root('claude'))
   end
 
+  task :node do
+    mkdir_if_needed home('.npm-global')
+    sh "npm config set prefix  #{home('.npm-global')}"
+    sh 'npm install -g @anthropic-ai/claude-code'
+  end
+
   task :clean do
     sh "rm -f #{home('.config/claude')}"
   end
