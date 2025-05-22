@@ -166,12 +166,20 @@ function __ai_container_launcher() {
 }
 
 function claude() {
-  eval "$(__ai_container_launcher) --tty --interactive -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw \
-    -v ${HOME}/.config/claude:/home/codeuser/.claude:rw \
-    -v $(pwd):/app:rw \
-    claude-code $@"
+  if [[ -x "${HOME}/.npm-global/bin/claude" ]]; then
+    "${HOME}/.npm-global/bin/claude" "$@"
+  else
+    eval "$(__ai_container_launcher) --tty --interactive -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw \
+      -v ${HOME}/.config/claude:/home/codeuser/.claude:rw \
+      -v $(pwd):/app:rw \
+      claude-code $@"
+  fi
 }
 
 function codex() {
-  eval "$(__ai_container_launcher) --rm --tty --interactive -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex $@"
+  if [[ -x "${HOME}/.npm-global/bin/codex" ]]; then
+    "${HOME}/.npm-global/bin/codex" "$@"
+  else
+    eval "$(__ai_container_launcher) --rm --tty --interactive -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex $@"
+  fi
 }
