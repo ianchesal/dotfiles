@@ -15,7 +15,10 @@ namespace :claude do
   end
 
   task :update do
-    sh '~/.npm-global/bin/claude update' if File.exist?(File.expand_path('~/.npm-global/bin/claude'))
+    if File.exist?(File.expand_path('~/.npm-global/bin/claude'))
+      puts 'Update: claude'.green
+      sh '~/.npm-global/bin/claude update'
+    end
   end
 
   task :clean do
