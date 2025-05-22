@@ -1,0 +1,1 @@
+- Only use git commands if I explicitly mention you should
