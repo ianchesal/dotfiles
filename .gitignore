@@ -3,6 +3,7 @@
 /brew/Brewfile.lock.json
 /claude/*.db
 /claude/claude.json
+/claude/settings.json
 /claude/statsig/*
 /claude/todos
 /claude/projects
