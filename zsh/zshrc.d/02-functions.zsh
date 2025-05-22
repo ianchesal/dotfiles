@@ -169,8 +169,8 @@ function claude() {
   if [[ -x "${HOME}/.npm-global/bin/claude" ]]; then
     "${HOME}/.npm-global/bin/claude" "$@"
   else
-    eval "$(__ai_container_launcher) --tty --interactive -v ${HOME}/.config/claude/claude.json:/home/codeuser/.claude.json:rw \
-      -v ${HOME}/.config/claude:/home/codeuser/.claude:rw \
+    eval "$(__ai_container_launcher) --tty --interactive \
+      -v ${HOME}/.claude:/home/codeuser/.claude:rw \
       -v $(pwd):/app:rw \
       claude-code $@"
   fi
