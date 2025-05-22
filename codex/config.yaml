@@ -1,0 +1,3 @@
+model: o4-mini # Default model
+fullAutoErrorMode: ask-user # or ignore-and-continue
+notify: true
