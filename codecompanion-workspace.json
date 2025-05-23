@@ -1,7 +1,7 @@
 {
   "name": "dotfiles",
   "version": "1.0.0",
-  "system_prompt": "This is a dotfiles repository that manages system configurations across multiple machines. The system uses Rake for deployment and management of configurations.",
+  "system_prompt": "This is a dotfiles repository that manages system configurations across multiple machines, following XDG directory structure. The system uses Rake for deployment and management of configurations, with support for partial installations (rake <tool>), updates, and maintenance tasks. Development follows strict code style guidelines with automated checks via Rubocop.",
   "groups": [
     {
       "name": "Core Setup",
@@ -9,6 +9,23 @@
       "data": [
         "main_rakefile",
         "readme"
+      ]
+    },
+    {
+      "name": "Development Standards",
+      "system_prompt": "This group contains documentation about development standards, coding guidelines, and AI interaction preferences for the repository.",
+      "data": [
+        "claude_guidelines"
+      ]
+    },
+    {
+      "name": "Git Configuration",
+      "system_prompt": "Git configuration including global settings, hooks, GitHub CLI configuration, and custom aliases. Uses delta for enhanced diffs and follows a rebase workflow.",
+      "data": [
+        "git_config",
+        "git_hooks",
+        "gh_config",
+        "gh_dash_config"
       ]
     },
     {
@@ -22,6 +39,14 @@
         "zshrc_functions",
         "zsh_completions",
         "zsh_functions"
+      ]
+    },
+    {
+      "name": "Shell Prompt",
+      "system_prompt": "Oh My Posh prompt configuration with custom Tokyo Night theme, git integration, and tool version display",
+      "data": [
+        "ohmyposh_config",
+        "ohmyposh_rake"
       ]
     },
     {
@@ -68,10 +93,35 @@
     }
   ],
   "data": {
+    "git_config": {
+      "type": "file",
+      "path": "./git/config",
+      "description": "Main Git configuration file with global settings and aliases"
+    },
+    "git_hooks": {
+      "type": "file",
+      "path": "./git/hooks",
+      "description": "Git hooks including pre-push hook to prevent pushing fixup commits"
+    },
+    "gh_config": {
+      "type": "file",
+      "path": "./git/gh/config.yml",
+      "description": "GitHub CLI configuration with helpful aliases"
+    },
+    "gh_dash_config": {
+      "type": "file",
+      "path": "./git/gh-dash/config.yml",
+      "description": "GitHub Dashboard configuration for PR management"
+    },
     "main_rakefile": {
       "type": "file",
       "path": "./Rakefile",
       "description": "Main Rakefile that serves as the entry point for all installation and update tasks"
+    },
+    "claude_guidelines": {
+      "type": "file",
+      "path": "./CLAUDE.md",
+      "description": "Guidelines for Claude AI when working with this repository, including build commands, code style guidelines, and configuration details for various tools"
     },
     "readme": {
       "type": "file",
@@ -80,37 +130,37 @@
     },
     "zsh_rake": {
       "type": "file",
-      "path": "./zsh/zsh.rake",
+      "path": "./config/zsh/zsh.rake",
       "description": "Rake tasks for ZSH shell configuration"
     },
     "zsh_readme": {
       "type": "file",
-      "path": "./zsh/README.md",
+      "path": "./config/zsh/README.md",
       "description": "Documentation for ZSH configuration"
     },
     "zshrc_env": {
       "type": "file",
-      "path": "./zsh/zshrc.d/03-env.zsh",
+      "path": "./config/zsh/zshrc.d/03-env.zsh",
       "description": "Environment variable configurations for ZSH"
     },
     "zshrc_aliases": {
       "type": "file",
-      "path": "./zsh/zshrc.d/04-aliases.zsh",
+      "path": "./config/zsh/zshrc.d/04-aliases.zsh",
       "description": "Shell aliases configuration"
     },
     "zshrc_functions": {
       "type": "file",
-      "path": "./zsh/zshrc.d/02-functions.zsh",
+      "path": "./config/zsh/zshrc.d/02-functions.zsh",
       "description": "Shell function definitions"
     },
     "zsh_completions": {
       "type": "file",
-      "path": "./zsh/completions",
+      "path": "./config/zsh/completions",
       "description": "Custom completion scripts for ZSH"
     },
     "zsh_functions": {
       "type": "file",
-      "path": "./zsh/functions",
+      "path": "./config/zsh/functions",
       "description": "Custom ZSH function files"
     },
     "asdf_rake": {
@@ -175,8 +225,13 @@
     },
     "nvim_plugins": {
       "type": "file",
-      "path": "./nvim/lua/plugins",
+      "path": "./config/nvim/lua/plugins",
       "description": "Neovim plugin configurations"
+    },
+    "ohmyposh_config": {
+      "type": "file",
+      "path": "./config/ohmyposh/ohmyposh.json",
+      "description": "Oh My Posh prompt configuration with Tokyo Night theme and custom segments"
     },
     "kitty_rake": {
       "type": "file",
@@ -192,6 +247,11 @@
       "type": "file",
       "path": "./kitty/themes",
       "description": "Kitty terminal color themes"
+    },
+    "ohmyposh_rake": {
+      "type": "file",
+      "path": "./config/ohmyposh/ohmyposh.rake",
+      "description": "Rake tasks for Oh My Posh setup and updates"
     },
     "aerospace_rake": {
       "type": "file",
