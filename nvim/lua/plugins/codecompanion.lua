@@ -94,16 +94,31 @@ When given a task:
             },
           })
         end,
+        anthropic_claude40 = function()
+          return require("codecompanion.adapters").extend("anthropic", {
+            schema = {
+              model = {
+                default = "claude-sonnet-4-20250514",
+              },
+              temperature = {
+                default = 0.2,
+              },
+            },
+            env = {
+              api_key = "ANTHROPIC_API_KEY",
+            },
+          })
+        end,
       },
       strategies = {
         chat = {
-          adapter = "anthropic_claude35",
+          adapter = "anthropic_claude40",
         },
         command = {
-          adapter = "anthropic_claude35",
+          adapter = "anthropic_claude40",
         },
         inline = {
-          adapter = "anthropic_claude35",
+          adapter = "anthropic_claude40",
         },
       },
     },
