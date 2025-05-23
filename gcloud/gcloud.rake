@@ -8,7 +8,7 @@ namespace :gcloud do
       sh 'gcloud components update --quiet'
       # sh 'type gcloud >/dev/null && $(gcloud info --format="value(basic.python_location)") -m pip install numpy'
     else
-      puts 'No updates to gcloud components performance -- no gcloud CLI found'.red
+      puts 'No updates to gcloud components performed -- no gcloud CLI found'.red
     end
   end
 end
