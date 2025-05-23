@@ -1,0 +1,207 @@
+{
+  "name": "dotfiles",
+  "version": "1.0.0",
+  "system_prompt": "This is a dotfiles repository that manages system configurations across multiple machines. The system uses Rake for deployment and management of configurations.",
+  "groups": [
+    {
+      "name": "Core Setup",
+      "system_prompt": "This group contains the core deployment and setup files for the dotfiles system. The Rakefile is the main entry point that coordinates all installation and update tasks.",
+      "data": [
+        "main_rakefile",
+        "readme"
+      ]
+    },
+    {
+      "name": "Shell Environment",
+      "system_prompt": "ZSH shell configuration including functions, completions, and modular configuration files",
+      "data": [
+        "zsh_rake",
+        "zsh_readme",
+        "zshrc_env",
+        "zshrc_aliases",
+        "zshrc_functions",
+        "zsh_completions",
+        "zsh_functions"
+      ]
+    },
+    {
+      "name": "Development Tools",
+      "system_prompt": "Configuration for development tools, focusing on ASDF version manager and Tmux terminal multiplexer",
+      "data": [
+        "asdf_rake",
+        "asdf_readme",
+        "asdfrc",
+        "tool_versions",
+        "tmux_rake",
+        "tmux_conf"
+      ]
+    },
+    {
+      "name": "Editor Configuration",
+      "system_prompt": "Neovim configuration including plugins, keymaps, and custom settings",
+      "data": [
+        "nvim_rake",
+        "nvim_readme",
+        "nvim_init",
+        "nvim_options",
+        "nvim_keymaps",
+        "nvim_autocmds",
+        "nvim_plugins"
+      ]
+    },
+    {
+      "name": "Terminal Emulators",
+      "system_prompt": "Kitty terminal configuration including themes and settings",
+      "data": [
+        "kitty_rake",
+        "kitty_conf",
+        "kitty_themes"
+      ]
+    },
+    {
+      "name": "Window Management",
+      "system_prompt": "AeroSpace window management configuration for macOS",
+      "data": [
+        "aerospace_rake",
+        "aerospace_toml"
+      ]
+    }
+  ],
+  "data": {
+    "main_rakefile": {
+      "type": "file",
+      "path": "./Rakefile",
+      "description": "Main Rakefile that serves as the entry point for all installation and update tasks"
+    },
+    "readme": {
+      "type": "file",
+      "path": "./README.md",
+      "description": "Documentation explaining the repository's purpose and usage"
+    },
+    "zsh_rake": {
+      "type": "file",
+      "path": "./zsh/zsh.rake",
+      "description": "Rake tasks for ZSH shell configuration"
+    },
+    "zsh_readme": {
+      "type": "file",
+      "path": "./zsh/README.md",
+      "description": "Documentation for ZSH configuration"
+    },
+    "zshrc_env": {
+      "type": "file",
+      "path": "./zsh/zshrc.d/03-env.zsh",
+      "description": "Environment variable configurations for ZSH"
+    },
+    "zshrc_aliases": {
+      "type": "file",
+      "path": "./zsh/zshrc.d/04-aliases.zsh",
+      "description": "Shell aliases configuration"
+    },
+    "zshrc_functions": {
+      "type": "file",
+      "path": "./zsh/zshrc.d/02-functions.zsh",
+      "description": "Shell function definitions"
+    },
+    "zsh_completions": {
+      "type": "file",
+      "path": "./zsh/completions",
+      "description": "Custom completion scripts for ZSH"
+    },
+    "zsh_functions": {
+      "type": "file",
+      "path": "./zsh/functions",
+      "description": "Custom ZSH function files"
+    },
+    "asdf_rake": {
+      "type": "file",
+      "path": "./asdf/asdf.rake",
+      "description": "Rake tasks for ASDF version manager setup"
+    },
+    "asdf_readme": {
+      "type": "file",
+      "path": "./asdf/README.md",
+      "description": "Documentation for ASDF configuration"
+    },
+    "asdfrc": {
+      "type": "file",
+      "path": "./asdf/asdfrc",
+      "description": "ASDF configuration file"
+    },
+    "tool_versions": {
+      "type": "file",
+      "path": "./asdf/tool-versions",
+      "description": "ASDF tool versions specification"
+    },
+    "tmux_rake": {
+      "type": "file",
+      "path": "./tmux/tmux.rake",
+      "description": "Rake tasks for Tmux configuration"
+    },
+    "tmux_conf": {
+      "type": "file",
+      "path": "./tmux/tmux.conf",
+      "description": "Main Tmux configuration file"
+    },
+    "nvim_rake": {
+      "type": "file",
+      "path": "./nvim/nvim.rake",
+      "description": "Rake tasks for Neovim setup"
+    },
+    "nvim_readme": {
+      "type": "file",
+      "path": "./nvim/README.md",
+      "description": "Documentation for Neovim configuration"
+    },
+    "nvim_init": {
+      "type": "file",
+      "path": "./nvim/init.lua",
+      "description": "Main Neovim initialization file"
+    },
+    "nvim_options": {
+      "type": "file",
+      "path": "./nvim/lua/config/options.lua",
+      "description": "Neovim options configuration"
+    },
+    "nvim_keymaps": {
+      "type": "file",
+      "path": "./nvim/lua/config/keymaps.lua",
+      "description": "Neovim key mappings"
+    },
+    "nvim_autocmds": {
+      "type": "file",
+      "path": "./nvim/lua/config/autocmds.lua",
+      "description": "Neovim autocommands configuration"
+    },
+    "nvim_plugins": {
+      "type": "file",
+      "path": "./nvim/lua/plugins",
+      "description": "Neovim plugin configurations"
+    },
+    "kitty_rake": {
+      "type": "file",
+      "path": "./kitty/kitty.rake",
+      "description": "Rake tasks for Kitty terminal setup"
+    },
+    "kitty_conf": {
+      "type": "file",
+      "path": "./kitty/kitty.conf",
+      "description": "Main Kitty terminal configuration"
+    },
+    "kitty_themes": {
+      "type": "file",
+      "path": "./kitty/themes",
+      "description": "Kitty terminal color themes"
+    },
+    "aerospace_rake": {
+      "type": "file",
+      "path": "./aerospace/aerospace.rake",
+      "description": "Rake tasks for AeroSpace window manager setup"
+    },
+    "aerospace_toml": {
+      "type": "file",
+      "path": "./aerospace/aerospace.toml",
+      "description": "AeroSpace window manager configuration"
+    }
+  }
+}
