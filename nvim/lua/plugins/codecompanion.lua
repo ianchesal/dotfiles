@@ -58,6 +58,9 @@ When given a task:
 4. Provide exactly one complete reply per conversation turn.
 5. If necessary, execute multiple tools in a single turn.]],
       adapters = {
+        opts = {
+          show_model_choices = true,
+        },
         anthropic_claude35 = function()
           return require("codecompanion.adapters").extend("anthropic", {
             schema = {
