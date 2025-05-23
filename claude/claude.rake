@@ -18,6 +18,8 @@ namespace :claude do
     if File.exist?(File.expand_path('~/.npm-global/bin/claude'))
       puts 'Update: claude'.green
       sh '~/.npm-global/bin/claude update'
+    else
+      puts 'No updates to claude components -- no claude CLI found'.red
     end
   end
 
