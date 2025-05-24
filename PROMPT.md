@@ -1,6 +1,6 @@
-# CLAUDE.md
+# PROMPT.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI agents working on this repository.
 
 ## Build/Test/Lint Commands
 
@@ -112,5 +112,5 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Memory file maintains important context, preferences, and recurring tasks
 - Structure memory file with clear section headers and descriptive content
 - Memory file content should be concise and focused on high-value information
-- Never include project-specific terminology, conventions, and preferences. Project-specific things should go in a CLAUDE.md file in the root of the project.
+- Never include project-specific terminology, conventions, and preferences. Project-specific things should go in a PROMPT.md file in the root of the project.
 - Document complex workflows that should be remembered across sessions
