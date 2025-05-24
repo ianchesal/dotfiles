@@ -1,5 +1,5 @@
 # eza: https://github.com/eza-community/eza
-if type eza >/dev/null; then
+if (( $+commands[eza] )); then
   unalias l
   unalias ls
   unalias ll

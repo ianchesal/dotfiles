@@ -6,7 +6,7 @@
 SHELL_SESSIONS_DISABLE=1
 KEYTIMEOUT=1
 
-if type nvim >/dev/null; then
+if (( $+commands[nvim] )); then
   export EDITOR="nvim"
   export VISUAL="nvim"
 else

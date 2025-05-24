@@ -1,4 +1,4 @@
-if type brew &>/dev/null; then
+if (( $+commands[brew] )); then
   # For the 5.0.x Homebrew'ed zsh installation...
   # unalias run-help
   autoload run-help
