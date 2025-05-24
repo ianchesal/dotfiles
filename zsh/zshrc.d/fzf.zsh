@@ -24,6 +24,6 @@ FZF_DEFAULT_OPTS+=" --layout reverse --border"
 
 export FZF_DEFAULT_OPTS
 
-if type fzf >/dev/null; then
+if (( $+commands[fzf] )); then
   eval "$(fzf --zsh)"
 fi

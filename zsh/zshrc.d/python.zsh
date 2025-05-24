@@ -7,7 +7,7 @@ fi
 unset FOUND_PYENV
 export PIPENV_IGNORE_VIRTUALENVS=1
 
-if ! type pyenv >/dev/null; then
+if ! (( $+commands[pyenv] )); then
   path+="$PYENV_ROOT/bin"
 fi
 eval "$(pyenv init --path)"

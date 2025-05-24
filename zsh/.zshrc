@@ -16,7 +16,7 @@ fi
 
 if [[ -z "$HOMEBREW_PREFIX" ]]; then
   if [[ -z $brew_location ]]; then
-    if type brew &>/dev/null; then
+    if (( $+commands[brew] )); then 
       eval "$(brew shellenv)"
     fi
   else
@@ -27,7 +27,7 @@ fi
 unset brew_location
 
 # This gives us completions for brew-install things
-if type brew &>/dev/null; then
+if (( $+commands[brew] )); then 
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 fi
 

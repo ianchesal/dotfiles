@@ -157,7 +157,7 @@ function unfuck-podman-on-wsl() {
 }
 
 function __ai_container_launcher() {
-  if type podman >/dev/null; then
+  if (( $+commands[podman] )); then
     LAUNCHER="podman run --userns=keep-id"
   else
     LAUNCHER="docker run"

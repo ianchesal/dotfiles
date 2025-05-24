@@ -132,7 +132,7 @@ alias rsync-copy="rsync -avz --progress -h"
 alias rsync-move="rsync -avz --progress -h --remove-source-files"
 alias rsync-synchronize="rsync -avzu --delete --progress -h"
 alias rsync-update="rsync -avzu --progress -h"
-if type nvim >/dev/null; then
+if (( $+commands[nvim] )); then
   alias vim=nvim
 fi
 
@@ -158,7 +158,7 @@ alias tfpl='terraform providers lock -platform=darwin_arm64 -platform=linux_amd6
 alias tfv='terraform validate'
 
 # Docker/Podman compatibility
-if type podman >/dev/null; then
+if (( $+commands[podman] )); then
   alias docker=podman
 fi
 
