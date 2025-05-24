@@ -18,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Code Style Guidelines
 
-- Ruby: Follow Rubocop guidelines in `/app/rubocop/rubocop.yml`
+- Ruby: Follow Rubocop guidelines in `./rubocop/rubocop.yml`
 - Line length limit: 160 characters
 - Indentation: 2 spaces
 - Prefer single quotes for strings unless interpolation is needed
@@ -39,23 +39,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Neovim Configuration
 
-- Based on LazyVim with custom plugins and configurations
+- Based on [LazyVim](https://www.lazyvim.org/) with custom plugins and configurations
+- Some LazyVim features are enabled via the `./nvim/lazyvim.json`
 - Lua files should follow stylua.toml format (2 space indent, 120 column width)
-- Plugin configuration belongs in `/app/nvim/lua/plugins/*.lua` files
-- Custom keymaps should be defined in `/app/nvim/lua/config/keymaps.lua`
+- Plugin configuration belongs in `./nvim/lua/plugins/*.lua` files
+- Custom keymaps should be defined in `./nvim/lua/config/keymaps.lua`
+- Custom autocmd config should be defined in `./nvim/lua/config/autocmds.lua`
 - Use which-key for documenting keybindings with descriptive labels
 - Respect existing plugin organization and structure
-- Requires Neovim 0.9+ for compatibility
+- Requires Neovim 0.10+ for compatibility
 
 ## Zsh Configuration
 
 - Organized using XDG directory structure with configs in `.config/zsh`
-- Zsh files are modular and stored in `zshrc.d/` directory
+- Zsh files are modular and stored in `./zsh/zshrc.d/` directory
 - Using `zdharma-continuum/zinit` for zsh plugin support
-- Custom functions go in `functions/` directory with one function per file
+- Custom functions go in `./zsh/functions/` directory with one function per file
 - Custom completions go in `completions/` directory following zsh-completions format
-- Aliases go in the `/zshrc.d/04-aliases.zsh` file
-- Naming convention for zshrc.d files: numeric prefix for load order (e.g., `02-functions.zsh`)
+- Aliases go in the `./zsh/zshrc.d/04-aliases.zsh` file
+- Naming convention for zshrc.d files: numeric prefix for load order (e.g., `02-functions.zsh`) (but only if load order is strictly required)
 - Global aliases use suffix format (e.g., `alias -g G='| grep -E'`)
 - History settings: large history size, ignore duplicates, share across sessions
 - Use descriptive comments for functions and aliases
