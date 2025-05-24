@@ -28,7 +28,11 @@ unset brew_location
 
 # This gives us completions for brew-install things
 if (( $+commands[brew] )); then 
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+  # Cache brew prefix to avoid subprocess call on every shell startup
+  if [[ -z "$HOMEBREW_ZSH_COMPLETIONS" ]]; then
+    export HOMEBREW_ZSH_COMPLETIONS="$(brew --prefix)/share/zsh-completions"
+  fi
+  FPATH="$HOMEBREW_ZSH_COMPLETIONS":$FPATH
 fi
 
 # Set the directory we want to store zinit and plugins

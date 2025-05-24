@@ -1,9 +1,16 @@
 # Use Homebrew dependencies w/Ruby
 if (( $+commands[brew] )); then
+  # Cache brew prefixes to avoid subprocess calls on every shell startup
   if [[ $(hostname) == "fractal-vbox" ]]; then
-    export RUBY_CONFIGURE_OPTS="--with-zlib-dir=$(brew --prefix zlib) --with-openssl-dir=$(brew --prefix openssl@3) --with-readline-dir=$(brew --prefix readline) --with-libyaml-dir=$(brew --prefix libyaml)"
+    if [[ -z "$HOMEBREW_RUBY_CONFIGURE_OPTS" ]]; then
+      export HOMEBREW_RUBY_CONFIGURE_OPTS="--with-zlib-dir=$(brew --prefix zlib) --with-openssl-dir=$(brew --prefix openssl@3) --with-readline-dir=$(brew --prefix readline) --with-libyaml-dir=$(brew --prefix libyaml)"
+    fi
+    export RUBY_CONFIGURE_OPTS="$HOMEBREW_RUBY_CONFIGURE_OPTS"
   else
-    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
+    if [[ -z "$HOMEBREW_OPENSSL_PREFIX" ]]; then
+      export HOMEBREW_OPENSSL_PREFIX="$(brew --prefix openssl)"
+    fi
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$HOMEBREW_OPENSSL_PREFIX"
   fi
 fi
 

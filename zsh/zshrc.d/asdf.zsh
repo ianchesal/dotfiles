@@ -6,9 +6,11 @@ if (( $+commands[asdf] )); then
   export ASDF_GOLANG_MOD_VERSION_ENABLED=true
 
   if (( $+commands[brew] )); then
-    brew_prefix="$(brew --prefix asdf)"
-    ASDF_COMPLETIONS="${brew_prefix}/etc/bash_completion.d"
-    unset brew_prefix
+    # Cache brew prefix to avoid subprocess call on every shell startup
+    if [[ -z "$HOMEBREW_ASDF_PREFIX" ]]; then
+      export HOMEBREW_ASDF_PREFIX="$(brew --prefix asdf)"
+    fi
+    ASDF_COMPLETIONS="${HOMEBREW_ASDF_PREFIX}/etc/bash_completion.d"
   fi
 
   path=("$ASDF_DATA_DIR/shims" "$path[@]")

@@ -11,8 +11,11 @@ if (( $+commands[brew] )); then
   HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
   # Gnu Util installed in homebrew?
-  GNUTILS_PATH="$(brew --prefix)/opt/grep/libexec/gnubin"
-  if [ -d "$GNUTILS_PATH" ]; then
-    path=($GNUTILS_PATH "$path[@]")
+  # Cache brew prefix to avoid subprocess call on every shell startup
+  if [[ -z "$HOMEBREW_GNUTILS_PATH" ]]; then
+    export HOMEBREW_GNUTILS_PATH="$(brew --prefix)/opt/grep/libexec/gnubin"
+  fi
+  if [ -d "$HOMEBREW_GNUTILS_PATH" ]; then
+    path=($HOMEBREW_GNUTILS_PATH "$path[@]")
   fi
 fi
