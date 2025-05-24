@@ -24,6 +24,23 @@ FZF_DEFAULT_OPTS+=" --layout reverse --border"
 
 export FZF_DEFAULT_OPTS
 
+# Lazy load fzf to improve shell startup performance
+# Only initialize when fzf commands are first used
 if (( $+commands[fzf] )); then
-  eval "$(fzf --zsh)"
+  __fzf_lazy_load() {
+    # Remove the lazy loading functions
+    unfunction fzf __fzf_select__ __fzf_cd__ __fzf_history__ 2>/dev/null
+    
+    # Initialize fzf
+    eval "$(fzf --zsh)"
+    
+    # Call the original command with all arguments
+    "$1" "${@:2}"
+  }
+  
+  # Create lazy-loading wrapper functions for common fzf commands
+  fzf() { __fzf_lazy_load fzf "$@" }
+  __fzf_select__() { __fzf_lazy_load __fzf_select__ "$@" }
+  __fzf_cd__() { __fzf_lazy_load __fzf_cd__ "$@" }
+  __fzf_history__() { __fzf_lazy_load __fzf_history__ "$@" }
 fi
