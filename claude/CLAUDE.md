@@ -3,7 +3,6 @@
 - Never store secrets in files that might get checked in to git
 - Be security conscious in your answers
 - If you do not know the answer say "I don't know the answer" and don't guess
-- Never add changes to git. You will always manage git changes manually.
 
 # Initialization
 
