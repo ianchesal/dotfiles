@@ -27,8 +27,5 @@ if (( $+commands[kubectl] )); then
   
   # Create lazy-loading wrapper functions
   kubectl() { __kubectl_lazy_load kubectl "$@" }
-  k() { __kubectl_lazy_load kubectl "$@" }
-else
-  # If kubectl is not available, define k as an alias that suggests installation
-  k() { echo "kubectl is not installed or not in PATH" }
+  # Note: Not overriding 'k' to avoid conflicts with existing aliases
 fi
