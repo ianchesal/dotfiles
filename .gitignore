@@ -1,12 +1,13 @@
 .DS_Store
+/.claude/**
 /Gemfile.lock
 /brew/Brewfile.lock.json
 /claude/*.db
 /claude/claude.json
+/claude/projects
 /claude/settings.json
 /claude/statsig/*
 /claude/todos
-/claude/projects
 /git/local
 /irssi/*log
 /irssi/default.theme
