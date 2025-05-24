@@ -6,28 +6,46 @@ function rpg {
   rg -p "$@" | less -R
 }
 
-function git_master_to_main() {
-  git checkout master
-  git pull
-  git branch -m master main
-  git push -u origin main
-  git branch -u origin/main main
+# Lazy load git_master_to_main function (rarely used)
+git_master_to_main() {
+  unfunction git_master_to_main
+  
+  # Define the actual function
+  git_master_to_main() {
+    git checkout master
+    git pull
+    git branch -m master main
+    git push -u origin main
+    git branch -u origin/main main
+  }
+  
+  # Call the actual function
+  git_master_to_main "$@"
 }
 
-function heic2jpg() {
-  # Preps HEIC images captured by my iPhone for posting on the interwebs
-  # by converting them to jpg and stripping out all the exif location
-  # data.
-  for i in $*; do
-    ext=$(echo $i:t:e | tr '[:upper:]' '[:lower:]')
-    jpgfile="$i:r".jpg
-    echo "Converting ${i} --> ${jpgfile}"
-    mogrify -format jpg ${i}
-    exiftool -all= ${jpgfile}
-    if [[ -f "${jpgfile}_original" ]]; then
-      rm "${jpgfile}_original"
-    fi
-  done
+# Lazy load heic2jpg function (rarely used)
+heic2jpg() {
+  unfunction heic2jpg
+  
+  # Define the actual function
+  heic2jpg() {
+    # Preps HEIC images captured by my iPhone for posting on the interwebs
+    # by converting them to jpg and stripping out all the exif location
+    # data.
+    for i in $*; do
+      ext=$(echo $i:t:e | tr '[:upper:]' '[:lower:]')
+      jpgfile="$i:r".jpg
+      echo "Converting ${i} --> ${jpgfile}"
+      mogrify -format jpg ${i}
+      exiftool -all= ${jpgfile}
+      if [[ -f "${jpgfile}_original" ]]; then
+        rm "${jpgfile}_original"
+      fi
+    done
+  }
+  
+  # Call the actual function
+  heic2jpg "$@"
 }
 
 function dotenv() {
@@ -40,11 +58,20 @@ function dotenv() {
 
 }
 
-function debug:config_files() {
-  # Prints all the files that a program opens on startup
-  # Helpful for figuring out where a program is reading
-  # configuration from.
-  strace -f "$1" 2>&1 | grep openat
+# Lazy load debug:config_files function (rarely used)
+debug:config_files() {
+  unfunction debug:config_files
+  
+  # Define the actual function
+  debug:config_files() {
+    # Prints all the files that a program opens on startup
+    # Helpful for figuring out where a program is reading
+    # configuration from.
+    strace -f "$1" 2>&1 | grep openat
+  }
+  
+  # Call the actual function
+  debug:config_files "$@"
 }
 
 # function crafting-old-sandboxes() {
@@ -52,9 +79,18 @@ function debug:config_files() {
 #   cs sandbox list -o json | jq $JQ_QUERY
 # }
 
-function clean-nvim-logs() {
-  rm -f ~/.local/state/nvim/log
-  rm -f ~/.local/state/nvim/*.log
+# Lazy load clean-nvim-logs function (rarely used)
+clean-nvim-logs() {
+  unfunction clean-nvim-logs
+  
+  # Define the actual function
+  clean-nvim-logs() {
+    rm -f ~/.local/state/nvim/log
+    rm -f ~/.local/state/nvim/*.log
+  }
+  
+  # Call the actual function
+  clean-nvim-logs "$@"
 }
 
 function __my_sleep_spinner() {
@@ -132,28 +168,46 @@ function ta() {
   fi
 }
 
-function hb_update_node() {
-  if [[ "$(hostname)" == "tranquility" ]]; then
-    pushd ~/src/torrent-management/docker/
-    sudo docker compose -f docker-compose.homebridge.yml exec homebridge hb-service update-node
-    popd
-  else
-    echo "\033[1;31mThis command can only be run on tranquility\033[0m"
-    return 1
-  fi
+# Lazy load hb_update_node function (rarely used, host-specific)
+hb_update_node() {
+  unfunction hb_update_node
+  
+  # Define the actual function
+  hb_update_node() {
+    if [[ "$(hostname)" == "tranquility" ]]; then
+      pushd ~/src/torrent-management/docker/
+      sudo docker compose -f docker-compose.homebridge.yml exec homebridge hb-service update-node
+      popd
+    else
+      echo "\033[1;31mThis command can only be run on tranquility\033[0m"
+      return 1
+    fi
+  }
+  
+  # Call the actual function
+  hb_update_node "$@"
 }
 
-function unfuck-podman-on-wsl() {
-  # I have to do this after every Windows machine restart to
-  # put rootless podman back in a useable state. Will figure
-  # out why later. For now...
-  if [[ -n "$TMUX" ]]; then
-    echo "Error: This function cannot be run from within a tmux session"
-    return 1
-  fi
-  rm -rf ~/.xdg/containers ~/.xdg/libpod/tmp && \
-  brew services restart podman && \
-  sudo mount -o remount,shared / /
+# Lazy load unfuck-podman-on-wsl function (rarely used, WSL-specific)
+unfuck-podman-on-wsl() {
+  unfunction unfuck-podman-on-wsl
+  
+  # Define the actual function
+  unfuck-podman-on-wsl() {
+    # I have to do this after every Windows machine restart to
+    # put rootless podman back in a useable state. Will figure
+    # out why later. For now...
+    if [[ -n "$TMUX" ]]; then
+      echo "Error: This function cannot be run from within a tmux session"
+      return 1
+    fi
+    rm -rf ~/.xdg/containers ~/.xdg/libpod/tmp && \
+    brew services restart podman && \
+    sudo mount -o remount,shared / /
+  }
+  
+  # Call the actual function
+  unfuck-podman-on-wsl "$@"
 }
 
 function __ai_container_launcher() {
