@@ -15,3 +15,4 @@
 # Workflow
 
 - Prefer running single tests, and not the whole test suite, for perfomance
+- If there is a PROMPT.md file in the repo, read that automatically and follow the rules in it

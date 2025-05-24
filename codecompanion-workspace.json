@@ -6,27 +6,17 @@
     {
       "name": "Core Setup",
       "system_prompt": "This group contains the core deployment and setup files for the dotfiles system. The Rakefile is the main entry point that coordinates all installation and update tasks.",
-      "data": [
-        "main_rakefile",
-        "readme"
-      ]
+      "data": ["main_rakefile", "readme"]
     },
     {
       "name": "Development Standards",
       "system_prompt": "This group contains documentation about development standards, coding guidelines, and AI interaction preferences for the repository.",
-      "data": [
-        "claude_guidelines"
-      ]
+      "data": ["claude_guidelines"]
     },
     {
       "name": "Git Configuration",
       "system_prompt": "Git configuration including global settings, hooks, GitHub CLI configuration, and custom aliases. Uses delta for enhanced diffs and follows a rebase workflow.",
-      "data": [
-        "git_config",
-        "git_hooks",
-        "gh_config",
-        "gh_dash_config"
-      ]
+      "data": ["git_config", "git_hooks", "gh_config", "gh_dash_config"]
     },
     {
       "name": "Shell Environment",
@@ -44,10 +34,7 @@
     {
       "name": "Shell Prompt",
       "system_prompt": "Oh My Posh prompt configuration with custom Tokyo Night theme, git integration, and tool version display",
-      "data": [
-        "ohmyposh_config",
-        "ohmyposh_rake"
-      ]
+      "data": ["ohmyposh_config", "ohmyposh_rake"]
     },
     {
       "name": "Development Tools",
@@ -77,19 +64,12 @@
     {
       "name": "Terminal Emulators",
       "system_prompt": "Kitty terminal configuration including themes and settings",
-      "data": [
-        "kitty_rake",
-        "kitty_conf",
-        "kitty_themes"
-      ]
+      "data": ["kitty_rake", "kitty_conf", "kitty_themes"]
     },
     {
       "name": "Window Management",
       "system_prompt": "AeroSpace window management configuration for macOS",
-      "data": [
-        "aerospace_rake",
-        "aerospace_toml"
-      ]
+      "data": ["aerospace_rake", "aerospace_toml"]
     }
   ],
   "data": {
@@ -120,8 +100,8 @@
     },
     "claude_guidelines": {
       "type": "file",
-      "path": "./CLAUDE.md",
-      "description": "Guidelines for Claude AI when working with this repository, including build commands, code style guidelines, and configuration details for various tools"
+      "path": "./PROMPT.md",
+      "description": "Tool-agnostic guidelines for AI agents when working with this repository, including build commands, code style guidelines, and configuration details for various tools"
     },
     "readme": {
       "type": "file",
@@ -265,3 +245,4 @@
     }
   }
 }
+
