@@ -1,3 +1,4 @@
+# Set up pyenv root without initializing (for performance)
 command -v pyenv &>/dev/null && FOUND_PYENV=1 || FOUND_PYENV=0
 if [[ $FOUND_PYENV -eq 1 ]]; then
   export PYENV_ROOT=$(pyenv root)
@@ -7,11 +8,29 @@ fi
 unset FOUND_PYENV
 export PIPENV_IGNORE_VIRTUALENVS=1
 
+# Add pyenv to PATH if not already available
 if ! (( $+commands[pyenv] )); then
   path+="$PYENV_ROOT/bin"
 fi
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
+
+# Lazy load pyenv to improve shell startup performance
+# Only initialize when python/pip/pyenv commands are first used
+__pyenv_lazy_load() {
+  unfunction python python3 pip pip3 pyenv 2>/dev/null
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+  # Call the original command with all arguments
+  "$1" "${@:2}"
+}
+
+# Create lazy-loading wrapper functions
+if (( $+commands[pyenv] )); then
+  python() { __pyenv_lazy_load python "$@" }
+  python3() { __pyenv_lazy_load python3 "$@" }
+  pip() { __pyenv_lazy_load pip "$@" }
+  pip3() { __pyenv_lazy_load pip3 "$@" }
+  pyenv() { __pyenv_lazy_load pyenv "$@" }
+fi
 
 # Pipenv completion
 _pipenv() {
