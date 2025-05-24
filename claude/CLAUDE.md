@@ -10,8 +10,9 @@
 - If there is a .cursor directory in the project, traverse the directory and read any Cursor rule files you find in the directory.
 - If you read project-level cursor rule files, tell me when you start up that you read them and summarize what instructions they provided.
 - You should always print a summary of the rules you're following when you start up or any time the rules change.
+- If there is a PROMPT.md file in the repo, read that automatically and follow the rules in it
+- If there is a AGENTS.md file in the repo, read that automatically and follow the rules in it
 
 # Workflow
 
-- Prefer running single tests, and not the whole test suite, for perfomance
-- If there is a PROMPT.md file in the repo, read that automatically and follow the rules in it
+- Prefer running single tests, and not the whole test suite, for performance
