@@ -168,56 +168,39 @@ function ta() {
   fi
 }
 
-# Lazy load hb_update_node function (rarely used, host-specific)
-hb_update_node() {
-  unfunction hb_update_node
-  
-  # Define the actual function
-  hb_update_node() {
-    if [[ "$(hostname)" == "tranquility" ]]; then
-      local target_dir="~/src/torrent-management/docker/"
-      if [[ ! -d "$target_dir" ]]; then
-        echo "\033[1;31mError: Directory $target_dir does not exist\033[0m"
-        return 1
-      fi
-      
-      if pushd "$target_dir" > /dev/null; then
-        sudo docker compose -f docker-compose.homebridge.yml exec homebridge hb-service update-node
-        popd > /dev/null
-      else
-        echo "\033[1;31mError: Failed to change to directory $target_dir\033[0m"
-        return 1
-      fi
-    else
-      echo "\033[1;31mThis command can only be run on tranquility\033[0m"
+function hb_update_node() {
+  if [[ "$(hostname)" == "tranquility" ]]; then
+    local target_dir="/home/ian/src/torrent-management/docker/"
+    if [[ ! -d "$target_dir" ]]; then
+      echo "\033[1;31mError: Directory $target_dir does not exist\033[0m"
       return 1
     fi
-  }
-  
-  # Call the actual function
-  hb_update_node "$@"
+
+    if pushd "$target_dir" > /dev/null; then
+      sudo docker compose -f docker-compose.homebridge.yml exec homebridge hb-service update-node
+      popd > /dev/null
+    else
+      echo "\033[1;31mError: Failed to change to directory $target_dir\033[0m"
+      return 1
+    fi
+  else
+    echo "\033[1;31mThis command can only be run on tranquility\033[0m"
+    return 1
+  fi
 }
 
-# Lazy load unfuck-podman-on-wsl function (rarely used, WSL-specific)
-unfuck-podman-on-wsl() {
-  unfunction unfuck-podman-on-wsl
-  
-  # Define the actual function
-  unfuck-podman-on-wsl() {
-    # I have to do this after every Windows machine restart to
-    # put rootless podman back in a useable state. Will figure
-    # out why later. For now...
-    if [[ -n "$TMUX" ]]; then
-      echo "Error: This function cannot be run from within a tmux session"
-      return 1
-    fi
-    rm -rf ~/.xdg/containers ~/.xdg/libpod/tmp && \
+function unfuck-podman-on-wsl() {
+  # I have to do this after every Windows machine restart to
+  # put rootless podman back in a useable state. Will figure
+  # out why later. For now...
+  if [[ -n "$TMUX" ]]; then
+    echo "Error: This function cannot be run from within a tmux session"
+    return 1
+  fi
+  rm -rf ~/.xdg/containers ~/.xdg/libpod/tmp && \
     brew services restart podman && \
     sudo mount -o remount,shared / /
   }
-  
-  # Call the actual function
-  unfuck-podman-on-wsl "$@"
 }
 
 function __ai_container_launcher() {
