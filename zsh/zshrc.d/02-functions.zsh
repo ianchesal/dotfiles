@@ -175,9 +175,19 @@ hb_update_node() {
   # Define the actual function
   hb_update_node() {
     if [[ "$(hostname)" == "tranquility" ]]; then
-      pushd ~/src/torrent-management/docker/
-      sudo docker compose -f docker-compose.homebridge.yml exec homebridge hb-service update-node
-      popd
+      local target_dir="~/src/torrent-management/docker/"
+      if [[ ! -d "$target_dir" ]]; then
+        echo "\033[1;31mError: Directory $target_dir does not exist\033[0m"
+        return 1
+      fi
+      
+      if pushd "$target_dir" > /dev/null; then
+        sudo docker compose -f docker-compose.homebridge.yml exec homebridge hb-service update-node
+        popd > /dev/null
+      else
+        echo "\033[1;31mError: Failed to change to directory $target_dir\033[0m"
+        return 1
+      fi
     else
       echo "\033[1;31mThis command can only be run on tranquility\033[0m"
       return 1
