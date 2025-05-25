@@ -49,7 +49,7 @@ jobs:
       - name: Validate TOML files
         run: |
           pip install toml
-          find . -not -path "./tmux/plugins/*" -name "*.toml" | xargs -I {} sh -c 'echo "Checking {}" && python2 -c "import toml; toml.load(\"{}\")"'
+          find . -not -path "./tmux/plugins/*" -name "*.toml" | xargs -I {} sh -c 'echo "Checking {}" && python3 -c "import toml; toml.load(\"{}\")"'
 
   security-scan:
     runs-on: ubuntu-latest
