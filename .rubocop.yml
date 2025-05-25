@@ -1,9 +1,9 @@
 AllCops:
   NewCops: enable
   Exclude:
-    - "brew/Brewfile"
-    - "tmux/plugins/tpm/lib/tmux-test/Vagrantfile"
-    - "tmux/plugins/tmux-yank/Vagrantfile"
+    - "brew/**/*"
+    - "tmux/plugins/**/*"
+    - "vendor/**/*"
 
 Style/FrozenStringLiteralComment:
   Enabled: false
