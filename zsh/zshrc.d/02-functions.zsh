@@ -200,7 +200,6 @@ function unfuck-podman-on-wsl() {
   rm -rf ~/.xdg/containers ~/.xdg/libpod/tmp && \
     brew services restart podman && \
     sudo mount -o remount,shared / /
-  }
 }
 
 function __ai_container_launcher() {
