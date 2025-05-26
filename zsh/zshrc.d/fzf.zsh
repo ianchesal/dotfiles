@@ -29,7 +29,7 @@ export FZF_DEFAULT_OPTS
 if (( $+commands[fzf] )); then
   __fzf_lazy_load() {
     # Remove the lazy loading functions
-    unfunction fzf __fzf_select__ __fzf_cd__ __fzf_history__ 2>/dev/null
+    unfunction fzf __fzf_select__ __fzf_cd__ __fzf_history__ __fzf_ctrl_r_widget 2>/dev/null
     
     # Initialize fzf
     eval "$(fzf --zsh)"
@@ -43,4 +43,23 @@ if (( $+commands[fzf] )); then
   __fzf_select__() { __fzf_lazy_load __fzf_select__ "$@" }
   __fzf_cd__() { __fzf_lazy_load __fzf_cd__ "$@" }
   __fzf_history__() { __fzf_lazy_load __fzf_history__ "$@" }
+  
+  # Create a widget that initializes fzf and then calls the history function
+  __fzf_ctrl_r_widget() {
+    # Initialize fzf if not already done
+    if ! zle -l fzf-history-widget >/dev/null 2>&1; then
+      # Remove the lazy loading functions
+      unfunction fzf __fzf_select__ __fzf_cd__ __fzf_history__ __fzf_ctrl_r_widget 2>/dev/null
+      
+      # Initialize fzf
+      eval "$(fzf --zsh)"
+    fi
+    
+    # Call the fzf history widget
+    zle fzf-history-widget
+  }
+  
+  # Register the widget and bind Ctrl-R to it
+  zle -N __fzf_ctrl_r_widget
+  bindkey '^R' __fzf_ctrl_r_widget
 fi
