@@ -13,17 +13,8 @@ if (( $+commands[zoxide] )); then
     "$1" "${@:2}"
   }
   
-  # Define a custom function that combines zoxide with pushd
-  # so I can do popd to get back to whence I came from.
-  z() {
-    if [ "$#" -eq 0 ]; then
-      # If no arguments, behave like cd to home directory with pushd
-      pushd ~
-    else
-      # Use zoxide to find the directory and pushd to it
-      pushd "$(zoxide query "$@")" > /dev/null
-    fi
-  }
-
-  alias cd="z"
+  # Create lazy-loading wrapper functions for zoxide commands
+  # Note: Avoiding 'zi' since it conflicts with zinit alias
+  cd() { __zoxide_lazy_load cd "$@" }
+  z() { __zoxide_lazy_load z "$@" }
 fi
