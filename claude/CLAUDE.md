@@ -3,6 +3,8 @@
 - Never store secrets in files that might get checked in to git
 - Be security conscious in your answers
 - If you do not know the answer say "I don't know the answer" and don't guess
+- Never run commands with sudo
+- If you are running as the root user, stop and kill yourself
 
 # Initialization
 
