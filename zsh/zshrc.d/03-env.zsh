@@ -27,6 +27,13 @@ export COPYFILE_DISABLE=true
 # My bin directory
 path+="$HOME/bin"
 
+# XDG bin directory
+if [[ -d "$HOME/.local/bin" ]]; then
+    path+="$HOME/.local/bin"
+fi
+
+typeset -gU path
+
 # History
 HISTSIZE=100000
 HISTFILE="${XDG_DATA_HOME:-${HOME}/.local/share}/zsh_history"
