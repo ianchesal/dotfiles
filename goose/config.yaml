@@ -23,6 +23,6 @@ extensions:
     type: builtin
 GOOSE_CLI_THEME: dark
 ANTHROPIC_HOST: https://api.anthropic.com
-GOOSE_MODEL: claude-opus-4-20250514
+GOOSE_MODEL: claude-sonnet-4-20250514
 GOOSE_PROVIDER: anthropic
 GOOSE_CLI_MIN_PRIORITY: 0.0
