@@ -1,5 +1,27 @@
+extensions:
+  computercontroller:
+    bundled: true
+    display_name: Computer Controller
+    enabled: true
+    name: computercontroller
+    timeout: 300
+    type: builtin
+  developer:
+    bundled: true
+    display_name: Developer Tools
+    enabled: true
+    name: developer
+    timeout: 300
+    type: builtin
+  memory:
+    bundled: true
+    display_name: Memory
+    enabled: true
+    name: memory
+    timeout: 300
+    type: builtin
+ANTHROPIC_HOST: https://api.anthropic.com
 GOOSE_CLI_MIN_PRIORITY: 0.0
 GOOSE_MODEL: claude-opus-4-20250514
 GOOSE_PROVIDER: anthropic
-ANTHROPIC_HOST: https://api.anthropic.com
 GOOSE_MODE: smart_approve
