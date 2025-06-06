@@ -1,10 +1,12 @@
 smart_approve:
   always_allow: []
   ask_before:
-    - developer__shell
-    - developer__text_editor
+  - developer__shell
+  - developer__text_editor
   never_allow: []
 user:
-  always_allow: []
+  always_allow:
+  - developer__shell
+  - developer__text_editor
   ask_before: []
   never_allow: []
