@@ -123,6 +123,7 @@ alias gss='git status --short --branch'
 # github
 alias ghpca='gh pr create --fill --label auto-assign-reviewers --assignee @me'
 alias ghpci='gh pr create --fill --assignee @me --reviewer persona-id/infrastructure'
+alias ghpcic='gh pr create --fill --assignee @me --label claude --reviewer persona-id/infrastructure'
 
 # misc
 alias please='sudo $(fc -ln -1)'
