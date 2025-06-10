@@ -1,0 +1,4 @@
+# AI Shit
+
+## Anthropic
+CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR=true
