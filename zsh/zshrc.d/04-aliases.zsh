@@ -165,3 +165,6 @@ fi
 
 # Dotfiles
 alias dfu=dotfiles_update
+
+# Serena MCP Server
+alias serena='uv run --directory ~/src/oraios/serena serena-mcp-server --project .'
