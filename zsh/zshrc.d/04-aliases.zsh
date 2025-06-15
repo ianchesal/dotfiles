@@ -167,5 +167,5 @@ fi
 alias dfu=dotfiles_update
 
 # Serena MCP Server
-alias serena='uv run --directory ~/src/oraios/serena serena-mcp-server --project .'
-alias serena-add-mcp='claude mcp add serena -- uv "run" --directory ~/src/oraios/serena serena-mcp-server --project . --context ide-assistant --enable-web-dashboard False'
+alias serena='uv run --directory ~/src/dotfiles/serena/.serena serena-mcp-server --project .'
+alias serena-add-mcp='claude mcp add serena -- uv "run" --directory ~/src/dotfiles/serena/.serena serena-mcp-server --project . --context ide-assistant --enable-web-dashboard False'
