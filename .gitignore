@@ -1,5 +1,6 @@
 .DS_Store
 /.claude/**
+/.serena/**
 /Gemfile.lock
 /brew/Brewfile.lock.json
 /claude/*.db
@@ -8,8 +9,8 @@
 /claude/settings.json
 /claude/statsig/*
 /claude/todos
-/git/local
 /git/ignore
+/git/local
 /goose/history.txt
 /irssi/*log
 /irssi/default.theme
