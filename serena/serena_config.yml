@@ -1,0 +1,18 @@
+gui_log_window: false
+web_dashboard: true
+trace_lsp_communication: false
+tool_timeout: 240
+
+# MANAGED BY SERENA, KEEP AT THE BOTTOM OF THE YAML AND DON'T EDIT WITHOUT NEED
+# The list of registered projects.
+# To add a project, within a chat, simply ask Serena to "activate the project /path/to/project" or,
+# if the project was previously added, "activate the project <project name>".
+# By default, the project's name will be the name of the directory containing the project, but you may change it
+# by editing the (auto-generated) project configuration file `/path/project/project/.serena/project.yml` file.
+# If you want to maintain full control of the project configuration, create the project.yml file manually and then
+# instruct Serena to activate the project by its path for first-time activation.
+# NOTE: Make sure there are no name collisions in the names of registered projects.
+projects:
+- /home/ichesal/src/dotfiles
+- /home/ichesal/src/dotfiles/serena/.serena
+- /home/ichesal/src/crawlspacenh/crawlspacenh.github.io

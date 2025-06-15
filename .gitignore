@@ -19,6 +19,7 @@
 /node_modules
 /package-lock.json
 /package.json
+/serena/.serena
 /tmux/plugins
 /zsh/*.bak
 /zsh/*.local
