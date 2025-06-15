@@ -4,10 +4,6 @@ task serena: ['serena:all']
 namespace :serena do
   task all: [:install]
 
-  task :config do
-    sh 'cp serena/serena_config.yml serena/.serena/serena_config.yaml'
-  end
-
   task :install do
     mkdir_if_needed root('serena/.serena')
     unless Dir.exist?(root('serena/.serena/.git'))
@@ -35,6 +31,6 @@ namespace :serena do
   end
 end
 
-task all: [:serena]
+# task all: [:serena]
 task update: ['serena:update']
 task clean: ['serena:clean']
