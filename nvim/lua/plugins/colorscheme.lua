@@ -23,6 +23,14 @@ return {
   -- { "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
   -- { "scottmckendry/cyberdream.nvim", lazy = false, priority = 1000 },
   {
+    "github-main-user/lytmode.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("lytmode").setup()
+    end,
+  },
+  {
     "LazyVim/LazyVim",
     opts = {
       -- colorscheme = "catppuccin",
@@ -32,7 +40,8 @@ return {
       -- colorscheme = "onedark",
       -- colorscheme = "onedark_dark",
       -- colorscheme = "quiet",
-      colorscheme = "tokyonight",
+      -- colorscheme = "tokyonight",
+      colorscheme = "lytmode",
     },
   },
 }
