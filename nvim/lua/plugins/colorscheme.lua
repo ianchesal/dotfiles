@@ -27,7 +27,12 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      require("lytmode").setup()
+      require("lytmode").setup({
+        color_overrides = {
+          -- I used: https://mdigi.tools/darken-color/#2d3039 to darken the default background color
+          lytBack = "#22242b",
+        },
+      })
     end,
   },
   {
