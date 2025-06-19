@@ -1,6 +1,6 @@
 {
   "LazyVim": { "branch": "main", "commit": "25abbf546d564dc484cf903804661ba12de45507" },
-  "SchemaStore.nvim": { "branch": "main", "commit": "45fd6c22f30487586c771072dc8c5230931e4c7b" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "eeacd3cb53a1991a3ef18fb0456c9b9bda047c70" },
   "blink.cmp": { "branch": "main", "commit": "9bcb14b43852a6f2bfd5ac9ef29cb5cf09b1b39b" },
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },
   "catppuccin": { "branch": "main", "commit": "fa42eb5e26819ef58884257d5ae95dd0552b9a66" },
@@ -14,7 +14,7 @@
   "grug-far.nvim": { "branch": "main", "commit": "1a85fba510c6086b396be5a3c7c77ab32829d7df" },
   "hardtime.nvim": { "branch": "main", "commit": "b9a989191b3a97c9316a0efea02341c4cdab845a" },
   "hlchunk.nvim": { "branch": "main", "commit": "474ec5d0f220158afa83aaefab32402e710d3032" },
-  "kulala.nvim": { "branch": "main", "commit": "b176ecbc9d4286d83bfa9e5b8f6998230ee42f23" },
+  "kulala.nvim": { "branch": "main", "commit": "90d80cef3b27fbf8e543a1e8468b2794fd0b13dc" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "lazydev.nvim": { "branch": "main", "commit": "2367a6c0a01eb9edb0464731cc0fb61ed9ab9d2c" },
   "lualine.nvim": { "branch": "master", "commit": "a94fc68960665e54408fe37dcf573193c4ce82c9" },
