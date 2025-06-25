@@ -1,6 +1,8 @@
 desc 'Install claude dotfiles'
 task claude: ['claude:all']
 
+NPM_PACKAGE = '@anthropic-ai/claude-code'.freeze
+
 namespace :claude do
   task all: [:config, :install]
 
@@ -11,7 +13,7 @@ namespace :claude do
   task :install do
     mkdir_if_needed home('.npm-global')
     sh "npm config set prefix  #{home('.npm-global')}"
-    sh 'npm install -g @anthropic-ai/claude-code'
+    sh "npm install -g #{NPM_PACKAGE}"
   end
 
   task :update do
@@ -25,6 +27,7 @@ namespace :claude do
 
   task :clean do
     sh "rm -f #{home('.claude')}"
+    sh "npm install -g #{NPM_PACKAGE}" if File.exist?(File.expand_path('~/.npm-global/bin/claude'))
   end
 end
 
