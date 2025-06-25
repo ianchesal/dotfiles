@@ -1,7 +1,7 @@
 desc 'Install gemini dotfiles'
 task gemini: ['gemini:all']
 
-NPM_PACKAGE = '@google/gemini-cli'.freeze
+GEMINI_NPM_PACKAGE = '@google/gemini-cli'.freeze
 
 namespace :gemini do
   task all: [:config, :install]
@@ -14,7 +14,7 @@ namespace :gemini do
   task :install do
     mkdir_if_needed home('.npm-global')
     sh "npm config set prefix  #{home('.npm-global')}"
-    sh "npm install -g #{NPM_PACKAGE}"
+    sh "npm install -g #{GEMINI_NPM_PACKAGE}"
   end
 
   task :update do
@@ -31,7 +31,7 @@ namespace :gemini do
     sh "rm -f #{home('.gemini')}"
     if File.exist?(File.expand_path('~/.npm-global/bin/gemini'))
       sh "npm config set prefix  #{home('.npm-global')}"
-      sh "npm uninstall -g #{NPM_PACKAGE}"
+      sh "npm uninstall -g #{GEMINI_NPM_PACKAGE}"
     end
   end
 end
