@@ -7,8 +7,8 @@ namespace :gemini do
   task all: [:config, :install]
 
   task :config do
-    puts 'No-op for now'
-    # dolink(home('.gemini'), root('gemini'))
+    mkdir_if_needed home('.gemini')
+    dolink(home('.gemini/settings.json'), root('gemini/settings.json'))
   end
 
   task :install do
