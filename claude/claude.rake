@@ -11,9 +11,7 @@ namespace :claude do
   end
 
   task :install do
-    mkdir_if_needed home('.npm-global')
-    sh "npm config set prefix  #{home('.npm-global')}"
-    sh "npm install -g #{CLAUDE_NPM_PACKAGE}"
+    npm_install(CLAUDE_NPM_PACKAGE)
   end
 
   task :update do
@@ -27,7 +25,7 @@ namespace :claude do
 
   task :clean do
     sh "rm -f #{home('.claude')}"
-    sh "npm install -g #{CLAUDE_NPM_PACKAGE}" if File.exist?(File.expand_path('~/.npm-global/bin/claude'))
+    npm_uninstall(CLAUDE_NPM_PACKAGE) if File.exist?(File.expand_path('~/.npm-global/bin/claude'))
   end
 end
 
