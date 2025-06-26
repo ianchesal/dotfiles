@@ -82,6 +82,22 @@ def mkdir_if_needed(path)
   FileUtils.mkdir_p path unless File.directory? path
 end
 
+def npm_install(package)
+  mkdir_if_needed home('.npm-global')
+  sh "npm config set prefix  #{home('.npm-global')}"
+  sh "npm install -g #{package}"
+end
+
+def npm_update(package)
+  sh "npm config set prefix  #{home('.npm-global')}"
+  sh "npm update -g #{package}"
+end
+
+def npm_uninstall(package)
+  sh "npm config set prefix  #{home('.npm-global')}"
+  sh "npm uninstall -g #{package}"
+end
+
 def which(cmd)
   exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
   ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|

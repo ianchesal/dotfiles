@@ -12,15 +12,13 @@ namespace :gemini do
   end
 
   task :install do
-    mkdir_if_needed home('.npm-global')
-    sh "npm config set prefix  #{home('.npm-global')}"
-    sh "npm install -g #{GEMINI_NPM_PACKAGE}"
+    npm_install(GEMINI_NPM_PACKAGE)
   end
 
   task :update do
     if File.exist?(File.expand_path('~/.npm-global/bin/gemini'))
       puts 'Update: gemini'.green
-      sh '~/.npm-global/bin/gemini update'
+      npm_update(GEMINI_NPM_PACKAGE)
     else
       puts 'No updates to gemini components -- no gemini CLI found'.red
     end
@@ -28,11 +26,8 @@ namespace :gemini do
 
   task :clean do
     puts 'No-op for now'
-    sh "rm -f #{home('.gemini')}"
-    if File.exist?(File.expand_path('~/.npm-global/bin/gemini'))
-      sh "npm config set prefix  #{home('.npm-global')}"
-      sh "npm uninstall -g #{GEMINI_NPM_PACKAGE}"
-    end
+    sh "rm -rf #{home('.gemini')}"
+    npm_uninstall(GEMINI_NPM_PACKAGE) if File.exist?(File.expand_path('~/.npm-global/bin/gemini'))
   end
 end
 
