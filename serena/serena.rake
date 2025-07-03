@@ -14,6 +14,7 @@ namespace :serena do
       puts 'Installing serena_config.yml...'
       sh "cp #{root('serena/serena_config.yml')} #{root('serena/.serena/serena_config.yml')}"
     end
+    dolink(home('.serena'), root('serena'))
     puts "Serena installed at: #{root('serena/.serena')}"
   end
 
