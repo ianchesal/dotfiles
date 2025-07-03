@@ -57,12 +57,12 @@ Once a plan is approved, execute autonomously while maintaining transparency:
 - Reading files, searching code, and gathering information
 - Making small, testable, incremental changes
 - Running tests and validation steps
+- Creating new files
 
 ### You MUST seek approval for:
 - Deviating from the approved plan
 - Discovering new requirements that change the scope
 - Encountering blockers that require alternative approaches
-- Creating new files
 - Running commands that could affect the system
 - Major investigative steps that might take significant time
 - Any destructive or potentially risky operations
