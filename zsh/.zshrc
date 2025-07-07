@@ -1,5 +1,8 @@
 # zmodload zsh/zprof
 
+# Disable compinit security checks for insecure directories
+export ZSH_DISABLE_COMPFIX=true
+
 if ((! $+commands[brew])); then
   if [[ -x /opt/homebrew/bin/brew ]]; then
     brew_location="/opt/homebrew/bin/brew"
