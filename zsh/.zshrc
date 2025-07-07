@@ -1,7 +1,5 @@
 # zmodload zsh/zprof
 
-# Disable compinit security checks for insecure directories
-export ZSH_DISABLE_COMPFIX=true
 
 if ((! $+commands[brew])); then
   if [[ -x /opt/homebrew/bin/brew ]]; then
@@ -70,7 +68,7 @@ zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
 
 # Load completions
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -u
 
 zinit cdreplay -q
 
