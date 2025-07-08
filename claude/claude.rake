@@ -9,7 +9,6 @@ namespace :claude do
 
   task :dirs do
     dolink(home('.claude'), root('claude'))
-    mkdir_if_needed(home('.cache/tmux-claude-status'))
   end
 
   task :install do
@@ -22,29 +21,7 @@ namespace :claude do
     default_config = {
       'autoUpdaterStatus' => 'disabled',
       'editorMode' => 'vim',
-      'defaultMode' => 'plan',
-      'hooks' => {
-        'PreToolUse' => [
-          {
-            'hooks' => [
-              {
-                'type' => 'command',
-                'command' => '~/.config/tmux/plugins/tmux-claude-status/hooks/better-hook.sh PreToolUse'
-              }
-            ]
-          }
-        ],
-        'Stop' => [
-          {
-            'hooks' => [
-              {
-                'type' => 'command',
-                'command' => '~/.config/tmux/plugins/tmux-claude-status/hooks/better-hook.sh Stop'
-              }
-            ]
-          }
-        ]
-      }
+      'defaultMode' => 'plan'
     }
 
     if File.exist?(CLAUDE_SETTINGS_FILE)
