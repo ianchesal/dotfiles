@@ -13,6 +13,3 @@ tool_timeout: 240
 # instruct Serena to activate the project by its path for first-time activation.
 # NOTE: Make sure there are no name collisions in the names of registered projects.
 projects:
-- /home/ichesal/src/dotfiles
-- /home/ichesal/src/dotfiles/serena/.serena
-- /home/ichesal/src/crawlspacenh/crawlspacenh.github.io
