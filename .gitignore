@@ -20,6 +20,7 @@
 /package-lock.json
 /package.json
 /serena/.serena
+/serena/serena_config.yml
 /tmux/plugins
 /zsh/*.bak
 /zsh/*.local
