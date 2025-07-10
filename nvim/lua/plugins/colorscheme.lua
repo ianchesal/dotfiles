@@ -17,36 +17,49 @@ return {
       })
     end,
   },
+  -- {
+  --   "Mofiqul/vscode.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     require("vscode").setup({
+  --       color_overrides = {
+  --         vscBack = "#1F1F1F",
+  --       },
+  --     })
+  --   end,
+  -- },
   -- { "navarasu/onedark.nvim", lazy = false, priority = 1000, opts = { style = "deep", lualine = { transparent = true } }, },
   -- { "olimorris/onedarkpro.nvim", lazy = false, priority = 1000 },
-  -- { "projekt0n/github-nvim-theme", lazy = false, priority = 1000 },
+  { "projekt0n/github-nvim-theme", lazy = false, priority = 1000 },
   -- { "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
   -- { "scottmckendry/cyberdream.nvim", lazy = false, priority = 1000 },
-  {
-    "github-main-user/lytmode.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require("lytmode").setup({
-        color_overrides = {
-          -- I used: https://mdigi.tools/darken-color/#2d3039 to darken the default background color
-          lytBack = "#22242b",
-        },
-      })
-    end,
-  },
+  -- {
+  --   "github-main-user/lytmode.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     require("lytmode").setup({
+  --       color_overrides = {
+  --         -- I used: https://mdigi.tools/darken-color/#2d3039 to darken the default background color
+  --         lytBack = "#22242b",
+  --       },
+  --     })
+  --   end,
+  -- },
   {
     "LazyVim/LazyVim",
     opts = {
       -- colorscheme = "catppuccin",
       -- colorscheme = "cyberdream",
-      -- colorscheme = "github_dark_default",
+      colorscheme = "github_dark_default",
+      -- colorscheme = "lytmode",
       -- colorscheme = "moonfly",
       -- colorscheme = "onedark",
       -- colorscheme = "onedark_dark",
       -- colorscheme = "quiet",
       -- colorscheme = "tokyonight",
-      colorscheme = "lytmode",
+      -- colorscheme = "vscode",
     },
   },
 }
