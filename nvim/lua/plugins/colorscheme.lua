@@ -11,9 +11,9 @@ return {
         style = "night",
         -- transparent = true,
         -- terminal_colors = false,
-        -- on_colors = function(colors)
-        --   colors.bg = "#000000" -- I like a very dark background
-        -- end,
+        on_colors = function(colors)
+          colors.bg = "#000000" -- I like a very dark background
+        end,
       })
     end,
   },
@@ -52,13 +52,13 @@ return {
     opts = {
       -- colorscheme = "catppuccin",
       -- colorscheme = "cyberdream",
-      colorscheme = "github_dark_default",
+      -- colorscheme = "github_dark_default",
       -- colorscheme = "lytmode",
       -- colorscheme = "moonfly",
       -- colorscheme = "onedark",
       -- colorscheme = "onedark_dark",
       -- colorscheme = "quiet",
-      -- colorscheme = "tokyonight",
+      colorscheme = "tokyonight",
       -- colorscheme = "vscode",
     },
   },
