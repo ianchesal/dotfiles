@@ -229,3 +229,7 @@ function codex() {
     eval "$(__ai_container_launcher) --rm --tty --interactive -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex $@"
   fi
 }
+
+function opencode() {
+  "${HOME}/.npm-global/bin/opencode" "$@"
+}
