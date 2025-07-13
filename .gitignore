@@ -6,7 +6,6 @@
 /claude/*.db
 /claude/claude.json
 /claude/projects
-/claude/settings.*
 /claude/statsig/*
 /claude/todos
 /git/ignore
