@@ -2,5 +2,6 @@
   "$schema": "https://opencode.ai/config.json",
   "model": "anthropic/claude-sonnet-4-20250514",
   "autoshare": false,
-  "autoupdate": true
+  "autoupdate": true,
+  "theme": "github"
 }

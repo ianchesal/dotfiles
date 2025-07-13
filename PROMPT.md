@@ -114,3 +114,14 @@ This file provides guidance to AI agents working on this repository.
 - Memory file content should be concise and focused on high-value information
 - Never include project-specific terminology, conventions, and preferences. Project-specific things should go in a PROMPT.md file in the root of the project.
 - Document complex workflows that should be remembered across sessions
+
+## OpenCode Configuration
+
+- Located in `.config/opencode` following XDG directory structure
+- Configuration managed via `opencode.json` with schema validation from https://opencode.ai/config.json
+- Includes comprehensive agent instructions in `AGENTS.md` for structured problem-solving workflow
+- Agent workflow follows Think → Plan → Iterate → Execute phases for collaborative development
+- Rake tasks available for installation (`rake opencode`), updates (`rake opencode:update`), and cleanup (`rake opencode:clean`)
+- CLI managed via npm with global installation to `~/.npm-global/bin/opencode`
+- Supports upgrade functionality through the opencode CLI
+- Configuration includes security guidelines, development practices, and file operation preferences
