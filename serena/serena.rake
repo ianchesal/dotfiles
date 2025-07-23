@@ -26,6 +26,7 @@ namespace :serena do
     if Dir.exist?(root('serena/.serena/.git'))
       puts 'Update: serena'.green
       chdir root('serena/.serena') do
+        sh 'git restore .'
         sh 'git pull'
       end
     end
