@@ -80,14 +80,14 @@ fi
 # Print formatted table
 printf "\n%-20s %-30s %-4s %-5s %-40s %-4s %-20s\n" \
     "ARTIST" "ALBUM" "DISC" "TRACK" "TITLE" "YEAR" "FILENAME"
-printf "%s\n" "$(printf '=%.0s' {1..500})"
+printf "%s\n" "$(printf '=%.0s' {1..130})"
 
 sort -n -k1,1 -k2,2 "$tmpfile" | while IFS=$'\t' read -r disc_sort track_sort artist album title track date filename; do
     disc="${disc_sort#0}"
     track="${track_sort#0}"
     [[ "$track" == "00" ]] && track="-"
 
-    printf "%-20.20s %-30.30s %-4s %-5s %-40.40s %-4s %-20.20s\n" \
+    printf "%-20.20s %-30.30s %-4s %-5s %-40.40s %-4s %s\n" \
         "$artist" "$album" "$disc" "$track" "$title" "$date" "$filename"
 done
 
