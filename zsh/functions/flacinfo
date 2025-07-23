@@ -1,0 +1,95 @@
+#!/bin/zsh
+
+##? flacinfo - print track info for FLAC/ALAC files
+##?
+##? usage: flacinfo track1 track2 ...
+
+
+# Check dependencies
+if ! command -v ffprobe &> /dev/null; then
+    echo "Error: ffprobe is not installed"
+    return 1
+fi
+
+if ! command -v jq &> /dev/null; then
+    echo "Error: jq is not installed"
+    return 1
+fi
+
+# If no arguments provided, use all FLAC and M4A files in current directory
+local files=("$@")
+if [[ ${#files[@]} -eq 0 ]]; then
+    files=(*.flac *.m4a)
+    # Check if any files exist
+    local found=0
+    for f in "${files[@]}"; do
+        [[ -f "$f" ]] && found=1 && break
+    done
+    if [[ $found -eq 0 ]]; then
+        echo "No FLAC or M4A files found in current directory"
+        return 1
+    fi
+fi
+
+# Validate files
+for file in "${files[@]}"; do
+    if [[ ! -f "$file" ]]; then
+        echo "Error: File not found: $file"
+        return 1
+    fi
+    local ext="${file:e:l}"  # lowercase extension
+    if [[ "$ext" != "flac" && "$ext" != "m4a" ]]; then
+        echo "Warning: $file is not a FLAC or M4A file, skipping..."
+    fi
+done
+
+local tmpfile=$(mktemp)
+
+# Process each file
+for file in "${files[@]}"; do
+    local ext="${file:e:l}"
+    if [[ -f "$file" && ("$ext" == "flac" || "$ext" == "m4a") ]]; then
+        # Get all metadata at once
+        local data=$(ffprobe -v quiet -print_format json -show_format "$file" 2>/dev/null | \
+            jq -r '.format.tags | 
+                ((.artist // .ARTIST) // "Unknown") + "\t" +
+                ((.album // .ALBUM) // "Unknown") + "\t" +
+                ((.disc // .DISC) // "1") + "\t" +
+                ((.track // .TRACK) // "0") + "\t" +
+                ((.title // .TITLE) // "'"${file:t:r}"'") + "\t" +
+                ((.date // .DATE // .year // .YEAR) // "Unknown")')
+
+        # Parse and format for sorting
+        IFS=$'\t' read -r artist album disc track title date <<< "$data"
+        disc="${disc%%/*}"
+        track="${track%%/*}"
+
+        # Pad numbers for proper sorting
+        printf "%02d\t%03d\t%s\t%s\t%s\t%s\t%s\t%s\n" \
+            "$disc" "$track" "$artist" "$album" "$title" "$track" "$date" "${file:t}" >> "$tmpfile"
+    fi
+done
+
+# Check if we have any data
+if [[ ! -s "$tmpfile" ]]; then
+    echo "No valid FLAC or M4A files processed"
+    rm -f "$tmpfile"
+    return 1
+fi
+
+# Print formatted table
+printf "\n%-20s %-30s %-4s %-5s %-40s %-4s %-20s\n" \
+    "ARTIST" "ALBUM" "DISC" "TRACK" "TITLE" "YEAR" "FILENAME"
+printf "%s\n" "$(printf '=%.0s' {1..130})"
+
+sort -n -k1,1 -k2,2 "$tmpfile" | while IFS=$'\t' read -r disc_sort track_sort artist album title track date filename; do
+    disc="${disc_sort#0}"
+    track="${track_sort#0}"
+    [[ "$track" == "00" ]] && track="-"
+
+    printf "%-20.20s %-30.30s %-4s %-5s %-40.40s %-4s %-20.20s\n" \
+        "$artist" "$album" "$disc" "$track" "$title" "$date" "$filename"
+done
+
+rm -f "$tmpfile"
+echo ""
