@@ -2,6 +2,12 @@
 # functions
 #
 
+# Add functions directory to fpath and autoload all functions
+fpath=("${ZDOTDIR:-~/.config/zsh}/functions" $fpath)
+
+# Autoload all functions in the functions directory
+autoload -Uz "${ZDOTDIR:-~/.config/zsh}"/functions/*(:t)
+
 function rpg {
   rg -p "$@" | less -R
 }
