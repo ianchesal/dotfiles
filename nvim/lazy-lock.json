@@ -1,10 +1,10 @@
 {
   "LazyVim": { "branch": "main", "commit": "25abbf546d564dc484cf903804661ba12de45507" },
-  "SchemaStore.nvim": { "branch": "main", "commit": "c957914d75b4a008ce09f4116e57e59fe6e3fae1" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "241f1265614a90fe0d7fc5c7b06197f542b5c151" },
   "blink.cmp": { "branch": "main", "commit": "bae4bae0eedd1fa55f34b685862e94a222d5c6f8" },
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },
-  "catppuccin": { "branch": "main", "commit": "e762a47478377612e59f01aa51db961f605c9aa4" },
-  "codecompanion.nvim": { "branch": "main", "commit": "399abd3ddc8f9f4b34cfa8f17dc39d6e6f3fafd1" },
+  "catppuccin": { "branch": "main", "commit": "84336e08415858f6d835835e81a4f79e585463c6" },
+  "codecompanion.nvim": { "branch": "main", "commit": "63ce32aa44135ba863aa1e5ed49a0abfdaeb926e" },
   "conform.nvim": { "branch": "master", "commit": "973f3cb73887d510321653044791d7937c7ec0fa" },
   "contextindent.nvim": { "branch": "main", "commit": "985b3ea05fecb9a220ea126ba9c7d40b002d6b63" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
