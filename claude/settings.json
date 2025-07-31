@@ -1,4 +1,7 @@
 {
+  "cleanupPeriodDays": 30,
   "includeCoAuthoredBy": true,
-  "cleanupPeriodDays": 30
+  "feedbackSurveyState": {
+    "lastShownTime": 1753933073221
+  }
 }
