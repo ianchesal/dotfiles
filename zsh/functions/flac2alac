@@ -41,6 +41,7 @@ for file in *.flac; do
         # Convert with custom tags while preserving other metadata
         if ffmpeg -i "$file" -c:a alac -c:v copy \
                   -metadata artist="$artist" \
+                  -metadata albumartist="$artist" \
                   -metadata album="$album" \
                   "$output" -loglevel error 2>&1; then
             rm "$file"
