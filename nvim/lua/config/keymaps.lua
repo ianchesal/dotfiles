@@ -5,6 +5,14 @@ local util = require("lazyvim.util")
 local wk = require("which-key")
 local map = vim.keymap
 
+-- Don't use Snacks.terminal() -- I'm a tmux person
+map.del("n", "<leader>fT")
+map.del("n", "<leader>ft")
+map.del("n", "<c-/>")
+map.del("n", "<c-_>")
+-- map.del("t", "<C-/>")
+-- map.del("t", "<C-_>")
+
 -- I prefer different keymaps for Lazy and Mason and LSP interactions
 map.del("n", "<leader>l")
 wk.add({
@@ -16,6 +24,14 @@ wk.add({
   { "<leader>lm", "<cmd>Mason<cr>", desc = "Open Mason management interface" },
   { "<leader>lr", "<cmd>LspRestart<cr>", desc = "Restart all LSPs" },
 })
+
+-- Use Oil.nvim for filesystem stuff
+map.set("n", "<leader>fe", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+map.set("n", "<leader>fE", function()
+  local git_path = vim.fn.finddir(".git", ".;")
+  local cd_git = vim.fn.fnamemodify(git_path, ":h")
+  vim.api.nvim_command(string.format("edit %s", cd_git))
+end, { desc = "Open root directory" })
 
 -- Delete git keymaps. I use NeoGit. LazyVim only adds these if it
 -- detects lazygit on the system.
