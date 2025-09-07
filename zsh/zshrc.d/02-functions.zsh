@@ -29,29 +29,21 @@ git_master_to_main() {
   git_master_to_main "$@"
 }
 
-# Lazy load heic2jpg function (rarely used)
-heic2jpg() {
-  unfunction heic2jpg
-  
-  # Define the actual function
-  heic2jpg() {
-    # Preps HEIC images captured by my iPhone for posting on the interwebs
-    # by converting them to jpg and stripping out all the exif location
-    # data.
-    for i in $*; do
-      ext=$(echo $i:t:e | tr '[:upper:]' '[:lower:]')
-      jpgfile="$i:r".jpg
-      echo "Converting ${i} --> ${jpgfile}"
-      mogrify -format jpg ${i}
-      exiftool -all= ${jpgfile}
-      if [[ -f "${jpgfile}_original" ]]; then
-        rm "${jpgfile}_original"
-      fi
-    done
-  }
-  
-  # Call the actual function
-  heic2jpg "$@"
+# Convert HEIC images to JPG and strip EXIF data
+function heic2jpg() {
+  # Preps HEIC images captured by my iPhone for posting on the interwebs
+  # by converting them to jpg and stripping out all the exif location
+  # data.
+  for i in "$@"; do
+    ext=$(echo ${i:t:e} | tr '[:upper:]' '[:lower:]')
+    jpgfile="${i:r}.jpg"
+    echo "Converting ${i} --> ${jpgfile}"
+    mogrify -format jpg "${i}"
+    exiftool -all= "${jpgfile}"
+    if [[ -f "${jpgfile}_original" ]]; then
+      rm "${jpgfile}_original"
+    fi
+  done
 }
 
 function dotenv() {
