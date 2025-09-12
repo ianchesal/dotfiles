@@ -96,27 +96,6 @@ command -complete=file -bang -nargs=? WQ :wq<bang> <args>
 ]])
 
 wk.add({
-  -- CodeCompanion keymaps
-  -- Plugin config is in ../plugins/codecompanion.lua
-  {
-    "<leader>aa",
-    "<cmd>CodeCompanionActions<cr>",
-    desc = "CodeCompanion action palette",
-    mode = { "n", "v" },
-  },
-  {
-    "<leader>ac",
-    "<cmd>CodeCompanionChat Toggle<cr>",
-    desc = "CodeCompanion chat mode",
-    mode = { "n", "v" },
-  },
-  {
-    "<leader>a.",
-    "<cmd>CodeCompanionChat Add<cr>",
-    desc = "CodeCompanion add selection to current chat",
-    mode = { "v" },
-  },
-
   -- Trouble/Quickfix addtional shortcuts
   {
     "<leader>xC",
