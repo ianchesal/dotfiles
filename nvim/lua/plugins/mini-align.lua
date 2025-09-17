@@ -1,5 +1,5 @@
 return {
-  "echasnovski/mini.align",
+  "nvim-mini/mini.align",
   lazy = false,
   opts = {
     mappings = {
