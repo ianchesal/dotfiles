@@ -231,3 +231,16 @@ function codex() {
 function opencode() {
   "${HOME}/.npm-global/bin/opencode" "$@"
 }
+
+function gr() {
+  # Navigate to git repository root
+  local git_root
+  git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+
+  if [[ $? -eq 0 ]]; then
+    cd "$git_root"
+  else
+    echo "Error: Not in a git repository" >&2
+    return 1
+  fi
+}
