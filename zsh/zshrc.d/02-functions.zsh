@@ -232,7 +232,7 @@ function opencode() {
   "${HOME}/.npm-global/bin/opencode" "$@"
 }
 
-function gr() {
+function grd() {
   # Navigate to git repository root
   local git_root
   git_root=$(git rev-parse --show-toplevel 2>/dev/null)
