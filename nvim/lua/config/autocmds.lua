@@ -11,6 +11,7 @@ autocmd({ "FileType" }, {
   pattern = { "markdown" },
   callback = function()
     vim.b.autoformat = false
+    vim.opt_local.conceallevel = 0
   end,
 })
 
