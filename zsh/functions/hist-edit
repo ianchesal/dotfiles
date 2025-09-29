@@ -1,0 +1,39 @@
+#!/bin/zsh
+
+##? hist-edit - browse and edit zsh history in neovim
+##?
+##? usage: hist-edit
+##?
+##? Opens your zsh history in neovim for browsing and editing.
+##? Use / to search, edit the line you want, then press <leader>e
+##? to stage it for execution. The command will be placed on your
+##? command line when you exit neovim.
+
+# Temp file to store the selected/edited command
+local tmpfile=$(mktemp /tmp/zsh-hist-edit.XXXXXX)
+
+# Read history in reverse order (most recent first) and write to temp file
+# Use tac if available, otherwise use tail -r (macOS)
+if command -v tac &> /dev/null; then
+    tac ~/.local/share/zsh_history > "${tmpfile}.hist"
+else
+    tail -r ~/.local/share/zsh_history > "${tmpfile}.hist"
+fi
+
+# Open in nvim with custom setup
+nvim -c "set filetype=sh" \
+     -c "set nomodified" \
+     -c "set buftype=nofile" \
+     -c "nnoremap <buffer> <leader>e :call writefile([getline('.')], '${tmpfile}')<CR>:qa!<CR>" \
+     -c "nnoremap <buffer> q :qa!<CR>" \
+     -c "echo 'Press <leader>e to stage command | Press q to quit'" \
+     "${tmpfile}.hist"
+
+# If a command was written to the temp file, place it on command line
+if [[ -s "$tmpfile" ]]; then
+    local cmd=$(cat "$tmpfile")
+    print -z "$cmd"
+fi
+
+# Clean up temp files
+rm -f "$tmpfile" "${tmpfile}.hist"
