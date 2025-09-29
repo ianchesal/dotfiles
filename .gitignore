@@ -7,6 +7,8 @@
 /claude/claude.json
 /claude/projects
 /claude/statsig/*
+/claude/file-history/*
+/claude/history.jsonl
 /claude/shell-snapshots/*
 /claude/todos
 /git/ignore
