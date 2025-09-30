@@ -11,6 +11,7 @@
 /claude/history.jsonl
 /claude/shell-snapshots/*
 /claude/todos
+/copilot/logs
 /git/ignore
 /git/local
 /goose/history.txt
