@@ -29,6 +29,7 @@ typeset -gU cdpath fpath mailpath path
 # set the list of directories that zsh searches for commands
 path=(
   $HOME/{,s}bin(N)
+  $HOME/.npm-global/bin
   /opt/{homebrew,local}/{,s}bin(N)
   /usr/local/{,s}bin(N)
   $path
