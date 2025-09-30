@@ -200,38 +200,6 @@ function unfuck-podman-on-wsl() {
     sudo mount -o remount,shared / /
 }
 
-function __ai_container_launcher() {
-  if (( $+commands[podman] )); then
-    LAUNCHER="podman run --userns=keep-id"
-  else
-    LAUNCHER="docker run"
-  fi
-  echo $LAUNCHER
-}
-
-function claude() {
-  if [[ -x "${HOME}/.npm-global/bin/claude" ]]; then
-    "${HOME}/.npm-global/bin/claude" "$@"
-  else
-    eval "$(__ai_container_launcher) --tty --interactive \
-      -v ${HOME}/.claude:/home/codeuser/.claude:rw \
-      -v $(pwd):/app:rw \
-      claude-code $@"
-  fi
-}
-
-function codex() {
-  if [[ -x "${HOME}/.npm-global/bin/codex" ]]; then
-    "${HOME}/.npm-global/bin/codex" "$@"
-  else
-    eval "$(__ai_container_launcher) --rm --tty --interactive -e OPENAI_API_KEY -v $(pwd):/app:rw openai-codex $@"
-  fi
-}
-
-function opencode() {
-  "${HOME}/.npm-global/bin/opencode" "$@"
-}
-
 function grd() {
   # Navigate to git repository root
   local git_root
