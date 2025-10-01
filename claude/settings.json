@@ -1,8 +1,8 @@
 {
   "cleanupPeriodDays": 30,
   "includeCoAuthoredBy": true,
+  "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1753933073221
-  },
-  "alwaysThinkingEnabled": true
+  }
 }
