@@ -17,7 +17,7 @@ namespace :copilot do
   task :update do
     if File.exist?(File.expand_path('~/.npm-global/bin/copilot'))
       puts 'Update: copilot'.green
-      sh '~/.npm-global/bin/copilot update'
+      npm_install(COPILOT_NPM_PACKAGE)
     else
       puts 'No updates to copilot components -- no copilot CLI found'.red
     end
