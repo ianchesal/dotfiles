@@ -1,7 +1,7 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 
-local util = require("lazyvim.util")
+-- local util = require("lazyvim.util")
 local wk = require("which-key")
 local map = vim.keymap
 
@@ -69,13 +69,13 @@ wk.add({
 })
 
 -- Tab to move to between buffers
-if util.has("bufferline.nvim") then
-  map.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
-  map.set("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
-else
-  map.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
-  map.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-end
+-- if util.has("bufferline.nvim") then
+--   map.set("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
+--   map.set("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
+-- else
+--   map.set("n", "<S-Tab>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+--   map.set("n", "<Tab>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+-- end
 
 -- Shift is a PIA to hit
 vim.cmd([[nnoremap ; :]])
