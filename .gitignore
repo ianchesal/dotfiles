@@ -4,7 +4,7 @@
 /Gemfile.lock
 /brew/Brewfile.lock.json
 /claude/*.db
-/claude/claude.jsonS
+/claude/claude.json*
 /claude/debug
 /claude/projects
 /claude/statsig/*
