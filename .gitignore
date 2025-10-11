@@ -12,6 +12,7 @@
 /claude/history.jsonl
 /claude/shell-snapshots/*
 /claude/todos
+/claude/.update.lock
 /copilot/logs
 /git/ignore
 /git/local
