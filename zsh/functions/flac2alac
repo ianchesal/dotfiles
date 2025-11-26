@@ -2,12 +2,14 @@
 
 ##? flac2alac - convert FLAC files to ALAC with tag correction
 ##?
-##? usage: flac2alac "Artist Name" " Album Name"
+##? usage: flac2alac ["Artist Name" "Album Name"]
+##?        If artist and album are omitted, existing metadata is preserved
 
 
 # Check if correct number of arguments
-if [[ $# -ne 2 ]]; then
-    echo "Usage: flac2alac \"Artist Name\" \"Album Name\""
+if [[ $# -ne 0 && $# -ne 2 ]]; then
+    echo "Usage: flac2alac [\"Artist Name\" \"Album Name\"]"
+    echo "       Omit arguments to preserve existing metadata"
     return 1
 fi
 
@@ -21,6 +23,12 @@ local artist="$1"
 local album="$2"
 local converted=0
 local failed=0
+local override_metadata=false
+
+# Check if metadata should be overridden
+if [[ $# -eq 2 ]]; then
+    override_metadata=true
+fi
 
 # Check if any FLAC files exist
 if ! ls *.flac &> /dev/null; then
@@ -29,8 +37,12 @@ if ! ls *.flac &> /dev/null; then
 fi
 
 echo "Converting FLAC files to ALAC..."
-echo "Artist: $artist"
-echo "Album: $album"
+if [[ $override_metadata == true ]]; then
+    echo "Artist: $artist"
+    echo "Album: $album"
+else
+    echo "Preserving existing metadata"
+fi
 echo ""
 
 for file in *.flac; do
@@ -38,18 +50,32 @@ for file in *.flac; do
         local output="${file%.flac}.m4a"
         echo -n "Converting: $file... "
 
-        # Convert with custom tags while preserving other metadata
-        if ffmpeg -i "$file" -c:a alac -c:v copy \
-                  -metadata artist="$artist" \
-                  -metadata albumartist="$artist" \
-                  -metadata album="$album" \
-                  "$output" -loglevel error 2>&1; then
-            rm "$file"
-            echo "✓"
-            ((converted++))
+        # Build ffmpeg command based on whether to override metadata
+        if [[ $override_metadata == true ]]; then
+            # Convert with custom tags
+            if ffmpeg -i "$file" -c:a alac -c:v copy \
+                      -metadata artist="$artist" \
+                      -metadata albumartist="$artist" \
+                      -metadata album="$album" \
+                      "$output" -loglevel error 2>&1; then
+                rm "$file"
+                echo "✓"
+                ((converted++))
+            else
+                echo "✗"
+                ((failed++))
+            fi
         else
-            echo "✗"
-            ((failed++))
+            # Convert while preserving all existing metadata
+            if ffmpeg -i "$file" -c:a alac -c:v copy \
+                      "$output" -loglevel error 2>&1; then
+                rm "$file"
+                echo "✓"
+                ((converted++))
+            else
+                echo "✗"
+                ((failed++))
+            fi
         fi
     fi
 done
