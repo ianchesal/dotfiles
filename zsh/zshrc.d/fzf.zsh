@@ -19,7 +19,7 @@ FZF_DEFAULT_OPTS+=" --color=info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff"
 FZF_DEFAULT_OPTS+=" --color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a"
 
 # Note: --tmux is ignored when not in a tmux session
-FZF_DEFAULT_OPTS+=" --height 40% --tmux bottom"
+FZF_DEFAULT_OPTS+=" --height 40% --tmux center"
 FZF_DEFAULT_OPTS+=" --layout reverse --border"
 
 export FZF_DEFAULT_OPTS
