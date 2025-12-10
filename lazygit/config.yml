@@ -1,17 +1,75 @@
 gui:
   authorColors:
-    'Ian Chesal': 'green'
-    '*': '#0000ff'
+    "Ian Chesal": "green"
+    "*": "#0000ff"
   branchColors:
-    'production': 'red'
+    "production": "red"
   showIcons: true
+  # Tokyo Night-ish theme
+  theme:
+    activeBorderColor:
+      - "#7aa2f7" # Tokyo Night blue
+      - bold
+    inactiveBorderColor:
+      - "#565f89" # Tokyo Night comment
+    selectedLineBgColor:
+      - "#283457" # Tokyo Night selection
+  # More compact display
+  showFileTree: true
+  showListFooter: false
+  # Side panel width
+  sidePanelWidth: 0.25
+  # Better commit graph
+  showBranchCommitHash: true
+  showDivergenceFromBaseBranch: "arrowAndNumber"
 git:
   pagers:
-    - colorArg: always
-      pager: delta --dark --paging=never
+    - # Use delta with more features
+      pager: delta --dark --paging=never --line-numbers --navigate
+  # Better commit message editing
+  commit:
+    signOff: false
+    autoWrapCommitMessage: true
+    autoWrapWidth: 72
+  # Show untracked files in file panel
+  status:
+    showUntrackedFiles: "all"
 os:
-  editPreset: 'nvim'
-notARepository: 'quit'
+  editPreset: "nvim"
+notARepository: "quit"
 update:
-  method: 'never' # brew keeps it up to date
+  method: "never" # brew keeps it up to date
 confirmOnQuit: false
+# Show command output on errors
+quitOnTopLevelReturn: false
+# Remember file filter across sessions
+promptToReturnFromSubprocess: false
+# Auto-refresh settings
+refresher:
+  refreshInterval: 10 # Auto-refresh every 10 seconds
+  fetchInterval: 60 # Auto-fetch from remote every 60 seconds
+# Custom keybindings
+keybinding:
+  universal:
+    # Quick amend without editing message
+    appendNewline: "<disabled>"
+    extrasToggle: "@"
+  files:
+    # Commit with --amend
+    amendLastCommit: "A"
+    # Toggle staged/unstaged
+    toggleStagedAll: "<space>"
+  commits:
+    # Quick fixup commit
+    createFixupCommit: "f"
+    # Reword commit message
+    rewordCommit: "r"
+    # Cherry-pick with --no-commit
+    cherryPickCopy: "c"
+    cherryPickCopyRange: "C"
+# Custom commands for powerful automation
+customCommands:
+  - key: "E"
+    command: "gh pr create --fill --assignee @me --web"
+    context: "global"
+    description: "Create GitHub PR in browser"
