@@ -59,14 +59,6 @@ keybinding:
     amendLastCommit: "A"
     # Toggle staged/unstaged
     toggleStagedAll: "<space>"
-  commits:
-    # Quick fixup commit
-    createFixupCommit: "f"
-    # Reword commit message
-    rewordCommit: "r"
-    # Cherry-pick with --no-commit
-    cherryPickCopy: "c"
-    cherryPickCopyRange: "C"
 # Custom commands for powerful automation
 customCommands:
   - key: "E"
