@@ -24,8 +24,5 @@ FZF_DEFAULT_OPTS+=" --layout reverse --border"
 
 export FZF_DEFAULT_OPTS
 
-# Initialize fzf with zsh integration
-# This sets up keybindings including Ctrl-R for history search
-if (( $+commands[fzf] )); then
-  eval "$(fzf --zsh)"
-fi
+# fzf initialization is now handled in zvm_after_init() hook in zz-vim-mode.zsh
+# This ensures fzf keybindings are restored after zsh-vi-mode loads
