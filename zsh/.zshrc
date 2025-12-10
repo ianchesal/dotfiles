@@ -52,40 +52,17 @@ source "${ZINIT_HOME}/zinit.zsh"
 autoload -U edit-command-line
 zle -N edit-command-line
 
-# Configure zsh-vi-mode before it loads
-# Must be defined BEFORE loading zsh-vi-mode plugin
-ZVM_INIT_MODE=sourcing  # Initialize immediately, don't wait for first input
-
-# Tell zsh-vi-mode to keep these keybindings and not override them
-# This allows fzf to manage its own keybindings
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jk  # Use jk for escape instead of default
-# Don't let zsh-vi-mode override these keys in insert mode
-function zvm_after_select_vi_mode() {
-  # Do nothing - this prevents cursor shape changes that might interfere
-  return 0
-}
-
-# Hooks to restore keybindings after zsh-vi-mode initializes
-# Must be defined BEFORE loading zsh-vi-mode plugin
-
-# This hook is called after init
-function zvm_after_init() {
-  # Bind 'v' in vicmd mode to edit-command-line
-  zvm_bindkey vicmd 'v' edit-command-line
-}
-
-# Note: fzf is loaded at the very end of .zshrc after all other config
-# This ensures fzf keybindings work correctly with zsh-vi-mode
+# Note: zsh-vi-mode plugin is disabled due to tab completion conflicts
+# Basic vi mode is configured in zshrc.d/zz-vim-mode.zsh instead
 
 zinit ice depth=1
 
 # Add in zsh plugins
-zinit light jeffreytse/zsh-vi-mode                      # Enhanced vi mode with better feedback and features
+# zinit light jeffreytse/zsh-vi-mode                      # Enhanced vi mode with better feedback and features - TEMPORARILY DISABLED due to tab completion issues
 zinit light zdharma-continuum/fast-syntax-highlighting  # Faster, more feature-rich syntax highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search      # Search history by substring with arrow keys
-zinit light Aloxaf/fzf-tab                              # Replace tab completion with fzf
 zinit light hlissner/zsh-autopair                       # Auto-close quotes and brackets
 zinit light MichaelAquilina/zsh-you-should-use          # Reminds you to use aliases
 zinit light wfxr/forgit                                 # Interactive git commands with fzf
@@ -104,6 +81,9 @@ zinit snippet OMZP::kubectx
 
 # Load completions
 autoload -Uz compinit && compinit -u
+
+# Load fzf-tab AFTER compinit - this is required for fzf-tab to work
+zinit light Aloxaf/fzf-tab
 
 zinit cdreplay -q
 
@@ -126,7 +106,6 @@ for rc in "${ZDOTDIR}"/zshrc.d/*.zsh; do
 done
 
 # Initialize fzf keybindings after all other config
-# This ensures fzf bindings take precedence over zsh-vi-mode
 if (( $+commands[fzf] )); then
   source <(fzf --zsh)
 fi
