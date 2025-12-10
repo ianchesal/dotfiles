@@ -73,3 +73,7 @@ customCommands:
     command: "gh pr create --fill --assignee @me --web"
     context: "global"
     description: "Create GitHub PR in browser"
+  - key: "R"
+    command: "git rebase --interactive --autosquash $(git main-branch)"
+    context: "commits"
+    description: "Interactive rebase with autosquash against main branch (grim)"
