@@ -97,6 +97,7 @@ alias zdot='cd $ZDOTDIR'
 alias fe='fzf-find-edit'
 
 # git
+alias forgit-help='echo "Forgit Commands:\n  ga   - git add selector\n  glo  - git log browser\n  gi   - .gitignore generator\n  gd   - git diff viewer\n  grh  - git reset HEAD selector\n  gcf  - git checkout file selector\n  gclean - git clean selector\n  gsv  - git stash viewer\n  gcp  - git cherry-pick selector\n  grb  - git rebase selector"'
 alias unfuck-mutagen='git clean -df'
 alias gap='git add -p'
 alias gau='git add -u'
@@ -108,7 +109,7 @@ alias gcis='git commit --gpg-sign --verbose'
 alias gco='git checkout'
 alias gcob='git switch -c'
 alias gcom='git com'
-alias gd='git diff --color=always'
+# alias gd='git diff --color=always'  # Commented to use forgit's interactive git diff instead
 alias gfu='git fixup'
 alias gl='git log --color=always'
 alias gll='git log --color=always | less -r'
@@ -120,6 +121,7 @@ alias gri='git rebase --interactive'
 alias grim='git rebase --interactive --autosquash $(git main-branch)'
 alias gsp='git stash push -u'
 alias gss='git status --short --branch'
+alias gsv='forgit::stash::show'  # forgit interactive stash viewer
 
 # github
 alias ghpca='gh pr create --fill --label auto-assign-reviewers --assignee @me'

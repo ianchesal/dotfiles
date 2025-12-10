@@ -48,17 +48,52 @@ fi
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
+# Load edit-command-line for use in vi mode
+autoload -U edit-command-line
+zle -N edit-command-line
+
+# Configure zsh-vi-mode before it loads
+# Must be defined BEFORE loading zsh-vi-mode plugin
+ZVM_INIT_MODE=sourcing  # Initialize immediately, don't wait for first input
+
+# Tell zsh-vi-mode to keep these keybindings and not override them
+# This allows fzf to manage its own keybindings
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk  # Use jk for escape instead of default
+# Don't let zsh-vi-mode override these keys in insert mode
+function zvm_after_select_vi_mode() {
+  # Do nothing - this prevents cursor shape changes that might interfere
+  return 0
+}
+
+# Hooks to restore keybindings after zsh-vi-mode initializes
+# Must be defined BEFORE loading zsh-vi-mode plugin
+
+# This hook is called after init
+function zvm_after_init() {
+  # Bind 'v' in vicmd mode to edit-command-line
+  zvm_bindkey vicmd 'v' edit-command-line
+}
+
+# Note: fzf is loaded at the very end of .zshrc after all other config
+# This ensures fzf keybindings work correctly with zsh-vi-mode
+
 zinit ice depth=1
 
 # Add in zsh plugins
-zinit light zsh-users/zsh-syntax-highlighting
+zinit light jeffreytse/zsh-vi-mode                      # Enhanced vi mode with better feedback and features
+zinit light zdharma-continuum/fast-syntax-highlighting  # Faster, more feature-rich syntax highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
+zinit light zsh-users/zsh-history-substring-search      # Search history by substring with arrow keys
+zinit light Aloxaf/fzf-tab                              # Replace tab completion with fzf
+zinit light hlissner/zsh-autopair                       # Auto-close quotes and brackets
+zinit light MichaelAquilina/zsh-you-should-use          # Reminds you to use aliases
+zinit light wfxr/forgit                                 # Interactive git commands with fzf
+zinit light paulirish/git-open                          # Open GitHub/GitLab page for current repo
 
 # Add in snippets
-zinit snippet OMZL::git.zsh
-zinit snippet OMZP::git
+# zinit snippet OMZL::git.zsh  # Removed - conflicts with forgit
+# zinit snippet OMZP::git      # Removed - conflicts with forgit
 # zinit snippet OMZP::sudo
 # zinit snippet OMZP::archlinux
 # zinit snippet OMZP::aws
@@ -72,6 +107,13 @@ autoload -Uz compinit && compinit -u
 
 zinit cdreplay -q
 
+# Bind history-substring-search after plugins load
+# This must come after zsh-history-substring-search plugin is loaded
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^[OA' history-substring-search-up
+bindkey '^[OB' history-substring-search-down
+
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   eval "$(oh-my-posh init zsh --config ${HOME}/.config/ohmyposh/ohmyposh.json)"
 fi
@@ -82,6 +124,12 @@ for rc in "${ZDOTDIR}"/zshrc.d/*.zsh; do
   [[ "${rc:t}" != '~'* ]] || continue
   source "$rc"
 done
+
+# Initialize fzf keybindings after all other config
+# This ensures fzf bindings take precedence over zsh-vi-mode
+if (( $+commands[fzf] )); then
+  source <(fzf --zsh)
+fi
 
 # Load any local-to-the-host configuration
 if [ -f "${HOME}/.zsh_local" ]; then
