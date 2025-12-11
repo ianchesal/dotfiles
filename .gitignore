@@ -13,6 +13,7 @@
 /claude/projects
 /claude/shell-snapshots/*
 /claude/statsig/*
+/claude/telemetry
 /claude/todos
 /copilot/logs
 /git/gh/hosts.yml
