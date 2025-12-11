@@ -1,122 +1,132 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-  "console_title_template": " {{ .Folder }} :: {{if .Root}}Admin{{end}}",
   "palette": {
-    "main-bg": "#24283b",
-    "terminal-red": "#f7768e",
-    "pistachio-green": "#9ece6a",
-    "terminal-green": "#73daca",
-    "terminal-yellow": "#e0af68",
-    "terminal-blue": "#7aa2f7",
+    "blue-bell": "#9aa5ce",
+    "blue-black": "#565f89",
     "celeste-blue": "#b4f9f8",
     "light-sky-blue": "#7dcfff",
-    "terminal-white": "#c0caf5",
-    "white-blue": "#a9b1d6",
-    "blue-bell": "#9aa5ce",
+    "main-bg": "#24283b",
     "pastal-grey": "#cfc9c2",
-    "terminal-magenta": "#bb9af7",
-    "blue-black": "#565f89",
+    "pistachio-green": "#9ece6a",
+    "t-background": "p:main-bg",
     "terminal-black": "#414868",
-    "t-background": "p:main-bg"
+    "terminal-blue": "#7aa2f7",
+    "terminal-green": "#73daca",
+    "terminal-magenta": "#bb9af7",
+    "terminal-red": "#f7768e",
+    "terminal-white": "#c0caf5",
+    "terminal-yellow": "#e0af68",
+    "white-blue": "#a9b1d6"
   },
+  "secondary_prompt": {
+    "template": ">> ",
+    "foreground": "p:terminal-magenta",
+    "background": "transparent"
+  },
+  "transient_prompt": {
+    "template": "> ",
+    "foreground": "p:terminal-magenta",
+    "background": "transparent",
+    "newline": true
+  },
+  "console_title_template": " {{ .Folder }} :: {{if .Root}}Admin{{end}}",
+  "terminal_background": "p:t-background",
   "blocks": [
     {
+      "type": "prompt",
       "alignment": "left",
       "segments": [
         {
-          "type": "text",
-          "style": "plain",
-          "background": "transparent",
+          "template": "\n",
           "foreground": "p:terminal-blue",
-          "template": "\n"
+          "background": "transparent",
+          "type": "text",
+          "style": "plain"
         },
         {
-          "type": "path",
-          "style": "plain",
-          "foreground": "p:terminal-blue",
-          "properties": {
+          "options": {
             "style": "powerlevel"
           },
-          "template": "<b>{{ .Path }}</b> "
+          "template": "<b>{{ .Path }}</b> ",
+          "foreground": "p:terminal-blue",
+          "type": "path",
+          "style": "plain"
         },
         {
-          "type": "git",
-          "style": "plain",
-          "template": "on <p:pistachio-green>{{ .HEAD}}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}</> <p:terminal-green>{{ if gt .Behind 0 }}\u2193{{ end }}{{ if gt .Ahead 0 }}\u2191{{ end }}</>",
-          "properties": {
-            "fetch_status": true,
+          "options": {
+            "branch_icon": "",
             "commit_icon": "@",
-            "branch_icon": ""
-          }
-        }
-      ],
-      "type": "prompt"
-    },
-    {
-      "alignment": "right",
-      "overflow": "hide",
-      "type": "prompt",
-      "segments": [
-        {
-          "type": "executiontime",
-          "style": "powerline",
-          "foreground": "p:terminal-yellow"
-        },
-        {
-          "type": "session",
-          "style": "powerline",
-          "foreground": "p:terminal-yellow",
-          "template": "{{ if .SSHSession }} {{ .UserName }}@{{ .HostName }}{{ end }}"
+            "fetch_status": true
+          },
+          "template": "on <p:pistachio-green>{{ .HEAD}}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}</> <p:terminal-green>{{ if gt .Behind 0 }}\u2193{{ end }}{{ if gt .Ahead 0 }}\u2191{{ end }}</>",
+          "type": "git",
+          "style": "plain"
         }
       ]
     },
     {
-      "alignment": "left",
-      "newline": true,
+      "type": "prompt",
+      "alignment": "right",
+      "overflow": "hide",
       "segments": [
         {
-          "background": "transparent",
-          "style": "plain",
+          "foreground": "p:terminal-yellow",
+          "type": "executiontime",
+          "style": "powerline"
+        },
+        {
+          "template": "{{ if .SSHSession }} {{ .UserName }}@{{ .HostName }}{{ end }}",
+          "foreground": "p:terminal-yellow",
+          "type": "session",
+          "style": "powerline"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
           "template": "{{ if gt .Code 0 }}<p:terminal-red>></>{{ else }}<p:terminal-magenta>></>{{ end }}",
+          "foreground": "p:terminal-magenta",
+          "background": "transparent",
           "type": "text",
-          "foreground": "p:terminal-magenta"
+          "style": "plain"
         }
       ],
-      "type": "prompt"
+      "newline": true
     }
   ],
-  "secondary_prompt": {
-    "background": "transparent",
-    "foreground": "p:terminal-magenta",
-    "template": ">> "
-  },
-  "transient_prompt": {
-    "background": "transparent",
-    "template": "> ",
-    "newline": true,
-    "foreground": "p:terminal-magenta"
-  },
   "tooltips": [
     {
+      "foreground": "p:light-sky-blue",
       "type": "aws",
-      "tips": ["aws"],
       "style": "powerline",
-      "foreground": "p:light-sky-blue"
+      "tips": [
+        "aws"
+      ]
     },
     {
+      "foreground": "p:light-sky-blue",
       "type": "gcp",
-      "tips": ["gcloud", "gsutil"],
       "style": "powerline",
-      "foreground": "p:light-sky-blue"
+      "tips": [
+        "gcloud",
+        "gsutil"
+      ]
     },
     {
+      "foreground": "p:terminal-magenta",
       "type": "kubectl",
-      "tips": ["kubectl", "k", "kubectx", "kubens"],
       "style": "powerline",
-      "foreground": "p:terminal-magenta"
+      "tips": [
+        "kubectl",
+        "k",
+        "kubectx",
+        "kubens"
+      ]
     }
   ],
-  "final_space": true,
-  "version": 3,
-  "terminal_background": "p:t-background"
+  "version": 4,
+  "final_space": true
 }
