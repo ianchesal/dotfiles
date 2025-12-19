@@ -121,6 +121,11 @@ alias grim='git rebase --interactive --autosquash $(git main-branch)'
 alias gsp='git stash push -u'
 alias gs='git status --branch'
 
+# Unalias some things
+# These come from the OMZP::git plugins I'm loading but I have
+# functions that do these that I prefer.
+unalias gco
+
 # github
 alias ghpca='gh pr create --fill --label auto-assign-reviewers --assignee @me'
 alias ghpci='gh pr create --fill --assignee @me --reviewer persona-id/infrastructure'
