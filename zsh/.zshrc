@@ -65,12 +65,11 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search      # Search history by substring with arrow keys
 zinit light hlissner/zsh-autopair                       # Auto-close quotes and brackets
 zinit light MichaelAquilina/zsh-you-should-use          # Reminds you to use aliases
-zinit light wfxr/forgit                                 # Interactive git commands with fzf
 zinit light paulirish/git-open                          # Open GitHub/GitLab page for current repo
 
 # Add in snippets
-# zinit snippet OMZL::git.zsh  # Removed - conflicts with forgit
-# zinit snippet OMZP::git      # Removed - conflicts with forgit
+zinit snippet OMZL::git.zsh
+zinit snippet OMZP::git
 # zinit snippet OMZP::sudo
 # zinit snippet OMZP::archlinux
 # zinit snippet OMZP::aws

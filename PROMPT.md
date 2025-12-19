@@ -62,6 +62,7 @@ This file provides guidance to AI agents working on this repository.
 - History settings: large history size, ignore duplicates, share across sessions
 - Use descriptive comments for functions and aliases
 - Follow existing patterns for tool-specific configurations (each tool has its own file)
+- NEVER recommend the forgit zsh plugin -- I hate it
 
 ## Git Configuration
 
