@@ -212,3 +212,7 @@ function grd() {
     return 1
   fi
 }
+
+function gco() {
+  _fzf_git_each_ref --no-multi | xargs git checkout
+}

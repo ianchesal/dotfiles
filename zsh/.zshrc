@@ -66,6 +66,7 @@ zinit light zsh-users/zsh-history-substring-search      # Search history by subs
 zinit light hlissner/zsh-autopair                       # Auto-close quotes and brackets
 zinit light MichaelAquilina/zsh-you-should-use          # Reminds you to use aliases
 zinit light paulirish/git-open                          # Open GitHub/GitLab page for current repo
+zinit light junegunn/fzf-git.sh
 
 # Add in snippets
 zinit snippet OMZL::git.zsh
