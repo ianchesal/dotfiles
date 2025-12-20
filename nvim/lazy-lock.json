@@ -41,7 +41,7 @@
   "nvim-redraft": { "branch": "main", "commit": "f4c234493bda890c232ed93c67f986bc5a165161" },
   "nvim-treesitter": { "branch": "main", "commit": "8cdffc6d334731ce3703b6d870a5a34fd878208a" },
   "nvim-treesitter-endwise": { "branch": "master", "commit": "a61a9de7965324d4019fb1637b66bfacdcb01f51" },
-  "nvim-treesitter-textobjects": { "branch": "main", "commit": "0d7c800fadcfe2d33089f5726cb8907fc846eece" },
+  "nvim-treesitter-textobjects": { "branch": "main", "commit": "e91c585ac0ee760198dabc1fad2e6227effdcd5e" },
   "nvim-ts-autotag": { "branch": "main", "commit": "c4ca798ab95b316a768d51eaaaee48f64a4a46bc" },
   "oil.nvim": { "branch": "master", "commit": "cbcb3f997f6f261c577b943ec94e4ef55108dd95" },
   "onedarkpro.nvim": { "branch": "main", "commit": "6b12e00bf5e509e1278a84e2aecf918ca6be9aea" },
