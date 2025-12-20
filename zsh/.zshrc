@@ -69,8 +69,8 @@ zinit light paulirish/git-open                          # Open GitHub/GitLab pag
 zinit light junegunn/fzf-git.sh
 
 # Add in snippets
-zinit snippet OMZL::git.zsh
-zinit snippet OMZP::git
+# zinit snippet OMZL::git.zsh
+# zinit snippet OMZP::git
 # zinit snippet OMZP::sudo
 # zinit snippet OMZP::archlinux
 # zinit snippet OMZP::aws

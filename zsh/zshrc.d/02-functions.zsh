@@ -12,23 +12,6 @@ function rpg {
   rg -p "$@" | less -R
 }
 
-# Lazy load git_master_to_main function (rarely used)
-git_master_to_main() {
-  unfunction git_master_to_main
-  
-  # Define the actual function
-  git_master_to_main() {
-    git checkout master
-    git pull
-    git branch -m master main
-    git push -u origin main
-    git branch -u origin/main main
-  }
-  
-  # Call the actual function
-  git_master_to_main "$@"
-}
-
 # Convert HEIC images to JPG and strip EXIF data
 function heic2jpg() {
   # Preps HEIC images captured by my iPhone for posting on the interwebs
@@ -215,4 +198,24 @@ function grd() {
 
 function gco() {
   _fzf_git_each_ref --no-multi | xargs git checkout
+}
+
+function gcpi() {
+  _fzf_git_hashes --no-multi | xargs git cherry-pick
+}
+
+function gsta() {
+  _fzf_git_stashes --no-multi | xargs git stash apply
+}
+
+function gstd() {
+  _fzf_git_stashes --no-multi | xargs git stash drop
+}
+
+function gstp() {
+  _fzf_git_stashes --no-multi | xargs git stash pop
+}
+
+function gsts() {
+  _fzf_git_stashes --no-multi | xargs git stash show -p
 }

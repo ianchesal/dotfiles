@@ -97,34 +97,39 @@ alias zdot='cd $ZDOTDIR'
 alias fe='fzf-find-edit'
 
 # git
-alias unfuck-mutagen='git clean -df'
 alias gap='git add -p'
 alias gau='git add -u'
 alias gb='git branch'
 alias gbD='git branch -D'
 alias gbd='git branch -d'
+alias gcB='git checkout -B'
+alias gcb='git checkout -b'
 alias gci='git commit --verbose'
 alias gcis='git commit --gpg-sign --verbose'
-# alias gco='git checkout'
-alias gcob='git switch -c'
+alias gclean='git clean --interactive -d'
+alias gco='git checkout'
 alias gcom='git com'
+alias gcp='git cherry-pick'
 alias gd='git diff --color=always'
+alias gds='git diff --staged'
+alias gf='git fetch'
 alias gfu='git fixup'
 alias gl='git log --color=always'
 alias gll='git log --color=always | less -r'
 alias glsut='git ls-files --others --exclude-standard'
 alias gp='git pull'
+alias gpd='git pull --dry-run'
 alias gpfoh='git push --force-with-lease origin HEAD'
 alias gpoh='git push origin HEAD'
 alias gri='git rebase --interactive'
 alias grim='git rebase --interactive --autosquash $(git main-branch)'
-alias gsp='git stash push -u'
 alias gs='git status --branch'
-
-# Unalias some things
-# These come from the OMZP::git plugins I'm loading but I have
-# functions that do these that I prefer.
-unalias gco
+alias gsp='git stash push -u'
+alias gss='git status --short --branch'
+alias gsta='git stash --all'
+alias gstc='git stash clear'
+alias gstl='git stash list'
+alias unfuck-mutagen='git clean -df'
 
 # github
 alias ghpca='gh pr create --fill --label auto-assign-reviewers --assignee @me'
