@@ -5,6 +5,7 @@ return {
     opts = {
       ensure_installed = {
         "bash",
+        "gitcommit",
         "git_rebase",
         "gitignore",
         "html",
