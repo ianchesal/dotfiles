@@ -6,7 +6,6 @@ return {
       ensure_installed = {
         "bash",
         "git_rebase",
-        "gitcommit",
         "gitignore",
         "html",
         "javascript",
