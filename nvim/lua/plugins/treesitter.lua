@@ -33,6 +33,10 @@ return {
         enable = true,
         disable = { "ruby" },
       },
+      highlight = {
+        enable = true,
+        disable = { "csv" },
+      },
     },
   },
 }
