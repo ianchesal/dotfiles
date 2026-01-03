@@ -17,6 +17,7 @@ return {
       })
     end,
   },
+  { "mistweaverco/vhs-era-theme.nvim", lazy = false, priority = 1000 },
   -- {
   --   "Mofiqul/vscode.nvim",
   --   lazy = false,
@@ -58,7 +59,8 @@ return {
       -- colorscheme = "onedark",
       -- colorscheme = "onedark_dark",
       -- colorscheme = "quiet",
-      colorscheme = "tokyonight",
+      -- colorscheme = "tokyonight",
+      colorscheme = "vhs-era-theme",
       -- colorscheme = "vscode",
     },
   },
