@@ -11,12 +11,12 @@
 #     --color fg:252,bg:233,hl:67,fg+:252,bg+:235,hl+:81
 #     --color info:144,prompt:161,spinner:135,pointer:135,marker:118'
 
-# Tokyo Night (Dark)
-# https://github.com/folke/tokyonight.nvim/issues/60
-FZF_DEFAULT_OPTS="--color=fg:#c0caf5,bg:#1a1b26,hl:#bb9af7"
-FZF_DEFAULT_OPTS+=" --color=fg+:#c0caf5,bg+:#1a1b26,hl+:#7dcfff"
-FZF_DEFAULT_OPTS+=" --color=info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff"
-FZF_DEFAULT_OPTS+=" --color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a"
+# VHS Era Theme
+# Matches https://github.com/mistweaverco/vhs-era-theme.nvim
+FZF_DEFAULT_OPTS="--color=fg:#f2f4f8,bg:#161616,hl:#78a9ff"
+FZF_DEFAULT_OPTS+=" --color=fg+:#f2f4f8,bg+:#353535,hl+:#82cfff"
+FZF_DEFAULT_OPTS+=" --color=info:#78a9ff,prompt:#3ddbd9,pointer:#3ddbd9"
+FZF_DEFAULT_OPTS+=" --color=marker:#42be65,spinner:#42be65,header:#42be65"
 
 # Note: --tmux is ignored when not in a tmux session
 FZF_DEFAULT_OPTS+=" --height 40% --tmux center"
