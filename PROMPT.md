@@ -95,7 +95,7 @@ This file provides guidance to AI agents working on this repository.
 
 - Located in `.config/ohmyposh` following XDG directory structure
 - Configured via JSON in `ohmyposh.json` using the official schema
-- Custom Tokyo Night theme with defined color palette
+- Custom VHS Era theme with defined color palette
 - Prompt structured in multiple blocks (left-aligned, right-aligned, newline prompt)
 - Features path segment with powerlevel style
 - Git integration showing branch, changes, and ahead/behind status
