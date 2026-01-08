@@ -5,6 +5,7 @@
 /brew/Brewfile.lock.json
 /claude/*.db
 /claude/.update.lock
+/claude/cache
 /claude/claude.json*
 /claude/debug
 /claude/file-history/*
