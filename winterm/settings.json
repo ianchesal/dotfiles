@@ -59,10 +59,10 @@
     ],
     "profiles": 
     {
-        "defaults": 
+        "defaults":
         {
             "bellStyle": "window",
-            "colorScheme": "One Dark"
+            "colorScheme": "VHS Era"
         },
         "list": 
         [
@@ -87,9 +87,9 @@
             },
             {
                 "bellStyle": "window",
-                "colorScheme": "Tokyo Night",
+                "colorScheme": "VHS Era",
                 "experimental.retroTerminalEffect": false,
-                "font": 
+                "font":
                 {
                     "face": "JetBrainsMono Nerd Font Mono",
                     "size": 10
@@ -241,6 +241,29 @@
             "selectionBackground": "#3C4048",
             "white": "#FFFFFF",
             "yellow": "#F1FF5E"
+        },
+        {
+            "background": "#161616",
+            "black": "#161616",
+            "blue": "#78a9ff",
+            "brightBlack": "#525252",
+            "brightBlue": "#82cfff",
+            "brightCyan": "#08bdba",
+            "brightGreen": "#42be65",
+            "brightPurple": "#be95ff",
+            "brightRed": "#ff7eb6",
+            "brightWhite": "#ffffff",
+            "brightYellow": "#ffcc66",
+            "cursorColor": "#ffffff",
+            "cyan": "#3ddbd9",
+            "foreground": "#f2f4f8",
+            "green": "#42be65",
+            "name": "VHS Era",
+            "purple": "#ff7eb6",
+            "red": "#ee5396",
+            "selectionBackground": "#353535",
+            "white": "#f2f4f8",
+            "yellow": "#ffcc66"
         }
     ],
     "startOnUserLogin": true,
