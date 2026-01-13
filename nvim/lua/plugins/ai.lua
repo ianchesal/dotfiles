@@ -25,34 +25,34 @@ return {
   --     end, { desc = "Get diagnostic prompt" })
   --   end,
   -- },
-  { "andreypopp/cctools" },
-  {
-    "jim-at-jibba/nvim-redraft",
-    dependencies = {
-      { "folke/snacks.nvim", opts = { input = {}, picker = {} } },
-    },
-    event = "VeryLazy",
-    build = "cd ts && npm install && npm run build",
-    opts = {
-      llm = {
-        models = {
-          {
-            provider = "anthropic",
-            model = "claude-sonnet-4-5-20250929",
-            label = "Claude 4.5 Sonnet",
-          },
-          {
-            provider = "anthropic",
-            model = "claude-sonnet-4-20250514",
-            label = "Claude 4.0 Sonnet",
-          },
-          {
-            provider = "anthropic",
-            model = "claude-3-7-sonnet-latest",
-            label = "Claude 3.7 Sonnet",
-          },
-        },
-      },
-    },
-  },
+  { "ianchesal/cctools", branch = "ian/tags" },
+  -- {
+  --   "jim-at-jibba/nvim-redraft",
+  --   dependencies = {
+  --     { "folke/snacks.nvim", opts = { input = {}, picker = {} } },
+  --   },
+  --   event = "VeryLazy",
+  --   build = "cd ts && npm install && npm run build",
+  --   opts = {
+  --     llm = {
+  --       models = {
+  --         {
+  --           provider = "anthropic",
+  --           model = "claude-sonnet-4-5-20250929",
+  --           label = "Claude 4.5 Sonnet",
+  --         },
+  --         {
+  --           provider = "anthropic",
+  --           model = "claude-sonnet-4-20250514",
+  --           label = "Claude 4.0 Sonnet",
+  --         },
+  --         {
+  --           provider = "anthropic",
+  --           model = "claude-3-7-sonnet-latest",
+  --           label = "Claude 3.7 Sonnet",
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
 }
