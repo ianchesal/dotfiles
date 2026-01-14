@@ -8,7 +8,7 @@
   "cctools": { "branch": "ian/tags", "commit": "873e371e8a9aa964c32867bceaa815993a7a6bf3" },
   "conform.nvim": { "branch": "master", "commit": "238f542a118984a88124fc915d5b981680418707" },
   "contextindent.nvim": { "branch": "main", "commit": "985b3ea05fecb9a220ea126ba9c7d40b002d6b63" },
-  "copilot.lua": { "branch": "master", "commit": "5ace9ecd0db9a7a6c14064e4ce4ede5b800325f3" },
+  "copilot.lua": { "branch": "master", "commit": "9688ca7ad7583c659979591d006e5ff0b0b0da07" },
   "flash.nvim": { "branch": "main", "commit": "fcea7ff883235d9024dc41e638f164a450c14ca2" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
   "grug-far.nvim": { "branch": "main", "commit": "794f03c97afc7f4b03fb6ec5111be507df1850cf" },
