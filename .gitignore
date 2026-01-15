@@ -10,6 +10,7 @@
 /claude/debug
 /claude/file-history/*
 /claude/history.jsonl
+/claude/paste-cache
 /claude/plans
 /claude/plugins
 /claude/projects
