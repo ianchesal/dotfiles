@@ -1,0 +1,82 @@
+#!/bin/zsh
+
+##? tvc - tmux-vim-claude development environment
+##?
+##? Creates or switches to a tmux session with:
+##?   - Left side (80%): neovim (top 90%) and zsh (bottom 10%)
+##?   - Right side (20%): claude (full height)
+##? Session name is derived from git project name or current directory
+##?
+##? usage: tvc
+
+# Verify required commands exist
+if ! command -v tmux >/dev/null 2>&1; then
+  echo >&2 "tvc: tmux not found" && return 1
+fi
+
+if ! command -v nvim >/dev/null 2>&1; then
+  echo >&2 "tvc: nvim not found" && return 1
+fi
+
+if ! command -v claude >/dev/null 2>&1; then
+  echo >&2 "tvc: claude not found" && return 1
+fi
+
+# Determine session name (git-aware)
+local session_name
+local current_path="$PWD"
+
+# Try to get git project name first
+if git -C "$current_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  # We're in a git repo, use the project name
+  local git_root=$(git -C "$current_path" rev-parse --show-toplevel)
+  session_name=$(basename "$git_root" | tr -cd "a-zA-Z0-9-_" | tr "[:upper:]" "[:lower:]")
+else
+  # Not in a git repo, use current directory name
+  session_name=$(basename "$current_path" | tr -cd "a-zA-Z0-9-_" | tr "[:upper:]" "[:lower:]")
+fi
+
+# Validate session name
+if [[ -z "$session_name" ]]; then
+  echo >&2 "tvc: could not determine valid session name" && return 1
+fi
+
+if [[ "$session_name" == "main" ]]; then
+  echo >&2 "tvc: session name 'main' is reserved" && return 1
+fi
+
+# Check if session already exists
+if tmux has-session -t "$session_name" 2>/dev/null; then
+  # Session exists, just switch to it
+  if [[ -n "$TMUX" ]]; then
+    # We're inside tmux, use switch-client
+    tmux switch-client -t "$session_name"
+  else
+    # We're outside tmux, use attach
+    tmux attach -t "$session_name"
+  fi
+  return 0
+fi
+
+# Create new session with layout
+# Start with nvim in the initial window
+tmux new-session -d -s "$session_name" -c "$current_path" nvim
+
+# Split vertically (80/20 split: nvim left, claude right)
+tmux split-window -h -t "$session_name:1" -p 20 -c "$current_path" claude
+
+# Select left pane (nvim) and split it horizontally (90/10 split: nvim top, zsh bottom)
+tmux select-pane -t "$session_name:1.1"
+tmux split-window -v -t "$session_name:1.1" -p 10 -c "$current_path" zsh
+
+# Select top-left pane (nvim) as the active one
+tmux select-pane -t "$session_name:1.1"
+
+# Attach or switch to the session
+if [[ -n "$TMUX" ]]; then
+  # We're inside tmux, use switch-client
+  tmux switch-client -t "$session_name"
+else
+  # We're outside tmux, use attach
+  tmux attach -t "$session_name"
+fi
