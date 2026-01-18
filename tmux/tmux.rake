@@ -23,6 +23,19 @@ namespace :tmux do
   task :testterminal do
     sh 'bash ./tmux/24-bit-color.sh'
   end
+
+  desc 'Reload tmux configuration for all sessions'
+  task :reload do
+    sessions = `tmux list-sessions -F '\#{session_name}'`.split("\n")
+    config_path = home('.config/tmux/tmux.conf')
+
+    sessions.each do |session|
+      puts "Reloading config for session: #{session}"
+      sh "tmux source-file -t #{session} #{config_path}"
+    end
+
+    puts "Reloaded tmux configuration for #{sessions.count} session(s)"
+  end
 end
 
 task all: [:tmux]
