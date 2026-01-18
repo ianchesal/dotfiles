@@ -1,0 +1,31 @@
+#!/bin/zsh
+
+##? claude-cleanup - Kill orphaned claude processes
+##?
+##? Finds and kills claude processes that have no controlling terminal (TTY = ?)
+##? These are typically left behind when tmux sessions are killed abruptly.
+##?
+##? usage: claude-cleanup
+
+# Find all claude processes with no controlling terminal
+local orphaned_pids=($(ps -o pid,tty,cmd | grep -E 'claude$' | grep ' \? ' | awk '{print $1}'))
+
+if [[ ${#orphaned_pids[@]} -eq 0 ]]; then
+  echo "No orphaned claude processes found"
+  return 0
+fi
+
+echo "Found ${#orphaned_pids[@]} orphaned claude process(es):"
+ps -o pid,ppid,tty,etime,cmd -p ${orphaned_pids[@]}
+
+# Ask for confirmation
+echo -n "\nKill these processes? [y/N] "
+read -r response
+
+if [[ "$response" =~ ^[Yy]$ ]]; then
+  for pid in ${orphaned_pids[@]}; do
+    kill "$pid" 2>/dev/null && echo "Killed PID $pid" || echo "Failed to kill PID $pid"
+  done
+else
+  echo "Cancelled"
+fi
