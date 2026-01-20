@@ -21,6 +21,16 @@ return {
       list = { selection = { preselect = false, auto_insert = true } },
     },
     keymap = {
+      ["<Tab>"] = {
+        "snippet_forward",
+        function() -- sidekick next edit suggestion
+          return require("sidekick").nes_jump_or_apply()
+        end,
+        function() -- if you are using Neovim's native inline completions
+          return vim.lsp.inline_completion.get()
+        end,
+        "fallback",
+      },
       ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
       ["<Up>"] = { "select_prev", "fallback" },
       ["<Down>"] = { "select_next", "fallback" },

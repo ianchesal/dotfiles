@@ -8,5 +8,8 @@
   "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1753933073221
+  },
+  "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true
   }
 }
