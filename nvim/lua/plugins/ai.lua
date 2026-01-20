@@ -7,7 +7,7 @@ return {
           enabled = true,
           create = "split",
           split = {
-            size = 0.4,
+            size = 0.3,
           },
         },
       },
