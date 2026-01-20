@@ -59,8 +59,8 @@ if tmux has-session -t "$session_name" 2>/dev/null; then
 fi
 
 # Create new session with layout
-# Start with nvim in the initial window
-tmux new-session -d -s "$session_name" -c "$current_path" nvim
+# Start with nvim in the initial window with a unique socket
+tmux new-session -d -s "$session_name" -c "$current_path" nvim --listen "/tmp/nvim-$session_name.sock"
 
 # Give nvim a moment to initialize, then send the sidekick command
 sleep 0.5
