@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+##? nv - nvim remote wrapper
+##?
+##? Opens files in nvim. If running inside a tmux session and a socket
+##? exists for that session, opens files in the remote nvim instance.
+##? Otherwise, runs nvim normally.
+##?
+##? usage: nv [nvim-args...]
+
+# Check if we're inside a tmux session
+if [[ -z "$TMUX" ]]; then
+  # Not in tmux, just run nvim normally
+  nvim "$@"
+  return $?
+fi
+
+# Get the current tmux session name
+local session_name
+session_name=$(tmux display-message -p '#S')
+
+if [[ -z "$session_name" ]]; then
+  # Couldn't get session name, fall back to normal nvim
+  nvim "$@"
+  return $?
+fi
+
+# Check if socket exists for this session
+local socket_path="/tmp/nvim-$session_name.sock"
+
+if [[ -S "$socket_path" ]]; then
+  # Socket exists, use remote mode
+  nvim --server "$socket_path" --remote "$@"
+else
+  # No socket, run nvim normally
+  nvim "$@"
+fi
