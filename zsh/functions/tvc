@@ -3,8 +3,8 @@
 ##? tvc - tmux-vim-claude development environment
 ##?
 ##? Creates or switches to a tmux session with:
-##?   - Left side (80%): neovim (top 90%) and zsh (bottom 10%)
-##?   - Right side (20%): claude (full height)
+##?   - Top pane (90%): neovim with sidekick/claude integration
+##?   - Bottom pane (10%): zsh
 ##? Session name is derived from git project name or current directory
 ##?
 ##? usage: tvc
@@ -62,14 +62,14 @@ fi
 # Start with nvim in the initial window
 tmux new-session -d -s "$session_name" -c "$current_path" nvim
 
-# Split vertically (80/20 split: nvim left, claude right)
-tmux split-window -h -t "$session_name:1" -p 20 -c "$current_path" claude
+# Give nvim a moment to initialize, then send the sidekick command
+sleep 0.5
+tmux send-keys -t "$session_name:1.1" ":lua require('sidekick.cli').toggle({ name = 'claude', focus = false })" Enter
 
-# Select left pane (nvim) and split it horizontally (90/10 split: nvim top, zsh bottom)
-tmux select-pane -t "$session_name:1.1"
-tmux split-window -v -t "$session_name:1.1" -p 10 -c "$current_path" zsh
+# Split horizontally below nvim (95/5 split: nvim top, zsh bottom)
+tmux split-window -v -t "$session_name:1" -p 5 -c "$current_path" zsh
 
-# Select top-left pane (nvim) as the active one
+# Select top pane (nvim) as the active one
 tmux select-pane -t "$session_name:1.1"
 
 # Attach or switch to the session
