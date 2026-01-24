@@ -36,7 +36,7 @@ namespace :claude do
   end
 
   task :clean do
-    # sh "rm -f #{home('.claude')}"
+    sh "rm -f #{home('.claude')}"
     sh "rm -f #{home('.local/bin/claude')}"
     sh "rm -rf #{home('.local/share/claude')}"
     sh 'brew remove claude-code'
