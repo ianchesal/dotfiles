@@ -5,11 +5,12 @@
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
   },
+  "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true
+  },
   "alwaysThinkingEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1753933073221
   },
-  "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true
-  }
+  "autoUpdatesChannel": "latest"
 }
