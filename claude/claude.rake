@@ -1,7 +1,6 @@
 desc 'Install claude dotfiles'
 task claude: ['claude:all']
 
-CLAUDE_NPM_PACKAGE = '@anthropic-ai/claude-code'.freeze
 CLAUDE_SETTINGS_FILE = home('.claude.json').freeze
 
 namespace :claude do
@@ -12,7 +11,7 @@ namespace :claude do
   end
 
   task :install do
-    npm_install(CLAUDE_NPM_PACKAGE)
+    sh 'brew install --cask claude-code'
   end
 
   task :permissions do
@@ -28,18 +27,19 @@ namespace :claude do
   end
 
   task update: [:permissions] do
-    if File.exist?(File.expand_path('~/.npm-global/bin/claude'))
+    if which('claude')
       puts 'Update: claude'.green
-      sh '~/.npm-global/bin/claude update'
+      sh 'brew upgrade claude-code'
     else
       puts 'No updates to claude components -- no claude CLI found'.red
     end
   end
 
   task :clean do
-    sh "rm -f #{home('.claude')}"
-    # sh "rm -f #{home(CLAUDE_SETTINGS_FILE)}"
-    npm_uninstall(CLAUDE_NPM_PACKAGE) if File.exist?(File.expand_path('~/.npm-global/bin/claude'))
+    # sh "rm -f #{home('.claude')}"
+    sh "rm -f #{home('.local/bin/claude')}"
+    sh "rm -rf #{home('.local/share/claude')}"
+    sh 'brew remove claude-code'
   end
 end
 
