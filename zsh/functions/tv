@@ -1,0 +1,74 @@
+#!/bin/zsh
+
+##? tv - tmux-vim development environment
+##?
+##? Creates or switches to a tmux session with:
+##?   - Top pane (95%): neovim
+##?   - Bottom pane (5%): zsh
+##? Session name is derived from git project name or current directory
+##?
+##? usage: tv
+
+# Verify required commands exist
+if ! command -v tmux >/dev/null 2>&1; then
+  echo >&2 "tv: tmux not found" && return 1
+fi
+
+if ! command -v nvim >/dev/null 2>&1; then
+  echo >&2 "tv: nvim not found" && return 1
+fi
+
+# Determine session name (git-aware)
+local session_name
+local current_path="$PWD"
+
+# Try to get git project name first
+if git -C "$current_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  # We're in a git repo, use the project name
+  local git_root=$(git -C "$current_path" rev-parse --show-toplevel)
+  session_name=$(basename "$git_root" | tr -cd "a-zA-Z0-9-_" | tr "[:upper:]" "[:lower:]")
+else
+  # Not in a git repo, use current directory name
+  session_name=$(basename "$current_path" | tr -cd "a-zA-Z0-9-_" | tr "[:upper:]" "[:lower:]")
+fi
+
+# Validate session name
+if [[ -z "$session_name" ]]; then
+  echo >&2 "tv: could not determine valid session name" && return 1
+fi
+
+if [[ "$session_name" == "main" ]]; then
+  echo >&2 "tv: session name 'main' is reserved" && return 1
+fi
+
+# Check if session already exists
+if tmux has-session -t "$session_name" 2>/dev/null; then
+  # Session exists, just switch to it
+  if [[ -n "$TMUX" ]]; then
+    # We're inside tmux, use switch-client
+    tmux switch-client -t "$session_name"
+  else
+    # We're outside tmux, use attach
+    tmux attach -t "$session_name"
+  fi
+  return 0
+fi
+
+# Create new session with layout
+# Start with nvim in the initial window with a unique socket
+tmux new-session -d -s "$session_name" -c "$current_path" nvim --listen "/tmp/nvim-$session_name.sock"
+
+# Split horizontally below nvim (95/5 split: nvim top, zsh bottom)
+tmux split-window -v -t "$session_name:1" -p 5 -c "$current_path" zsh
+
+# Select top pane (nvim) as the active one
+tmux select-pane -t "$session_name:1.1"
+
+# Attach or switch to the session
+if [[ -n "$TMUX" ]]; then
+  # We're inside tmux, use switch-client
+  tmux switch-client -t "$session_name"
+else
+  # We're outside tmux, use attach
+  tmux attach -t "$session_name"
+fi
