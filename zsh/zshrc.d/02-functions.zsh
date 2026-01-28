@@ -98,6 +98,12 @@ function dotfiles_update() {
   echo "\033[1;36m==> Updating your development environment...\033[0m" && \
   cd ~/src/dotfiles && \
 
+  # Fail if nvim/lazy-lock.json has uncommitted changes
+  if ! git diff --quiet nvim/lazy-lock.json 2>/dev/null || ! git diff --cached --quiet nvim/lazy-lock.json 2>/dev/null; then
+    echo "\033[1;31m==> Error: nvim/lazy-lock.json has uncommitted changes. Commit or discard them first.\033[0m"
+    return 1
+  fi && \
+
   # Stash any local changes
   if [[ -n "$(git status --porcelain)" ]]; then
     echo "\033[1;33m==> Stashing local changes...\033[0m" && \
@@ -115,6 +121,12 @@ function dotfiles_update() {
   if [[ -n "$STASHED" ]]; then
     echo "\033[1;33m==> Restoring local changes...\033[0m" && \
     git stash pop
+  fi && \
+
+  # Check if nvim/lazy-lock.json was updated and commit if so
+  if ! git diff --quiet nvim/lazy-lock.json 2>/dev/null; then
+    echo "\033[1;33m==> Neovim plugins were updated, committing changes...\033[0m" && \
+    rake nvim:commit
   fi && \
 
   echo "\033[1;32m==> Update complete! Reloading shell...\033[0m" && \
