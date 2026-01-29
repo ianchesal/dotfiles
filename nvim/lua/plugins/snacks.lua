@@ -7,8 +7,16 @@ return {
         enabled = false,
       },
       picker = {
-        hidden = true,
-        -- ignored = true, -- for .gitignore file
+        sources = {
+          files = {
+            hidden = true, -- Show hidden/dotfiles
+            ignored = false, -- Respect .gitignore
+          },
+          grep = {
+            hidden = true, -- Also search in hidden files
+            ignored = false,
+          },
+        },
       },
       explorer = {
         enabled = false,
