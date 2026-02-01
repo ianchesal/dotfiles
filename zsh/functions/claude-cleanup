@@ -9,7 +9,7 @@
 
 # Find all claude processes with no controlling terminal
 # macOS (BSD ps) shows ?? for no TTY, Linux shows ?
-local orphaned_pids=($(ps -o pid,tty,cmd | grep -E 'claude$' | grep -E '[[:space:]]\?+[[:space:]]' | awk '{print $1}'))
+local orphaned_pids=($(ps -o pid,tty,command | grep -E 'claude$' | grep -E '[[:space:]]\?+[[:space:]]' | awk '{print $1}'))
 
 if [[ ${#orphaned_pids[@]} -eq 0 ]]; then
   echo "No orphaned claude processes found"
@@ -17,7 +17,7 @@ if [[ ${#orphaned_pids[@]} -eq 0 ]]; then
 fi
 
 echo "Found ${#orphaned_pids[@]} orphaned claude process(es):"
-ps -o pid,ppid,tty,etime,cmd -p ${orphaned_pids[@]}
+ps -o pid,ppid,tty,etime,command -p ${orphaned_pids[@]}
 
 # Ask for confirmation
 echo -n "\nKill these processes? [y/N] "
