@@ -17,6 +17,11 @@ return {
       })
     end,
   },
+  {
+    "oskarnurm/koda.nvim",
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+  },
   { "mistweaverco/vhs-era-theme.nvim", lazy = false, priority = 1000 },
   -- {
   --   "Mofiqul/vscode.nvim",
@@ -54,6 +59,7 @@ return {
       -- colorscheme = "catppuccin",
       -- colorscheme = "cyberdream",
       -- colorscheme = "github_dark_default",
+      -- colorscheme = "koda",
       -- colorscheme = "lytmode",
       -- colorscheme = "moonfly",
       -- colorscheme = "onedark",
