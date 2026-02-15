@@ -41,7 +41,8 @@
     "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "frontier-deploy@persona-frontier": true
   },
   "alwaysThinkingEnabled": true,
   "fastMode": true,
