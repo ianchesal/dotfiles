@@ -1,6 +1,11 @@
-# PROMPT.md
+# Dotfiles
 
 This file provides guidance to AI agents working on this repository.
+
+## Target Platforms
+
+- macOS (zsh/Kitty), Debian Linux, and WSL2
+- Changes should be portable across all three unless explicitly platform-specific
 
 ## Build/Test/Lint Commands
 
