@@ -12,6 +12,8 @@ namespace :claude do
 
   task :install do
     sh 'brew install --cask claude-code'
+    FileUtils.mkdir_p(home('.local/bin'))
+    dolink(home('.local/bin/claude'), which('claude'))
   end
 
   task :permissions do
