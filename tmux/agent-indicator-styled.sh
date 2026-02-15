@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Wrapper around tmux-agent-indicator that adds styled segment only when active.
-# Outputs a purple (#be95ff) powerline segment with the agent icon, or nothing.
+# Uses double powerline separators with a thin dark gap to match the left status bar style.
 
 set -euo pipefail
 
@@ -13,10 +13,20 @@ fi
 
 icon=$("$INDICATOR_SCRIPT")
 
+SEP=$'\ue0b2'
+
 if [ -n "$icon" ]; then
-    # Powerline left separator, purple bg segment, then transition to hostname blue
-    printf '#[fg=#be95ff,bg=#353535,nobold,nounderscore,noitalics]\ue0b2#[fg=#161616,bg=#be95ff] %s #[fg=#78a9ff,bg=#be95ff,nobold,nounderscore,noitalics]\ue0b2' "$icon"
+    # Double-sep: datetime(#353535) → dark gap → agent(#be95ff)
+    # Double-sep: agent(#be95ff) → dark gap → hostname(#78a9ff)
+    printf '%s' \
+        "#[fg=#161616,bg=#353535,nobold,nounderscore,noitalics]${SEP}" \
+        "#[fg=#be95ff,bg=#161616]${SEP}" \
+        "#[fg=#161616,bg=#be95ff] ${icon} " \
+        "#[fg=#161616,bg=#be95ff,nobold,nounderscore,noitalics]${SEP}" \
+        "#[fg=#78a9ff,bg=#161616]${SEP}"
 else
-    # No agent active — output the normal transition from datetime to hostname
-    printf '#[fg=#78a9ff,bg=#353535,nobold,nounderscore,noitalics]\ue0b2'
+    # Double-sep: datetime(#353535) → dark gap → hostname(#78a9ff)
+    printf '%s' \
+        "#[fg=#161616,bg=#353535,nobold,nounderscore,noitalics]${SEP}" \
+        "#[fg=#78a9ff,bg=#161616]${SEP}"
 fi
