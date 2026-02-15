@@ -44,6 +44,7 @@
     "lua-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
+  "fastMode": true,
   "autoUpdatesChannel": "latest",
   "feedbackSurveyState": {
     "lastShownTime": 1753933073221
