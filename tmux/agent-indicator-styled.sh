@@ -13,7 +13,8 @@ fi
 
 icon=$("$INDICATOR_SCRIPT")
 
-SEP=$'\ue0b2'
+# U+E0B2 (Powerline left arrow) in UTF-8: 0xEE 0x82 0xB2
+SEP=$(printf '\xee\x82\xb2')
 
 if [ -n "$icon" ]; then
     # Double-sep: datetime(#353535) → dark gap → agent(#be95ff)
