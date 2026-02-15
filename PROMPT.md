@@ -37,6 +37,17 @@ This file provides guidance to AI agents working on this repository.
 - The guide for how to configure AeroSpace can be found [here](https://nikitabobko.github.io/AeroSpace/guide)
 - The Github project for AeroSpace can be found [here](https://github.com/nikitabobko/AeroSpace)
 
+## Tmux Configuration
+
+- Deployed to `~/.config/tmux` following XDG directory structure (the repo's `./tmux/` dir is symlinked there)
+- Main configuration in `tmux.conf`, theme in `theme.conf`
+- Uses TPM (Tmux Plugin Manager) for plugins, installed to `~/.config/tmux/plugins/`
+- VHS Era theme with powerline-style status bar segments and double-arrow separators
+- Custom helper scripts (e.g., `git-aware-popup.sh`, `agent-indicator-styled.sh`) live in the `./tmux/` directory
+- Plugin-specific configuration is grouped in labeled sections within `tmux.conf` (not inline with plugin declarations)
+- Status bar uses the VHS Era color palette defined in the Oh My Posh section
+- TPM bootstrap (`run '~/.config/tmux/plugins/tpm/tpm'`) must always be the last line in `tmux.conf`
+
 ## Neovim Configuration
 
 - Based on [LazyVim](https://www.lazyvim.org/) with custom plugins and configurations
