@@ -27,6 +27,7 @@
 /claude/.credentials.json
 /claude/*.db
 /claude/.update.lock
+/claude/backups/
 /claude/cache/
 /claude/claude.json*
 /claude/debug/
