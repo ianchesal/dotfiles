@@ -29,11 +29,11 @@ namespace :claude do
   end
 
   task update: [:permissions] do
-    if which('claude')
+    if which('brew') && system('brew list --cask claude-code > /dev/null 2>&1')
       puts 'Update: claude'.green
       sh 'brew upgrade claude-code'
     else
-      puts 'No updates to claude components -- no claude CLI found'.red
+      puts 'No updates to claude components -- claude-code brew cask not found'.red
     end
   end
 
