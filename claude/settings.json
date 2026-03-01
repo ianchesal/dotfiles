@@ -42,7 +42,9 @@
   },
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true,
-    "frontier-deploy@persona-frontier": true
+    "frontier-deploy@persona-frontier": true,
+    "skill-creator@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
   "fastMode": true,
