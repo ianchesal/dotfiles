@@ -24,8 +24,8 @@
 /.claude/settings.local.json
 
 # Claude Code - dotfiles config directory (symlinked to ~/.claude)
-/claude/.credentials.json
 /claude/*.db
+/claude/.credentials.json
 /claude/.update.lock
 /claude/backups/
 /claude/cache/
@@ -34,11 +34,13 @@
 /claude/file-history/
 /claude/history.jsonl
 /claude/logs/
+/claude/mcp-needs-auth-cache.json
 /claude/paste-cache/
 /claude/plans/
 /claude/plugins/
 /claude/projects/
 /claude/shell-snapshots/
+/claude/skills/morning-startup
 /claude/stats-cache.json
 /claude/statsig/
 /claude/tasks/
