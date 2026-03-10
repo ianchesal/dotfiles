@@ -58,6 +58,7 @@
     "mcp__claude_ai_Notion__notion-query-meeting-notes",
     "Read"
   ],
+  "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
   "fastMode": true,
   "autoUpdatesChannel": "latest",
