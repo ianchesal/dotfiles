@@ -3,7 +3,10 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "cleanupPeriodDays": 30,
-  "includeCoAuthoredBy": true,
+  "attribution": {
+    "commit": "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+  },
   "hooks": {
     "UserPromptSubmit": [
       {
