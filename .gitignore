@@ -39,10 +39,11 @@
 /claude/plans/
 /claude/plugins/
 /claude/projects/
+/claude/sessions/
 /claude/shell-snapshots/
-/claude/skills/morning-startup
-/claude/skills/manage-skills
 /claude/skills/council
+/claude/skills/manage-skills
+/claude/skills/morning-startup
 /claude/stats-cache.json
 /claude/statsig/
 /claude/tasks/
