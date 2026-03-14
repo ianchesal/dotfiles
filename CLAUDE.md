@@ -48,7 +48,7 @@ This file provides guidance to AI agents working on this repository.
 - Main configuration in `tmux.conf`, theme in `theme.conf`
 - Uses TPM (Tmux Plugin Manager) for plugins, installed to `~/.config/tmux/plugins/`
 - VHS Era theme with powerline-style status bar segments and double-arrow separators
-- Custom helper scripts (e.g., `git-aware-popup.sh`, `agent-indicator-styled.sh`) live in the `./tmux/` directory
+- Custom helper scripts (e.g., `git-aware-popup.sh`) live in the `./tmux/` directory
 - Plugin-specific configuration is grouped in labeled sections within `tmux.conf` (not inline with plugin declarations)
 - Status bar uses the VHS Era color palette defined in the Oh My Posh section
 - TPM bootstrap (`run '~/.config/tmux/plugins/tpm/tpm'`) must always be the last line in `tmux.conf`
