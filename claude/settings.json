@@ -1,29 +1,89 @@
 {
+  "cleanupPeriodDays": 30,
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-  "cleanupPeriodDays": 30,
   "attribution": {
     "commit": "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
     "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
   },
   "hooks": {
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": []
-      }
-    ],
     "PermissionRequest": [
       {
         "matcher": "",
         "hooks": []
       }
     ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/tmux/plugins/tmux-scout-golang/bin/tmux-scout hook claude",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/tmux/plugins/tmux-scout-golang/bin/tmux-scout hook claude",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/tmux/plugins/tmux-scout-golang/bin/tmux-scout hook claude",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/tmux/plugins/tmux-scout-golang/bin/tmux-scout hook claude",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "",
-        "hooks": []
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/tmux/plugins/tmux-scout-golang/bin/tmux-scout hook claude",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.config/tmux/plugins/tmux-scout-golang/bin/tmux-scout hook claude",
+            "timeout": 5
+          }
+        ]
       }
     ]
   },
@@ -32,11 +92,15 @@
     "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true,
     "frontier-deploy@persona-frontier": true,
+    "lua-lsp@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
   },
+  "spinnerTipsEnabled": false,
+  "alwaysThinkingEnabled": true,
+  "fastMode": true,
+  "autoUpdatesChannel": "latest",
   "allowedTools": [
     "mcp__claude_ai_Google_Calendar__gcal_list_events",
     "mcp__claude_ai_Slack__slack_search_public_and_private",
@@ -46,10 +110,6 @@
     "mcp__claude_ai_Notion__notion-query-meeting-notes",
     "Read"
   ],
-  "spinnerTipsEnabled": false,
-  "alwaysThinkingEnabled": true,
-  "fastMode": true,
-  "autoUpdatesChannel": "latest",
   "feedbackSurveyState": {
     "lastShownTime": 1753933073221
   }
