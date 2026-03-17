@@ -8,7 +8,6 @@ namespace :gemini do
 
   task :config do
     mkdir_if_needed home('.gemini')
-    dolink(home('.gemini/settings.json'), root('gemini/settings.json'))
   end
 
   task :install do
