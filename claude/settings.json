@@ -109,6 +109,9 @@
       }
     ]
   },
+  "permissions": {
+    "allow": ["Read(~/.claude/skills/**)"]
+  },
   "skipDangerousModePermissionPrompt": true,
   "spinnerTipsEnabled": false,
   "statusLine": {
