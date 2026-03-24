@@ -1,39 +1,23 @@
 {
-  "allowedTools": [
-    "mcp__claude_ai_Google_Calendar__gcal_list_events",
-    "mcp__claude_ai_Slack__slack_search_public_and_private",
-    "mcp__claude_ai_Slack__slack_read_channel",
-    "mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql",
-    "mcp__claude_ai_Atlassian__getAccessibleAtlassianResources",
-    "mcp__claude_ai_Notion__notion-query-meeting-notes",
-    "Read"
-  ],
-  "alwaysThinkingEnabled": true,
-  "attribution": {
-    "commit": "Co-Authored-By: Claude Sonnet 4.6 \u003cnoreply@anthropic.com\u003e",
-    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
-  },
-  "autoUpdatesChannel": "latest",
   "cleanupPeriodDays": 30,
-  "enabledPlugins": {
-    "frontier-deploy@persona-frontier": true,
-    "lua-lsp@claude-plugins-official": true,
-    "ruby-lsp@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
-  },
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-  "fastMode": true,
-  "feedbackSurveyState": {
-    "lastShownTime": 1753933073221
+  "attribution": {
+    "commit": "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
   },
+  "permissions": {
+    "allow": [
+      "Read(~/.claude/skills/**)"
+    ]
+  },
+  "model": "sonnet[1m]",
   "hooks": {
     "PermissionRequest": [
       {
-        "hooks": [],
-        "matcher": ""
+        "matcher": "",
+        "hooks": []
       }
     ],
     "PostToolUse": [
@@ -109,13 +93,32 @@
       }
     ]
   },
-  "permissions": {
-    "allow": ["Read(~/.claude/skills/**)"]
-  },
-  "skipDangerousModePermissionPrompt": true,
-  "spinnerTipsEnabled": false,
   "statusLine": {
-    "command": "bash ~/.claude/statusline-command.sh",
-    "type": "command"
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "frontier-deploy@persona-frontier": true,
+    "lua-lsp@claude-plugins-official": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "spinnerTipsEnabled": false,
+  "alwaysThinkingEnabled": true,
+  "fastMode": true,
+  "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true,
+  "allowedTools": [
+    "mcp__claude_ai_Google_Calendar__gcal_list_events",
+    "mcp__claude_ai_Slack__slack_search_public_and_private",
+    "mcp__claude_ai_Slack__slack_read_channel",
+    "mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql",
+    "mcp__claude_ai_Atlassian__getAccessibleAtlassianResources",
+    "mcp__claude_ai_Notion__notion-query-meeting-notes",
+    "Read"
+  ],
+  "feedbackSurveyState": {
+    "lastShownTime": 1753933073221
   }
 }
