@@ -48,7 +48,7 @@
   "sidekick.nvim": { "branch": "main", "commit": "8ad0ede3ff9065878a853e4b037ba6ac88231fb0" },
   "snacks.nvim": { "branch": "main", "commit": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e" },
   "todo-comments.nvim": { "branch": "main", "commit": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668" },
-  "tokyonight.nvim": { "branch": "main", "commit": "73822773d5badaeba999206179a9105f9867ac59" },
+  "tokyonight.nvim": { "branch": "main", "commit": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6" },
   "trouble.nvim": { "branch": "main", "commit": "bd67efe408d4816e25e8491cc5ad4088e708a69a" },
   "ts-comments.nvim": { "branch": "main", "commit": "123a9fb12e7229342f807ec9e6de478b1102b041" },
   "vhs-era-theme.nvim": { "branch": "main", "commit": "d0a864194ab5d7f1a634a88f4406a4f70fcd5db2" },
