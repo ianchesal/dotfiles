@@ -47,4 +47,4 @@ end
 
 task all: [:python]
 task clean: ['python:clean']
-task update: ['python:update']
+# task update: ['python:update']
