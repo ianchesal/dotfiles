@@ -1,14 +1,14 @@
 ---
 name: morning-startup
-description: Use when the user wants to start their workday, get a morning briefing, or says things like "start my day", "morning startup", "good morning", "what's on my plate today", "morning briefing", or "let's get the day started". This skill orchestrates auth, calendar review, Slack triage, and Jira review, then writes a Daily Plan to today's daily note. Invoke whenever the user signals they are beginning their workday.
+description: Use when the user wants to start their workday, get a morning briefing, or says things like "start my day", "morning startup", "good morning", "what's on my plate today", "morning briefing", or "let's get the day started". This skill reads context from yesterday's and today's notes, gathers context from Calendar, Slack, and Jira in parallel, and writes a Daily Plan with executive coaching to today's daily note. Invoke whenever the user signals they are beginning their workday.
 ---
 
 # Morning Startup
 
 This skill helps you start your workday by:
-1. Walking through work authentication
+1. Reading context from yesterday's note and today's existing note
 2. Gathering today's context from Calendar, Slack, and Jira in parallel
-3. Writing a `## Daily Plan` section into today's daily note
+3. Writing a `## Daily Plan` section into today's daily note, including executive coaching
 
 ---
 
@@ -27,51 +27,43 @@ from your `config.md`.
 
 ---
 
-## Step 1: Authentication
+## Step 1: Read Context from Notes
 
-If `config.md` specifies an auth command, prompt the user to run it. The auth
-command is interactive and must be run by the user in their own terminal — Claude
-cannot run interactive shell functions.
+Before gathering external data, read the following files. Do this silently — no
+need to narrate it to the user.
 
-Tell the user:
-> "Please run `{{AUTH_COMMAND}}` in your terminal now. It will walk you through
-> your work authentication. Tell me when you're finished and I'll continue."
+**Yesterday's daily note:**
+- Compute yesterday's date and build the path using `{{DAILY_NOTES_PATH}}` and
+  `{{DAILY_NOTES_STRUCTURE}}`.
+- Read the file. If it doesn't exist, skip silently.
+- Extract: what got done (Day in Review), what carried forward, any themes, mood,
+  energy signals, or personal context mentioned.
 
-Wait for the user to confirm before moving on.
+**Today's daily note:**
+- Read today's file if it exists.
+- Extract: any intentions already written, todos, personal context, or notes already
+  captured before you started.
 
-If no auth command is configured, skip this step.
-
----
-
-## Step 1.5: Read Today's Intentions (Read-Only)
-
-Before gathering context, read today's daily note to capture any intentions the
-user has already written.
-
-1. Locate today's daily note using `{{DAILY_NOTES_PATH}}` and
-   `{{DAILY_NOTES_STRUCTURE}}`.
-2. If the note does not exist, record state: **Intentions absent**.
-3. If the note exists, extract the bullet list under `## Today's Intentions`.
-   Read only until the next `##`-level heading or end of file.
-4. Assess the extracted content:
-   - Bullets present and non-empty → record state **Intentions present**, capture
-     the list.
-   - Section missing, empty, or only blank bullets → record state
-     **Intentions absent**.
-
-This step is **read-only**. Do not modify the note. Carry the captured intentions forward — they will be incorporated into the `## Daily Plan` output in Step 3.
+Hold all of this context. Use it in Step 3 to personalize the Executive Coaching
+section — reference it explicitly so the coaching feels grounded in reality, not
+generic.
 
 ---
 
 ## Step 2: Gather Context (Run in Parallel)
 
-Once auth is confirmed, gather all three data sources simultaneously. Do NOT
-wait for one to finish before starting the others.
+Gather all three data sources simultaneously. Do NOT wait for one to finish before
+starting the others.
 
-### 2a. Google Calendar — Today's Events
+### 2a. Google Calendar
 
-Use `mcp__claude_ai_Google_Calendar__gcal_list_events` to fetch today's events
-in `{{YOUR_TIMEZONE}}`.
+**If today is Monday:**
+- Fetch the **full week** (Monday through Friday) using
+  `mcp__claude_ai_Google_Calendar__gcal_list_events` in `{{YOUR_TIMEZONE}}`.
+- You will produce both a today-view AND a `### Week Ahead` section (see template).
+
+**All days:**
+- Fetch today's events in `{{YOUR_TIMEZONE}}`.
 
 For each event, analyze and note:
 
@@ -109,6 +101,29 @@ Produce a `### Calendar` section:
 **Focus time:** [X hours — when]
 
 **Lunch window:** [Best suggested time and why]
+```
+
+**If today is Monday, also produce a `### Week Ahead` section:**
+
+Scan the full week and flag anything the user needs to prepare for now to avoid
+being caught off-guard later. Think about prep time — if there's a big review on
+Thursday, flag it Monday so prep can start Tuesday.
+
+```
+### Week Ahead
+
+**Week at a glance:** [X total meetings · heaviest day · lightest day · total focus time]
+
+**⚠️ Prepare now — don't get caught flat-footed:**
+- [Non-recurring, VIP, external, high-stakes, or unusual meetings this week. For each: why it matters and what to do before it.]
+
+| Day | Key Events | Load |
+|-----|-----------|------|
+| Mon | [events] | Heavy / Medium / Light |
+| Tue | [events] | Heavy / Medium / Light |
+| Wed | [events] | Heavy / Medium / Light |
+| Thu | [events] | Heavy / Medium / Light |
+| Fri | [events] | Heavy / Medium / Light |
 ```
 
 ### 2b. Slack — Unread Messages Triage
@@ -201,15 +216,12 @@ Full section to insert:
 ```markdown
 ## Daily Plan
 
-### Priorities Analysis
-
-[priorities analysis content — see rules below]
-
----
-
 ### Calendar
 
 [calendar content]
+
+[### Week Ahead]
+[week coaching content — Monday only]
 
 ### Slack
 
@@ -219,96 +231,60 @@ Full section to insert:
 
 [jira content]
 
+### Executive Coaching
+
+[coaching content — see format below]
+
 ---
 
 ```
 
-**Generating `### Priorities Analysis`:**
+**Executive Coaching section — how to write it:**
 
-Use the state captured in Step 1.5 and the context gathered in Step 2.
+This is the highest-value section. Don't summarize — coach. Draw on everything
+you've gathered: calendar shape, Slack signals, Jira state, what happened
+yesterday, what the user has already written in today's note. Be specific and
+grounded. Reference real meeting names, Jira keys, Slack threads, and note
+content. Avoid generic platitudes.
 
-**Branch A — Intentions present:**
+Format:
 
-Cross-reference each intention against calendar events, Jira issues, and Slack
-activity. Apply these icon rules:
+```
+### Executive Coaching
 
-Apply the **first matching rule** in order:
+**Today's Shape:**
+[In 2–3 sentences, describe the texture of today. Is it meeting-heavy with little
+focus time? A day with a big deliverable? An unusually light day that's an opportunity?
+Name what the user is walking into so they can set the right intention.]
 
-1. ❓ **Too vague** — the intention text is non-specific (e.g., "misc", "catch up",
-   "emails"). Use ❓ and skip cross-referencing.
-2. ✅ **Well-supported** — at least one source has a strong signal: a scheduled
-   calendar event directly related to this intention, a 🔥 Jira issue (High/Highest
-   priority) or one updated within the last 3 days, OR relevant Slack
-   mentions/activity. Use ✅.
-3. ⚠️ **Weakly supported** — at least one source connects to this intention, but
-   the signal is weak (e.g., a Jira ticket updated >3 days ago and not 🔥, or a
-   calendar item only tangentially related). Use ⚠️.
-4. 🚨 **No support** — nothing in calendar, Jira, or Slack connects to this
-   intention. Use 🚨.
+**The One Thing:**
+[Given everything — calendar, Slack, Jira, yesterday's carries-forward, and today's
+intentions — what is the single most important thing to move forward today? Name it
+explicitly. If the day is at risk of filling up with busyness that doesn't move the
+needle, say so.]
 
-Coaching tone: be direct, name misalignments plainly, do not soften 🚨 items.
-Ground all coaching in today's context only — no references to past days.
+**Watch Out For:**
+[1–3 specific, concrete observations about risks or patterns. Reference real data.
+Examples: "Your 1:1s are back-to-back from 3–5 PM — you'll be drained by the last
+one. Prep quick agendas for each now." Or: "INFR-1673 has been open 44 days with no
+movement. Every day it sits is a small tax on your mental load. Decide today: do it
+or defer it explicitly." Or: "Christian Henry's DM about the MongoDB contract is
+directly connected to your #1 intention. Answer it before 10 AM."]
 
-Output:
+**Energy & Wellbeing:**
+[Based on context from yesterday's note or today's. Flag anything worth attending to:
+disrupted routines, personal stressors, a heavy week that needs pacing. If yesterday's
+note shows the user was productive and energized, note that too — momentum is real.]
 
-```markdown
-### Priorities Analysis
-
-**Your intentions for today:**
-- [intention 1]
-- [intention 2]
-
-**Alignment check:**
-- ✅ **[intention]** — [supporting evidence]. Well-supported.
-- ⚠️ **[intention]** — [weak evidence]. [Coaching note on risk].
-- 🚨 **[intention]** — Nothing on your calendar, in Jira, or in Slack connects to
-  this. If it's real today, block time now.
-- ❓ **[intention]** — Too vague to cross-reference. Consider rewriting as a
-  specific outcome.
-
-**Unplanned demands on your day:**
-- [Slack mentions, 🔥 Jira tickets, or calendar items not covered by any intention]
+**One Question:**
+[A single sharp coaching question to carry into the day. Make it specific to today's
+context, not generic. E.g.: "The incident debrief is at 1 PM and you're the organizer
+— do you have a clear outcome in mind for what you want to leave the room having
+decided?"]
 ```
 
-If all calendar events, Jira tickets, and Slack signals are already covered by
-the user's intentions, write: "**Unplanned demands on your day:** None — your
-intentions cover everything on the radar."
-
-**Branch B — Intentions absent:**
-
-Generate ranked suggestions using calendar-first weighting:
-1. Calendar commitments (scheduled = already committed)
-2. 🔥 Urgent Jira issues (High/Highest priority)
-3. ⏰ Languishing Jira issues (no update in `{{LANGUISHING_THRESHOLD}}` days) —
-   distinct from urgent; list separately
-4. Slack activity requiring response or decision
-
-Limit to 3–5 items. Within each source, take only the highest-priority item unless two items are
-materially different in urgency (e.g., two 🔥 tickets with different deadlines).
-Do not pad with low-signal items. If signals are sparse,
-close with: "Light day — consider using focus time for [top Jira item] or
-strategic work."
-
-Output:
-
-```markdown
-### Priorities Analysis
-
-**No intentions written yet.** Based on your calendar, Jira, and Slack:
-
-**Suggested priorities:**
-1. [Calendar item] — scheduled, [prep note if applicable]
-2. [🔥 Urgent Jira KEY-XXX] — [why urgent, e.g. High priority, assigned to you]
-3. [⏰ Languishing Jira KEY-YYY] — [no update in N days, needs attention]
-4. [Slack item] — [mention or VIP message requiring response]
-```
-
-**Edge cases:**
-- Daily note not found → Branch B. Add note: "Daily note not found — no intentions to analyze."
-- `## Today's Intentions` missing or only blank bullets → Branch B.
-- Vague intention → ❓ icon: `❓ **[intention]** — Too vague to cross-reference. Consider rewriting as a specific outcome.`
-- Ambiguous but not fully vague (intention names a domain or project, e.g., "work on auth", but not a specific outcome) → attempt cross-reference against that domain; ⚠️ if a weak match is found, 🚨 if none. Do not assign ❓ unless the intention has no domain at all.
-- `## Daily Plan` already exists in file → replace entire section (existing behavior); this overwrites any existing `### Priorities Analysis`.
+If `## Daily Plan` already exists in the file, **replace** it rather than
+inserting a duplicate.
 
 If the daily note doesn't exist, tell the user — they may need to create it
 from their note template first.
@@ -320,11 +296,11 @@ After writing, confirm:
 
 ## Troubleshooting
 
-- **Auth**: The auth command must be run manually in a terminal — Claude cannot
-  run interactive shell functions.
 - **Slack mentions returning nothing**: Verify `{{SLACK_USER_ID}}` is correct.
   Use `mentions:USER_ID` syntax, not `to:me`.
 - **Jira returns too many results**: Focus on 🔥 Urgent and 🆕 New first;
   summarize languishing items in a collapsed group.
 - **Incidents channel is noisy**: Supplement channel read with a keyword search
   for `incident SEV after:{{YESTERDAY_DATE}}` to surface recent incidents.
+- **Notes don't exist**: Skip silently and proceed without that context. Don't
+  block on missing notes.
