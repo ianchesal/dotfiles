@@ -29,7 +29,7 @@
     "background": "transparent",
     "newline": true
   },
-  "console_title_template": " {{ .Folder }} :: {{if .Root}}Admin{{end}}",
+  "console_title_template": "{{ .UserName }}@{{ .HostName }} :: {{ .Folder }}",
   "terminal_background": "p:t-background",
   "blocks": [
     {
@@ -58,7 +58,7 @@
             "commit_icon": "@",
             "fetch_status": true
           },
-          "template": "on <p:pistachio-green>{{ .HEAD}}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}</> <p:terminal-green>{{ if gt .Behind 0 }}\u2193{{ end }}{{ if gt .Ahead 0 }}\u2191{{ end }}</>",
+          "template": "on <p:pistachio-green>{{ .HEAD}}{{ if .Staging.Changed }}<p:terminal-yellow>~</>{{ end }}{{ if .Working.Changed }}<p:terminal-red>*</>{{ end }}</> <p:terminal-green>{{ if gt .Behind 0 }}\u2193{{ end }}{{ if gt .Ahead 0 }}\u2191{{ end }}{{ if gt .StashCount 0 }} ${{ .StashCount }}{{ end }}</>",
           "type": "git",
           "style": "plain"
         }
@@ -70,9 +70,13 @@
       "overflow": "hide",
       "segments": [
         {
+          "template": " {{ .FormattedMs }}",
           "foreground": "p:terminal-yellow",
           "type": "executiontime",
-          "style": "powerline"
+          "style": "powerline",
+          "options": {
+            "threshold": 2000
+          }
         },
         {
           "template": "{{ if .SSHSession }} {{ .UserName }}@{{ .HostName }}{{ end }}",
