@@ -21,7 +21,6 @@
 /.claude/tasks/
 /.claude/telemetry/
 /.claude/todos/
-/.claude/settings.local.json
 
 # Claude Code - dotfiles config directory (symlinked to ~/.claude)
 /claude/*.db
