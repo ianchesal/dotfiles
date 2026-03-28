@@ -31,10 +31,21 @@ namespace :claude do
   task update: [:permissions] do
     if which('brew') && system('brew list --cask claude-code > /dev/null 2>&1')
       puts 'Update: claude'.green
+      old_version = `claude --version 2>/dev/null`.strip
       sh 'brew upgrade claude-code'
+      new_version = `claude --version 2>/dev/null`.strip
+      if old_version != new_version
+        puts "claude updated #{old_version} -> #{new_version}, regenerating completions...".yellow
+        Rake::Task['claude:gen_completions'].invoke
+      end
     else
       puts 'No updates to claude components -- claude-code brew cask not found'.red
     end
+  end
+
+  desc 'Regenerate zsh/completions/_claude from claude --help'
+  task :gen_completions do
+    sh "#{root('script', 'gen-claude-completions')}"
   end
 
   task :clean do

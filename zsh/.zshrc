@@ -27,8 +27,11 @@ fi
 
 unset brew_location
 
+# Add user completions dir to fpath before compinit runs
+fpath=("${ZDOTDIR:-~/.config/zsh}/completions" $fpath)
+
 # This gives us completions for brew-install things
-if (( $+commands[brew] )); then 
+if (( $+commands[brew] )); then
   # Cache brew prefix to avoid subprocess call on every shell startup
   if [[ -z "$HOMEBREW_ZSH_COMPLETIONS" ]]; then
     export HOMEBREW_ZSH_COMPLETIONS="$(brew --prefix)/share/zsh-completions"
