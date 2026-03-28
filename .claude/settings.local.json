@@ -29,7 +29,8 @@
       "Bash(git:*)",
       "WebSearch",
       "Bash(ls ~/.claude/mcp*)",
-      "Read(//Users/ianchesal/Library/**)"
+      "Read(//Users/ianchesal/Library/**)",
+      "Bash(echo $fpath)"
     ]
   },
   "enableAllProjectMcpServers": true,
