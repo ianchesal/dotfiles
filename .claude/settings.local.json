@@ -30,7 +30,14 @@
       "WebSearch",
       "Bash(ls ~/.claude/mcp*)",
       "Read(//Users/ianchesal/Library/**)",
-      "Bash(echo $fpath)"
+      "Bash(echo $fpath)",
+      "mcp__plex__check_auth_status",
+      "mcp__plex__authenticate_plex",
+      "mcp__plex__browse_libraries",
+      "mcp__plex__get_library_stats",
+      "mcp__plex__browse_library",
+      "mcp__seerr__search_media",
+      "mcp__seerr__request_media"
     ]
   },
   "enableAllProjectMcpServers": true,
