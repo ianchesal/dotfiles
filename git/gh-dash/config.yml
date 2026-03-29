@@ -13,17 +13,6 @@ prSections:
     filters: is:pr is:open review-requested:@me draft:false review:required
   - title: Involved
     filters: is:pr is:open involves:@me -author:@me
+  - title: Dependabot
+    filters: is:pr is:open author:app/dependabot
 
-keybindings:
-  prs:
-    - key: c
-      command: >
-        tmux new-window -c {{.RepoPath}} '
-          gh pr checkout {{.PrNumber}} &&
-          nvim -c ":DiffviewOpen master...{{.HeadRefName}}"
-        '
-    - key: v
-      command: >
-        cd {{.RepoPath}} &&
-        code . &&
-        gh pr checkout {{.PrNumber}}
