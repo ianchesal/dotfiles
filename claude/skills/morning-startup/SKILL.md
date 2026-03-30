@@ -57,13 +57,29 @@ starting the others.
 
 ### 2a. Google Calendar
 
+**CRITICAL — Always pass explicit date bounds.** The calendar MCP can return
+stale or historical data if called without a time range. You MUST always pass
+`timeMin`, `timeMax`, and `timeZone` when calling `gcal_list_events`.
+
 **If today is Monday:**
-- Fetch the **full week** (Monday through Friday) using
-  `mcp__claude_ai_Google_Calendar__gcal_list_events` in `{{YOUR_TIMEZONE}}`.
+- Fetch the **full week** (Monday through Friday) with:
+  - `timeMin`: `YYYY-MM-DDT00:00:00` using Monday's date
+  - `timeMax`: `YYYY-MM-DDT23:59:59` using Friday's date
+  - `timeZone`: `{{YOUR_TIMEZONE}}`
 - You will produce both a today-view AND a `### Week Ahead` section (see template).
 
 **All days:**
-- Fetch today's events in `{{YOUR_TIMEZONE}}`.
+- Fetch today's events with:
+  - `timeMin`: `YYYY-MM-DDT00:00:00` using today's date
+  - `timeMax`: `YYYY-MM-DDT23:59:59` using today's date
+  - `timeZone`: `{{YOUR_TIMEZONE}}`
+
+**After fetching, validate the results:** Check that the returned events have
+dates within the requested range. If any events predate the last 30 days, the
+MCP returned stale/historical data. In that case, retry once with the same
+explicit parameters. If the second attempt also returns stale data, write a
+warning in the Calendar section, skip calendar analysis entirely, and continue
+with Slack and Jira — do not block the rest of the briefing on a broken calendar.
 
 For each event, analyze and note:
 
@@ -296,6 +312,11 @@ After writing, confirm:
 
 ## Troubleshooting
 
+- **Calendar returns historical/stale data**: Always pass explicit `timeMin`,
+  `timeMax`, and `timeZone` parameters to `gcal_list_events`. If results still
+  look wrong (dates from years ago), retry once. If the second attempt fails,
+  write a warning in the Calendar section and continue — do not skip Slack and
+  Jira.
 - **Slack mentions returning nothing**: Verify `{{SLACK_USER_ID}}` is correct.
   Use `mentions:USER_ID` syntax, not `to:me`.
 - **Jira returns too many results**: Focus on 🔥 Urgent and 🆕 New first;
