@@ -37,7 +37,8 @@
       "mcp__plex__get_library_stats",
       "mcp__plex__browse_library",
       "mcp__seerr__search_media",
-      "mcp__seerr__request_media"
+      "mcp__seerr__request_media",
+      "Bash(bundle exec:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
