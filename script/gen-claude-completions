@@ -15,29 +15,32 @@ help_text.each_line do |raw|
   line = raw.chomp
 
   case line.strip
-  when 'Options:'   then current_section = :options;  next
-  when 'Commands:'  then current_section = :commands; next
-  when 'Arguments:' then current_section = :arguments; next
+  when 'Options:' then current_section = :options
+                       next
+  when 'Commands:'  then current_section = :commands
+                         next
+  when 'Arguments:' then current_section = :arguments
+                         next
   end
 
   next if line.strip.empty?
 
   if current_section == :options && line =~ /^\s{2}(-\S.*?)\s{2,}(.+)$/
-    flags_and_arg = ::Regexp.last_match(1).strip
-    description   = ::Regexp.last_match(2).strip
+    flags_and_arg = Regexp.last_match(1).strip
+    description   = Regexp.last_match(2).strip
 
     arg_spec  = ''
     flags_str = flags_and_arg
     if flags_and_arg =~ /^(.*?)\s+(\[.+?\]|<.+?>)\s*$/
-      flags_str = ::Regexp.last_match(1)
-      arg_spec  = ::Regexp.last_match(2)
+      flags_str = Regexp.last_match(1)
+      arg_spec  = Regexp.last_match(2)
     end
 
     flags = flags_str.split(/,\s*/).map(&:strip).reject(&:empty?)
 
     choices = []
     if description =~ /\(choices:\s+(.+?)\)\s*$/
-      raw_choices = ::Regexp.last_match(1)
+      raw_choices = Regexp.last_match(1)
       choices = raw_choices.scan(/"([^"]+)"/).flatten
       choices = raw_choices.split(/,\s*/).map(&:strip) if choices.empty?
     end
@@ -45,11 +48,11 @@ help_text.each_line do |raw|
     options << { flags: flags, arg: arg_spec, description: description, choices: choices }
   end
 
-  if current_section == :commands && line =~ /^\s{2}(\S+)\s{2,}(.+)$/
-    name = ::Regexp.last_match(1).split('|').first
-    desc = ::Regexp.last_match(2).strip
-    commands << { name: name, description: desc }
-  end
+  next unless current_section == :commands && line =~ /^\s{2}(\S+)\s{2,}(.+)$/
+
+  name = Regexp.last_match(1).split('|').first
+  desc = Regexp.last_match(2).strip
+  commands << { name: name, description: desc }
 end
 
 def short_desc(str)
@@ -79,18 +82,15 @@ options.each do |opt|
   optional = arg.start_with?('[')
 
   arg_completion = if !choices.empty?
-    ":#{arg_name}:(#{choices.join(' ')})"
-  elsif !arg.empty?
-    ":#{arg_name}:"
-  else
-    ''
-  end
+                     ":#{arg_name}:(#{choices.join(' ')})"
+                   elsif !arg.empty?
+                     ":#{arg_name}:"
+                   else
+                     ''
+                   end
   arg_completion = ":#{arg_completion}" if optional && !arg_completion.empty?
 
-  if flags.length >= 2 && flags.all? { |f| f.start_with?('--') }
-    # Two long aliases (e.g. --allowedTools and --allowed-tools)
-    flags.each { |flag| spec_lines << "    '#{flag}[#{desc}]#{arg_completion}' \\" }
-  elsif flags.length == 2 && flags.any? { |f| f =~ /^-[^-]/ }
+  if flags.length == 2 && flags.any? { |f| f =~ /^-[^-]/ }
     short = flags.find { |f| f =~ /^-[^-]/ }
     long  = flags.find { |f| f.start_with?('--') }
     spec_lines << "    '(#{short} #{long})'{#{short},#{long}}'[#{desc}]#{arg_completion}' \\"
@@ -131,6 +131,6 @@ output = <<~ZSH
   _claude "$@"
 ZSH
 
-dest = File.expand_path('../../zsh/completions/_claude', __FILE__)
+dest = File.expand_path('../zsh/completions/_claude', __dir__)
 File.write(dest, output)
 puts "Wrote #{dest} (#{version})"
