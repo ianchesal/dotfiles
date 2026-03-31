@@ -45,7 +45,7 @@ namespace :claude do
 
   desc 'Regenerate zsh/completions/_claude from claude --help'
   task :gen_completions do
-    sh "#{root('script', 'gen-claude-completions')}"
+    sh root('script', 'gen-claude-completions').to_s
   end
 
   task :clean do

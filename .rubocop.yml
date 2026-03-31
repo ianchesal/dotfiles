@@ -2,13 +2,11 @@ AllCops:
   NewCops: enable
   Exclude:
     - "brew/**/*"
+    - "claude/**/*"
     - "tmux/plugins/**/*"
     - "vendor/**/*"
 
 Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/OneClassPerFile:
   Enabled: false
 
 Style/SymbolArray:
