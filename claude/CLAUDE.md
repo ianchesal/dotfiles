@@ -1,3 +1,9 @@
+# Claude Tool Configuration
+
+Rake tasks for managing Claude Code installation. Install method uses the official
+installer (`curl -fsSL https://claude.ai/install.sh | bash`), not Homebrew.
+Key files: `claude.rake` (install/update/clean tasks), `CLAUDE.md` (this file).
+
 # Workflow Management
 
 ## Communication Style
