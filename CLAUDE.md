@@ -20,6 +20,12 @@ This file provides guidance to AI agents working on this repository.
 - Check and commit Neovim dependency updates: `rake nvim:commit`
 - Check for Oh My Posh updates: `rake ohmyposh:check_update`
 - Update Oh My Posh: `rake ohmyposh:update`
+- Reload tmux config in all sessions: `rake tmux:reload`
+- Update zsh and plugins: `rake zsh:update`
+- Update Homebrew packages: `rake brew:update`
+- Update Python packages: `rake python:update`
+- Update yt-dlp: `rake ytdlp:update`
+- Update gcloud components: `rake gcloud:update`
 
 ## Code Style Guidelines
 
@@ -129,7 +135,7 @@ This file provides guidance to AI agents working on this repository.
 - Memory file maintains important context, preferences, and recurring tasks
 - Structure memory file with clear section headers and descriptive content
 - Memory file content should be concise and focused on high-value information
-- Never include project-specific terminology, conventions, and preferences. Project-specific things should go in a PROMPT.md file in the root of the project.
+- Never include project-specific terminology, conventions, and preferences in the global memory file — those belong in the project's CLAUDE.md
 - Document complex workflows that should be remembered across sessions
 
 ## OpenCode Configuration
