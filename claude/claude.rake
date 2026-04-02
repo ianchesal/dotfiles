@@ -11,9 +11,7 @@ namespace :claude do
   end
 
   task :install do
-    sh 'brew install --cask claude-code'
-    FileUtils.mkdir_p(home('.local/bin'))
-    dolink(home('.local/bin/claude'), which('claude'))
+    sh 'curl -fsSL https://claude.ai/install.sh | bash'
   end
 
   task :permissions do
@@ -29,17 +27,17 @@ namespace :claude do
   end
 
   task update: [:permissions] do
-    if which('brew') && system('brew list --cask claude-code > /dev/null 2>&1')
+    if which('claude')
       puts 'Update: claude'.green
       old_version = `claude --version 2>/dev/null`.strip
-      sh 'brew upgrade claude-code'
+      sh 'claude update'
       new_version = `claude --version 2>/dev/null`.strip
       if old_version != new_version
         puts "claude updated #{old_version} -> #{new_version}, regenerating completions...".yellow
         Rake::Task['claude:gen_completions'].invoke
       end
     else
-      puts 'No updates to claude components -- claude-code brew cask not found'.red
+      puts 'No updates to claude components -- claude not found'.red
     end
   end
 
@@ -52,7 +50,6 @@ namespace :claude do
     sh "rm -f #{home('.claude')}"
     sh "rm -f #{home('.local/bin/claude')}"
     sh "rm -rf #{home('.local/share/claude')}"
-    sh 'brew remove claude-code'
   end
 end
 
