@@ -1,5 +1,13 @@
+# macOS
 .DS_Store
+
+# Ruby
 /Gemfile.lock
+
+# Node.js
+/node_modules/
+/package.json
+/package-lock.json
 
 # Claude Code - project .claude directory
 # Ignore runtime/cache files, keep shareable config (settings.json, commands/)
@@ -37,6 +45,7 @@
 /claude/paste-cache/
 /claude/plans/
 /claude/plugins/
+/claude/policy-limits.json
 /claude/projects/
 /claude/sessions/
 /claude/shell-snapshots/
@@ -50,27 +59,7 @@
 /claude/telemetry/
 /claude/todos/
 
-# Serena
-/.serena/**
-
-# Brew
-/brew/Brewfile.lock.json
-/copilot/logs
-/git/gh/hosts.yml
-/git/ignore
-/git/local
-/goose/history.txt
-/irssi/*log
-/irssi/default.theme
-/karabiner/automatic_backups
-/lazygit/state.yml
-/node_modules
-/package-lock.json
-/package.json
-/serena/.serena
-/serena/logs/
-/serena/serena_config.yml
-/tmux/plugins
+# Zsh
 /zsh/*.bak
 /zsh/*.local
 /zsh/*.local.zsh
@@ -86,4 +75,39 @@
 /zsh/.zsh_sessions/
 /zsh/plugins/
 /zsh/~*
+
+# Tmux
+/tmux/plugins/
+
+# Git
+/git/gh/hosts.yml
+/git/ignore
+/git/local
+
+# Homebrew
+/brew/Brewfile.lock.json
+
+# Copilot
+/copilot/logs/
+
+# Goose
+/goose/history.txt
+
+# irssi
+/irssi/*log
+/irssi/default.theme
+
+# Karabiner
+/karabiner/automatic_backups/
+
+# Lazygit
+/lazygit/state.yml
+
+# Serena
+/.serena/
+/serena/.serena
+/serena/logs/
+/serena/serena_config.yml
+
+# Misc
 BROWSE
