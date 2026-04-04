@@ -17,3 +17,7 @@ Metrics/BlockLength:
 
 Layout/LineLength:
   Max: 200
+
+Style/OneClassPerFile:
+  Exclude:
+    - "Rakefile"
