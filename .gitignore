@@ -60,6 +60,7 @@
 /claude/todos/
 
 # Zsh
+/zsh/completions/_claude
 /zsh/*.bak
 /zsh/*.local
 /zsh/*.local.zsh
