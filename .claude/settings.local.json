@@ -40,7 +40,8 @@
       "mcp__seerr__request_media",
       "Bash(bundle exec:*)",
       "Bash(rake -T)",
-      "Skill(commit-commands:commit)"
+      "Skill(commit-commands:commit)",
+      "Bash(gh run:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
