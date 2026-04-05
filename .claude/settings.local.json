@@ -41,7 +41,11 @@
       "Bash(bundle exec:*)",
       "Bash(rake -T)",
       "Skill(commit-commands:commit)",
-      "Bash(gh run:*)"
+      "Bash(gh run:*)",
+      "mcp__datadog__search_datadog_metrics",
+      "mcp__datadog__search_datadog_dashboards",
+      "mcp__datadog__get_datadog_metric",
+      "mcp__datadog__get_datadog_metric_context"
     ]
   },
   "enableAllProjectMcpServers": true,
