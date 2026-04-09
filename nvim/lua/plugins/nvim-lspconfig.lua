@@ -29,9 +29,9 @@ return {
         -- https://github.com/williamboman/mason-lspconfig.nvim/pull/395
         ruby_lsp = {
           -- cmd = { "bundle", "exec", "ruby-lsp" },
-          -- init_options = {
-          --   formatter = "auto",
-          -- },
+          init_options = {
+            formatter = "auto",
+          },
         },
         rubocop = {
           -- See: https://docs.rubocop.org/rubocop/usage/lsp.html
