@@ -111,6 +111,14 @@
     "claude-code-setup@claude-plugins-official": true,
     "github@claude-plugins-official": true
   },
+  "extraKnownMarketplaces": {
+    "persona-frontier": {
+      "source": {
+        "source": "github",
+        "repo": "persona-id/frontier-claude-skill"
+      }
+    }
+  },
   "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
   "fastMode": true,
