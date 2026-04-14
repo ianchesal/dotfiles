@@ -16,6 +16,7 @@ namespace :git do
       puts 'Installing gh extensions'
       sh 'gh extension install gennaro-tedesco/gh-f'
       sh 'gh extension install dlvhdr/gh-dash'
+      sh 'gh extension install github/gh-stack'
       # These are in gh/config.yml now
       # puts 'Setting up gh aliases'
       # sh 'gh alias set prs "f -p"'
