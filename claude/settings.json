@@ -121,7 +121,6 @@
   },
   "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
-  "fastMode": true,
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "allowedTools": [
