@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+##? start-my-day - Start the workday with Claude's morning startup skill
+##?
+##? Launches Claude Code with bypassPermissions mode and instructs it to
+##? run the morning-startup skill to begin the day.
+##?
+##? usage: start-my-day
+
+claude --permission-mode bypassPermissions "start my day"
