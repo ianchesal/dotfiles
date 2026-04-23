@@ -182,3 +182,6 @@ alias dfu=dotfiles_update
 # Serena MCP Server
 alias serena='uv run --directory ~/src/dotfiles/serena/.serena serena-mcp-server --project .'
 alias serena-add-mcp='claude mcp add serena -- uv "run" --directory ~/src/dotfiles/serena/.serena serena-mcp-server --project . --context ide-assistant --enable-web-dashboard False'
+
+# Get UPS information
+alias upsstat='for v in ups.status ups.load battery.charge battery.runtime; do printf "%-25s %s\n" "$v" "$(upsc myups $v 2>/dev/null)"; done'
