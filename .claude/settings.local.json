@@ -46,7 +46,9 @@
       "mcp__datadog__search_datadog_dashboards",
       "mcp__datadog__get_datadog_metric",
       "mcp__datadog__get_datadog_metric_context",
-      "mcp__claude_ai_Google_Calendar__list_events"
+      "mcp__claude_ai_Google_Calendar__list_events",
+      "Read(//home/ian/**)",
+      "Read(//home/ian/.tmux-scout/**)"
     ]
   },
   "enableAllProjectMcpServers": true,
