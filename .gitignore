@@ -29,6 +29,7 @@
 /.claude/tasks/
 /.claude/telemetry/
 /.claude/todos/
+/.claude/worktrees/
 
 # Claude Code - dotfiles config directory (symlinked to ~/.claude)
 /claude/*.db
