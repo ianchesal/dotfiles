@@ -58,3 +58,9 @@
 
 - **My timezone**: `America/New_York`
 - **Company HQ timezone**: `America/Los_Angeles`
+
+## Work Daily Notes
+
+- **Path**: `~/Documents/Personal/Work/`
+- **Structure**: `YYYY/MM-MonthName/YYYY-MM-DD.md`
+- **Title format**: `Work Day - YYYY-MM-DD`
