@@ -1,14 +1,15 @@
 ---
 name: morning-startup
-description: Use when the user wants to start their workday, get a morning briefing, or says things like "start my day", "morning startup", "good morning", "what's on my plate today", "morning briefing", or "let's get the day started". This skill reads context from yesterday's and today's notes, gathers context from Calendar, Slack, and Jira in parallel, and writes a Daily Plan with executive coaching to today's daily note. Invoke whenever the user signals they are beginning their workday.
+description: Use when the user wants to start their workday, get a morning briefing, or says things like "start my day", "morning startup", "good morning", "what's on my plate today", "morning briefing", or "let's get the day started". This skill reads context from yesterday's personal and work notes, gathers context from Calendar, Slack, and Jira in parallel, writes a full Work Daily Note, and places a slim briefing stub with executive coaching highlights into today's personal journal. Invoke whenever the user signals they are beginning their workday.
 ---
 
 # Morning Startup
 
 This skill helps you start your workday by:
-1. Reading context from yesterday's note and today's existing note
+1. Reading context from yesterday's and today's notes (personal and work)
 2. Gathering today's context from Calendar, Slack, and Jira in parallel
-3. Writing a `## Daily Plan` section into today's daily note, including executive coaching
+3. Writing a full Work Daily Note with all work context
+4. Writing a slim `## Work Day` stub (wikilink + coaching highlights) into today's personal journal
 
 ---
 
@@ -32,21 +33,26 @@ from your `config.md`.
 Before gathering external data, read the following files. Do this silently — no
 need to narrate it to the user.
 
-**Yesterday's daily note:**
+**Yesterday's personal daily note:**
 - Compute yesterday's date and build the path using `{{DAILY_NOTES_PATH}}` and
   `{{DAILY_NOTES_STRUCTURE}}`.
 - Read the file. If it doesn't exist, skip silently.
 - Extract: what got done (Day in Review), what carried forward, any themes, mood,
   energy signals, or personal context mentioned.
 
-**Today's daily note:**
+**Today's personal daily note:**
 - Read today's file if it exists.
 - Extract: any intentions already written, todos, personal context, or notes already
   captured before you started.
 
-Hold all of this context. Use it in Step 3 to personalize the Executive Coaching
-section — reference it explicitly so the coaching feels grounded in reality, not
-generic.
+**Yesterday's work daily note:**
+- Compute yesterday's date and build the path using `{{WORK_NOTES_PATH}}` and
+  `{{WORK_NOTES_STRUCTURE}}`.
+- Read the file. If it doesn't exist, skip silently.
+- Extract: work carries-forward, Jira state, unresolved incidents, key decisions made.
+
+Hold all context. Use it in Step 3 to ground the Executive Coaching in both
+personal state and work continuity.
 
 ---
 
@@ -218,95 +224,114 @@ If no open issues, note "No open Jira issues assigned."
 
 ---
 
-## Step 3: Write the Daily Plan
+## Step 3: Write Work Daily Note
 
-Determine today's daily note path from your config:
+Determine today's work note path from your config:
+- Base path: `{{WORK_NOTES_PATH}}`
+- Structure: `{{WORK_NOTES_STRUCTURE}}`
+- Title format: `{{WORK_NOTES_TITLE_FORMAT}}`
+
+Build the full path by expanding `~` and substituting today's date into the
+structure. Create any missing directories in the path before writing.
+
+Write (or replace) the file at that path with the following content:
+
+```markdown
+# Work Day - YYYY-MM-DD
+
+## Calendar
+
+[calendar section from Step 2a — full content including Today at a glance,
+Heads up, Key meetings table, Focus time, Lunch window]
+
+[## Week Ahead — Monday only]
+[week ahead section — full content including Week at a glance,
+Prepare now flags, and weekly table]
+
+## Slack
+
+[slack section from Step 2b — full content including all categories]
+
+## Jira
+
+[jira table from Step 2c]
+
+## Executive Coaching
+
+**Today's Shape:**
+[In 2–3 sentences, describe the texture of today. Is it meeting-heavy with
+little focus time? A day with a big deliverable? An unusually light day?
+Name what the user is walking into so they can set the right intention.]
+
+**The One Thing:**
+[Given everything — calendar, Slack, Jira, yesterday's personal note,
+yesterday's work note, and today's intentions — what is the single most
+important thing to move forward today? Name it explicitly. If the day risks
+filling up with busyness that doesn't move the needle, say so.]
+
+**Watch Out For:**
+[1–3 specific, concrete observations about risks or patterns. Reference real
+data — actual meeting names, Jira keys, Slack threads, note content.
+Examples: "Your 1:1s are back-to-back from 3–5 PM — you'll be drained by
+the last one. Prep quick agendas for each now." Or: "INFR-1673 has been open
+44 days with no movement. Decide today: do it or defer it explicitly."]
+
+**Energy & Wellbeing:**
+[Based on context from yesterday's personal note or today's. Flag anything
+worth attending to: disrupted routines, personal stressors, a heavy week
+that needs pacing. If yesterday's note shows the user was productive and
+energized, note that too — momentum is real.]
+
+**One Question:**
+[A single sharp coaching question to carry into the day. Make it specific to
+today's context, not generic. E.g.: "The incident debrief is at 1 PM and
+you're the organizer — do you have a clear outcome in mind for what you want
+to leave the room having decided?"]
+```
+
+After writing the work note, hold **The One Thing** and **One Question** values
+verbatim in memory — you will copy them into Step 4.
+
+---
+
+## Step 4: Write Personal Journal Stub
+
+Determine today's personal note path from your config:
 - Base path: `{{DAILY_NOTES_PATH}}`
 - Structure: `{{DAILY_NOTES_STRUCTURE}}`
 
-Read the current daily note. Find the line `{{SECTION_HEADING_TO_INSERT_ABOVE}}`.
-Insert the full `## Daily Plan` section **above** that line.
+Read the current personal daily note. Find `{{ANCHOR_SECTION}}`. Insert the
+`## Work Day` section **above** that line.
 
-Full section to insert:
+If `## Work Day` already exists in the file, **replace** it rather than
+inserting a duplicate.
+
+Compute the wikilink path for the work note. The path component is derived from
+`{{WORK_NOTES_STRUCTURE}}` with today's date substituted, without the `.md`
+extension. Example for 2026-05-04: `Work/2026/05-May/2026-05-04`.
+
+**Content to insert:**
 
 ```markdown
-## Daily Plan
+## Work Day
 
-### Calendar
+[[Work/YYYY/MM-MonthName/YYYY-MM-DD|Work Day - YYYY-MM-DD →]]
 
-[calendar content]
+**The One Thing:** [verbatim from Step 3 coaching]
 
-[### Week Ahead]
-[week coaching content — Monday only]
-
-### Slack
-
-[slack content]
-
-### Jira
-
-[jira content]
-
-### Executive Coaching
-
-[coaching content — see format below]
+**One Question:** [verbatim from Step 3 coaching]
 
 ---
 
 ```
 
-**Executive Coaching section — how to write it:**
+If the personal daily note doesn't exist, tell the user — they may need to
+create it from their note template first.
 
-This is the highest-value section. Don't summarize — coach. Draw on everything
-you've gathered: calendar shape, Slack signals, Jira state, what happened
-yesterday, what the user has already written in today's note. Be specific and
-grounded. Reference real meeting names, Jira keys, Slack threads, and note
-content. Avoid generic platitudes.
-
-Format:
-
-```
-### Executive Coaching
-
-**Today's Shape:**
-[In 2–3 sentences, describe the texture of today. Is it meeting-heavy with little
-focus time? A day with a big deliverable? An unusually light day that's an opportunity?
-Name what the user is walking into so they can set the right intention.]
-
-**The One Thing:**
-[Given everything — calendar, Slack, Jira, yesterday's carries-forward, and today's
-intentions — what is the single most important thing to move forward today? Name it
-explicitly. If the day is at risk of filling up with busyness that doesn't move the
-needle, say so.]
-
-**Watch Out For:**
-[1–3 specific, concrete observations about risks or patterns. Reference real data.
-Examples: "Your 1:1s are back-to-back from 3–5 PM — you'll be drained by the last
-one. Prep quick agendas for each now." Or: "INFR-1673 has been open 44 days with no
-movement. Every day it sits is a small tax on your mental load. Decide today: do it
-or defer it explicitly." Or: "Christian Henry's DM about the MongoDB contract is
-directly connected to your #1 intention. Answer it before 10 AM."]
-
-**Energy & Wellbeing:**
-[Based on context from yesterday's note or today's. Flag anything worth attending to:
-disrupted routines, personal stressors, a heavy week that needs pacing. If yesterday's
-note shows the user was productive and energized, note that too — momentum is real.]
-
-**One Question:**
-[A single sharp coaching question to carry into the day. Make it specific to today's
-context, not generic. E.g.: "The incident debrief is at 1 PM and you're the organizer
-— do you have a clear outcome in mind for what you want to leave the room having
-decided?"]
-```
-
-If `## Daily Plan` already exists in the file, **replace** it rather than
-inserting a duplicate.
-
-If the daily note doesn't exist, tell the user — they may need to create it
-from their note template first.
-
-After writing, confirm:
-> "Your daily plan has been written to [filename]. Have a great day!"
+After writing both files, confirm:
+> "Your morning briefing is ready. Work note written to
+> `Work/YYYY/MM-MonthName/YYYY-MM-DD.md`, personal journal updated.
+> Have a great day!"
 
 ---
 
@@ -325,3 +350,5 @@ After writing, confirm:
   for `incident SEV after:{{YESTERDAY_DATE}}` to surface recent incidents.
 - **Notes don't exist**: Skip silently and proceed without that context. Don't
   block on missing notes.
+- **Work note directory doesn't exist**: Create it silently before writing the
+  file. The path `Work/YYYY/MM-MonthName/` may not exist on the first run.
