@@ -84,3 +84,12 @@ People whose presence on your calendar warrants a prep note:
 - **Company HQ timezone**: `{{COMPANY_HQ_TIMEZONE}}`
   - Example: `America/Los_Angeles`
   - Used for lunch window suggestions when your timezone differs from company HQ.
+
+## Work Daily Notes
+
+- **Path**: `{{PATH_TO_WORK_NOTES}}`
+  - Example: `~/Documents/Personal/Work/`
+- **Structure**: `YYYY/MM-MonthName/YYYY-MM-DD.md`
+  - Example: `2026/05-May/2026-05-04.md`
+- **Title format**: `Work Day - YYYY-MM-DD`
+  - Used in the `# Work Day - YYYY-MM-DD` heading and wikilinks from the personal journal.
