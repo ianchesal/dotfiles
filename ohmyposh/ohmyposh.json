@@ -44,6 +44,12 @@
           "style": "plain"
         },
         {
+          "template": "{{ .UserName }}@{{ .HostName }} ",
+          "foreground": "p:terminal-yellow",
+          "type": "session",
+          "style": "plain"
+        },
+        {
           "options": {
             "style": "powerlevel"
           },
@@ -77,12 +83,6 @@
           "options": {
             "threshold": 2000
           }
-        },
-        {
-          "template": " {{ .UserName }}@{{ .HostName }}",
-          "foreground": "p:terminal-yellow",
-          "type": "session",
-          "style": "powerline"
         }
       ]
     },
