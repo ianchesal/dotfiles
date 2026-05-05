@@ -27,6 +27,21 @@ Month folder names use zero-padded month number + full month name, e.g.:
 - `01-January`, `02-February`, `03-March`, `04-April`, `05-May`, `06-June`
 - `07-July`, `08-August`, `09-September`, `10-October`, `11-November`, `12-December`
 
+Work day notes (separate file, optional — only present on work days):
+```
+\\synology01\ian\Obsidian\Personal\Work\YYYY\MM-MonthName\YYYY-MM-DD.md
+```
+
+When a work note exists for a given day, the daily note will contain a link to it,
+formatted like:
+```
+[[Work/YYYY/MM-MonthName/YYYY-MM-DD|Work Day - YYYY-MM-DD →]]
+```
+
+If that link is present, follow it and read the work note as well. It contains the
+calendar, Slack, Jira, and executive coaching context that used to live inline in
+the daily note.
+
 Today.md (persistent context across days):
 ```
 \\synology01\ian\Obsidian\Personal\Today.md
@@ -38,8 +53,11 @@ Today.md (persistent context across days):
 
 Use the Filesystem MCP tools to read:
 1. **Today's daily note** — derive the path from today's actual date
-2. **Today.md** — for persistent context (Current Focus, ongoing threads)
-3. **Yesterday's daily note** (optional) — only if today's note is sparse; helps with continuity
+2. **Today's work note** — IF the daily note contains a `[[Work/...]]` link (see File Paths above),
+   read that file too. It holds calendar, Slack, Jira, and executive coaching context that used
+   to be inline. Skip silently if no link is present (weekends, days off, sick days).
+3. **Today.md** — for persistent context (Current Focus, ongoing threads)
+4. **Yesterday's daily note** (optional) — only if today's note is sparse; helps with continuity
 
 If today's note doesn't exist yet, tell Ian and offer to help him create it from the template.
 
@@ -54,10 +72,19 @@ Look at each section:
 - What did Ian plan to do?
 - Cross-reference against "Day in Review > What actually got done?" — is it already filled in?
 
-### From "Daily Plan" (if present — populated by a separate automation)
-- Calendar: what meetings happened? Any notable external/customer/vendor meetings?
-- Slack: any open incidents? Any VIP activity that needed a response?
-- Jira: any overdue or high-priority tickets?
+### From the Work Note (if present)
+The work note is a separate file linked from the daily note. It is populated by a separate
+automation and contains structured Calendar / Slack / Jira / Executive Coaching sections.
+
+- **Calendar**: what meetings happened? Cross-reference "⚠️ Heads up" / VIP / non-recurring
+  items against what Ian actually noted in Random Notes. If a flagged meeting isn't mentioned
+  anywhere, it's worth asking about.
+- **Slack**: any open incidents? Any VIP activity (Rick, Charles, Chuck) that needed a response?
+  Look for Ian's inline replies on action items — things like "Responded" or "Done and merged."
+- **Jira**: any overdue or high-priority tickets aging past attention? Stale tickets that keep
+  appearing day after day are worth flagging in carry-forward.
+- **Executive Coaching > The One Thing**: this was the stated focus going in. Did it actually
+  get done, or did the day get hijacked? High-signal for whether the day held its shape.
 
 ### From "Random Notes"
 - Personal observations, home stuff, health, mood signals, side projects
