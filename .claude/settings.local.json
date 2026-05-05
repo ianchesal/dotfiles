@@ -54,7 +54,9 @@
       "Bash(awk '{print $5, $9}')",
       "Bash(awk '/^## Today.*Intentions|^## Random Notes|^## Day in Review/{flag=1} flag{print} /^## /{if \\(!/Intentions|Random Notes|Day in Review/\\) flag=0}' /data/ian/Obsidian/Personal/Daily/2026/04-April/__TRACKED_VAR__)",
       "Bash(awk '/^## Today.*Intentions|^## Random Notes|^## Day in Review/{flag=1} flag{print} /^## /{if \\(!/Intentions|Random Notes|Day in Review/\\) flag=0}' 2026-05-01.md)",
-      "Bash(awk '/^## Today.*Intentions|^## Random Notes|^## Day in Review/{flag=1} flag{print} /^## /{if \\(!/Intentions|Random Notes|Day in Review/\\) flag=0}' /data/ian/Obsidian/Personal/Daily/2026/05-May/2026-05-01.md)"
+      "Bash(awk '/^## Today.*Intentions|^## Random Notes|^## Day in Review/{flag=1} flag{print} /^## /{if \\(!/Intentions|Random Notes|Day in Review/\\) flag=0}' /data/ian/Obsidian/Personal/Daily/2026/05-May/2026-05-01.md)",
+      "WebFetch(domain:ohmyposh.dev)",
+      "Skill(update-config)"
     ]
   },
   "enableAllProjectMcpServers": true,
