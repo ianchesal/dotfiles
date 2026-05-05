@@ -123,6 +123,7 @@
   "alwaysThinkingEnabled": true,
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
+  "teammateMode": "tmux",
   "allowedTools": [
     "mcp__claude_ai_Google_Calendar__gcal_list_events",
     "mcp__claude_ai_Slack__slack_search_public_and_private",
