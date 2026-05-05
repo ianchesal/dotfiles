@@ -79,7 +79,7 @@
           }
         },
         {
-          "template": "{{ if .SSHSession }} {{ .UserName }}@{{ .HostName }}{{ end }}",
+          "template": " {{ .UserName }}@{{ .HostName }}",
           "foreground": "p:terminal-yellow",
           "type": "session",
           "style": "powerline"
