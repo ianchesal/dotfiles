@@ -76,12 +76,6 @@
       "overflow": "hide",
       "segments": [
         {
-          "template": "{{ if .Env.TMUX_SESSION }} tmux:{{ .Env.TMUX_SESSION }}{{ end }}",
-          "foreground": "p:pistachio-green",
-          "type": "text",
-          "style": "plain"
-        },
-        {
           "template": " {{ .FormattedMs }}",
           "foreground": "p:terminal-yellow",
           "type": "executiontime",
