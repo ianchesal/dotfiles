@@ -1,0 +1,50 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "palette": {
+    "main-bg": "#161616",
+    "terminal-blue": "#78a9ff",
+    "terminal-green": "#42be65",
+    "terminal-yellow": "#ffcc66",
+    "terminal-magenta": "#be95ff"
+  },
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "path",
+          "style": "plain",
+          "foreground": "p:terminal-blue",
+          "options": {
+            "style": "powerlevel"
+          },
+          "template": "<b>{{ .Path }}</b> "
+        },
+        {
+          "type": "git",
+          "style": "plain",
+          "foreground": "p:terminal-green",
+          "options": {
+            "branch_icon": "",
+            "commit_icon": "@",
+            "fetch_status": true
+          },
+          "template": "on {{ .HEAD }}{{ if .Staging.Changed }}<p:terminal-yellow>~</>{{ end }}{{ if .Working.Changed }}<p:terminal-red>*</>{{ end }} {{ if gt .Behind 0 }}↓{{ end }}{{ if gt .Ahead 0 }}↑{{ end }} "
+        },
+        {
+          "type": "claude",
+          "style": "plain",
+          "foreground": "p:terminal-magenta",
+          "options": {
+            "gauge_marked_char": "█",
+            "gauge_unmarked_char": "░"
+          },
+          "template": "{{ .Model.DisplayName }} [{{ .TokenGauge }}]{{ if .FormattedCost }} {{ .FormattedCost }}{{ end }}"
+        }
+      ]
+    }
+  ],
+  "version": 4,
+  "final_space": true
+}
