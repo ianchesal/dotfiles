@@ -34,6 +34,7 @@
 # Claude Code - dotfiles config directory (symlinked to ~/.claude)
 /claude/*.db
 /claude/.credentials.json
+/claude/.last-cleanup
 /claude/.update.lock
 /claude/backups/
 /claude/cache/
