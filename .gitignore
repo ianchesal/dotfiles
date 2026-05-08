@@ -39,6 +39,7 @@
 /claude/backups/
 /claude/cache/
 /claude/claude.json*
+/claude/costs/
 /claude/debug/
 /claude/file-history/
 /claude/history.jsonl
