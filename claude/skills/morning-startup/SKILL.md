@@ -29,6 +29,41 @@ from your `config.md`.
 
 ---
 
+## Step 0: Preflight Check
+
+Before reading any notes or gathering any data, verify all three MCP data sources
+are reachable. Run the following probe calls **in parallel**:
+
+| Source | Probe call |
+|--------|-----------|
+| Google Calendar | `mcp__claude_ai_Google_Calendar__list_calendars` |
+| Slack | `mcp__claude_ai_Slack__slack_search_users` with query `{{SLACK_USER_ID}}` |
+| Jira | `mcp__claude_ai_Atlassian__atlassianUserInfo` |
+
+**If all three probes succeed**, print:
+
+> ✅ All data sources available (Calendar, Slack, Jira) — starting briefing…
+
+Then proceed to Step 2.
+
+**If any probe fails**, print an error block naming every failed source:
+
+> ❌ Preflight check failed — cannot start morning briefing.
+>
+> The following data sources are not available:
+> - **[Source name]** — [diagnosis]
+>
+> Fix the above and re-run your morning startup.
+
+Then **stop immediately**. Do not read any notes. Do not write any files.
+
+**Error diagnosis by error type:**
+- **Tool not found / schema not loaded**: "MCP server may not be running. Restart Claude Code or check your MCP config."
+- **Authentication / authorization error**: "Auth expired or invalid. Re-authenticate via the MCP server settings."
+- **Unexpected / unknown error**: "Unexpected error — [include the raw error message]."
+
+---
+
 ## Step 1: Read Context from Notes
 
 Before gathering external data, read the following files. Do this silently — no
