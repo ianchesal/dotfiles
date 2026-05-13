@@ -64,7 +64,7 @@ Then **stop immediately**. Do not read any notes. Do not write any files.
 
 ---
 
-## Step 1: Read Context from Notes
+## Step 2: Read Context from Notes
 
 Before gathering external data, read the following files. Do this silently — no
 need to narrate it to the user.
@@ -92,12 +92,12 @@ personal state and work continuity.
 
 ---
 
-## Step 2: Gather Context (Run in Parallel)
+## Step 3: Gather Context (Run in Parallel)
 
 Gather all three data sources simultaneously. Do NOT wait for one to finish before
 starting the others.
 
-### 2a. Google Calendar
+### 3a. Google Calendar
 
 **CRITICAL — Always pass explicit date bounds.** The calendar MCP can return
 stale or historical data if called without a time range. You MUST always pass
@@ -184,7 +184,7 @@ Thursday, flag it Monday so prep can start Tuesday.
 | Fri | [events] | Heavy / Medium / Light |
 ```
 
-### 2b. Slack — Unread Messages Triage
+### 3b. Slack — Unread Messages Triage
 
 Use `mcp__claude_ai_Slack__slack_search_public_and_private` and
 `mcp__claude_ai_Slack__slack_read_channel` to check recent messages.
@@ -232,7 +232,7 @@ Produce a `### Slack` section:
 
 Omit any category where there's nothing to report, or note "Nothing new."
 
-### 2c. Jira — Assigned Issues
+### 3c. Jira — Assigned Issues
 
 Use `mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql` with cloud ID
 `{{JIRA_CLOUD_ID}}`.
@@ -260,7 +260,7 @@ If no open issues, note "No open Jira issues assigned."
 
 ---
 
-## Step 3: Write Work Daily Note
+## Step 4: Write Work Daily Note
 
 Determine today's work note path from your config:
 - Base path: `{{WORK_NOTES_PATH}}`
@@ -326,11 +326,11 @@ to leave the room having decided?"]
 ```
 
 After writing the work note, hold **The One Thing** and **One Question** values
-verbatim in memory — you will copy them into Step 4.
+verbatim in memory — you will copy them into Step 5.
 
 ---
 
-## Step 4: Write Personal Journal Stub
+## Step 5: Write Personal Journal Stub
 
 Determine today's personal note path from your config:
 - Base path: `{{DAILY_NOTES_PATH}}`
