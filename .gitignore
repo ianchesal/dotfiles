@@ -61,6 +61,7 @@
 /claude/teams/
 /claude/telemetry/
 /claude/todos/
+/claude/usage-data/
 
 # Zsh
 /zsh/completions/_claude
