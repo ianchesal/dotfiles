@@ -388,3 +388,11 @@ After writing both files, confirm:
   block on missing notes.
 - **Work note directory doesn't exist**: Create it silently before writing the
   file. The path `Work/YYYY/MM-MonthName/` may not exist on the first run.
+
+---
+
+## Morning Startup Skill
+
+- Always verify Slack MCP tools are available BEFORE starting context gathering; if unavailable, note this upfront rather than mid-flow
+- When user mentions calendar items, treat each meeting as independent unless explicitly linked (e.g., don't assume Monday prep relates to Wednesday meetings)
+- After verbally updating priorities or plans, ALWAYS write the changes to today's note immediately—don't wait to be asked
