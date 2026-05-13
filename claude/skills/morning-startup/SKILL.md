@@ -6,10 +6,11 @@ description: Use when the user wants to start their workday, get a morning brief
 # Morning Startup
 
 This skill helps you start your workday by:
-1. Reading context from yesterday's and today's notes (personal and work)
-2. Gathering today's context from Calendar, Slack, and Jira in parallel
-3. Writing a full Work Daily Note with all work context
-4. Writing a slim `## Work Day` stub (wikilink + coaching highlights) into today's personal journal
+1. Checking all data sources are available (preflight check)
+2. Reading context from yesterday's and today's notes (personal and work)
+3. Gathering today's context from Calendar, Slack, and Jira in parallel
+4. Writing a full Work Daily Note with all work context
+5. Writing a slim `## Work Day` stub (wikilink + coaching highlights) into today's personal journal
 
 ---
 
