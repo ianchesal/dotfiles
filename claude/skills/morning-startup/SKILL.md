@@ -365,9 +365,7 @@ If the personal daily note doesn't exist, tell the user — they may need to
 create it from their note template first.
 
 After writing both files, confirm:
-> "Your morning briefing is ready. Work note written to
-> `Work/YYYY/MM-MonthName/YYYY-MM-DD.md`, personal journal updated.
-> Have a great day!"
+> "Phase 1 complete — work note and journal updated. Starting deep prep…"
 
 ---
 
