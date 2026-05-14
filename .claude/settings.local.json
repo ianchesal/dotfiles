@@ -56,7 +56,12 @@
       "Bash(awk '/^## Today.*Intentions|^## Random Notes|^## Day in Review/{flag=1} flag{print} /^## /{if \\(!/Intentions|Random Notes|Day in Review/\\) flag=0}' 2026-05-01.md)",
       "Bash(awk '/^## Today.*Intentions|^## Random Notes|^## Day in Review/{flag=1} flag{print} /^## /{if \\(!/Intentions|Random Notes|Day in Review/\\) flag=0}' /data/ian/Obsidian/Personal/Daily/2026/05-May/2026-05-01.md)",
       "WebFetch(domain:ohmyposh.dev)",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "Skill(daily-wrap)",
+      "Read(//mnt/**)",
+      "Bash(findmnt)",
+      "Bash(wsl.exe --list)",
+      "Read(//synology01/ian/Obsidian/Personal/Daily/2026/**)"
     ]
   },
   "enableAllProjectMcpServers": true,
