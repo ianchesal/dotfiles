@@ -18,19 +18,28 @@ checks in with Ian to confirm/correct, writes the Day in Review, and updates Tod
 
 ## File Paths
 
-Daily notes live at:
-```
-\\synology01\ian\Obsidian\Personal\Daily\YYYY\MM-MonthName\YYYY-MM-DD.md
-```
+**Platform detection:** Check what OS and environment you're running in before constructing paths.
+
+- **Linux terminal** (WSL2 or native Linux shell): use the `/data/ian/...` mount path
+- **Windows Claude app**: use the `\\synology01\ian\...` UNC path
+
+### Daily notes
+
+| Platform | Path |
+|----------|------|
+| Linux terminal | `/data/ian/Obsidian/Personal/Daily/YYYY/MM-MonthName/YYYY-MM-DD.md` |
+| Windows Claude app | `\\synology01\ian\Obsidian\Personal\Daily\YYYY\MM-MonthName\YYYY-MM-DD.md` |
 
 Month folder names use zero-padded month number + full month name, e.g.:
 - `01-January`, `02-February`, `03-March`, `04-April`, `05-May`, `06-June`
 - `07-July`, `08-August`, `09-September`, `10-October`, `11-November`, `12-December`
 
-Work day notes (separate file, optional — only present on work days):
-```
-\\synology01\ian\Obsidian\Personal\Work\YYYY\MM-MonthName\YYYY-MM-DD.md
-```
+### Work day notes (optional — only present on work days)
+
+| Platform | Path |
+|----------|------|
+| Linux terminal | `/data/ian/Obsidian/Personal/Work/YYYY/MM-MonthName/YYYY-MM-DD.md` |
+| Windows Claude app | `\\synology01\ian\Obsidian\Personal\Work\YYYY\MM-MonthName\YYYY-MM-DD.md` |
 
 When a work note exists for a given day, the daily note will contain a link to it,
 formatted like:
@@ -42,10 +51,12 @@ If that link is present, follow it and read the work note as well. It contains t
 calendar, Slack, Jira, and executive coaching context that used to live inline in
 the daily note.
 
-Today.md (persistent context across days):
-```
-\\synology01\ian\Obsidian\Personal\Today.md
-```
+### Today.md (persistent context across days)
+
+| Platform | Path |
+|----------|------|
+| Linux terminal | `/data/ian/Obsidian/Personal/Today.md` |
+| Windows Claude app | `\\synology01\ian\Obsidian\Personal\Today.md` |
 
 ---
 
@@ -272,8 +283,9 @@ Show Ian the proposed Today.md changes before writing them. Then write with `edi
 
 ## Edge Cases
 
-**Note doesn't exist yet:** Offer to create it from the template path at
-`\\synology01\ian\Obsidian\Personal\Extras\Templates\Template, Daily Note.md`
+**Note doesn't exist yet:** Offer to create it from the template — path depends on platform:
+- Linux terminal: `/data/ian/Obsidian/Personal/Extras/Templates/Template, Daily Note.md`
+- Windows Claude app: `\\synology01\ian\Obsidian\Personal\Extras\Templates\Template, Daily Note.md`
 
 **Note is basically empty:** Ask more open questions. Start with "How'd today actually go?"
 before trying to infer anything.

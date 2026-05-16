@@ -61,7 +61,13 @@
       "Read(//mnt/**)",
       "Bash(findmnt)",
       "Bash(wsl.exe --list)",
-      "Read(//synology01/ian/Obsidian/Personal/Daily/2026/**)"
+      "Read(//synology01/ian/Obsidian/Personal/Daily/2026/**)",
+      "Bash(net use *)",
+      "Bash(cmd.exe /c \"net use\")",
+      "Read(//synology01/**)",
+      "Bash(ping -c 1 synology01)",
+      "Read(//synology01.localdomain/**)",
+      "Read(//192.168.1.4/**)"
     ]
   },
   "enableAllProjectMcpServers": true,
