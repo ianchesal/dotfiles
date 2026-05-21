@@ -88,7 +88,7 @@ The work note is a separate file linked from the daily note. It is populated by 
 automation and contains structured Calendar / Slack / Jira / Executive Coaching sections.
 
 - **Calendar**: what meetings happened? Cross-reference "⚠️ Heads up" / VIP / non-recurring
-  items against what Ian actually noted in Random Notes. If a flagged meeting isn't mentioned
+  items against what Ian actually noted in Random Thoughts. If a flagged meeting isn't mentioned
   anywhere, it's worth asking about.
 - **Slack**: any open incidents? Any VIP activity (Rick, Charles, Chuck) that needed a response?
   Look for Ian's inline replies on action items — things like "Responded" or "Done and merged."
@@ -97,7 +97,7 @@ automation and contains structured Calendar / Slack / Jira / Executive Coaching 
 - **Executive Coaching > The One Thing**: this was the stated focus going in. Did it actually
   get done, or did the day get hijacked? High-signal for whether the day held its shape.
 
-### From "Random Notes"
+### From "Random Thoughts"
 - Personal observations, home stuff, health, mood signals, side projects
 - These often contain the most honest snapshot of how the day *actually* felt
 
@@ -110,7 +110,7 @@ automation and contains structured Calendar / Slack / Jira / Executive Coaching 
 
 ### From "Claude:" directives (anywhere in the note)
 Scan the entire note for any bullet point starting with `Claude:` — these can appear in
-Today's Intentions, Random Notes, or anywhere else. They are explicit instructions Ian left
+Today's Intentions, Random Thoughts, or anywhere else. They are explicit instructions Ian left
 for himself (and you) earlier in the day.
 
 Collect all `Claude:` directives before the check-in and treat them as **overrides** —
@@ -163,9 +163,9 @@ interpret them. Then ask targeted follow-up questions to fill in gaps.
 **Guidelines for the check-in:**
 - Be direct and honest, not flattering. If it looks like a rough day, say so.
 - If the Day in Review is already filled in well, say so and ask only what's missing.
-- Probe personal/home/health when there are signals in Random Notes (mini-split, Krista, exercise, etc.)
+- Probe personal/home/health when there are signals in Random Thoughts (mini-split, Krista, exercise, etc.)
 - Don't ask about things that are clearly documented — only ask about gaps.
-- If the note is basically empty (sparse Intentions, no Day in Review, no Random Notes), be more curious: ask more open-ended questions about how the day went.
+- If the note is basically empty (sparse Intentions, no Day in Review, no Random Thoughts), be more curious: ask more open-ended questions about how the day went.
 
 ---
 
