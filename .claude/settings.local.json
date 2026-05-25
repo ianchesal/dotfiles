@@ -67,7 +67,12 @@
       "Read(//synology01/**)",
       "Bash(ping -c 1 synology01)",
       "Read(//synology01.localdomain/**)",
-      "Read(//192.168.1.4/**)"
+      "Read(//192.168.1.4/**)",
+      "Bash(bundle update *)",
+      "Bash(ruby --version)",
+      "Bash(gem env *)",
+      "Bash(gem list *)",
+      "Bash(gem uninstall *)"
     ]
   },
   "enableAllProjectMcpServers": true,
