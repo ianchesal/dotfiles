@@ -14,6 +14,11 @@ namespace :gem do
 
   desc 'Remove old gem versions and uninstall default gem conflicts'
   task :cleanup do
+    if ENV['WORK_MACHINE']
+      puts 'Skipping gem cleanup on work machine (WORK_MACHINE is set)'.yellow
+      next
+    end
+
     puts 'Update: gem cleanup'.green
     sh 'gem cleanup'
 
