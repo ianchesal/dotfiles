@@ -11,6 +11,7 @@
 
 # Claude Code - project .claude directory
 # Ignore runtime/cache files, keep shareable config (settings.json, commands/)
+/.mcp.json
 /.claude/.credentials.json
 /.claude/*.db
 /.claude/.update.lock
