@@ -12,6 +12,9 @@ Copy this file to `config.md` in this same directory and fill in your values.
 - **Slack Team ID**: `{{YOUR_SLACK_TEAM_ID}}`
   - Find yours: open Slack in a browser, it appears in the URL (e.g. `app.slack.com/client/TXXXXXXXX`)
 - **Work email**: `{{YOUR_WORK_EMAIL}}`
+- **User shortname**: `{{USER_SHORTNAME}}`
+  - Your short identifier used in signal-cache filenames (e.g. `alex`, `sam`).
+    Must match the shortname used when running the `signal-person` skill for yourself.
 
 ## Daily Notes
 
@@ -50,6 +53,23 @@ People whose DMs you should always prioritize reviewing:
 - _(add more as needed)_
 
 Common VIPs: your manager, your skip-level, your CEO/CTO, key cross-functional partners.
+
+## 1:1 People — Signal Registry
+
+People you have recurring 1:1s with. The morning-startup skill resolves each 1:1 on
+your calendar against this table to find the person's **shortname**, which keys their
+signal-cache file at `~/.claude/signal-cache/{shortname}.json`. The cache is built and
+refreshed automatically during 1:1 prep, and can be enriched out-of-band by the
+`signal-person` skill. People not listed here still get live 1:1 prep, but no cache is
+kept for them.
+
+| Display Name | Shortname | Slack Username | GitHub Handle |
+|--------------|-----------|----------------|---------------|
+| `{{REPORT_1_NAME}}` | `{{REPORT_1_SHORTNAME}}` | `{{REPORT_1_SLACK}}` | `{{REPORT_1_GITHUB}}` |
+| `{{REPORT_2_NAME}}` | `{{REPORT_2_SHORTNAME}}` | `{{REPORT_2_SLACK}}` | `{{REPORT_2_GITHUB}}` |
+
+- **Shortname**: lowercase, no spaces (e.g. `jordan`, `sam`). Used in the cache filename.
+- **GitHub Handle**: optional — enables PR-volume signal when the `gh` CLI is available.
 
 ## Slack: Channels to Monitor
 

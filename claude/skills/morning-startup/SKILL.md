@@ -140,6 +140,21 @@ For each event, analyze and note:
   meetings` header and the table. Otherwise Obsidian doesn't render it properly
   as a table.
 
+**Heads up filter — manager-level only.** Only include an item under `⚠️ Heads up`
+if it requires you to act or decide **as the head of infrastructure** (RSVP, resolve
+a conflict, prepare for something exceptional, make a call only you can make). Do not
+include IC-level operational status (tool hiccups, routine standups starting on time,
+a meeting ending early). Test: _would you behave differently as the head of infrastructure
+today because of this item?_ If no, omit it.
+
+**1:1 detection.** Identify every 1:1 on today's calendar — a title containing "1:1",
+a two-person pattern like "X / Y", "X <> Y", "X and Y", or any meeting with exactly two
+attendees where one is you. Collect the list of 1:1 people (match each against the
+`{{PERSON_SIGNAL_REGISTRY}}` to resolve their shortname). Do **not** write prep into the
+Key Meetings table — the dedicated `## 1:1 Prep` section is produced by the Phase 2b
+agent (see below). Just mark each 1:1 in the Notes column with `1:1 — see 1:1 Prep` and
+pass the resolved 1:1 people list forward to Phase 2b.
+
 Produce a `### Calendar` section:
 
 ```
@@ -148,13 +163,14 @@ Produce a `### Calendar` section:
 **Today at a glance:** [X meetings · Y hours of focus time]
 
 **⚠️ Heads up / Unusual today:**
-- [Any exceptional or non-recurring meetings]
+- [Only items requiring your action or decision as head of infrastructure — no IC operational noise]
 
 **Key meetings:**
 
 | Time | Event | Notes |
 |------|-------|-------|
-| 9:00 AM | Example meeting | VIP attending |
+| 9:00 AM | Google Cloud sync | External; RSVP needed |
+| 12:35 PM | 1:1 Jordan | 1:1 — see 1:1 Prep |
 
 **Focus time:** [X hours — when]
 
@@ -191,17 +207,46 @@ Use `mcp__claude_ai_Slack__slack_search_public_and_private` and
 
 **Priority order:**
 1. **Mentions** — search `mentions:{{SLACK_USER_ID}} after:{{YESTERDAY_DATE}}`
+
+   Before surfacing any result: verify that `{{SLACK_USER_ID}}` appears literally in
+   the message text, or the message is a direct reply to you in a thread you started.
+   Drop false positives silently — do not list them.
+
 2. **VIP DMs** — search for recent messages `from:{{VIP_SLACK_USERNAMES}}`
    using `slack_search_public_and_private`
-3. **Incidents** — read the incidents/on-call channel from your config;
-   for each incident assess: severity, impact summary, current status
-   (ongoing vs resolved), whether action is needed
-4. **Monitored channels** — read each channel from your `{{SLACK_CHANNELS}}`
-   config table; summarize what's worth reading
+3. **Incidents** — read the incidents/on-call channel from your config. Also search
+   `incident SEV after:{{YESTERDAY_DATE}}` to catch recent `inc-*` channels created
+   overnight — the main incidents channel can be noisy with old bot posts.
 
-For incidents specifically, also search `incident SEV after:{{YESTERDAY_DATE}}`
-to catch any recent `inc-*` channels created overnight — the main incidents
-channel can be noisy with old bot posts.
+   **Incident badge and filter rules.** Assign each active incident one badge, in
+   priority order:
+   - `[LEAD]` — you are the incident lead or comms lead
+   - `[FOLLOW-UP]` — you have an open follow-up Jira ticket linked to this incident
+   - `[ADJ]` — the incident involves infrastructure you own: GCP, Kubernetes, Mongo/
+     datastores, networking, compute, CI/CD, or any service owned by your team — even
+     if another team leads the incident
+   - `[WATCH]` — SEV-1 or SEV-2 company-wide with none of the above
+
+   **Show** any incident that earns a badge. SEV-1 and SEV-2 always earn at least
+   `[WATCH]`. Show SEV-3 only if it earns `[LEAD]`, `[FOLLOW-UP]`, or `[ADJ]`.
+   **Collapse** all other active incidents to a single line: `N other active incidents
+   — no infra involvement`. **Omit the incidents block entirely** (not even a header)
+   if zero incidents earn a badge.
+
+   Format for shown incidents:
+   ```
+   [BADGE] INC-XXXX · SEV-N · Short name · Day N · status
+     → [your role / open follow-up key / affected infra services]
+   ```
+
+4. **Monitored channels** — read each channel from your `{{SLACK_CHANNELS}}`
+   config table; summarize what's worth reading.
+
+   **Channel highlight filter — manager-level only.** Surface only items you need to
+   act on or be aware of as the head of infrastructure. Skip IC-level operational status
+   (engineers handling their own work, transient tool hiccups, PR activity not requiring
+   your review or decision). Test: _would you act differently as head of infrastructure
+   because of this item?_
 
 For each item requiring action, produce a clickable Obsidian deep link using
 the Slack `slack://` URL scheme:
@@ -217,20 +262,24 @@ Produce a `### Slack` section:
 ### Slack
 
 **🔴 Action Required (Mentions):**
-- [message description] — [link]
+- [verified mention description] — [link]
 
 **💬 VIP Activity:**
 - [Person]: [summary] — [link]
 
 **🚨 Incidents:**
-- [SEV-X] [Incident name]: [impact]. Status: [ongoing/resolved]. [link]
-  - _Action needed: Yes/No — [reason]_
+[LEAD] INC-001 · SEV-3 · Storage capacity · Day 14 · documenting
+  → lead: you · open follow-ups: INFR-101, INFR-102
+[ADJ] INC-002 · SEV-2 · Dashboard 500s · Day 4 · mitigating
+  → infra: K8s deploy pipeline affected
+2 other active incidents — no infra involvement
 
 **📣 Channel Highlights:**
-- [#channel]: [what's worth reading] — [link]
+- [#channel]: [management-level signal only] — [link]
 ```
 
 Omit any category where there's nothing to report, or note "Nothing new."
+Omit the Incidents block entirely if no incident earns a badge.
 
 ### 3c. Jira — Assigned Issues
 
@@ -294,6 +343,17 @@ Prepare now flags, and weekly table]
 
 ## Executive Coaching
 
+**Today needs from you (as Head of Infrastructure):**
+[One synthesis sentence answering "what does today need from me as the head of
+infrastructure?" — specific and actionable, naming 2–3 things maximum. Draw from
+everything gathered: unresolved RSVP/calendar decisions that must happen before the
+day progresses, new high-priority or Blocked Jira interrupts needing routing, any
+incident requiring your action (especially `[LEAD]`/`[ADJ]`), any 1:1 person whose
+signal warrants a conversation today, and the carry-forward from yesterday's work note.
+Example: "Today needs: RSVP the 2 PM Google sync, route INFR-456 to the on-call owner,
+and ask Jordan about the migration cutover in your 1:1." If nothing is urgent, say so:
+"Quiet day — protect the afternoon focus block and prep for Thursday's review."]
+
 **Today's Shape:**
 [In 2–3 sentences, describe the texture of today. Is it meeting-heavy with
 little focus time? A day with a big deliverable? An unusually light day?
@@ -325,8 +385,9 @@ you're the organizer — do you have a clear outcome in mind for what you want
 to leave the room having decided?"]
 ```
 
-After writing the work note, hold **The One Thing** and **One Question** values
-verbatim in memory — you will copy them into Step 5.
+After writing the work note, hold **Today needs from you (as Head of Infrastructure)**,
+**The One Thing**, and **One Question** values verbatim in memory — you will copy them
+into Step 5.
 
 ---
 
@@ -353,9 +414,11 @@ extension. Example for 2026-05-04: `Work/2026/05-May/2026-05-04`.
 
 [[Work/YYYY/MM-MonthName/YYYY-MM-DD|Work Day - YYYY-MM-DD →]]
 
-**The One Thing:** [verbatim from Step 3 coaching]
+**Today needs from you (as Head of Infrastructure):** [verbatim from Step 4 coaching]
 
-**One Question:** [verbatim from Step 3 coaching]
+**The One Thing:** [verbatim from Step 4 coaching]
+
+**One Question:** [verbatim from Step 4 coaching]
 
 ---
 
@@ -471,15 +534,17 @@ For each monitored channel listed above:
 
 ---
 
-### Phase 2b: Meeting Prep Agent
+### Phase 2b: Meeting & 1:1 Prep Agent
 
-Dispatch an Agent with description `"Prepare meeting notes for today"`.
+Dispatch an Agent with description `"Prepare meeting and 1:1 notes for today"`.
 
 Build the following prompt, substituting real values for all `{{}}` tokens and inserting
-the actual meeting list gathered in Step 3a:
+the actual meeting list gathered in Step 3a (including the resolved 1:1 people list):
 
 ```
-You are preparing meeting notes for a morning startup routine.
+You are preparing meeting notes and 1:1 prep for a morning startup routine. The user
+is the Head of Infrastructure — frame all prep at the manager/leadership level, not
+the IC level.
 
 **Your context (all values are real — use them directly):**
 - Today's date: [today YYYY-MM-DD]
@@ -487,14 +552,18 @@ You are preparing meeting notes for a morning startup routine.
 - Jira cloud ID: {{JIRA_CLOUD_ID}}
 - Jira base URL: {{JIRA_BASE_URL}}
 - Today's work note path: [full path, e.g. ~/Documents/Personal/Work/2026/05-May/2026-05-13.md]
+- Signal cache directory: ~/.claude/signal-cache/  (one JSON file per person, named {shortname}.json)
 
 **Today's meetings (from Phase 1 calendar — do not re-fetch):**
 [insert each meeting entry from the Phase 1 Calendar section:
  time, title, attendees list with names/emails, meeting link if available]
 
+**Today's 1:1s (resolved in Step 3a — prep these specially, see "1:1 PREP" below):**
+[insert each 1:1: time, title, person display name, person shortname (or "unregistered"),
+ person Slack username, person GitHub handle if known]
+
 **VIPs — flag any unresolved items explicitly:**
-Rick Song, Charles Yeh, Chuck McIntyre, Drew McMahon, Laura Milinez,
-Malav Bhavsar, Manoj Dayaram, Christian Henry
+[insert {{VIP_NAMES}} from config]
 
 ---
 
@@ -505,7 +574,48 @@ Malav Bhavsar, Manoj Dayaram, Christian Henry
 
 ---
 
-**For each real (non-skipped) meeting, do the following:**
+## 1:1 PREP (do this first, for each 1:1 person above)
+
+For each 1:1, build manager-level prep grounded in that person's signal cache.
+
+**Step 1:1-A — Read the signal cache.**
+Read `~/.claude/signal-cache/{shortname}.json` if the person is registered.
+- If it exists: load `jira_active`, `prs_open`, `pr_volume_7d`, `recent_context`,
+  `known_context`, and note `last_updated`.
+- If it does not exist (or the person is unregistered): you'll build a fresh one from
+  live signals in the next step, and note "no prior cache — first capture" in the prep.
+
+**Step 1:1-B — Gather fresh signals (live).**
+- Jira: resolve the person's account ID first with `lookupJiraAccountId` (by display name),
+  then `searchJiraIssuesUsingJql` with cloudId {{JIRA_CLOUD_ID}}, JQL:
+  `assignee = "[accountId]" AND statusCategory != Done ORDER BY updated DESC`.
+  Identify stuck tickets (no update in 7+ business days, or status Blocked).
+- Slack: `slack_search_public_and_private` query `from:[slack-username] after:[seven-days-ago]`
+  for recent decisions, blockers, or unresolved threads.
+- (Optional) PR volume: if a GitHub handle is known and the `gh` CLI is available, count
+  merged + open PRs in the last 7 days. Skip silently if unavailable.
+
+**Step 1:1-C — Refresh the cache.**
+Write `~/.claude/signal-cache/{shortname}.json` (create the directory if missing),
+following the schema in the signal-person skill. Set `last_updated` to now and
+`last_updated_by` to `"morning-startup"`. Preserve any `known_context` and richer fields
+written by the signal-person skill — only overwrite the lightweight signals you gathered.
+Skip the write only for unregistered people (no shortname to key the file on).
+
+**Step 1:1-D — Produce the prep.** For each 1:1, answer the central question:
+**"What does this person need from me today?"** Ground every line in the signals — never
+generic. Cover:
+- **What they need from me:** the single most useful thing you can give them today —
+  a decision, an unblock, air cover, recognition, or a course-correction. Be specific.
+- **Stuck / open:** the most relevant stuck ticket (key + short summary + days stuck), or
+  "no stuck tickets" if clean.
+- **One question:** one specific question to ask, derived from the signal data.
+- **Watch:** optional — any signal worth noting (PR volume spike/drop, Jira going stale
+  while PRs merge, a thread that stalled).
+
+---
+
+**For each real (non-skipped) meeting that is NOT a 1:1, do the following:**
 
 **Step A — Attendee context (Slack):**
 For each attendee, search Slack using mcp__claude_ai_Slack__slack_search_public_and_private:
@@ -532,11 +642,29 @@ Generate exactly 3 talking points. Requirements:
 
 **Output:**
 
-Open [today's work note path].
-If a `## Meeting Prep` section already exists in the file: replace it entirely.
-If it does not exist: append it at the end of the file.
+Open [today's work note path]. Write TWO sections. For each, if it already exists in
+the file replace it entirely; otherwise append it at the end of the file. Write
+`## 1:1 Prep` before `## Meeting Prep`.
 
-Write the following section:
+First, the 1:1 section (omit entirely if there are no 1:1s today):
+
+## 1:1 Prep
+
+### [HH:MM AM/PM] — 1:1 [Person Name]
+
+**What they need from me:** [the single most useful thing you can give them today —
+specific, grounded in signals]
+
+**Stuck / open:** [[KEY-123]]({{JIRA_BASE_URL}}KEY-123) — [summary], stuck [N] bd
+(or "no stuck tickets"). [If first run: "no prior cache — first capture."]
+
+**One question:** [specific question derived from the signals]
+
+**Watch:** [optional signal worth noting, or omit the line]
+
+[repeat the ### block for each 1:1]
+
+Then the meeting section (omit entirely if every meeting was a 1:1 or skipped):
 
 ## Meeting Prep
 
@@ -553,12 +681,12 @@ Write the following section:
 2. [specific, grounded, actionable point]
 3. [specific, grounded, actionable point]
 
-[repeat the ### block for each non-skipped meeting]
+[repeat the ### block for each non-1:1, non-skipped meeting]
 
 ---
 
 **When complete, return ONLY this one-line summary (no other output):**
-"Prepped N meetings, skipped N (focus/Clockwise/solo blocks)"
+"Prepped N 1:1s (cache refreshed), N meetings, skipped N (focus/Clockwise/solo blocks)"
 ```
 
 ---
@@ -571,7 +699,7 @@ After both agents complete, print the following (substituting agent return summa
 ## Morning Prep Complete
 
 ✅ Slack Drafts: [paste Slack Drafts agent return summary here] → ~/Documents/Personal/Work/inbox/[today]-slack-drafts.md
-✅ Meeting Prep: [paste Meeting Prep agent return summary here] → Work Day note updated
+✅ Meeting & 1:1 Prep: [paste Meeting & 1:1 Prep agent return summary here] → Work Day note updated
 
 Nothing has been sent or posted. Review and act when ready.
 ```
@@ -599,6 +727,12 @@ check partial output at [path]".
   block on missing notes.
 - **Work note directory doesn't exist**: Create it silently before writing the
   file. The path `Work/YYYY/MM-MonthName/` may not exist on the first run.
+- **Signal cache empty or missing**: On first run, no `~/.claude/signal-cache/`
+  exists. The Phase 2b agent creates it and captures fresh signals — 1:1 prep that
+  day notes "first capture." Caches fill in and get richer over subsequent runs (and
+  via the `signal-person` skill). Unregistered 1:1 people are prepped from live signals
+  but not cached (no shortname to key on) — add them to `{{PERSON_SIGNAL_REGISTRY}}`
+  in `config.md` to start caching them.
 
 ---
 
