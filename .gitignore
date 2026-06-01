@@ -54,6 +54,7 @@
 /claude/projects/
 /claude/sessions/
 /claude/shell-snapshots/
+/claude/signal-cache/
 /claude/skills/*/config.md
 /claude/skills/council
 /claude/skills/manage-skills
