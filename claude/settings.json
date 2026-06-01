@@ -12,7 +12,6 @@
       "Read(~/.claude/skills/**)"
     ]
   },
-  "model": "sonnet[1m]",
   "hooks": {
     "PermissionRequest": [
       {
