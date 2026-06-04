@@ -218,6 +218,23 @@ Use `mcp__claude_ai_Slack__slack_search_public_and_private` and
    `incident SEV after:{{YESTERDAY_DATE}}` to catch recent `inc-*` channels created
    overnight — the main incidents channel can be noisy with old bot posts.
 
+   **⚠️ Lifecycle re-posts are NOT new incidents.** The incident.io bot re-posts an
+   incident's full summary on every status change — "Incident updated", "Incident
+   resolved", or a transition like `Reviewing → Closed`. These re-posts embed impact
+   times like *"began at 21:14 UTC"* **with no date**, so a re-post that fires today
+   looks exactly like a fresh overnight outage even when the incident is days or weeks
+   old and already closed. The `incident SEV after:` search surfaces them because the
+   *message* timestamp is recent, not the *incident*. Before you badge anything as
+   new / active / overnight:
+   - Read the message body's **status line**. If it shows `Closed`, `Resolved`,
+     `Documenting`, `Reviewing`, or any `→` transition, treat it as a lifecycle
+     re-post, not a new event.
+   - **Verify the incident's real `reported_at`/`created_at` via the incident.io MCP**
+     (`incident_list` query by name, or `incident_show`) rather than trusting the Slack
+     post's recency. Only badge incidents whose `reported_at` falls inside the briefing
+     window (since yesterday). When in doubt, look it up — never infer the date from the
+     undated impact times in the summary text.
+
    **Incident badge and filter rules.** Assign each active incident one badge, in
    priority order:
    - `[LEAD]` — you are the incident lead or comms lead
@@ -723,6 +740,10 @@ check partial output at [path]".
   summarize languishing items in a collapsed group.
 - **Incidents channel is noisy**: Supplement channel read with a keyword search
   for `incident SEV after:{{YESTERDAY_DATE}}` to surface recent incidents.
+- **An "incident" looks new but might be old**: incident.io re-posts the full summary
+  on every status change (incl. auto-close), with undated impact times that read like a
+  fresh overnight outage. Check the status line and verify `reported_at` via the
+  incident.io MCP before badging it — see the lifecycle re-post guard in Step 3b.3.
 - **Notes don't exist**: Skip silently and proceed without that context. Don't
   block on missing notes.
 - **Work note directory doesn't exist**: Create it silently before writing the
