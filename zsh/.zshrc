@@ -123,3 +123,5 @@ if [ -f "${HOME}/.secrets" ]; then
 fi
 
 # zprof
+
+. "$HOME/.local/share/../bin/env"
