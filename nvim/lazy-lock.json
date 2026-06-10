@@ -11,7 +11,7 @@
   "friendly-snippets": { "branch": "main", "commit": "6cd7280adead7f586db6fccbd15d2cac7e2188b9" },
   "grug-far.nvim": { "branch": "main", "commit": "c995bbacf8229dc096ec1c3d60f8531059c86c1b" },
   "hlchunk.nvim": { "branch": "main", "commit": "06f51922ca43d5cdacf96725c106405fe064c59e" },
-  "koda.nvim": { "branch": "main", "commit": "ac7e746882b31a68bdcd533464a20ca40b712bcb" },
+  "koda.nvim": { "branch": "main", "commit": "39d15847e8cdf66c94d6db76b68bb4740c98c401" },
   "kulala.nvim": { "branch": "main", "commit": "69250f64e60f75c010feac413576acbd9ffa4ec8" },
   "lazy.nvim": { "branch": "main", "commit": "85c7ff3711b730b4030d03144f6db6375044ae82" },
   "lazydev.nvim": { "branch": "main", "commit": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d" },
