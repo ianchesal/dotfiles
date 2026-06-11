@@ -144,5 +144,6 @@
   ],
   "feedbackSurveyState": {
     "lastShownTime": 1753933073221
-  }
+  },
+  "model": "claude-fable-5[1m]"
 }
