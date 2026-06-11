@@ -53,8 +53,8 @@ return {
             nav_l = { "<C-l>", function(self)
               return self:is_floating() and "<c-l>" or vim.schedule(function() vim.cmd.wincmd("l") end)
             end, desc = "Go to Right Window", expr = true, mode = "t" },
-            hide_slash     = { "<C-/>", "hide", desc = "Hide Terminal", mode = "t" },
-            hide_underscore = { "<c-_>", "hide", desc = "which_key_ignore", mode = "t" },
+            -- LazyVim's <C-/>/<c-_> hide keys intentionally NOT ported: the
+            -- user deleted all Snacks.terminal toggles (tmux person).
           },
         },
       },
@@ -168,9 +168,8 @@ return {
     vim.keymap.set("n", "<leader>S", function()
       Snacks.scratch.select()
     end, { desc = "Select Scratch Buffer" })
-    vim.keymap.set("n", "<leader>dps", function()
-      Snacks.profiler.scratch()
-    end, { desc = "Profiler Scratch Buffer" })
+    -- <leader>dps (profiler scratch) intentionally NOT ported: the whole
+    -- <leader>d debug group was dropped with the dap cluster.
 
     -- Buffers / quick navigation
     vim.keymap.set("n", "<leader>,", function()
@@ -215,7 +214,7 @@ return {
       Snacks.picker.projects()
     end, { desc = "Projects" })
 
-    -- Git (<leader>g*) — snacks git pickers only; gitsigns hunks are in gitsigns.lua
+    -- Git (<leader>g*) — snacks git pickers (hunk signs/overlay live in mini-diff.lua)
     vim.keymap.set("n", "<leader>gd", function()
       Snacks.picker.git_diff()
     end, { desc = "Git Diff (hunks)" })
@@ -254,9 +253,8 @@ return {
     vim.keymap.set("n", "<leader>sG", function()
       Snacks.picker.grep({ root = false })
     end, { desc = "Grep (cwd)" })
-    vim.keymap.set("n", "<leader>sp", function()
-      Snacks.picker.lazy()
-    end, { desc = "Search for Plugin Spec" })
+    -- <leader>sp (Snacks.picker.lazy, "Search for Plugin Spec") intentionally
+    -- NOT ported: it introspects lazy.nvim plugin specs, which are gone.
     vim.keymap.set({ "n", "x" }, "<leader>sw", function()
       Snacks.picker.grep_word()
     end, { desc = "Visual selection or word (Root Dir)" })

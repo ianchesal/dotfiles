@@ -129,11 +129,16 @@ return {
               modified = " ",
               removed = " ",
             },
+            -- Diff counts come from mini.diff (gitsigns is not installed).
+            -- Port of LazyVim's extras/editor/mini-diff.lua lualine patch.
             source = function()
-              local gs = vim.b.gitsigns_status_dict
-              if gs then
-                return { added = gs.added, modified = gs.changed, removed = gs.removed }
-              end
+              local summary = vim.b.minidiff_summary
+              return summary
+                and {
+                  added = summary.add,
+                  modified = summary.change,
+                  removed = summary.delete,
+                }
             end,
           },
         },
