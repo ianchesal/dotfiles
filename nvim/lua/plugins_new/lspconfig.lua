@@ -233,6 +233,7 @@ local lsp_keys = {
   { "gao", function() Snacks.picker.lsp_outgoing_calls() end, desc = "C[a]lls Outgoing", has = "callHierarchy/outgoingCalls" },
   -- vtsls-only keymaps (LazyVim typescript extra)
   {
+    -- overrides the generic gD above for vtsls clients
     "gD",
     function()
       local win = vim.api.nvim_get_current_win()
@@ -376,7 +377,29 @@ return {
 
     -- Enable. mason-lspconfig auto-enables everything it manages; servers
     -- outside mason's catalog are enabled directly.
-    local mason_map = require("mason-lspconfig.mappings").get_mason_map().lspconfig_to_package
+    local ok, mason_map = pcall(function()
+      -- INTERNAL API: verify on every mason-lspconfig pin bump (see nvim/pins.json)
+      return require("mason-lspconfig.mappings").get_mason_map().lspconfig_to_package
+    end)
+    if not ok or type(mason_map) ~= "table" then
+      vim.notify(
+        "mason-lspconfig internals changed: falling back to vim.lsp.enable() for ALL servers; review lspconfig.lua",
+        vim.log.levels.WARN
+      )
+      -- Fallback: enable every configured server directly (the disabled
+      -- servers are not in `servers`, so they stay off) and call setup() with
+      -- automatic_enable = false -- a public setting -- so mason-lspconfig
+      -- cannot double-enable anything. Trade-off: ensure_installed
+      -- auto-install of LSP servers is lost (mason.lua still installs most of
+      -- them by package name); servers missing from PATH fail with their own
+      -- startup error, which is noisy but debuggable.
+      for name in pairs(servers) do
+        vim.lsp.enable(name)
+      end
+      require("mason-lspconfig").setup({ automatic_enable = false })
+      return
+    end
+
     local ensure_installed = {}
     for name in pairs(servers) do
       if mason_map[name] then
