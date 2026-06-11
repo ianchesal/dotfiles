@@ -33,8 +33,8 @@ local kept = delay.prune({ { rev = "a" }, { rev = "b" } }, "zzz")
 assert(#kept == 2, "pin not in log → log unchanged")
 
 -- decide(): never downgrade, flag divergence
-local function anc(a, b) -- fake DAG: a→b→c linear; "x" diverged
-  local order = { a = 1, b = 2, c = 3 }
+local function anc(a, b) -- fake DAG: a→b→c→d linear; "x" diverged
+  local order = { a = 1, b = 2, c = 3, d = 4 }
   return order[a] ~= nil and order[b] ~= nil and order[a] < order[b]
 end
 assert(delay.decide("b", "c", anc) == "update", "update for descendant")
@@ -42,5 +42,28 @@ assert(delay.decide("b", "a", anc) == "keep", "ancestor target → never downgra
 assert(delay.decide("b", "b", anc) == "keep", "keep for same rev")
 assert(delay.decide("b", nil, anc) == "keep", "no eligible candidate → keep")
 assert(delay.decide("b", "x", anc) == "diverged", "diverged for unrelated rev")
+
+-- target(): full per-plugin decision
+local plugin_state = {
+  pin = { rev = "b" },
+  observed = { { rev = "c", first_seen = now - 31 * DAY } },
+}
+local git_stub = { tip = "d", is_ancestor = anc }
+local t = delay.target(plugin_state, { mode = "commit" }, git_stub, now, 30)
+assert(
+  t.action == "update" and t.rev == "c",
+  "adopts eligible observed rev (got action=" .. t.action .. " rev=" .. tostring(t.rev) .. ")"
+)
+-- delay.target mutated observed: tip "d" should now be appended
+assert(
+  #plugin_state.observed == 2 and plugin_state.observed[2].rev == "d",
+  "tip observed for the future (len=" .. #plugin_state.observed .. ")"
+)
+-- exempt mode: tracks tip directly, ignores delay window
+local t2 = delay.target({ pin = { rev = "b" }, observed = {} }, { mode = "exempt" }, git_stub, now, 30)
+assert(
+  t2.action == "update" and t2.rev == "d",
+  "exempt tracks tip (got action=" .. t2.action .. " rev=" .. tostring(t2.rev) .. ")"
+)
 
 print("delay_spec OK")

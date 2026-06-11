@@ -55,6 +55,22 @@ function M.prune(observed, pinned_rev)
   return out
 end
 
+-- One plugin's full decision. git = { tip = <rev>, is_ancestor = fn(a,b) }.
+-- Mutates state.observed (records the frontier). Returns
+-- { action = "keep"|"update"|"diverged", rev = <target rev or nil> }.
+function M.target(state, policy, git, now, default_days)
+  if policy.mode == "exempt" then
+    local action = M.decide(state.pin.rev, git.tip, git.is_ancestor)
+    return { action = action, rev = git.tip }
+  end
+  M.observe(state.observed, git.tip, now)
+  local days = policy.days or default_days
+  local candidate = M.eligible(state.observed, now, days)
+  local rev = candidate and candidate.rev or nil
+  local action = M.decide(state.pin.rev, rev, git.is_ancestor)
+  return { action = action, rev = rev }
+end
+
 -- is_ancestor(a, b): true when a is an ancestor of b.
 -- Returns "update" | "keep" | "diverged".
 function M.decide(pin_rev, candidate_rev, is_ancestor)
