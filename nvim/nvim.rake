@@ -36,11 +36,21 @@ namespace :nvim do
     lock_changed = !system("git diff --quiet HEAD -- #{lock}")
     if !pins_changed && !lock_changed
       puts 'No changes to nvim dependencies'.green
-    elsif pins_changed ^ lock_changed
-      # Invariant: pins.json and the vim.pack lockfile travel in one commit.
-      # One changing alone means drift — refuse and reconverge first.
-      abort 'Only one of pins.json/nvim-pack-lock.json changed — run `rake nvim:update` to reconverge, then retry'.red
     else
+      # Invariant: only commit consistent states — every pin rev in pins.json
+      # must agree with the lockfile rev for that plugin. The lockfile holds
+      # full 40-char SHAs; pins.json also holds full SHAs — compare directly.
+      # Observation-only runs (new observed entries, no pin movement) are fine:
+      # those plugins still agree because pin.rev == lock.rev.
+      require 'json'
+      pin_revs = JSON.parse(File.read(pins))['plugins'].transform_values { |p| p.dig('pin', 'rev') }.compact
+      lock_revs = JSON.parse(File.read(lock))['plugins'].transform_values { |p| p['rev'] }
+      disagreements = pin_revs.reject do |name, rev|
+        lock_revs[name].nil? || rev.start_with?(lock_revs[name]) || lock_revs[name].start_with?(rev)
+      end
+      unless disagreements.empty?
+        abort "pins.json and nvim-pack-lock.json disagree for: #{disagreements.keys.join(', ')} — run `rake nvim:update` to reconverge, then retry".red
+      end
       puts 'Found changes in nvim dependencies:'.blue
       system("git --no-pager diff --stat #{pins} #{lock}")
       system("git add #{pins} #{lock}")
