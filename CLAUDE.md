@@ -16,8 +16,10 @@ This file provides guidance to AI agents working on this repository.
 - Run Rubocop checks: `rake rubocop:check`
 - Auto-correct Rubocop issues: `rake rubocop:auto_correct`
 - Update configurations: `rake update`
-- Update Neovim plugins: `rake nvim:update`
+- Update Neovim plugins (30-day delayed): `rake nvim:update`
+- Preview eligible Neovim plugin updates without applying: `rake nvim:outdated`
 - Check and commit Neovim dependency updates: `rake nvim:commit`
+- Run Neovim machinery tests: `nvim --headless -u NONE -l nvim/tests/<name>_spec.lua` (delay, gitops, loader)
 - Check for Oh My Posh updates: `rake ohmyposh:check_update`
 - Update Oh My Posh: `rake ohmyposh:update`
 - Reload tmux config in all sessions: `rake tmux:reload`
@@ -61,15 +63,20 @@ This file provides guidance to AI agents working on this repository.
 
 ## Neovim Configuration
 
-- Based on [LazyVim](https://www.lazyvim.org/) with custom plugins and configurations
-- Some LazyVim features are enabled via the `./nvim/lazyvim.json`
-- Lua files should follow stylua.toml format (2 space indent, 120 column width)
-- Plugin configuration belongs in `./nvim/lua/plugins/*.lua` files
-- Custom keymaps should be defined in `./nvim/lua/config/keymaps.lua`
-- Custom autocmd config should be defined in `./nvim/lua/config/autocmds.lua`
-- Use which-key for documenting keybindings with descriptive labels
-- Respect existing plugin organization and structure
-- Requires Neovim 0.10+ for compatibility
+- Self-managed on Neovim 0.12's native `vim.pack` — no plugin-manager framework (migrated off LazyVim June 2026)
+- One plugin per file in `./nvim/lua/plugins/*.lua`; each returns `{ src, policy, priority?, config? }`:
+  - `src`: full https URL (vim.pack passes it verbatim to `git clone` — no `owner/repo` shorthand)
+  - `policy`: `{ mode = "commit" }` (default, 30-day delayed) / `"tag"` (delayed stable semver releases) / `"exempt"` (no delay; also the urgent-update escape hatch); optional `days = N` overrides the window
+  - `priority`: lower runs `config()` earlier (colorscheme 10, mini-icons 14, snacks 15, treesitter 20, which-key 25, mason→lspconfig 30–32, blink 40, default 50)
+  - `config()`: plain `setup()` calls + `vim.keymap.set` — NO lazy.nvim idioms (`dependencies`/`event`/`keys`/`cmd`/`build`/`opts` spec fields)
+- Updates are delayed by first-observed timestamps: `./nvim/pins.json` is authoritative (GENERATED — never hand-edit); `./nvim/nvim-pack-lock.json` is vim.pack's derived lockfile; both must agree and travel in one commit (`rake nvim:commit` enforces consistency)
+- Update machinery: `./nvim/lua/pack/` (delay.lua pure core, gitops.lua git layer, loader.lua) + `./nvim/scripts/update.lua`; tests in `./nvim/tests/*_spec.lua`
+- The updater MUST run with `-u NONE` — init.lua pre-registering vim.pack specs would freeze update targets (re-adds are no-ops)
+- A plugin spec with no pin entry is a hard startup error; `rake nvim:update` is the only path that creates pins (never fall back to branch tips)
+- Adding a plugin: new spec file, then `rake nvim:update` to bootstrap its delayed pin; removing: delete the spec file, then clean up pin/lockfile entries and the on-disk clone
+- Plugin-bound keymaps live in that plugin's spec file; global keymaps in `./nvim/lua/config/keymaps.lua`; autocmds in `./nvim/lua/config/autocmds.lua`; which-key groups in `./nvim/lua/plugins/which-key.lua`
+- nvim-treesitter pins the `main` branch (post-rewrite API — no module system); endwise and contextindent carry commented compat shims in their spec files; lspconfig.lua uses one pcall-guarded internal mason-lspconfig API (check on its pin bumps)
+- Lua: stylua format (2-space indent, 120 column width); requires Neovim 0.12+; updater needs `jq` and `git`
 
 ## Zsh Configuration
 
