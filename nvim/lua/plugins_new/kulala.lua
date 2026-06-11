@@ -11,7 +11,7 @@
 -- vim.filetype.add for http extension is done here (from LazyVim rest extra).
 
 return {
-  src = "mistweaverco/kulala.nvim",
+  src = "https://github.com/mistweaverco/kulala.nvim",
   policy = { mode = "commit" },
   config = function()
     -- Register .http extension as http filetype

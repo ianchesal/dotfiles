@@ -12,7 +12,7 @@
 -- vim.g.minidiff_disable which is a heavier integration than needed here.
 
 return {
-  src = "nvim-mini/mini.diff",
+  src = "https://github.com/nvim-mini/mini.diff",
   policy = { mode = "commit" },
   config = function()
     require("mini.diff").setup({

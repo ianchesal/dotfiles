@@ -12,7 +12,7 @@
 -- Native snippet expand: vim.snippet.expand (no LazyVim util layer).
 
 return {
-  src = "Saghen/blink.cmp",
+  src = "https://github.com/Saghen/blink.cmp",
   policy = { mode = "tag" },
   priority = 40,
   config = function()

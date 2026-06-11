@@ -15,7 +15,7 @@
 -- vim.g.lazyvim_prettier_needs_config not carried forward (always false default).
 
 return {
-  src = "stevearc/conform.nvim",
+  src = "https://github.com/stevearc/conform.nvim",
   policy = { mode = "commit" },
   config = function()
     -- Prettier condition: check if prettier can handle the buffer

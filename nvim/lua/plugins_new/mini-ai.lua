@@ -21,7 +21,7 @@
 -- carry forward in this bare setup).
 
 return {
-  src = "nvim-mini/mini.ai",
+  src = "https://github.com/nvim-mini/mini.ai",
   policy = { mode = "commit" },
   config = function()
     local ai = require("mini.ai")

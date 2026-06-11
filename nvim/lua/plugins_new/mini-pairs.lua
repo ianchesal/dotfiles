@@ -13,7 +13,7 @@
 -- Both are inlined here without the LazyVim util layer.
 
 return {
-  src = "nvim-mini/mini.pairs",
+  src = "https://github.com/nvim-mini/mini.pairs",
   policy = { mode = "commit" },
   config = function()
     local opts = {

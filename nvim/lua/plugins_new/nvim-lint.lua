@@ -13,7 +13,7 @@
 -- linter.condition support and fallback/global linters inlined from LazyVim.
 
 return {
-  src = "mfussenegger/nvim-lint",
+  src = "https://github.com/mfussenegger/nvim-lint",
   policy = { mode = "commit" },
   config = function()
     local lint = require("lint")

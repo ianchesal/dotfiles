@@ -13,7 +13,7 @@
 -- default uses SSH_CONNECTION detection — overridden to always false here).
 
 return {
-  src = "gbprod/yanky.nvim",
+  src = "https://github.com/gbprod/yanky.nvim",
   policy = { mode = "commit" },
   config = function()
     require("yanky").setup({

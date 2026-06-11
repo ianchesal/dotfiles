@@ -6,6 +6,6 @@
 --   - lazy-lock.json                         — pinned to main branch commit
 
 return {
-  src = "rafamadriz/friendly-snippets",
+  src = "https://github.com/rafamadriz/friendly-snippets",
   policy = { mode = "commit" },
 }

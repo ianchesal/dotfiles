@@ -14,7 +14,7 @@
 --   <c-space> (n/o/x) — Treesitter Incremental Selection
 
 return {
-  src = "folke/flash.nvim",
+  src = "https://github.com/folke/flash.nvim",
   policy = { mode = "commit" },
   config = function()
     require("flash").setup({})

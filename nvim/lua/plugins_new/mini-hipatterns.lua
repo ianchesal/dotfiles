@@ -13,7 +13,7 @@
 -- function ref for hex_color (same thing resolved).
 
 return {
-  src = "nvim-mini/mini.hipatterns",
+  src = "https://github.com/nvim-mini/mini.hipatterns",
   policy = { mode = "commit" },
   config = function()
     local hi = require("mini.hipatterns")

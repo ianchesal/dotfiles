@@ -6,7 +6,7 @@
 --   - LazyVim extras/coding/mini-surround.lua     — opts structure
 
 return {
-  src = "nvim-mini/mini.surround",
+  src = "https://github.com/nvim-mini/mini.surround",
   policy = { mode = "commit" },
   config = function()
     require("mini.surround").setup({

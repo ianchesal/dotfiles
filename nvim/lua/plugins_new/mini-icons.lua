@@ -9,7 +9,7 @@
 -- responses instead.
 
 return {
-  src = "nvim-mini/mini.icons",
+  src = "https://github.com/nvim-mini/mini.icons",
   policy = { mode = "commit" },
   priority = 14,
   config = function()
