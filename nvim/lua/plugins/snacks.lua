@@ -148,6 +148,23 @@ return {
             { icon = " ", key = "q", desc = "Quit",          action = ":qa" },
           },
         },
+        -- Sections declared explicitly: snacks' default list ends with
+        -- { section = "startup" }, whose implementation hard-requires
+        -- lazy.nvim (lazy.stats) and errors on UIEnter without it.
+        sections = {
+          { section = "header" },
+          { section = "keys", gap = 1, padding = 1 },
+          function()
+            return {
+              align = "center",
+              text = {
+                { "⚡ Neovim loaded ", hl = "footer" },
+                { tostring(#vim.pack.get()), hl = "special" },
+                { " plugins", hl = "footer" },
+              },
+            }
+          end,
+        },
       },
     })
 
