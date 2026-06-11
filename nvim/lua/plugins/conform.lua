@@ -114,8 +114,16 @@ return {
         local buf = ev.buf
         local baf = vim.b[buf].autoformat
         local gaf = vim.g.autoformat
-        -- buffer-local value takes precedence; global defaults to true
-        local enabled = baf ~= nil and baf or (gaf == nil or gaf)
+        -- buffer-local value takes precedence; global defaults to true.
+        -- NOTE: must be an explicit nil-check, not `baf ~= nil and baf or ...`
+        -- — a buffer-local `false` (e.g. markdown) must NOT fall through to
+        -- the global.
+        local enabled
+        if baf ~= nil then
+          enabled = baf
+        else
+          enabled = gaf == nil or gaf
+        end
         if enabled then
           require("conform").format({ bufnr = buf })
         end

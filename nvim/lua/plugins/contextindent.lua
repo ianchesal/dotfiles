@@ -1,7 +1,14 @@
 return {
-  "wurli/contextindent.nvim",
-  -- This is the only config option; you can use it to restrict the files
-  -- which this plugin will affect (see :help autocommand-pattern).
-  opts = { pattern = "*" },
-  dependencies = { "nvim-treesitter/nvim-treesitter" },
+  src = "https://github.com/wurli/contextindent.nvim",
+  policy = { mode = "commit" },
+  config = function()
+    -- (old lazy.nvim spec declared a treesitter dependency; ordering now
+    -- comes from loader priorities — treesitter runs at priority 20, this
+    -- at default 50)
+    require("contextindent").setup({
+      -- pattern = "*" applies to all files; narrow if needed
+      -- (see :help autocommand-pattern)
+      pattern = "*",
+    })
+  end,
 }

@@ -1,6 +1,6 @@
 return {
-  "shellRaining/hlchunk.nvim", -- indent-blankline.nvim alternative
-  event = { "BufReadPre", "BufNewFile" },
+  src = "https://github.com/shellRaining/hlchunk.nvim",
+  policy = { mode = "commit" },
   config = function()
     require("hlchunk").setup({
       chunk = {

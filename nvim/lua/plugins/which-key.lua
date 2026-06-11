@@ -13,9 +13,6 @@
 --   <leader>dp profiler  — nvim-dap cluster dropped
 --   <leader>t  test      — neotest dropped
 --   <leader>gh hunks     — gitsigns dropped; no <leader>gh* maps exist
---   <leader>b  buffer    — the buffer keymaps ([b, ]b, <leader>bd, etc.) are
---     LazyVim CORE keymaps that get ported in the config/keymaps.lua rewrite
---     (Task 9); restore the <leader>b group there or here at that point
 --
 -- Kept groups: all others from the snapshot spec.
 -- User <leader>l rewrite:
@@ -38,6 +35,7 @@ return {
         {
           mode = { "n", "x" },
           { "<leader><tab>", group = "tabs" },
+          { "<leader>b", group = "buffer" },
           { "<leader>c", group = "code" },
           { "<leader>f", group = "file/find" },
           { "<leader>g", group = "git" },

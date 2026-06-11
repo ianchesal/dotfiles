@@ -1,16 +1,18 @@
 return {
-  "stevearc/oil.nvim",
-  ---@module 'oil'
-  ---@type oil.SetupOpts
-  opts = {
-    view_options = {
-      show_hidden = true,
-    },
-  },
-  -- Optional dependencies
-  -- I don't need web-devicons
-  -- dependencies = { { "nvim-mini/mini.icons", opts = {} }, { "nvim-tree/nvim-web-devicons" } },
-  dependencies = { { "nvim-mini/mini.icons", opts = {} } },
-  -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-  lazy = false,
+  src = "https://github.com/stevearc/oil.nvim",
+  policy = { mode = "commit" },
+  config = function()
+    require("oil").setup({
+      view_options = {
+        show_hidden = true,
+      },
+    })
+
+    vim.keymap.set("n", "<leader>fe", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+    vim.keymap.set("n", "<leader>fE", function()
+      local git_path = vim.fn.finddir(".git", ".;")
+      local cd_git = vim.fn.fnamemodify(git_path, ":h")
+      vim.cmd.edit(cd_git)
+    end, { desc = "Open root directory" })
+  end,
 }
