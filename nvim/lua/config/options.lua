@@ -85,11 +85,9 @@ opt.spelllang = { "en" }
 opt.splitbelow = true -- Put new windows below current
 opt.splitkeep = "screen"
 opt.splitright = true -- Put new windows right of current
--- LazyVim used its own statuscolumn util; snacks provides the equivalent.
--- The snacks statuscolumn module's auto-setup is disabled in plugins/snacks.lua
--- and the option is owned here instead. Evaluated lazily at redraw time, by
--- which point snacks is loaded.
-opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
+-- statuscolumn is set in plugins/snacks.lua AFTER snacks loads: the option is
+-- evaluated at draw time, and setting it here broke fresh-machine first launch
+-- (vim.pack's install-progress redraws fired before snacks existed on disk).
 opt.tabstop = 2 -- Number of spaces tabs count for
 opt.termguicolors = true -- True color support
 opt.timeoutlen = 300 -- Lower than default (1000) to quickly trigger which-key

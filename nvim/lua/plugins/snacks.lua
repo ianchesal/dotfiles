@@ -28,7 +28,8 @@ return {
       scroll     = { enabled = false },
       -- User override: indent guides disabled
       indent     = { enabled = false },
-      -- Statuscolumn managed separately (options.lua)
+      -- Statuscolumn module auto-setup disabled; the option is set manually
+      -- below, after setup, so fresh-machine installs never evaluate it early
       statuscolumn = { enabled = false },
       words      = { enabled = true },
       -- toggle.map left at default (LazyVim.safe_keymap_set shim gone)
@@ -167,6 +168,12 @@ return {
         },
       },
     })
+
+    -- statuscolumn (LazyVim parity, snacks-rendered). Set HERE, after setup,
+    -- never in options.lua: the option is evaluated at draw time, and on a
+    -- fresh machine vim.pack's install-progress redraws fire before snacks
+    -- exists on disk — setting it earlier spams E5108 through the install.
+    vim.o.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 
     -- ── Keymaps ──────────────────────────────────────────────────────────
 
