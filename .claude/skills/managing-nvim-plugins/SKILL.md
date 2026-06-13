@@ -51,7 +51,7 @@ nvim --headless -u NONE "+lua vim.pack.del({ '<name>' })" +qa
 jq --sort-keys 'del(.plugins["<name>"])' nvim/pins.json > /tmp/pins.json && mv /tmp/pins.json nvim/pins.json
 ```
 
-5. Verify: clean headless startup; `grep -rn '<name>' nvim/` hits nothing except inert LazyVim leftovers (`lazy-lock.json`, `lazyvim.json`) — **leave those alone**, they're scheduled for deletion separately.
+5. Verify: clean headless startup; `grep -rn '<name>' nvim/` hits nothing.
 6. Commit the deletion + `pins.json` + `nvim-pack-lock.json` together.
 
 ## Editing a plugin
