@@ -6,9 +6,11 @@
 -- success was lazy.nvim machinery and is dropped).
 --
 -- Package list: union of the old user mason.lua and the LazyVim snapshot
--- resolution, minus js-debug-adapter (DAP cluster dropped), plus
--- tree-sitter-cli (required by treesitter `main` to build parsers; LazyVim
--- auto-installed it via mason too).
+-- resolution, minus js-debug-adapter (DAP cluster dropped).
+--
+-- tree-sitter-cli (required by treesitter `main` to build parsers) comes
+-- from brew (brew/Brewfile), NOT mason: mason's prebuilt binary needs a
+-- newer glibc than Debian 12 ships, while brew bottles bundle their own.
 local ensure_installed = {
   "bash-language-server",
   "deno",
@@ -31,7 +33,6 @@ local ensure_installed = {
   "stylua",
   "terraform-ls",
   "tflint",
-  "tree-sitter-cli",
   "typescript-language-server",
   "yaml-language-server",
 }
