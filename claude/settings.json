@@ -111,7 +111,7 @@
     "lua-lsp@claude-plugins-official": true,
     "ruby-lsp@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
@@ -125,6 +125,12 @@
       "source": {
         "source": "github",
         "repo": "persona-id/frontier-claude-skill"
+      }
+    },
+    "persona-claude-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "persona-id/persona-claude-marketplace"
       }
     }
   },
