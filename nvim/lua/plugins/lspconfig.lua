@@ -409,6 +409,18 @@ return {
       end
     end
     table.sort(ensure_installed) -- deterministic order for mason's UI/logs
+
+    -- Register the Mason packages backing these servers so `rake
+    -- nvim:mason_prune` keeps them (mason.lua's list doesn't include LSP
+    -- servers like marksman/taplo/vtsls that mason-lspconfig auto-installs).
+    -- Registered only on this success path: the fallback branch above can't
+    -- map names, so it leaves "lspconfig" unregistered and prune refuses to run.
+    local mason_packages = {}
+    for _, name in ipairs(ensure_installed) do
+      table.insert(mason_packages, mason_map[name])
+    end
+    require("pack.mason_desired").register("lspconfig", mason_packages)
+
     require("mason-lspconfig").setup({
       ensure_installed = ensure_installed,
       automatic_enable = { exclude = disabled_servers },

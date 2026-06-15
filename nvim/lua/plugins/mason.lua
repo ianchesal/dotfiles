@@ -44,6 +44,10 @@ return {
   config = function()
     require("mason").setup({})
 
+    -- Authoritative "keep these" set for `rake nvim:mason_prune` (see
+    -- pack/mason_desired.lua). These are already Mason package names.
+    require("pack.mason_desired").register("mason", ensure_installed)
+
     local mr = require("mason-registry")
     mr.refresh(function()
       for _, tool in ipairs(ensure_installed) do

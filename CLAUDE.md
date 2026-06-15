@@ -19,6 +19,8 @@ This file provides guidance to AI agents working on this repository.
 - Update Neovim plugins (30-day delayed): `rake nvim:update`
 - Preview eligible Neovim plugin updates without applying: `rake nvim:outdated`
 - Check and commit Neovim dependency updates: `rake nvim:commit`
+- Remove Mason packages no longer wanted by the config: `rake nvim:mason_prune` (runs automatically as the last step of `nvim:update`)
+- Preview which Mason packages would be pruned: `rake nvim:mason_outdated`
 - Run Neovim machinery tests: `nvim --headless -u NONE -l nvim/tests/<name>_spec.lua` (delay, gitops, loader)
 - Check for Oh My Posh updates: `rake ohmyposh:check_update`
 - Update Oh My Posh: `rake ohmyposh:update`
@@ -76,6 +78,7 @@ This file provides guidance to AI agents working on this repository.
 - Adding a plugin: new spec file, then `rake nvim:update` to bootstrap its delayed pin; removing: delete the spec file, then clean up pin/lockfile entries and the on-disk clone
 - Plugin-bound keymaps live in that plugin's spec file; global keymaps in `./nvim/lua/config/keymaps.lua`; autocmds in `./nvim/lua/config/autocmds.lua`; which-key groups in `./nvim/lua/plugins/which-key.lua`
 - nvim-treesitter pins the `main` branch (post-rewrite API — no module system); endwise and contextindent carry commented compat shims in their spec files; lspconfig.lua uses one pcall-guarded internal mason-lspconfig API (check on its pin bumps)
+- Mason packages are NOT tracked by the repo, so dropping a tool/LSP from config leaves orphans on every other machine; `rake nvim:mason_prune` reconciles them (runs as the last step of `nvim:update`). The authoritative "keep" set is assembled at runtime: `mason.lua`'s `ensure_installed` plus the Mason packages backing enabled servers in `lspconfig.lua`, both registered into `./nvim/lua/pack/mason_desired.lua` from their `config()`. The prune script (`./nvim/scripts/mason_prune.lua`) loads the FULL config (NOT `-u NONE`, unlike the updater) and refuses to run if any source failed to register (guards against over-deletion on a startup error)
 - Lua: stylua format (2-space indent, 120 column width); requires Neovim 0.12+; updater needs `jq` and `git`
 
 ## Zsh Configuration

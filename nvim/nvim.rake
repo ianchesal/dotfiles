@@ -21,6 +21,8 @@ namespace :nvim do
     # Parity with the old task: MasonUpdate refreshes the registry only, not
     # installed packages (those need MasonUpdateAll + its completion autocmd).
     sh 'nvim --headless "+MasonUpdate" +qa'
+    # Reconcile Mason on every machine: drop packages no longer in the config.
+    Rake::Task['nvim:mason_prune'].invoke
   end
 
   desc 'Preview which plugin updates are eligible without applying'
@@ -75,6 +77,17 @@ namespace :nvim do
       sh "nvim --headless -u NONE \"+lua vim.pack.del({ #{list} })\" +qa"
       puts 'Done'.green
     end
+  end
+
+  desc 'Remove Mason packages no longer wanted by the config (full-config load, not -u NONE)'
+  task :mason_prune do
+    sh "nvim --headless -c 'luafile #{root('nvim', 'scripts', 'mason_prune.lua')}' -c 'qa'"
+  end
+
+  desc 'Preview which Mason packages would be pruned without removing them'
+  task :mason_outdated do
+    sh "nvim --headless -c 'lua _G.MASON_PRUNE_DRY = true' " \
+       "-c 'luafile #{root('nvim', 'scripts', 'mason_prune.lua')}' -c 'qa'"
   end
 
   task :clean do
