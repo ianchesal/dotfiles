@@ -61,6 +61,22 @@ namespace :nvim do
     end
   end
 
+  desc 'Remove on-disk plugin clones not in pins.json (sync after pulling deletions on a fresh machine)'
+  task :prune do
+    require 'json'
+    authorized = JSON.parse(File.read(root('nvim', 'pins.json')))['plugins'].keys.to_set
+    pack_dir = File.expand_path('~/.local/share/nvim/site/pack/core/opt')
+    orphans = Dir.entries(pack_dir).reject { |e| e.start_with?('.') }.reject { |e| authorized.include?(e) }
+    if orphans.empty?
+      puts 'No orphaned plugins found'.green
+    else
+      puts "Removing orphaned plugins: #{orphans.join(', ')}".yellow
+      list = orphans.map { |o| "'#{o}'" }.join(', ')
+      sh "nvim --headless -u NONE \"+lua vim.pack.del({ #{list} })\" +qa"
+      puts 'Done'.green
+    end
+  end
+
   task :clean do
     sh "rm -f #{home('.config/nvim')}"
     sh "rm -rf #{home('.local/share/nvim')}"

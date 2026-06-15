@@ -113,6 +113,7 @@ function dotfiles_update() {
 
   # Update everything
   git pull && \
+  rake nvim:prune && \
   rake update && \
   zinit update && \
   rake ohmyposh:update && \

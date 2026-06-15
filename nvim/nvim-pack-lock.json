@@ -135,11 +135,6 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'851e865342e5a4cb1ae23d31caf6e991e1c99f1e'"
     },
-    "nvim-ts-autotag": {
-      "rev": "88c1453db4ba7dd24131086fe51fdf74e587d275",
-      "src": "https://github.com/windwp/nvim-ts-autotag",
-      "version": "'88c1453db4ba7dd24131086fe51fdf74e587d275'"
-    },
     "oil.nvim": {
       "rev": "b73018b75affd13fa38e2fc94ef753b465f770d7",
       "src": "https://github.com/stevearc/oil.nvim",
@@ -194,11 +189,6 @@
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
       "src": "https://github.com/folke/which-key.nvim",
       "version": "'3aab2147e74890957785941f0c1ad87d0a44c15a'"
-    },
-    "yanky.nvim": {
-      "rev": "020c22d0cfa60358569e49d1d7b91630f175aef0",
-      "src": "https://github.com/gbprod/yanky.nvim",
-      "version": "'020c22d0cfa60358569e49d1d7b91630f175aef0'"
     }
   }
 }
