@@ -40,16 +40,6 @@
       "src": "https://github.com/shellRaining/hlchunk.nvim",
       "version": "'06f51922ca43d5cdacf96725c106405fe064c59e'"
     },
-    "koda.nvim": {
-      "rev": "39d15847e8cdf66c94d6db76b68bb4740c98c401",
-      "src": "https://github.com/oskarnurm/koda.nvim",
-      "version": "'39d15847e8cdf66c94d6db76b68bb4740c98c401'"
-    },
-    "kulala.nvim": {
-      "rev": "734cfd1c60758353a3436888640ce7825322cd50",
-      "src": "https://github.com/mistweaverco/kulala.nvim",
-      "version": "'734cfd1c60758353a3436888640ce7825322cd50'"
-    },
     "lazydev.nvim": {
       "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",
       "src": "https://github.com/folke/lazydev.nvim",
@@ -155,11 +145,6 @@
       "src": "https://github.com/stevearc/oil.nvim",
       "version": "'b73018b75affd13fa38e2fc94ef753b465f770d7'"
     },
-    "onedarkpro.nvim": {
-      "rev": "f5fddfd5122fe00421e199151ae4fe8571a02898",
-      "src": "https://github.com/olimorris/onedarkpro.nvim",
-      "version": "'f5fddfd5122fe00421e199151ae4fe8571a02898'"
-    },
     "plenary.nvim": {
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim",
@@ -194,11 +179,6 @@
       "rev": "123a9fb12e7229342f807ec9e6de478b1102b041",
       "src": "https://github.com/folke/ts-comments.nvim",
       "version": "'123a9fb12e7229342f807ec9e6de478b1102b041'"
-    },
-    "vhs-era-theme.nvim": {
-      "rev": "6ec9949edfc191ea1b02e9302bf653092689e4ef",
-      "src": "https://github.com/mistweaverco/vhs-era-theme.nvim",
-      "version": "'6ec9949edfc191ea1b02e9302bf653092689e4ef'"
     },
     "vim-jsonnet": {
       "rev": "4ebc6619ddce5d032a985b42a9864154c3d20e4a",
