@@ -102,8 +102,12 @@ log "Uninstalling Ruby ${RUBY_VERSION}..."
 asdf uninstall ruby "${RUBY_VERSION}"
 
 log "Reinstalling Ruby ${RUBY_VERSION} with libyaml rpath baked in..."
+# Augment (don't clobber) any RUBY_CONFIGURE_OPTS the shell already exports
+# (see zsh/zshrc.d/ruby.zsh -- openssl/zlib/readline prefixes) so the rebuilt
+# Ruby is configured like a normal `asdf install`, plus our libyaml-dir.
+RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS:+${RUBY_CONFIGURE_OPTS} }--with-libyaml-dir=${LIBYAML_PREFIX}"
 LDFLAGS="-Wl,-rpath,${LIBYAML_PREFIX}/lib" \
-  RUBY_CONFIGURE_OPTS="--with-libyaml-dir=${LIBYAML_PREFIX}" \
+  RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS}" \
   asdf install ruby "${RUBY_VERSION}"
 
 asdf reshim ruby "${RUBY_VERSION}" || true
