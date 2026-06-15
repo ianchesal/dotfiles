@@ -86,6 +86,10 @@ run = ['layout floating']
 if.app-id = 'dev.kdrag0n.MacVirt'
 run = ['layout floating']
 
+[[on-window-detected]]
+if.app-id = 'com.runningwithcrayons.Alfred-Preferences'
+run = ['layout floating']
+
 [gaps]
 inner.horizontal = 10
 inner.vertical = 10
