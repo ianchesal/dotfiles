@@ -50,9 +50,7 @@ namespace :nvim do
       disagreements = pin_revs.reject do |name, rev|
         lock_revs[name].nil? || rev.start_with?(lock_revs[name]) || lock_revs[name].start_with?(rev)
       end
-      unless disagreements.empty?
-        abort "pins.json and nvim-pack-lock.json disagree for: #{disagreements.keys.join(', ')} — run `rake nvim:update` to reconverge, then retry".red
-      end
+      abort "pins.json and nvim-pack-lock.json disagree for: #{disagreements.keys.join(', ')} — run `rake nvim:update` to reconverge, then retry".red unless disagreements.empty?
       puts 'Found changes in nvim dependencies:'.blue
       system("git --no-pager diff --stat #{pins} #{lock}")
       system("git add #{pins} #{lock}")
