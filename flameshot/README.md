@@ -1,9 +1,11 @@
-# flameshot -- Cross-OS screen capture tool
+# dotfiles/flameshot
 
-Nice ergonomics and consistent UI across Linux, Windows and macOS which I really appreciate.
+[Flameshot](https://flameshot.org/) is a cross-platform screen-capture tool with
+nice ergonomics and a consistent UI across Linux, Windows, and macOS.
 
-Main site: https://flameshot.org/
+No configuration is tracked here yet — this directory just keeps a pointer to the tool.
 
-Downloads: https://flameshot.org/getting-started/#install
+## Links
 
-No configuration yet. I just didn't want to lose track of this one.
+- Main site: https://flameshot.org/
+- Install: https://flameshot.org/getting-started/#install

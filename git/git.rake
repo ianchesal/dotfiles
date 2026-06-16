@@ -31,7 +31,7 @@ namespace :git do
     sh "rm -rf #{home('.local/state/git')}"
   end
 
-  desc 'Update all the git submodules in this repository'
+  desc 'Upgrade installed gh CLI extensions'
   task :update do
     if which('gh')
       puts 'Updating gh extensions'.green

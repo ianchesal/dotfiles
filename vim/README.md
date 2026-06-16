@@ -1,5 +1,22 @@
-# vim
+# dotfiles/vim
 
-I'm not using this in my day-to-day, but I like a nice vimrc when I'm on
-a machine where I can't install NeoVIM. So I keep this around for those
-situation.
+Old-school Vim configuration kept around for machines where Neovim can't be
+installed. Not used day-to-day. Uses [vim-plug](https://github.com/junegunn/vim-plug)
+for plugin management, which bootstraps itself on first launch.
+
+## Layout
+
+```
+vimrc        The configuration; symlinked to ~/.vimrc
+vim.rake     Install/update/clean tasks
+```
+
+## Tasks
+
+- `rake vim` — install (symlink `vimrc` to `~/.vimrc`, create `~/.vim`)
+- `rake vim:update` — update vim-plug plugins (PlugUpgrade, PlugInstall, PlugUpdate)
+
+## Notes
+
+These tasks are not wired into `rake all`/`rake clean`/`rake update` by default
+(commented out at the bottom of `vim.rake`); run them explicitly.

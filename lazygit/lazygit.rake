@@ -1,4 +1,4 @@
-desc 'Install neovim dotfiles'
+desc 'Install lazygit dotfiles'
 task lazygit: ['lazygit:all']
 
 namespace :lazygit do
