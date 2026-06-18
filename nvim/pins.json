@@ -388,6 +388,11 @@
           "first_seen": 1781311652,
           "first_seen_iso": "2026-06-13T00:47:32Z",
           "rev": "a683e0ddf0cf64c6cd689e18ffb480ade3c162b7"
+        },
+        {
+          "first_seen": 1781797905,
+          "first_seen_iso": "2026-06-18T15:51:45Z",
+          "rev": "96f363ce07d46c1804532ca2d1eb3a157d11ee29"
         }
       ],
       "pin": {
