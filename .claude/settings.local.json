@@ -79,7 +79,8 @@
       "mcp__unifi__list_traffic_rules",
       "mcp__unifi__list_port_forwards",
       "Bash(gh pr *)",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "Bash(gh api *)"
     ]
   },
   "enableAllProjectMcpServers": true,
