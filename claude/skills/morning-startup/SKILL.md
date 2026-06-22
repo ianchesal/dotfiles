@@ -151,9 +151,9 @@ today because of this item?_ If no, omit it.
 a two-person pattern like "X / Y", "X <> Y", "X and Y", or any meeting with exactly two
 attendees where one is you. Collect the list of 1:1 people (match each against the
 `{{PERSON_SIGNAL_REGISTRY}}` to resolve their shortname). Do **not** write prep into the
-Key Meetings table — the dedicated `## 1:1 Prep` section is produced by the Phase 2b
-agent (see below). Just mark each 1:1 in the Notes column with `1:1 — see 1:1 Prep` and
-pass the resolved 1:1 people list forward to Phase 2b.
+Key Meetings table — the dedicated `## 1:1 Prep` section is produced by the Phase 2
+meeting & 1:1 prep agent (see below). Just mark each 1:1 in the Notes column with
+`1:1 — see 1:1 Prep` and pass the resolved 1:1 people list forward to that agent.
 
 Produce a `### Calendar` section:
 
@@ -451,107 +451,19 @@ After writing both files, confirm:
 
 ## Phase 2: Deep Prep
 
-Once Step 5 is complete, run two prep agents **in parallel**. Dispatch both Agent tool
-calls simultaneously — do not wait for one before starting the other.
+Once Step 5 is complete, run the meeting & 1:1 prep agent.
 
-When building each agent's prompt, substitute all `{{CONFIG_TOKEN}}` values with the
-actual resolved values from `config.md`. Agents run in fresh contexts without access
+When building the agent's prompt, substitute all `{{CONFIG_TOKEN}}` values with the
+actual resolved values from `config.md`. The agent runs in a fresh context without access
 to `config.md`.
 
----
-
-### Phase 2a: Slack Drafts Agent
-
-Dispatch an Agent with description `"Draft Slack reply drafts for today"`.
-
-Build the following prompt, substituting real values for all `{{}}` tokens and inserting
-the actual @-mentions list gathered in Step 3b:
-
-```
-You are drafting Slack replies for a morning startup routine.
-
-**Your context (all values are real — use them directly):**
-- Slack User ID: {{SLACK_USER_ID}}
-- Slack Team ID: {{SLACK_TEAM_ID}}
-- Today's date: [today YYYY-MM-DD]
-- Yesterday's date: [yesterday YYYY-MM-DD]
-- Output file: ~/Documents/Personal/Work/inbox/[today]-slack-drafts.md
-- Today's work note path: [full path to today's work note, e.g. ~/Documents/Personal/Work/2026/05-May/2026-05-13.md]
-
-**@-mentions from Phase 1 (do not re-search — use these directly):**
-[insert each mention entry from the Phase 1 Slack section: channel name, thread link, one-line summary]
-
-**Monitored channels to check for unanswered threads:**
-[insert each row from the config channels table: channel name, channel ID]
+Note: this routine does **not** draft Slack replies. Surfacing *what* needs a reply is
+handled in Step 3b (the `🔴 Action Required (Mentions)` section of the work note) —
+deciding and writing the replies is left to you.
 
 ---
 
-**Pass 1 — Draft replies for @-mentions:**
-
-For each @-mention listed above:
-1. Read the full thread using mcp__claude_ai_Slack__slack_read_thread (you need the
-   channel ID and thread timestamp — extract these from the slack:// link or URL above).
-2. Understand what is being asked or requested.
-3. Draft a contextual reply the user can edit and send.
-4. If the thread is purely informational (announcement, FYI, no action expected):
-   do NOT draft a reply — add it to the "No Reply Needed" list instead.
-
-**Pass 2 — Unanswered threads in monitored channels:**
-
-For each monitored channel listed above:
-1. Search for threads where the user posted using mcp__claude_ai_Slack__slack_search_public_and_private:
-   Query: `from:{{SLACK_USER_ID}} in:[channel-name] after:[yesterday YYYY-MM-DD]`
-2. For each result, read the thread using mcp__claude_ai_Slack__slack_read_channel.
-3. Check whether the most recent message in the thread is NOT from {{SLACK_USER_ID}}.
-4. If others replied after the user's last message: the user owes a response. Draft a reply.
-5. If the user's message is the most recent: skip it.
-
----
-
-**Output:**
-
-1. Create directory ~/Documents/Personal/Work/inbox/ if it does not exist.
-
-2. Write ~/Documents/Personal/Work/inbox/[today]-slack-drafts.md (overwrite if exists):
-
-# Slack Draft Replies — [today]
-
-## @Mentions Needing Response
-
-### #[channel] — [thread summary]
-**Link:** [slack://channel?team=[SLACK_TEAM_ID]&id=[CHANNEL_ID]&message=[MESSAGE_TS]]
-**Context:** [1-2 sentence summary of what's being asked]
-**Draft:**
-> [draft reply text — written in first person as the user]
-**Status:** Ready to post | Needs your input
-
-## Threads Awaiting Your Response
-
-### #[channel] — [thread summary]
-**Link:** [slack://channel?team=[SLACK_TEAM_ID]&id=[CHANNEL_ID]&message=[MESSAGE_TS]]
-**Context:** [1-2 sentence summary]
-**Draft:**
-> [draft reply text]
-**Status:** Ready to post | Needs your input
-
-## No Reply Needed
-- #[channel]: [thread summary] — informational only
-
-3. Add a wikilink to the slack-drafts file in today's work note.
-   Open [today's work note path] and append this line at the end of the ## Slack section
-   (after the last bullet in that section, before the next ##):
-
-[[Work/inbox/[today]-slack-drafts|📝 Slack Drafts →]]
-
----
-
-**When complete, return ONLY this one-line summary (no other output):**
-"Drafted N replies (N @-mentions, N unanswered threads), N informational (no reply needed)"
-```
-
----
-
-### Phase 2b: Meeting & 1:1 Prep Agent
+### Phase 2: Meeting & 1:1 Prep Agent
 
 Dispatch an Agent with description `"Prepare meeting and 1:1 notes for today"`.
 
@@ -710,19 +622,18 @@ Then the meeting section (omit entirely if every meeting was a 1:1 or skipped):
 
 ### Phase 2 Summary
 
-After both agents complete, print the following (substituting agent return summaries):
+After the agent completes, print the following (substituting the agent return summary):
 
 ```
 ## Morning Prep Complete
 
-✅ Slack Drafts: [paste Slack Drafts agent return summary here] → ~/Documents/Personal/Work/inbox/[today]-slack-drafts.md
 ✅ Meeting & 1:1 Prep: [paste Meeting & 1:1 Prep agent return summary here] → Work Day note updated
 
-Nothing has been sent or posted. Review and act when ready.
+Anything that needs your reply is flagged under 🔴 Action Required in the work note.
 ```
 
-For any agent that failed or returned an error: replace ✅ with ⚠️ and describe the
-error in place of the return summary. If an agent timed out, note "agent timed out —
+If the agent failed or returned an error: replace ✅ with ⚠️ and describe the
+error in place of the return summary. If the agent timed out, note "agent timed out —
 check partial output at [path]".
 
 ---
@@ -749,7 +660,7 @@ check partial output at [path]".
 - **Work note directory doesn't exist**: Create it silently before writing the
   file. The path `Work/YYYY/MM-MonthName/` may not exist on the first run.
 - **Signal cache empty or missing**: On first run, no `~/.claude/signal-cache/`
-  exists. The Phase 2b agent creates it and captures fresh signals — 1:1 prep that
+  exists. The Phase 2 meeting & 1:1 prep agent creates it and captures fresh signals — 1:1 prep that
   day notes "first capture." Caches fill in and get richer over subsequent runs (and
   via the `signal-person` skill). Unregistered 1:1 people are prepped from live signals
   but not cached (no shortname to key on) — add them to `{{PERSON_SIGNAL_REGISTRY}}`
