@@ -140,6 +140,24 @@ For each event, analyze and note:
   meetings` header and the table. Otherwise Obsidian doesn't render it properly
   as a table.
 
+**Conflict detection — check RSVP status, never raw time overlap.** A double-booking
+only counts as a conflict if the user has **accepted** (or **tentatively** accepted)
+*both* overlapping events. Each event's attendee list carries the user's own
+`responseStatus` (`accepted`, `tentative`, `needsAction`, or `declined`) on the entry
+where `self: true`. Before flagging any conflict (here, in `⚠️ Heads up`, or in the
+Week Ahead "Prepare now" list):
+- **Ignore `declined` events entirely** — the user isn't attending, so they cannot
+  conflict. A team meeting the user declined sitting on top of a 1:1 is NOT a conflict.
+  This is the #1 source of false positives — calendars are full of declined/optional
+  invites that still occupy a time slot.
+- **Only an overlap between two `accepted`/`tentative` events is a real conflict.**
+- An **unanswered** invite (`needsAction`) overlapping an accepted event is a *pending
+  decision*, not a confirmed conflict — surface it separately as "unanswered invite
+  that overlaps X" if relevant, but never count it in the conflict tally.
+- Confirm with `responseStatus` directly (e.g. via `jq` on the saved events filtering
+  the `self: true` attendee) rather than eyeballing times — raw time overlap inflates
+  the count dramatically.
+
 **Heads up filter — manager-level only.** Only include an item under `⚠️ Heads up`
 if it requires you to act or decide **as the head of infrastructure** (RSVP, resolve
 a conflict, prepare for something exceptional, make a call only you can make). Do not
@@ -182,6 +200,10 @@ Produce a `### Calendar` section:
 Scan the full week and flag anything the user needs to prepare for now to avoid
 being caught off-guard later. Think about prep time — if there's a big review on
 Thursday, flag it Monday so prep can start Tuesday.
+
+When flagging scheduling conflicts here, apply the **Conflict detection** rule from
+section 3a: only count an overlap as a conflict when the user has accepted (or
+tentatively accepted) *both* events. Filter out anything `declined` before counting.
 
 ```
 ### Week Ahead
