@@ -80,7 +80,8 @@
       "mcp__unifi__list_port_forwards",
       "Bash(gh pr *)",
       "Bash(echo \"exit: $?\")",
-      "Bash(gh api *)"
+      "Bash(gh api *)",
+      "mcp__claude_ai_Google_Calendar__delete_event"
     ]
   },
   "enableAllProjectMcpServers": true,
