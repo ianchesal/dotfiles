@@ -1,6 +1,6 @@
 namespace :brew do
   ENV['HOMEBREW_NO_ENV_HINTS'] = '1'
-  ENV['HOMEBREW_NO_INTERACTIVE'] = '1'
+  ENV['HOMEBREW_NO_ASK'] = '1'
 
   desc 'Update homebrew installed packages'
   task :update do
