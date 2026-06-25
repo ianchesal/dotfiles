@@ -81,7 +81,11 @@
       "Bash(gh pr *)",
       "Bash(echo \"exit: $?\")",
       "Bash(gh api *)",
-      "mcp__claude_ai_Google_Calendar__delete_event"
+      "mcp__claude_ai_Google_Calendar__delete_event",
+      "mcp__claude_ai_incident_io__incident_update_list",
+      "mcp__claude_ai_incident_io__incident_list",
+      "mcp__claude_ai_incident_io__incident_show",
+      "mcp__claude_ai_Slack__slack_search_users"
     ]
   },
   "enableAllProjectMcpServers": true,
