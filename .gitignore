@@ -41,10 +41,12 @@
 /claude/backups/
 /claude/cache/
 /claude/claude.json*
+/claude/daemon*
 /claude/costs/
 /claude/debug/
 /claude/file-history/
 /claude/history.jsonl
+/claude/jobs/
 /claude/logs/
 /claude/mcp-needs-auth-cache.json
 /claude/paste-cache/
