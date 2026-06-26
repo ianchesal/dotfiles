@@ -15,3 +15,13 @@ export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 if [[ ("$SHLVL" -eq 1 && ! -o LOGIN) && -s $ZDOTDIR/.zprofile ]]; then
   source $ZDOTDIR/.zprofile
 fi
+
+# Load npq wrapper for all zsh shells
+if [ -f /usr/local/persona/npq-wrapper.sh ]; then
+  source /usr/local/persona/npq-wrapper.sh
+fi
+
+# Disable the wrapper if requested
+if [ -f "$HOME/.disable-npq" ]; then
+  unset -f npm yarn pnpm 2>/dev/null
+fi
