@@ -113,3 +113,4 @@
 	required = true
 [maintenance]
 	repo = /Users/ianchesal/src/persona/persona-kubernetes
+	repo = /Users/ianchesal/src/persona/persona-web
