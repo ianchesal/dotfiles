@@ -523,6 +523,11 @@
           "first_seen": 1782413786,
           "first_seen_iso": "2026-06-25T18:56:26Z",
           "rev": "3371bf298c1f56efc26771ee961f461176958fb5"
+        },
+        {
+          "first_seen": 1782863429,
+          "first_seen_iso": "2026-06-30T23:50:29Z",
+          "rev": "dd1c9b802c943278179a5d819369cda085b79d45"
         }
       ],
       "pin": {
