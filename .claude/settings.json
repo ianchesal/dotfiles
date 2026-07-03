@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(rake -T)",
+      "Bash(bundle exec:*)",
+      "Bash(gh pr *)",
+      "Skill(commit-commands:commit)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:nikitabobko.github.io)",
+      "WebFetch(domain:ohmyposh.dev)"
+    ]
+  }
+}

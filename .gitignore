@@ -10,27 +10,11 @@
 /package-lock.json
 
 # Claude Code - project .claude directory
-# Ignore runtime/cache files, keep shareable config (settings.json, commands/)
+# Ignore everything except explicitly shared config
 /.mcp.json
-/.claude/.credentials.json
-/.claude/*.db
-/.claude/.update.lock
-/.claude/cache/
-/.claude/debug/
-/.claude/file-history/
-/.claude/history.jsonl
-/.claude/logs/
-/.claude/paste-cache/
-/.claude/plans/
-/.claude/plugins/
-/.claude/projects/
-/.claude/shell-snapshots/
-/.claude/stats-cache.json
-/.claude/statsig/
-/.claude/tasks/
-/.claude/telemetry/
-/.claude/todos/
-/.claude/worktrees/
+/.claude/*
+!/.claude/skills/
+!/.claude/settings.json
 
 # Claude Code - dotfiles config directory (symlinked to ~/.claude)
 /claude/*.db
