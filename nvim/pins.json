@@ -159,6 +159,11 @@
           "first_seen": 1781206824,
           "first_seen_iso": "2026-06-11T19:40:24Z",
           "rev": "06f51922ca43d5cdacf96725c106405fe064c59e"
+        },
+        {
+          "first_seen": 1783273418,
+          "first_seen_iso": "2026-07-05T17:43:38Z",
+          "rev": "fb5a16ecc4ff15772189679ffdede6ee879288ec"
         }
       ],
       "pin": {
@@ -543,6 +548,11 @@
           "first_seen": 1782955238,
           "first_seen_iso": "2026-07-02T01:20:38Z",
           "rev": "292f44408498103c47996ff5c18fd366293840d8"
+        },
+        {
+          "first_seen": 1783273418,
+          "first_seen_iso": "2026-07-05T17:43:38Z",
+          "rev": "d224a1920728ba129880efc700d4a0180ac4ecbb"
         }
       ],
       "pin": {
