@@ -6,7 +6,7 @@
   },
   "attribution": {
     "commit": "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
-    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+    "pr": "\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
   },
   "permissions": {
     "allow": [
@@ -147,6 +147,6 @@
   ],
   "feedbackSurveyState": {
     "lastShownTime": 1753933073221
-  },
-  "model": "claude-fable-5[1m]"
+  }
 }
+
