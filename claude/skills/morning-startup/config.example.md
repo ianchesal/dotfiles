@@ -109,7 +109,9 @@ People whose presence on your calendar warrants a prep note:
 
 - **Path**: `{{PATH_TO_WORK_NOTES}}`
   - Example: `~/Documents/Personal/Work/`
-- **Structure**: `YYYY/MM-MonthName/YYYY-MM-DD.md`
-  - Example: `2026/05-May/2026-05-04.md`
+- **Structure**: `YYYY/MM-MonthName/work-YYYY-MM-DD.md`
+  - Example: `2026/05-May/work-2026-05-04.md`
+  - The `work-` filename prefix keeps bare date wikilinks like `[[2026-05-04]]`
+    resolving unambiguously to the personal daily journal note.
 - **Title format**: `Work Day - YYYY-MM-DD`
   - Used in the `# Work Day - YYYY-MM-DD` heading and wikilinks from the personal journal.

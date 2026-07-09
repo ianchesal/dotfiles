@@ -38,13 +38,16 @@ Month folder names use zero-padded month number + full month name, e.g.:
 
 | Platform | Path |
 |----------|------|
-| Linux terminal | `/data/ian/Obsidian/Personal/Work/YYYY/MM-MonthName/YYYY-MM-DD.md` |
-| Windows Claude app | `\\synology01\ian\Obsidian\Personal\Work\YYYY\MM-MonthName\YYYY-MM-DD.md` |
+| Linux terminal | `/data/ian/Obsidian/Personal/Work/YYYY/MM-MonthName/work-YYYY-MM-DD.md` |
+| Windows Claude app | `\\synology01\ian\Obsidian\Personal\Work\YYYY\MM-MonthName\work-YYYY-MM-DD.md` |
+
+The `work-` filename prefix keeps bare date wikilinks like `[[YYYY-MM-DD]]` resolving
+to the daily journal note.
 
 When a work note exists for a given day, the daily note will contain a link to it,
 formatted like:
 ```
-[[Work/YYYY/MM-MonthName/YYYY-MM-DD|Work Day - YYYY-MM-DD →]]
+[[Work/YYYY/MM-MonthName/work-YYYY-MM-DD|Work Day - YYYY-MM-DD →]]
 ```
 
 If that link is present, follow it and read the work note as well. It contains the

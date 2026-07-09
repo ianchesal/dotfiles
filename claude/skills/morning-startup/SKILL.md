@@ -444,14 +444,18 @@ inserting a duplicate.
 
 Compute the wikilink path for the work note. The path component is derived from
 `{{WORK_NOTES_STRUCTURE}}` with today's date substituted, without the `.md`
-extension. Example for 2026-05-04: `Work/2026/05-May/2026-05-04`.
+extension. Example for 2026-05-04: `Work/2026/05-May/work-2026-05-04`.
+
+Note the `work-` filename prefix comes from `{{WORK_NOTES_STRUCTURE}}` — never
+name the work note file bare `YYYY-MM-DD.md`, or wikilinks like `[[YYYY-MM-DD]]`
+become ambiguous with the personal daily journal note of the same date.
 
 **Content to insert:**
 
 ```markdown
 ## Work Day
 
-[[Work/YYYY/MM-MonthName/YYYY-MM-DD|Work Day - YYYY-MM-DD →]]
+[[Work/YYYY/MM-MonthName/work-YYYY-MM-DD|Work Day - YYYY-MM-DD →]]
 
 **Today needs from you (as Head of Infrastructure):** [verbatim from Step 4 coaching]
 
@@ -502,7 +506,7 @@ the IC level.
 - Seven days ago: [YYYY-MM-DD]
 - Jira cloud ID: {{JIRA_CLOUD_ID}}
 - Jira base URL: {{JIRA_BASE_URL}}
-- Today's work note path: [full path, e.g. ~/Documents/Personal/Work/2026/05-May/2026-05-13.md]
+- Today's work note path: [full path, e.g. ~/Documents/Personal/Work/2026/05-May/work-2026-05-13.md]
 - Signal cache directory: ~/.claude/signal-cache/  (one JSON file per person, named {shortname}.json)
 
 **Today's meetings (from Phase 1 calendar — do not re-fetch):**
