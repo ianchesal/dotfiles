@@ -259,7 +259,13 @@
       }
     },
     "mason.nvim": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1783799797,
+          "first_seen_iso": "2026-07-11T19:56:37Z",
+          "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-07-11T19:54:39Z",
         "pinned_at_epoch": 1783799679,
