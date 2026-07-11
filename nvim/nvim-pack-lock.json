@@ -56,14 +56,14 @@
       "version": "'a923f5fc5ba36a3b17e289dc35dc17f66d0548ee'"
     },
     "mason-lspconfig.nvim": {
-      "rev": "a5671269a1ddfa7790cdf97c14e600e269da550f",
+      "rev": "906c32c8a034dd3d51353d63226bf91aeacd927c",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim",
-      "version": "'a5671269a1ddfa7790cdf97c14e600e269da550f'"
+      "version": "'906c32c8a034dd3d51353d63226bf91aeacd927c'"
     },
     "mason.nvim": {
-      "rev": "3f24b4ac813d9814850043aa11f0c9cbb0d8c2b0",
+      "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
       "src": "https://github.com/mason-org/mason.nvim",
-      "version": "'3f24b4ac813d9814850043aa11f0c9cbb0d8c2b0'"
+      "version": "'2a6940af80375532e5e9e7c1f2fc6319a1b7a69d'"
     },
     "mini.ai": {
       "rev": "4511b3481707c1d021485475d34f2ed2a50bf47b",
