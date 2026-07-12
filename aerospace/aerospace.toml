@@ -75,8 +75,14 @@ run = ['layout floating']
 if.app-id = 'us.zoom.xos'
 run = ['layout floating']
 
+# Soulver 3
 [[on-window-detected]]
 if.app-id = 'app.soulver.mac'
+run = ['layout floating']
+
+# Soulver 4
+[[on-window-detected]]
+if.app-id = 'app.soulver.appstore.mac'
 run = ['layout floating']
 
 [[on-window-detected]]
