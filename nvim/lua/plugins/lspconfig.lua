@@ -15,7 +15,9 @@
 -- Servers disabled in the snapshot. They go to automatic_enable.exclude so
 -- mason-lspconfig never enables them even if their packages are installed
 -- (e.g. ts_ls <- typescript-language-server, which mason.lua installs).
-local disabled_servers = { "solargraph", "standardrb", "stylua", "ts_ls", "tsgo", "tsserver" }
+-- taplo is excluded deliberately: no TOML LSP wanted, and the work machine's
+-- Santa policy blocks the binary anyway.
+local disabled_servers = { "solargraph", "standardrb", "stylua", "taplo", "ts_ls", "tsgo", "tsserver" }
 
 local servers = {
   bashls = {},
@@ -87,7 +89,6 @@ local servers = {
     },
   },
   sqlls = {},
-  taplo = {},
   terraformls = {},
   vtsls = {
     -- From LazyVim's typescript/vtsls extra. The extra's
@@ -412,7 +413,7 @@ return {
 
     -- Register the Mason packages backing these servers so `rake
     -- nvim:mason_prune` keeps them (mason.lua's list doesn't include LSP
-    -- servers like marksman/taplo/vtsls that mason-lspconfig auto-installs).
+    -- servers like marksman/vtsls that mason-lspconfig auto-installs).
     -- Registered only on this success path: the fallback branch above can't
     -- map names, so it leaves "lspconfig" unregistered and prune refuses to run.
     local mason_packages = {}
