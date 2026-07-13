@@ -3,16 +3,6 @@
     "SchemaStore.nvim": {
       "observed": [
         {
-          "first_seen": 1781206824,
-          "first_seen_iso": "2026-06-11T19:40:24Z",
-          "rev": "c87dda7c8e5c4437d0d270ea6b73afb683607706"
-        },
-        {
-          "first_seen": 1781311652,
-          "first_seen_iso": "2026-06-13T00:47:32Z",
-          "rev": "e1a36239e4e36759546852dae5f4737375b388f6"
-        },
-        {
           "first_seen": 1781442172,
           "first_seen_iso": "2026-06-14T13:02:52Z",
           "rev": "3dca2d2153cfbc9aab937c1be0441e371101b0b8"
@@ -79,9 +69,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-06-11T19:09:50Z",
-        "pinned_at_epoch": 1781204990,
-        "rev": "c87dda7c8e5c4437d0d270ea6b73afb683607706"
+        "pinned_at": "2026-07-13T15:23:11Z",
+        "pinned_at_epoch": 1783956191,
+        "rev": "e1a36239e4e36759546852dae5f4737375b388f6"
       }
     },
     "blink.cmp": {
@@ -237,11 +227,6 @@
     "mason-lspconfig.nvim": {
       "observed": [
         {
-          "first_seen": 1781311652,
-          "first_seen_iso": "2026-06-13T00:47:32Z",
-          "rev": "21c5b3ebeaa0412e28096bb0701434c51c1fbf76"
-        },
-        {
           "first_seen": 1782484773,
           "first_seen_iso": "2026-06-26T14:39:33Z",
           "rev": "50bf3871b539896bd0650b882f6e6b467cc1c1eb"
@@ -250,12 +235,17 @@
           "first_seen": 1782747049,
           "first_seen_iso": "2026-06-29T15:30:49Z",
           "rev": "47059d71b42d74b0a1e9f61c1d99d301039c3b5b"
+        },
+        {
+          "first_seen": 1783956191,
+          "first_seen_iso": "2026-07-13T15:23:11Z",
+          "rev": "a4068c3ebd4cb335b25239e5ea35c22ee6007962"
         }
       ],
       "pin": {
-        "pinned_at": "2026-07-11T19:54:39Z",
-        "pinned_at_epoch": 1783799679,
-        "rev": "906c32c8a034dd3d51353d63226bf91aeacd927c"
+        "pinned_at": "2026-07-13T15:23:11Z",
+        "pinned_at_epoch": 1783956191,
+        "rev": "21c5b3ebeaa0412e28096bb0701434c51c1fbf76"
       }
     },
     "mason.nvim": {
@@ -580,16 +570,6 @@
     "nvim-lspconfig": {
       "observed": [
         {
-          "first_seen": 1781206824,
-          "first_seen_iso": "2026-06-11T19:40:24Z",
-          "rev": "ed19590a3a9792901553c388d1aadafce012f80d"
-        },
-        {
-          "first_seen": 1781311652,
-          "first_seen_iso": "2026-06-13T00:47:32Z",
-          "rev": "a683e0ddf0cf64c6cd689e18ffb480ade3c162b7"
-        },
-        {
           "first_seen": 1781797905,
           "first_seen_iso": "2026-06-18T15:51:45Z",
           "rev": "96f363ce07d46c1804532ca2d1eb3a157d11ee29"
@@ -633,12 +613,17 @@
           "first_seen": 1783799679,
           "first_seen_iso": "2026-07-11T19:54:39Z",
           "rev": "5955a100ae7155962330643924e21a798b9bdc91"
+        },
+        {
+          "first_seen": 1783956191,
+          "first_seen_iso": "2026-07-13T15:23:11Z",
+          "rev": "d5b6e3db4c17b0146f63a2fc47e2027a754b2cb1"
         }
       ],
       "pin": {
-        "pinned_at": "2026-06-11T19:09:50Z",
-        "pinned_at_epoch": 1781204990,
-        "rev": "ed19590a3a9792901553c388d1aadafce012f80d"
+        "pinned_at": "2026-07-13T15:23:11Z",
+        "pinned_at_epoch": 1783956191,
+        "rev": "a683e0ddf0cf64c6cd689e18ffb480ade3c162b7"
       }
     },
     "nvim-treesitter": {
