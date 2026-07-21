@@ -27,6 +27,20 @@ fi
 
 unset brew_location
 
+# If FPATH arrived via the environment, zsh imports it as an exported
+# parameter and it REPLACES the compiled-in default fpath. A long-lived parent
+# process (terminal, tmux, agent session) can then hand every child shell a
+# frozen FPATH whose version-pinned entries (e.g. Cellar/zsh/5.9.1) vanish on
+# the next Homebrew zsh upgrade, breaking every standard autoload
+# (is-at-least, add-zsh-hook, compinit). Repair: drop dead dirs, restore this
+# binary's default function dirs, and stop exporting FPATH so a stale copy
+# can't propagate to child shells.
+if [[ ${parameters[FPATH]} == *export* ]]; then
+  typeset +x FPATH
+  fpath=($^fpath(N-/) ${(f)"$(command zsh -fc 'print -rl -- $fpath' 2>/dev/null)"})
+  typeset -gU fpath
+fi
+
 # Add user completions dir to fpath before compinit runs
 fpath=("${ZDOTDIR:-~/.config/zsh}/completions" $fpath)
 
