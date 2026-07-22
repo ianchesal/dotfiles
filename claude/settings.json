@@ -1,6 +1,7 @@
 {
   "cleanupPeriodDays": 30,
   "env": {
+    "CLAUDE_CODE_DISABLE_MOUSE_CLICKS": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_ENV_FILE": "/usr/local/persona/npq-wrapper.sh"
   },
