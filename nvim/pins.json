@@ -419,7 +419,13 @@
       }
     },
     "nvim-lint": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1785190392,
+          "first_seen_iso": "2026-07-27T22:13:12Z",
+          "rev": "a219b2c9e5b4765e5c845aba119dad55806fcaf1"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-07-27T17:09:55Z",
         "pinned_at_epoch": 1785172195,
