@@ -134,7 +134,7 @@
   "spinnerTipsEnabled": false,
   "alwaysThinkingEnabled": true,
   "autoUpdatesChannel": "latest",
-  "tui": "fullscreen",
+  "tui": "default",
   "skipDangerousModePermissionPrompt": true,
   "teammateMode": "tmux",
   "allowedTools": [
