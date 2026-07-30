@@ -1,9 +1,9 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "490afbd7fd3b316330550405ac74758a971104a4",
+      "rev": "6ff1f21b2e2b77ec59f7433ce2d9fbc052d908ac",
       "src": "https://github.com/b0o/SchemaStore.nvim",
-      "version": "'490afbd7fd3b316330550405ac74758a971104a4'"
+      "version": "'6ff1f21b2e2b77ec59f7433ce2d9fbc052d908ac'"
     },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
@@ -56,9 +56,9 @@
       "version": "'a923f5fc5ba36a3b17e289dc35dc17f66d0548ee'"
     },
     "mason-lspconfig.nvim": {
-      "rev": "50bf3871b539896bd0650b882f6e6b467cc1c1eb",
+      "rev": "47059d71b42d74b0a1e9f61c1d99d301039c3b5b",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim",
-      "version": "'50bf3871b539896bd0650b882f6e6b467cc1c1eb'"
+      "version": "'47059d71b42d74b0a1e9f61c1d99d301039c3b5b'"
     },
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
@@ -66,9 +66,9 @@
       "version": "'2a6940af80375532e5e9e7c1f2fc6319a1b7a69d'"
     },
     "mini.ai": {
-      "rev": "d73c36349aa7b0bab5f77ad71701a1d42211a1df",
+      "rev": "cb20f298ebf5ae91924cd0c6c310712de2ef4086",
       "src": "https://github.com/nvim-mini/mini.ai",
-      "version": "'d73c36349aa7b0bab5f77ad71701a1d42211a1df'"
+      "version": "'cb20f298ebf5ae91924cd0c6c310712de2ef4086'"
     },
     "mini.align": {
       "rev": "34014f8c9c0740904ed6760f9eee58f4ae00c131",
@@ -171,9 +171,9 @@
       "version": "'bd67efe408d4816e25e8491cc5ad4088e708a69a'"
     },
     "ts-comments.nvim": {
-      "rev": "123a9fb12e7229342f807ec9e6de478b1102b041",
+      "rev": "a59d6092213447450191122c9346f309161504cb",
       "src": "https://github.com/folke/ts-comments.nvim",
-      "version": "'123a9fb12e7229342f807ec9e6de478b1102b041'"
+      "version": "'a59d6092213447450191122c9346f309161504cb'"
     },
     "vim-jsonnet": {
       "rev": "4ebc6619ddce5d032a985b42a9864154c3d20e4a",
