@@ -662,7 +662,13 @@
       }
     },
     "ts-comments.nvim": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1785453675,
+          "first_seen_iso": "2026-07-30T23:21:15Z",
+          "rev": "a59d6092213447450191122c9346f309161504cb"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-07-30T17:21:52Z",
         "pinned_at_epoch": 1785432112,
