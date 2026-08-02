@@ -86,14 +86,14 @@
       "version": "'607d604e650cdf21d71f863d040c496a1d0cb320'"
     },
     "mini.icons": {
-      "rev": "e56797f90192d81f1fda02e662fc3e8e3d775027",
+      "rev": "24dbea2195c477e57d581215839a6ab915f34b14",
       "src": "https://github.com/nvim-mini/mini.icons",
-      "version": "'e56797f90192d81f1fda02e662fc3e8e3d775027'"
+      "version": "'24dbea2195c477e57d581215839a6ab915f34b14'"
     },
     "mini.pairs": {
-      "rev": "db0fac0a25884183650352ccf92b362a41ed2e9c",
+      "rev": "fd150ac39b78e6a2286f5138e472b7dc7eba43b9",
       "src": "https://github.com/nvim-mini/mini.pairs",
-      "version": "'db0fac0a25884183650352ccf92b362a41ed2e9c'"
+      "version": "'fd150ac39b78e6a2286f5138e472b7dc7eba43b9'"
     },
     "mini.surround": {
       "rev": "a2f644f3759edd3d3f8b6a6d55378408bfe6d290",
