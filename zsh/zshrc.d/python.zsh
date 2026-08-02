@@ -13,6 +13,12 @@ if ! (( $+commands[pyenv] )); then
   path+="$PYENV_ROOT/bin"
 fi
 
+# Put pyenv's shims on PATH unconditionally (cheap, no exec needed) so that
+# shebang-based execution (e.g. `./some-script` with `#!/usr/bin/env python3`)
+# resolves the pyenv-managed interpreter even before the lazy-load functions
+# below have ever been triggered by typing python/pip/pyenv directly.
+path=("$PYENV_ROOT/shims" $path)
+
 # Lazy load pyenv to improve shell startup performance
 # Only initialize when python/pip/pyenv commands are first used
 __pyenv_lazy_load() {
