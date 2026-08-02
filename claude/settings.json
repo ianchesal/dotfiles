@@ -11,9 +11,7 @@
     "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
   },
   "permissions": {
-    "allow": [
-      "Read(~/.claude/skills/**)"
-    ]
+    "allow": ["Read(~/.claude/skills/**)"]
   },
   "hooks": {
     "PermissionRequest": [
@@ -136,7 +134,6 @@
   "autoUpdatesChannel": "latest",
   "tui": "default",
   "skipDangerousModePermissionPrompt": true,
-  "teammateMode": "tmux",
   "allowedTools": [
     "mcp__claude_ai_Google_Calendar__gcal_list_events",
     "mcp__claude_ai_Slack__slack_search_public_and_private",
