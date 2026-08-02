@@ -1,0 +1,4 @@
+---
+BUNDLE_BUILD__MSGPACK: "--with-ldflags=-L/usr/lib/x86_64-linux-gnu"
+BUNDLE_BUILD__JSON: "--with-ldflags=-L/usr/lib/x86_64-linux-gnu"
+BUNDLE_BUILD__RACC: "--with-ldflags=-L/usr/lib/x86_64-linux-gnu"
