@@ -5,6 +5,22 @@
 ##? Launches Claude Code with bypassPermissions mode and instructs it to
 ##? run the morning-startup skill to begin the day.
 ##?
-##? usage: start-my-day
+##? Any arguments are appended as extra context for the briefing, so you
+##? can tell Claude about things it can't infer from calendar/Slack/Jira.
+##?
+##? usage: start-my-day [extra context...]
+##?
+##? examples:
+##?   start-my-day
+##?   start-my-day I'm actually out sick today
+##?   start-my-day "half day today, offsite in the afternoon"
 
-claude --permission-mode bypassPermissions "start my day"
+local prompt='start my day'
+
+if (( $# > 0 )); then
+  prompt="$prompt
+
+Additional context from me for today: $*"
+fi
+
+claude --permission-mode bypassPermissions "$prompt"
