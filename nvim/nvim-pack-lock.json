@@ -36,9 +36,9 @@
       "version": "'6cd7280adead7f586db6fccbd15d2cac7e2188b9'"
     },
     "hlchunk.nvim": {
-      "rev": "06f51922ca43d5cdacf96725c106405fe064c59e",
+      "rev": "fb5a16ecc4ff15772189679ffdede6ee879288ec",
       "src": "https://github.com/shellRaining/hlchunk.nvim",
-      "version": "'06f51922ca43d5cdacf96725c106405fe064c59e'"
+      "version": "'fb5a16ecc4ff15772189679ffdede6ee879288ec'"
     },
     "lazydev.nvim": {
       "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",
@@ -116,9 +116,9 @@
       "version": "'a219b2c9e5b4765e5c845aba119dad55806fcaf1'"
     },
     "nvim-lspconfig": {
-      "rev": "292f44408498103c47996ff5c18fd366293840d8",
+      "rev": "d224a1920728ba129880efc700d4a0180ac4ecbb",
       "src": "https://github.com/neovim/nvim-lspconfig",
-      "version": "'292f44408498103c47996ff5c18fd366293840d8'"
+      "version": "'d224a1920728ba129880efc700d4a0180ac4ecbb'"
     },
     "nvim-treesitter": {
       "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
