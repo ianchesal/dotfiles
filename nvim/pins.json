@@ -149,7 +149,13 @@
       }
     },
     "hlchunk.nvim": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1785870765,
+          "first_seen_iso": "2026-08-04T19:12:45Z",
+          "rev": "fb5a16ecc4ff15772189679ffdede6ee879288ec"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-08-04T18:40:11Z",
         "pinned_at_epoch": 1785868811,
@@ -467,6 +473,11 @@
           "first_seen": 1785597217,
           "first_seen_iso": "2026-08-01T15:13:37Z",
           "rev": "1c0d8f70dbc8827263eedc3cf7021ceba0f68689"
+        },
+        {
+          "first_seen": 1785870765,
+          "first_seen_iso": "2026-08-04T19:12:45Z",
+          "rev": "43ed3797b266e1ee8d222e491379ad471c9d3146"
         }
       ],
       "pin": {
