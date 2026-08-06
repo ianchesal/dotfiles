@@ -245,11 +245,6 @@
     "mini.ai": {
       "observed": [
         {
-          "first_seen": 1783453844,
-          "first_seen_iso": "2026-07-07T19:50:44Z",
-          "rev": "2f763720771e192bdf9d2e25bfae339930ba4231"
-        },
-        {
           "first_seen": 1783599509,
           "first_seen_iso": "2026-07-09T12:18:29Z",
           "rev": "6d43e74cae75771b780a7270fec1f160613ed873"
@@ -261,32 +256,21 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-07-30T17:21:52Z",
-        "pinned_at_epoch": 1785432112,
-        "rev": "cb20f298ebf5ae91924cd0c6c310712de2ef4086"
+        "pinned_at": "2026-08-06T23:03:02Z",
+        "pinned_at_epoch": 1786057382,
+        "rev": "2f763720771e192bdf9d2e25bfae339930ba4231"
       }
     },
     "mini.align": {
-      "observed": [
-        {
-          "first_seen": 1783453844,
-          "first_seen_iso": "2026-07-07T19:50:44Z",
-          "rev": "77d7446b9f2452193f13ced9fb73a8b3aa4a4f4d"
-        }
-      ],
+      "observed": [],
       "pin": {
-        "pinned_at": "2026-07-27T17:09:55Z",
-        "pinned_at_epoch": 1785172195,
-        "rev": "34014f8c9c0740904ed6760f9eee58f4ae00c131"
+        "pinned_at": "2026-08-06T23:03:02Z",
+        "pinned_at_epoch": 1786057382,
+        "rev": "77d7446b9f2452193f13ced9fb73a8b3aa4a4f4d"
       }
     },
     "mini.diff": {
       "observed": [
-        {
-          "first_seen": 1783453844,
-          "first_seen_iso": "2026-07-07T19:50:44Z",
-          "rev": "be4ca6953040332d77a5a05bb5600152c5c36e7a"
-        },
         {
           "first_seen": 1784592247,
           "first_seen_iso": "2026-07-21T00:04:07Z",
@@ -299,46 +283,29 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-07-21T00:04:07Z",
-        "pinned_at_epoch": 1784592247,
-        "rev": "0743d26bd858ebe32efcf5c86a91a422a000f273"
+        "pinned_at": "2026-08-06T23:03:02Z",
+        "pinned_at_epoch": 1786057382,
+        "rev": "be4ca6953040332d77a5a05bb5600152c5c36e7a"
       }
     },
     "mini.hipatterns": {
-      "observed": [
-        {
-          "first_seen": 1783453844,
-          "first_seen_iso": "2026-07-07T19:50:44Z",
-          "rev": "7c840c71d6a91f53d734cab2b6fe2290d285ec3b"
-        }
-      ],
+      "observed": [],
       "pin": {
-        "pinned_at": "2026-07-21T00:04:07Z",
-        "pinned_at_epoch": 1784592247,
-        "rev": "607d604e650cdf21d71f863d040c496a1d0cb320"
+        "pinned_at": "2026-08-06T23:03:02Z",
+        "pinned_at_epoch": 1786057382,
+        "rev": "7c840c71d6a91f53d734cab2b6fe2290d285ec3b"
       }
     },
     "mini.icons": {
-      "observed": [
-        {
-          "first_seen": 1783453844,
-          "first_seen_iso": "2026-07-07T19:50:44Z",
-          "rev": "98faae31e9be1cc054ae63485e58ceb185efcad0"
-        }
-      ],
+      "observed": [],
       "pin": {
-        "pinned_at": "2026-08-02T15:09:21Z",
-        "pinned_at_epoch": 1785683361,
-        "rev": "24dbea2195c477e57d581215839a6ab915f34b14"
+        "pinned_at": "2026-08-06T23:03:02Z",
+        "pinned_at_epoch": 1786057382,
+        "rev": "98faae31e9be1cc054ae63485e58ceb185efcad0"
       }
     },
     "mini.pairs": {
       "observed": [
-        {
-          "first_seen": 1783453844,
-          "first_seen_iso": "2026-07-07T19:50:44Z",
-          "rev": "b1fd9df3bb4a41c8f45778a3859ee80ef6b367e3"
-        },
         {
           "first_seen": 1784818529,
           "first_seen_iso": "2026-07-23T14:55:29Z",
@@ -346,18 +313,13 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-08-02T15:09:21Z",
-        "pinned_at_epoch": 1785683361,
-        "rev": "fd150ac39b78e6a2286f5138e472b7dc7eba43b9"
+        "pinned_at": "2026-08-06T23:03:02Z",
+        "pinned_at_epoch": 1786057382,
+        "rev": "b1fd9df3bb4a41c8f45778a3859ee80ef6b367e3"
       }
     },
     "mini.surround": {
       "observed": [
-        {
-          "first_seen": 1783453844,
-          "first_seen_iso": "2026-07-07T19:50:44Z",
-          "rev": "19b44c1bbe4eecaf191896b8bec657d5fdd549e4"
-        },
         {
           "first_seen": 1783599509,
           "first_seen_iso": "2026-07-09T12:18:29Z",
@@ -375,9 +337,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-07-27T17:09:55Z",
-        "pinned_at_epoch": 1785172195,
-        "rev": "a2f644f3759edd3d3f8b6a6d55378408bfe6d290"
+        "pinned_at": "2026-08-06T23:03:02Z",
+        "pinned_at_epoch": 1786057382,
+        "rev": "19b44c1bbe4eecaf191896b8bec657d5fdd549e4"
       }
     },
     "noice.nvim": {

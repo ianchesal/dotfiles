@@ -66,39 +66,39 @@
       "version": "'2a6940af80375532e5e9e7c1f2fc6319a1b7a69d'"
     },
     "mini.ai": {
-      "rev": "cb20f298ebf5ae91924cd0c6c310712de2ef4086",
+      "rev": "2f763720771e192bdf9d2e25bfae339930ba4231",
       "src": "https://github.com/nvim-mini/mini.ai",
-      "version": "'cb20f298ebf5ae91924cd0c6c310712de2ef4086'"
+      "version": "'2f763720771e192bdf9d2e25bfae339930ba4231'"
     },
     "mini.align": {
-      "rev": "34014f8c9c0740904ed6760f9eee58f4ae00c131",
+      "rev": "77d7446b9f2452193f13ced9fb73a8b3aa4a4f4d",
       "src": "https://github.com/nvim-mini/mini.align",
-      "version": "'34014f8c9c0740904ed6760f9eee58f4ae00c131'"
+      "version": "'77d7446b9f2452193f13ced9fb73a8b3aa4a4f4d'"
     },
     "mini.diff": {
-      "rev": "0743d26bd858ebe32efcf5c86a91a422a000f273",
+      "rev": "be4ca6953040332d77a5a05bb5600152c5c36e7a",
       "src": "https://github.com/nvim-mini/mini.diff",
-      "version": "'0743d26bd858ebe32efcf5c86a91a422a000f273'"
+      "version": "'be4ca6953040332d77a5a05bb5600152c5c36e7a'"
     },
     "mini.hipatterns": {
-      "rev": "607d604e650cdf21d71f863d040c496a1d0cb320",
+      "rev": "7c840c71d6a91f53d734cab2b6fe2290d285ec3b",
       "src": "https://github.com/nvim-mini/mini.hipatterns",
-      "version": "'607d604e650cdf21d71f863d040c496a1d0cb320'"
+      "version": "'7c840c71d6a91f53d734cab2b6fe2290d285ec3b'"
     },
     "mini.icons": {
-      "rev": "24dbea2195c477e57d581215839a6ab915f34b14",
+      "rev": "98faae31e9be1cc054ae63485e58ceb185efcad0",
       "src": "https://github.com/nvim-mini/mini.icons",
-      "version": "'24dbea2195c477e57d581215839a6ab915f34b14'"
+      "version": "'98faae31e9be1cc054ae63485e58ceb185efcad0'"
     },
     "mini.pairs": {
-      "rev": "fd150ac39b78e6a2286f5138e472b7dc7eba43b9",
+      "rev": "b1fd9df3bb4a41c8f45778a3859ee80ef6b367e3",
       "src": "https://github.com/nvim-mini/mini.pairs",
-      "version": "'fd150ac39b78e6a2286f5138e472b7dc7eba43b9'"
+      "version": "'b1fd9df3bb4a41c8f45778a3859ee80ef6b367e3'"
     },
     "mini.surround": {
-      "rev": "a2f644f3759edd3d3f8b6a6d55378408bfe6d290",
+      "rev": "19b44c1bbe4eecaf191896b8bec657d5fdd549e4",
       "src": "https://github.com/nvim-mini/mini.surround",
-      "version": "'a2f644f3759edd3d3f8b6a6d55378408bfe6d290'"
+      "version": "'19b44c1bbe4eecaf191896b8bec657d5fdd549e4'"
     },
     "noice.nvim": {
       "rev": "7bfd942445fb63089b59f97ca487d605e715f155",
