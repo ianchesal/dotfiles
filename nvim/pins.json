@@ -262,7 +262,13 @@
       }
     },
     "mini.align": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1786060571,
+          "first_seen_iso": "2026-08-06T23:56:11Z",
+          "rev": "77d7446b9f2452193f13ced9fb73a8b3aa4a4f4d"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-08-06T23:03:02Z",
         "pinned_at_epoch": 1786057382,
@@ -289,7 +295,13 @@
       }
     },
     "mini.hipatterns": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1786060571,
+          "first_seen_iso": "2026-08-06T23:56:11Z",
+          "rev": "7c840c71d6a91f53d734cab2b6fe2290d285ec3b"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-08-06T23:03:02Z",
         "pinned_at_epoch": 1786057382,
@@ -297,7 +309,13 @@
       }
     },
     "mini.icons": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1786060571,
+          "first_seen_iso": "2026-08-06T23:56:11Z",
+          "rev": "98faae31e9be1cc054ae63485e58ceb185efcad0"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-08-06T23:03:02Z",
         "pinned_at_epoch": 1786057382,
