@@ -11,6 +11,16 @@ if (( $+commands[brew] )); then
   else
     # Linux: point at system OpenSSL to avoid Homebrew's glibc requirement.
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr"
+
+    # linuxbrew's ld (binutils formula) precedes the system ld on PATH but
+    # doesn't search Debian's multiarch lib dir, so it can't resolve
+    # libcrypt.so.1 (a transitive dependency of libruby.so) when native gem
+    # extensions link against libruby. -rpath-link (not -L) is what GNU ld
+    # actually consults to resolve a shared library's own indirect
+    # dependencies. CONFIGURE_ARGS is honored by mkmf for any `gem install`,
+    # not just bundler-driven ones (see .bundle/config for the bundler
+    # equivalent), so this also covers Mason's plain `gem install` calls.
+    export CONFIGURE_ARGS="--with-ldflags=-Wl,-rpath-link,/usr/lib/x86_64-linux-gnu"
   fi
 fi
 
