@@ -1,16 +1,17 @@
 # dotfiles
 
 <!-- hy-mt2-i18n:start -->
-**English** · [中文](./README_zh-CN.md) · [日本語](./README_ja.md) · [Español](./README_es.md)
+[English](./README.md) | **中文** | [日本語](./README_ja.md) | [Español](./README_es.md)
 <!-- hy-mt2-i18n:end -->
+
 
 [![CI](https://github.com/ianchesal/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/ianchesal/dotfiles/actions/workflows/ci.yml)
 
 [![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)](https://forthebadge.com)
 
-My dotfiles. What else were you expecting?
+我的 dotfiles 文件。你还期望有什么别的东西呢？
 
-## Use
+## 使用方法
 
     mkdir -p ~/src
     pushd ~/src
@@ -18,9 +19,8 @@ My dotfiles. What else were you expecting?
     cd dotfiles
     rake all
 
-You can link up some of the bits and pieces using the included `Rakefile`. See:
+你可以利用附带的 `Rakefile` 将这些组件相互关联起来。详情请参阅：
 
     rake -T
 
-for the targets you can run to link up pieces. Not everything is available for
-automatic installation via the `Rakefile`.
+该命令可以显示可用于连接各组件的目标。并非所有功能都能通过 `Rakefile` 实现自动安装。
