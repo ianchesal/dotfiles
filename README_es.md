@@ -1,16 +1,17 @@
 # dotfiles
 
 <!-- hy-mt2-i18n:start -->
-**English** · [中文](./README_zh-CN.md) · [日本語](./README_ja.md) · [Español](./README_es.md)
+[English](./README.md) | [中文](./README_zh-CN.md) | [日本語](./README_ja.md) | **Español**
 <!-- hy-mt2-i18n:end -->
+
 
 [![CI](https://github.com/ianchesal/dotfiles/actions/workflows/ci.yml/badge.svg)](https://github.com/ianchesal/dotfiles/actions/workflows/ci.yml)
 
 [![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)](https://forthebadge.com)
 
-My dotfiles. What else were you expecting?
+Mis dotfiles. ¿Qué más esperabas?
 
-## Use
+## Uso
 
     mkdir -p ~/src
     pushd ~/src
@@ -18,9 +19,8 @@ My dotfiles. What else were you expecting?
     cd dotfiles
     rake all
 
-You can link up some of the bits and pieces using the included `Rakefile`. See:
+Puedes vincular algunas de las partes utilizando el `Rakefile` incluido. Consulta:
 
     rake -T
 
-for the targets you can run to link up pieces. Not everything is available for
-automatic installation via the `Rakefile`.
+para conocer los objetivos que puedes ejecutar para vincular las partes. No todo está disponible para su instalación automática a través del `Rakefile`.
