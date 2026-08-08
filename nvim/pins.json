@@ -245,20 +245,15 @@
     "mini.ai": {
       "observed": [
         {
-          "first_seen": 1783599509,
-          "first_seen_iso": "2026-07-09T12:18:29Z",
-          "rev": "6d43e74cae75771b780a7270fec1f160613ed873"
-        },
-        {
           "first_seen": 1783728156,
           "first_seen_iso": "2026-07-11T00:02:36Z",
           "rev": "25248c6aa002391936a6200f12d1466015987133"
         }
       ],
       "pin": {
-        "pinned_at": "2026-08-06T23:03:02Z",
-        "pinned_at_epoch": 1786057382,
-        "rev": "2f763720771e192bdf9d2e25bfae339930ba4231"
+        "pinned_at": "2026-08-08T19:46:33Z",
+        "pinned_at_epoch": 1786218393,
+        "rev": "6d43e74cae75771b780a7270fec1f160613ed873"
       }
     },
     "mini.align": {
@@ -339,11 +334,6 @@
     "mini.surround": {
       "observed": [
         {
-          "first_seen": 1783599509,
-          "first_seen_iso": "2026-07-09T12:18:29Z",
-          "rev": "5c2a99e43b959055311a4557875985142b672af0"
-        },
-        {
           "first_seen": 1783728156,
           "first_seen_iso": "2026-07-11T00:02:36Z",
           "rev": "c30ec60393b256427512c6996a2b37d9cbcbb66a"
@@ -355,9 +345,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-08-06T23:03:02Z",
-        "pinned_at_epoch": 1786057382,
-        "rev": "19b44c1bbe4eecaf191896b8bec657d5fdd549e4"
+        "pinned_at": "2026-08-08T19:46:33Z",
+        "pinned_at_epoch": 1786218393,
+        "rev": "5c2a99e43b959055311a4557875985142b672af0"
       }
     },
     "noice.nvim": {
@@ -512,6 +502,11 @@
           "first_seen": 1785976390,
           "first_seen_iso": "2026-08-06T00:33:10Z",
           "rev": "3d3321b560a63ff92a8692401f303a5123336b86"
+        },
+        {
+          "first_seen": 1786218393,
+          "first_seen_iso": "2026-08-08T19:46:33Z",
+          "rev": "c9f9ed6c1892f629ea399f4ee7905f2686fa13f2"
         }
       ],
       "pin": {
