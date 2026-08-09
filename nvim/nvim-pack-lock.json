@@ -26,9 +26,9 @@
       "version": "'4516612fe98ff56ae0415a259ff6361a89419b0a'"
     },
     "flash.nvim": {
-      "rev": "fcea7ff883235d9024dc41e638f164a450c14ca2",
+      "rev": "b6346946d10d07998efee029fb0f7a593806d0cd",
       "src": "https://github.com/folke/flash.nvim",
-      "version": "'fcea7ff883235d9024dc41e638f164a450c14ca2'"
+      "version": "'b6346946d10d07998efee029fb0f7a593806d0cd'"
     },
     "friendly-snippets": {
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
@@ -116,9 +116,9 @@
       "version": "'a219b2c9e5b4765e5c845aba119dad55806fcaf1'"
     },
     "nvim-lspconfig": {
-      "rev": "d224a1920728ba129880efc700d4a0180ac4ecbb",
+      "rev": "d6ac7a0d46555d44bf21f4f9c65f5201f818b475",
       "src": "https://github.com/neovim/nvim-lspconfig",
-      "version": "'d224a1920728ba129880efc700d4a0180ac4ecbb'"
+      "version": "'d6ac7a0d46555d44bf21f4f9c65f5201f818b475'"
     },
     "nvim-treesitter": {
       "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
