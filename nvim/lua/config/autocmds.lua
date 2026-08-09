@@ -48,9 +48,24 @@ autocmd({ "VimResized" }, {
 autocmd("BufReadPost", {
   group = augroup("last_loc"),
   callback = function(event)
-    local exclude = { "gitcommit" }
+    local exclude = { "gitcommit", "gitrebase", "hgcommit", "svn", "xxd" }
     local buf = event.buf
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].config_last_loc then
+    if vim.b[buf].config_last_loc then
+      return
+    end
+    -- 'filetype' is still empty here: this autocmd is registered from
+    -- init.lua, which runs before Neovim sources $VIMRUNTIME/filetype.lua, so
+    -- filetypedetect's own BufReadPost is registered *after* ours and hasn't
+    -- run yet. (Under LazyVim, lazy.nvim sourced filetype.lua at the top of
+    -- its startup, so the exclude list matched; the self-managed vim.pack
+    -- loader doesn't.) Resolve the filetype ourselves so the excludes work —
+    -- otherwise commit buffers get dumped on the previous commit's cursor
+    -- position out of shada instead of line 1.
+    local ft = vim.bo[buf].filetype
+    if ft == "" then
+      ft = vim.filetype.match({ buf = buf }) or ""
+    end
+    if vim.tbl_contains(exclude, ft) then
       return
     end
     vim.b[buf].config_last_loc = true
