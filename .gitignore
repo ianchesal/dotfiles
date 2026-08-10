@@ -100,6 +100,7 @@
 
 # Superpowers working docs (plans/specs) -- never committed
 /docs/superpowers/
+/SPEC_REVIEW.md
 
 # Serena
 /.serena/
