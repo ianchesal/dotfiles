@@ -111,7 +111,13 @@
       }
     },
     "flash.nvim": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1786370640,
+          "first_seen_iso": "2026-08-10T14:04:00Z",
+          "rev": "b6346946d10d07998efee029fb0f7a593806d0cd"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-08-09T22:03:12Z",
         "pinned_at_epoch": 1786312992,
@@ -232,17 +238,11 @@
       }
     },
     "mini.ai": {
-      "observed": [
-        {
-          "first_seen": 1783728156,
-          "first_seen_iso": "2026-07-11T00:02:36Z",
-          "rev": "25248c6aa002391936a6200f12d1466015987133"
-        }
-      ],
+      "observed": [],
       "pin": {
-        "pinned_at": "2026-08-08T19:46:33Z",
-        "pinned_at_epoch": 1786218393,
-        "rev": "6d43e74cae75771b780a7270fec1f160613ed873"
+        "pinned_at": "2026-08-10T14:04:00Z",
+        "pinned_at_epoch": 1786370640,
+        "rev": "25248c6aa002391936a6200f12d1466015987133"
       }
     },
     "mini.align": {
@@ -323,20 +323,15 @@
     "mini.surround": {
       "observed": [
         {
-          "first_seen": 1783728156,
-          "first_seen_iso": "2026-07-11T00:02:36Z",
-          "rev": "c30ec60393b256427512c6996a2b37d9cbcbb66a"
-        },
-        {
           "first_seen": 1784592247,
           "first_seen_iso": "2026-07-21T00:04:07Z",
           "rev": "8d5d0c5aa92449368ac251e85451d79d8f69d296"
         }
       ],
       "pin": {
-        "pinned_at": "2026-08-08T19:46:33Z",
-        "pinned_at_epoch": 1786218393,
-        "rev": "5c2a99e43b959055311a4557875985142b672af0"
+        "pinned_at": "2026-08-10T14:04:00Z",
+        "pinned_at_epoch": 1786370640,
+        "rev": "c30ec60393b256427512c6996a2b37d9cbcbb66a"
       }
     },
     "noice.nvim": {

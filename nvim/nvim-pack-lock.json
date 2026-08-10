@@ -66,9 +66,9 @@
       "version": "'2a6940af80375532e5e9e7c1f2fc6319a1b7a69d'"
     },
     "mini.ai": {
-      "rev": "6d43e74cae75771b780a7270fec1f160613ed873",
+      "rev": "25248c6aa002391936a6200f12d1466015987133",
       "src": "https://github.com/nvim-mini/mini.ai",
-      "version": "'6d43e74cae75771b780a7270fec1f160613ed873'"
+      "version": "'25248c6aa002391936a6200f12d1466015987133'"
     },
     "mini.align": {
       "rev": "77d7446b9f2452193f13ced9fb73a8b3aa4a4f4d",
@@ -96,9 +96,9 @@
       "version": "'b1fd9df3bb4a41c8f45778a3859ee80ef6b367e3'"
     },
     "mini.surround": {
-      "rev": "5c2a99e43b959055311a4557875985142b672af0",
+      "rev": "c30ec60393b256427512c6996a2b37d9cbcbb66a",
       "src": "https://github.com/nvim-mini/mini.surround",
-      "version": "'5c2a99e43b959055311a4557875985142b672af0'"
+      "version": "'c30ec60393b256427512c6996a2b37d9cbcbb66a'"
     },
     "noice.nvim": {
       "rev": "7bfd942445fb63089b59f97ca487d605e715f155",
