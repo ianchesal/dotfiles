@@ -238,7 +238,13 @@
       }
     },
     "mini.ai": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1786402590,
+          "first_seen_iso": "2026-08-10T22:56:30Z",
+          "rev": "25248c6aa002391936a6200f12d1466015987133"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-08-10T14:04:00Z",
         "pinned_at_epoch": 1786370640,
@@ -379,11 +385,6 @@
     "nvim-lspconfig": {
       "observed": [
         {
-          "first_seen": 1783799679,
-          "first_seen_iso": "2026-07-11T19:54:39Z",
-          "rev": "5955a100ae7155962330643924e21a798b9bdc91"
-        },
-        {
           "first_seen": 1783956191,
           "first_seen_iso": "2026-07-13T15:23:11Z",
           "rev": "d5b6e3db4c17b0146f63a2fc47e2027a754b2cb1"
@@ -430,9 +431,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-08-09T22:03:12Z",
-        "pinned_at_epoch": 1786312992,
-        "rev": "d6ac7a0d46555d44bf21f4f9c65f5201f818b475"
+        "pinned_at": "2026-08-10T22:56:30Z",
+        "pinned_at_epoch": 1786402590,
+        "rev": "5955a100ae7155962330643924e21a798b9bdc91"
       }
     },
     "nvim-treesitter": {
