@@ -98,6 +98,9 @@
 # Lazygit
 /lazygit/state.yml
 
+# Superpowers working docs (plans/specs) -- never committed
+/docs/superpowers/
+
 # Serena
 /.serena/
 /serena/.serena
