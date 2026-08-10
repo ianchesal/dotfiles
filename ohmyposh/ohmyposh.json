@@ -49,7 +49,7 @@
           "style": "plain"
         },
         {
-          "template": "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}<b> GCW </b>{{ end }}",
+          "template": "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}<b> GCW </b><,transparent> </>{{ end }}",
           "foreground": "p:gcw-ink",
           "background": "p:gcw-lime",
           "type": "text",
