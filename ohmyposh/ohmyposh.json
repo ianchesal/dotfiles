@@ -4,6 +4,8 @@
     "blue-bell": "#78a9ff",
     "blue-black": "#353535",
     "celeste-blue": "#3ddbd9",
+    "gcw-ink": "#16161e",
+    "gcw-lime": "#b8ff2e",
     "light-sky-blue": "#82cfff",
     "main-bg": "#161616",
     "pastal-grey": "#f2f4f8",
@@ -26,10 +28,13 @@
   "transient_prompt": {
     "template": "> ",
     "foreground": "p:terminal-magenta",
+    "foreground_templates": [
+      "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}p:gcw-lime{{ end }}"
+    ],
     "background": "transparent",
     "newline": true
   },
-  "console_title_template": "{{ .UserName }}@{{ .HostName }} :: {{ .Folder }}",
+  "console_title_template": "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}[GCW] {{ .UserName }}@gcw{{ else }}{{ .UserName }}@{{ .HostName }}{{ end }} :: {{ .Folder }}",
   "terminal_background": "p:t-background",
   "blocks": [
     {
@@ -44,8 +49,18 @@
           "style": "plain"
         },
         {
-          "template": "{{ .UserName }}@{{ .HostName }} ",
+          "template": "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}<b> GCW </b>{{ end }}",
+          "foreground": "p:gcw-ink",
+          "background": "p:gcw-lime",
+          "type": "text",
+          "style": "plain"
+        },
+        {
+          "template": "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}{{ .UserName }}@gcw{{ else }}{{ .UserName }}@{{ .HostName }}{{ end }} ",
           "foreground": "p:terminal-yellow",
+          "foreground_templates": [
+            "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}p:gcw-lime{{ end }}"
+          ],
           "type": "session",
           "style": "plain"
         },
@@ -55,6 +70,9 @@
           },
           "template": "<b>{{ .Path }}</b> ",
           "foreground": "p:terminal-blue",
+          "foreground_templates": [
+            "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}p:gcw-lime{{ end }}"
+          ],
           "type": "path",
           "style": "plain"
         },
@@ -91,7 +109,7 @@
       "alignment": "left",
       "segments": [
         {
-          "template": "{{ if gt .Code 0 }}<p:terminal-red>></>{{ else }}<p:terminal-magenta>></>{{ end }}",
+          "template": "{{ if gt .Code 0 }}<p:terminal-red>></>{{ else if eq .Env.DOTFILES_MACHINE \"gcw\" }}<p:gcw-lime>></>{{ else }}<p:terminal-magenta>></>{{ end }}",
           "foreground": "p:terminal-magenta",
           "background": "transparent",
           "type": "text",
