@@ -8,13 +8,14 @@
   },
   "attribution": {
     "commit": "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
-    "pr": "\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
+    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
   },
   "permissions": {
     "allow": [
       "Read(~/.claude/skills/**)"
     ]
   },
+  "model": "opus",
   "hooks": {
     "PermissionRequest": [
       {
@@ -113,7 +114,6 @@
     "frontier-deploy@persona-frontier": true,
     "lua-lsp@claude-plugins-official": true,
     "ruby-lsp@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true
   },
@@ -147,7 +147,5 @@
   ],
   "feedbackSurveyState": {
     "lastShownTime": 1753933073221
-  },
-  "model": "opus"
+  }
 }
-
