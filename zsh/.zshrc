@@ -72,17 +72,34 @@ zle -N edit-command-line
 # Note: zsh-vi-mode plugin is disabled due to tab completion conflicts
 # Basic vi mode is configured in zshrc.d/zz-vim-mode.zsh instead
 
-zinit ice depth=1
-
 # Add in zsh plugins
 # zinit light jeffreytse/zsh-vi-mode                      # Enhanced vi mode with better feedback and features - TEMPORARILY DISABLED due to tab completion issues
-zinit light zdharma-continuum/fast-syntax-highlighting  # Faster, more feature-rich syntax highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-history-substring-search      # Search history by substring with arrow keys
-zinit light hlissner/zsh-autopair                       # Auto-close quotes and brackets
-zinit light paulirish/git-open                          # Open GitHub/GitLab page for current repo
-zinit light junegunn/fzf-git.sh
+
+# Turbo mode: defer until just after the first prompt is drawn. These three
+# cost ~130ms of startup and nothing needs them before the prompt exists.
+#
+# Why each is safe to defer:
+#   - None call compdef at load time, so they can load after `zinit cdreplay`.
+#   - fast-syntax-highlighting must wrap widgets before autosuggestions, and it
+#     is listed first here so it does. Autosuggestions also re-binds widgets on
+#     every precmd (ZSH_AUTOSUGGEST_MANUAL_REBIND is deliberately left unset),
+#     so the wrapping order repairs itself regardless.
+#   - autopair and fzf-git.sh only bind keys/widgets at load time.
+#
+# Kept eager above: history-substring-search, because it is bindkey'd a few
+# lines down and those bindings would attach to non-existent widgets if it
+# were deferred.
+#
+# Note: zinit's turbo scheduler ticks on a self-re-arming `sched +1` chain, so
+# these arm over the first ~1-3 seconds of the shell rather than instantly --
+# autopair and the ^g fzf-git keys go live a beat after the prompt appears.
+zinit wait lucid depth=1 light-mode for \
+  zdharma-continuum/fast-syntax-highlighting \
+  hlissner/zsh-autopair \
+  junegunn/fzf-git.sh
 
 # Add in snippets
 # zinit snippet OMZL::git.zsh
