@@ -42,5 +42,13 @@ local t = gitops.latest_semver_tag(dir)
 assert(t and t.tag == "v1.10.0", "stable wins: prerelease skipped, version sort beats lexical (v1.10 > v1.2)")
 assert(t.rev == recent, "tag rev resolves to tagged commit")
 
+-- checked_out_rev reports the working tree's commit, NOT a branch tip. vim.pack
+-- leaves pinned plugins on a detached HEAD, so this is the only way to see what
+-- is actually installed; head_rev() answers a different question (the frontier).
+assert(gitops.checked_out_rev(dir) == recent, "attached HEAD resolves to the branch tip")
+sh({ "git", "checkout", "-q", "--detach", ancient })
+assert(gitops.checked_out_rev(dir) == ancient, "detached HEAD reports the checked-out commit")
+assert(gitops.head_rev(dir, "main") == recent, "branch tip is unaffected by the detached checkout")
+
 vim.fn.delete(dir, "rf")
 print("gitops_spec OK")

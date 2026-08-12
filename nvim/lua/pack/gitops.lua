@@ -50,6 +50,13 @@ function M.head_rev(dir, branch)
   return git({ "rev-parse", ref(dir, b) }, dir)
 end
 
+-- The commit actually checked out in the working tree. vim.pack parks pinned
+-- plugins on a detached HEAD, so this — not head_rev(), which resolves a branch
+-- tip — is what reveals whether disk agrees with the pin.
+function M.checked_out_rev(dir)
+  return git({ "rev-parse", "HEAD" }, dir)
+end
+
 function M.is_ancestor(a, b, dir)
   local r = vim.system({ "git", "merge-base", "--is-ancestor", a, b }, { cwd = dir }):wait()
   return r.code == 0

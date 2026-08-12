@@ -43,11 +43,15 @@ local pack_dir = vim.fn.stdpath("data") .. "/site/pack/core/opt/"
 local now = os.time()
 local now_iso = os.date("!%Y-%m-%dT%H:%M:%SZ", now)
 
--- Cross-check lockfile agreement. pins.json is authoritative: on drift, warn
--- loudly AND re-converge — drifted plugins join the update set so vim.pack
--- moves disk/lockfile back to the pin (e.g. after a mid-apply failure or a
--- manual in-editor vim.pack.update).
+-- Cross-check the lockfile AND the on-disk checkout against pins.json, which is
+-- authoritative. On drift, warn loudly AND re-converge — drifted plugins join
+-- the update set so vim.pack moves disk/lockfile back to the pin.
 local drifted = {}
+-- Revs may be abbreviated in the lockfile; pins are full. Compare by prefix.
+local function same_rev(a, b)
+  return vim.startswith(a, b) or vim.startswith(b, a)
+end
+
 local lock_f = io.open(config_dir .. "/nvim-pack-lock.json", "r")
 if lock_f then
   local ok, lock = pcall(vim.json.decode, lock_f:read("*a"))
@@ -56,7 +60,7 @@ if lock_f then
     for name, entry in pairs(pins.plugins) do
       local lentry = lock.plugins and lock.plugins[name]
       local lrev = lentry and lentry.rev
-      if lrev and not vim.startswith(entry.pin.rev, lrev) and not vim.startswith(lrev, entry.pin.rev) then
+      if lrev and not same_rev(entry.pin.rev, lrev) then
         io.stderr:write(
           ("WARN: lockfile disagrees with pins.json for %s (%s vs %s) — re-converging to pin\n"):format(
             name,
@@ -66,6 +70,32 @@ if lock_f then
         )
         drifted[name] = true
       end
+    end
+  end
+end
+
+-- The lockfile check alone is not enough, because the lockfile is a per-machine
+-- artifact that travels through git. When a pin advances on another machine, the
+-- commit carries pins.json and the lockfile forward together — so on every OTHER
+-- machine they arrive already agreeing while that box's checkout still sits at
+-- the old rev. vim.pack.add({version=rev}) does not move an already-installed
+-- plugin, so without this check the stale checkout is never reconciled and
+-- `:checkhealth vim.pack` reports a revision mismatch indefinitely.
+for name, entry in pairs(pins.plugins) do
+  local dir = pack_dir .. name
+  if vim.fn.isdirectory(dir) == 1 then
+    local disk = gitops.checked_out_rev(dir)
+    if not disk then
+      io.stderr:write(("WARN: cannot read checked-out rev for %s — skipping disk drift check\n"):format(name))
+    elseif not same_rev(entry.pin.rev, disk) then
+      io.stderr:write(
+        ("WARN: on-disk checkout of %s is %s, pinned %s — re-converging to pin\n"):format(
+          name,
+          disk:sub(1, 8),
+          entry.pin.rev:sub(1, 8)
+        )
+      )
+      drifted[name] = true
     end
   end
 end
