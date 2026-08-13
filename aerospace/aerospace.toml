@@ -7,7 +7,7 @@ config-version = 2
 # Workspaces that stay alive even when empty (requires config-version = 2).
 # In config-version = 1 this was inferred from keybindings (so 1-10 persisted);
 # now only the workspaces with auto-assigned apps persist.
-persistent-workspaces = ['1', '2', '3']
+persistent-workspaces = ['1', '2', '3', '4']
 
 # i3 doesn't have "normalizations" feature that why we disable them here.
 # But the feature is very helpful.
@@ -26,9 +26,17 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace 1'
 
+# Kitty lives alone on workspace 4. It floats there because a single tiled
+# window fills the whole 3840pt-wide ultrawide, which is uncomfortably wide.
+# AeroSpace has no per-workspace gaps (only constant or per-monitor), so
+# floating is the only way to narrow this window without squeezing every
+# other workspace on the same monitor. Target frame is ~60% of the display
+# (2304pt) centred, i.e. ~768pt of empty space on each side. macOS remembers
+# the position once you place it; `alt-shift-semicolon` then `c` re-snaps the
+# width if it ever drifts.
 [[on-window-detected]]
 if.app-id = 'net.kovidgoyal.kitty'
-run = 'move-node-to-workspace 1'
+run = ['move-node-to-workspace 4', 'layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Terminal'
@@ -187,6 +195,8 @@ alt-tab = 'workspace-back-and-forth'
 alt-shift-semicolon = 'mode service'
 
 [mode.service.binding]
+# Snap the focused floating window back to ~60% of the ultrawide (3840pt logical)
+c = ['resize width 2304', 'mode main']
 h = 'resize width -50'
 j = 'resize height +50'
 k = 'resize height -50'
