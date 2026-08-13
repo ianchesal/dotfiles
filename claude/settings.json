@@ -1,141 +1,4 @@
 {
-  "cleanupPeriodDays": 30,
-  "env": {
-    "CLAUDE_CODE_DISABLE_MOUSE_CLICKS": "1",
-    "CLAUDE_CODE_DISABLE_MOUSE": "1",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_ENV_FILE": "/usr/local/persona/npq-wrapper.sh"
-  },
-  "attribution": {
-    "commit": "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
-    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
-  },
-  "permissions": {
-    "allow": [
-      "Read(~/.claude/skills/**)"
-    ]
-  },
-  "model": "opus",
-  "hooks": {
-    "PermissionRequest": [
-      {
-        "matcher": "",
-        "hooks": []
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/tmux-scout hook claude",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "jq -r '.tool_input.file_path // empty' | { read -r f; [[ \"$f\" == *.rb ]] && bundle exec rubocop -a \"$f\"; } 2>/dev/null || true",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/tmux-scout hook claude",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/tmux-scout hook claude",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/tmux-scout hook claude",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/tmux-scout hook claude",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.local/bin/tmux-scout hook claude",
-            "timeout": 5
-          }
-        ]
-      }
-    ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "bash ~/.claude/statusline-command.sh"
-  },
-  "enabledPlugins": {
-    "frontier-deploy@persona-frontier": true,
-    "lua-lsp@claude-plugins-official": true,
-    "ruby-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "persona-frontier": {
-      "source": {
-        "source": "github",
-        "repo": "persona-id/frontier-claude-skill"
-      }
-    },
-    "persona-claude-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "persona-id/persona-claude-marketplace"
-      }
-    }
-  },
-  "spinnerTipsEnabled": false,
-  "alwaysThinkingEnabled": true,
-  "autoUpdatesChannel": "latest",
-  "tui": "default",
-  "skipDangerousModePermissionPrompt": true,
   "allowedTools": [
     "mcp__claude_ai_Google_Calendar__gcal_list_events",
     "mcp__claude_ai_Slack__slack_search_public_and_private",
@@ -145,7 +8,141 @@
     "mcp__claude_ai_Notion__notion-query-meeting-notes",
     "Read"
   ],
+  "alwaysThinkingEnabled": true,
+  "attribution": {
+    "commit": "Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>",
+    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+  },
+  "autoUpdatesChannel": "latest",
+  "cleanupPeriodDays": 30,
+  "enabledPlugins": {
+    "commit-commands@claude-plugins-official": true,
+    "frontier-deploy@persona-frontier": true,
+    "lua-lsp@claude-plugins-official": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "env": {
+    "CLAUDE_CODE_DISABLE_MOUSE": "1",
+    "CLAUDE_CODE_DISABLE_MOUSE_CLICKS": "1",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_ENV_FILE": "/usr/local/persona/npq-wrapper.sh"
+  },
+  "extraKnownMarketplaces": {
+    "persona-claude-marketplace": {
+      "source": {
+        "repo": "persona-id/persona-claude-marketplace",
+        "source": "github"
+      }
+    },
+    "persona-frontier": {
+      "source": {
+        "repo": "persona-id/frontier-claude-skill",
+        "source": "github"
+      }
+    }
+  },
   "feedbackSurveyState": {
     "lastShownTime": 1753933073221
-  }
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "command": "workmux set-window-status waiting",
+            "type": "command"
+          }
+        ],
+        "matcher": "permission_prompt|elicitation_dialog"
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [],
+        "matcher": ""
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [],
+        "matcher": ""
+      },
+      {
+        "hooks": [
+          {
+            "command": "jq -r '.tool_input.file_path // empty' | { read -r f; [[ \"$f\" == *.rb ]] && bundle exec rubocop -a \"$f\"; } 2>/dev/null || true",
+            "timeout": 30,
+            "type": "command"
+          }
+        ],
+        "matcher": "Edit|Write"
+      },
+      {
+        "hooks": [
+          {
+            "command": "workmux set-window-status working",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [],
+        "matcher": ""
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [],
+        "matcher": ""
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [],
+        "matcher": ""
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [],
+        "matcher": ""
+      },
+      {
+        "hooks": [
+          {
+            "command": "workmux set-window-status done",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [],
+        "matcher": ""
+      },
+      {
+        "hooks": [
+          {
+            "command": "workmux set-window-status working",
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
+  "model": "opus",
+  "permissions": {
+    "allow": ["Read(~/.claude/skills/**)"]
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "spinnerTipsEnabled": false,
+  "statusLine": {
+    "command": "bash ~/.claude/statusline-command.sh",
+    "type": "command"
+  },
+  "tui": "default"
 }
