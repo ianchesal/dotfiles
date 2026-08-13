@@ -26,6 +26,8 @@ This file provides guidance to AI agents working on this repository.
 - Update Oh My Posh: `rake ohmyposh:update`
 - Reload tmux config in all sessions: `rake tmux:reload`
 - Update zsh and plugins: `rake zsh:update`
+- Install the Rust toolchain: `rake rust`
+- Update rustup and Rust toolchains: `rake rust:update`
 - Update Homebrew packages: `rake brew:update`
 - Update Python packages: `rake python:update`
 - Update yt-dlp: `rake ytdlp:update`
@@ -148,6 +150,15 @@ This file provides guidance to AI agents working on this repository.
 - Never include project-specific terminology, conventions, and preferences in the global memory file — those belong in the project's CLAUDE.md
 - Document complex workflows that should be remembered across sessions
 - Skills dividing line: skills for working *on this repo* (e.g., `managing-nvim-plugins`) go in `.claude/skills/` (project-scoped, only loaded in this repo); skills wanted in every session everywhere (e.g., `morning-startup`, `daily-wrap`) go in `claude/skills/` (symlinked to `~/.claude/skills`, global)
+
+## Rust Configuration
+
+- Managed by `rustup` (the canonical Linux/macOS installer), not Homebrew or apt
+- Rake tasks in `rust/rust.rake`; shell integration in `zsh/zshrc.d/rust.zsh`
+- Installed with `--no-modify-path` so the installer never edits the managed `.zshrc`; `rust.zsh` sources `~/.cargo/env` instead to put `~/.cargo/bin` on PATH
+- `rake rust:install` is idempotent — it detects an existing rustup (on PATH or in `~/.cargo/bin`) and skips the installer
+- `rake clean` deliberately does NOT remove the toolchain, matching how `asdf:clean` leaves installed languages alone; use the explicit `rake rust:uninstall` for that
+- `asdf:asdf` depends on `rust:install`: ruby-build only compiles YJIT/ZJIT into Ruby when a Rust toolchain exists at build time, and `rake all` would otherwise reach asdf first
 
 ## OpenCode Configuration
 

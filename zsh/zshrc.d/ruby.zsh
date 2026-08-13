@@ -10,7 +10,16 @@ if (( $+commands[brew] )); then
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$HOMEBREW_OPENSSL_PREFIX"
   else
     # Linux: point at system OpenSSL to avoid Homebrew's glibc requirement.
-    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr"
+    #
+    # --without-gmp for the same reason: ruby-build auto-detects Homebrew's gmp and
+    # passes --with-gmp-dir, which puts -lgmp in SOLIBS. mkmf then builds its conftest
+    # link line for the bundled extensions (zlib, stringio, bigdecimal, fiddle, ...)
+    # from SOLIBS plus CONFIGURE_ARGS below, which carries no -L for Homebrew's lib
+    # dir -- and Debian has no libgmp.so without libgmp-dev, so -lgmp cannot resolve
+    # and every bundled extension silently fails to configure. gmp only accelerates
+    # Bignum arithmetic, so dropping it is cheaper than coupling Ruby to a versioned
+    # Cellar path that breaks on the next `brew upgrade gmp`.
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr --without-gmp"
 
     # linuxbrew's ld (binutils formula) precedes the system ld on PATH but
     # doesn't search Debian's multiarch lib dir, so it can't resolve
