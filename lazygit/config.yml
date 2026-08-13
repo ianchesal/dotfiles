@@ -23,9 +23,9 @@ gui:
   showBranchCommitHash: true
   showDivergenceFromBaseBranch: "arrowAndNumber"
 git:
-  pagers:
+  diffRenderers:
     - # Use delta with more features
-      pager: delta --dark --paging=never --line-numbers --navigate
+      command: delta --dark --paging=never --line-numbers --navigate
   # Better commit message editing
   commit:
     signOff: false
