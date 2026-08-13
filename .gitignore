@@ -2,6 +2,7 @@
 .DS_Store
 
 # Ruby
+/.bundle/
 /Gemfile.lock
 
 # Node.js

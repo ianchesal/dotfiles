@@ -26,9 +26,10 @@ if (( $+commands[brew] )); then
     # libcrypt.so.1 (a transitive dependency of libruby.so) when native gem
     # extensions link against libruby. -rpath-link (not -L) is what GNU ld
     # actually consults to resolve a shared library's own indirect
-    # dependencies. CONFIGURE_ARGS is honored by mkmf for any `gem install`,
-    # not just bundler-driven ones (see .bundle/config for the bundler
-    # equivalent), so this also covers Mason's plain `gem install` calls.
+    # dependencies. mkmf reads CONFIGURE_ARGS out of the environment, so this
+    # covers bundler-driven builds and Mason's plain `gem install` calls alike
+    # -- do NOT mirror it into a committed .bundle/config, which has no way to
+    # express "Linux only" and would break native builds on macOS.
     export CONFIGURE_ARGS="--with-ldflags=-Wl,-rpath-link,/usr/lib/x86_64-linux-gnu"
   fi
 fi
