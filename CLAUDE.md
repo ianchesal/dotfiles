@@ -32,6 +32,8 @@ This file provides guidance to AI agents working on this repository.
 - Update Python packages: `rake python:update`
 - Update yt-dlp: `rake ytdlp:update`
 - Update gcloud components: `rake gcloud:update`
+- Uninstall asdf tool versions older than the one in use: `rake asdf:prune` (`FORCE=1` skips the confirmation prompt)
+- Preview which asdf tool versions would be pruned: `rake asdf:prune_preview`
 
 ## Code Style Guidelines
 

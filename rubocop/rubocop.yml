@@ -9,6 +9,15 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Enabled: false
 
+# A rake namespace block holds every task for one tool, so it grows past 25 lines as a
+# matter of course. inherit_mode keeps Rubocop's own default exclusion (**/*.gemspec).
+Metrics/BlockLength:
+  inherit_mode:
+    merge:
+      - Exclude
+  Exclude:
+    - '**/*.rake'
+
 Layout/LineLength:
   Max: 160
 
