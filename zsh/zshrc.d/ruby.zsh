@@ -1,4 +1,5 @@
-# Use Homebrew OpenSSL on macOS; system OpenSSL on Linux.
+# Use Homebrew OpenSSL on macOS; system OpenSSL on Linux, except on images that ship no
+# OpenSSL headers at all (see the gcw branch below).
 # Homebrew's openssl@3 bottles require GLIBC_2.38+ which Debian 12 (glibc 2.36) does not have,
 # causing build-time linker failures. System libssl-dev is glibc-compatible and sufficient.
 if (( $+commands[brew] )); then
@@ -15,11 +16,26 @@ if (( $+commands[brew] )); then
     # passes --with-gmp-dir, which puts -lgmp in SOLIBS. mkmf then builds its conftest
     # link line for the bundled extensions (zlib, stringio, bigdecimal, fiddle, ...)
     # from SOLIBS plus CONFIGURE_ARGS below, which carries no -L for Homebrew's lib
-    # dir -- and Debian has no libgmp.so without libgmp-dev, so -lgmp cannot resolve
-    # and every bundled extension silently fails to configure. gmp only accelerates
+    # dir -- so -lgmp cannot resolve (Debian has no libgmp.so without libgmp-dev; on
+    # linuxbrew boxes the .so exists but is unreachable without that -L) and every
+    # bundled extension fails to configure, with ruby-build reporting only the
+    # misleading "You have to install development tools first". gmp only accelerates
     # Bignum arithmetic, so dropping it is cheaper than coupling Ruby to a versioned
     # Cellar path that breaks on the next `brew upgrade gmp`.
-    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr --without-gmp"
+    #
+    # The Google Cloud Workstation image is the exception to --with-openssl-dir=/usr:
+    # it ships no libssl-dev, so /usr/include/openssl does not exist and configure
+    # cannot find OpenSSL at all. Its glibc is 2.39 -- past the GLIBC_2.38 floor that
+    # ruled Homebrew's bottles out on Debian 12 -- so linuxbrew's openssl@3 is safe
+    # there. DOTFILES_MACHINE comes from machine.zsh, which sorts before this file in
+    # the zshrc.d glob; if it is ever unset we fall through to /usr, which is the right
+    # default for every other Linux box. Use the opt/ symlink, never a Cellar path.
+    ruby_openssl_dir=/usr
+    if [[ "${DOTFILES_MACHINE:-}" == gcw ]]; then
+      ruby_openssl_dir=/home/linuxbrew/.linuxbrew/opt/openssl@3
+    fi
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${ruby_openssl_dir} --without-gmp"
+    unset ruby_openssl_dir
 
     # linuxbrew's ld (binutils formula) precedes the system ld on PATH but
     # doesn't search Debian's multiarch lib dir, so it can't resolve
