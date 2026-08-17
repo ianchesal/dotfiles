@@ -1,0 +1,16 @@
+#compdef spec-review
+
+# Only the first argument is a spec document
+if (( CURRENT != 2 )); then
+  return 1
+fi
+
+# spec-review resolves bare filenames against docs/superpowers/specs, so
+# completing the basename out of that directory is enough. -W needs an absolute
+# path here; a relative one silently matches nothing.
+if [[ -d docs/superpowers/specs ]]; then
+  _path_files -W "$PWD/docs/superpowers/specs" -g "*.md" && return 0
+fi
+
+# Not sitting in a repo that keeps specs there - complete markdown files instead
+_files -g "*.md"

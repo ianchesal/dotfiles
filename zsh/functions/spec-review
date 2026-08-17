@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+##? spec-review - Review a spec doc with Claude's /spec-review command
+##?
+##? Launches Claude Code in auto permission mode and runs /spec-review against
+##? the given spec document. The review lands in SPEC_REVIEW.md at the repo root.
+##?
+##? A bare filename is resolved against docs/superpowers/specs. With no argument
+##? at all, the most recently modified spec in that directory is reviewed. Run
+##? this from the repo root.
+##?
+##? usage: spec-review [spec.md|path/to/spec.md]
+##?
+##? examples:
+##?   spec-review
+##?   spec-review 2026-08-10-gcw-machine-marker-design.md
+##?   spec-review docs/superpowers/specs/2026-08-10-gcw-machine-marker-design.md
+
+if ! command -v claude >/dev/null 2>&1; then
+  echo >&2 "spec-review: claude not found" && return 1
+fi
+
+local specs_dir='docs/superpowers/specs'
+local spec="$1"
+
+if [[ -z "$spec" ]]; then
+  # Newest spec wins. N discards the pattern when nothing matches, . keeps it to
+  # regular files, om sorts newest first.
+  local -a candidates
+  candidates=("$specs_dir"/*.md(N.om))
+  if (( ${#candidates} == 0 )); then
+    echo >&2 "spec-review: no spec given and no $specs_dir/*.md found" && return 1
+  fi
+  spec="${candidates[1]}"
+  echo "Reviewing newest spec: $spec"
+elif [[ ! -f "$spec" && -f "$specs_dir/$spec" ]]; then
+  spec="$specs_dir/$spec"
+fi
+
+if [[ ! -f "$spec" ]]; then
+  echo >&2 "spec-review: no such file: $spec" && return 1
+fi
+
+claude --permission-mode auto "/spec-review $spec"
