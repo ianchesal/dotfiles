@@ -48,9 +48,15 @@ namespace :claude do
 
   task update: [:permissions] do
     if (deb_version = apt_claude_version)
-      puts "claude-code #{deb_version} is apt managed, skipping `claude update`".yellow
-      puts 'Update it with: sudo apt update && sudo apt upgrade claude-code'.yellow
-      puts 'Then regenerate completions with: rake claude:gen_completions'.yellow
+      puts "claude-code #{deb_version} is apt managed, updating via apt".green
+      sh 'sudo apt-get update'
+      sh 'sudo apt-get install --only-upgrade -y claude-code'
+      if (new_version = apt_claude_version) && new_version != deb_version
+        puts "claude updated #{deb_version} -> #{new_version}, regenerating completions...".yellow
+        Rake::Task['claude:gen_completions'].invoke
+      else
+        puts "claude-code already up to date (#{deb_version})".green
+      end
     elsif which('claude')
       puts 'Update: claude'.green
       old_version = `claude --version 2>/dev/null`.strip
