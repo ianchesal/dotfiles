@@ -1,0 +1,6 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://oracle.withpersona.ai/api/external/anthropic-proxy",
+    "ENABLE_TOOL_SEARCH": "true"
+  }
+}
