@@ -347,7 +347,13 @@
       }
     },
     "mini.surround": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1787189642,
+          "first_seen_iso": "2026-08-20T01:34:02Z",
+          "rev": "8d5d0c5aa92449368ac251e85451d79d8f69d296"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-08-20T01:26:23Z",
         "pinned_at_epoch": 1787189183,
@@ -569,7 +575,13 @@
       }
     },
     "nvim-treesitter-textobjects": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1787189642,
+          "first_seen_iso": "2026-08-20T01:34:02Z",
+          "rev": "898ee307df58f854d11cd7edd06472574d48014e"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-08-20T01:26:23Z",
         "pinned_at_epoch": 1787189183,
