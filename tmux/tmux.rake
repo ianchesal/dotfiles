@@ -30,8 +30,9 @@ namespace :tmux do
     config_path = home('.config/tmux/tmux.conf')
 
     sessions.each do |session|
-      puts "Reloading config for session: #{session}"
-      sh "tmux source-file -t #{session} #{config_path}"
+      puts "Reloading config for session: #{session.inspect}"
+      # Array form: session names may contain spaces, so never build a shell string
+      sh 'tmux', 'source-file', '-t', session, config_path
     end
 
     puts "Reloaded tmux configuration for #{sessions.count} session(s)"
