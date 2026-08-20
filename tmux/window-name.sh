@@ -14,7 +14,9 @@ dir="${1:-$PWD}"
 d="$dir"
 while [[ -n $d ]]; do
   if [[ -e $d/.git ]]; then
-    printf '%s\n' "${d##*/}"
+    repo="${d##*/}"
+    # Nearly every work repo is persona-*; the prefix is noise in a narrow tab
+    printf '%s\n' "${repo#persona-}"
     exit 0
   fi
   d="${d%/*}"
