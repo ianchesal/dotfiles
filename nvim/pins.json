@@ -328,7 +328,13 @@
       }
     },
     "mini.pairs": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1787417224,
+          "first_seen_iso": "2026-08-22T16:47:04Z",
+          "rev": "b1c5a726921b7a8c9321e9a7a208aa0571de5810"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-08-22T15:06:08Z",
         "pinned_at_epoch": 1787411168,
