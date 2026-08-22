@@ -1,9 +1,9 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "77fb1b0aa0c7528680bed48687f3dd2c2a6ed111",
+      "rev": "3d2c297f7152208daf4a382ea7123f9e4ebf9da1",
       "src": "https://github.com/b0o/SchemaStore.nvim",
-      "version": "'77fb1b0aa0c7528680bed48687f3dd2c2a6ed111'"
+      "version": "'3d2c297f7152208daf4a382ea7123f9e4ebf9da1'"
     },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
@@ -91,9 +91,9 @@
       "version": "'98faae31e9be1cc054ae63485e58ceb185efcad0'"
     },
     "mini.pairs": {
-      "rev": "b1fd9df3bb4a41c8f45778a3859ee80ef6b367e3",
+      "rev": "b1c5a726921b7a8c9321e9a7a208aa0571de5810",
       "src": "https://github.com/nvim-mini/mini.pairs",
-      "version": "'b1fd9df3bb4a41c8f45778a3859ee80ef6b367e3'"
+      "version": "'b1c5a726921b7a8c9321e9a7a208aa0571de5810'"
     },
     "mini.surround": {
       "rev": "8d5d0c5aa92449368ac251e85451d79d8f69d296",
@@ -116,14 +116,14 @@
       "version": "'a219b2c9e5b4765e5c845aba119dad55806fcaf1'"
     },
     "nvim-lspconfig": {
-      "rev": "b89138d9af0a96e6048e202a15765fc6b6416bd4",
+      "rev": "d592c1e6ad9a0a01b3d5ed3f0345d68407167181",
       "src": "https://github.com/neovim/nvim-lspconfig",
-      "version": "'b89138d9af0a96e6048e202a15765fc6b6416bd4'"
+      "version": "'d592c1e6ad9a0a01b3d5ed3f0345d68407167181'"
     },
     "nvim-treesitter": {
-      "rev": "7248feaca45e4d944591497964bc19afa89ad1c6",
+      "rev": "a45a920ec04cda5624f6dea0ff6454c81c3ad2d5",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
-      "version": "'7248feaca45e4d944591497964bc19afa89ad1c6'"
+      "version": "'a45a920ec04cda5624f6dea0ff6454c81c3ad2d5'"
     },
     "nvim-treesitter-endwise": {
       "rev": "8fe8a95630f4f2c72a87ba1927af649e0bfaa244",
