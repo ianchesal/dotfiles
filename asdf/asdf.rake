@@ -78,7 +78,7 @@ def report_asdf_prune_plan(plan)
   end
 end
 
-def asdf_confirm(prompt)
+def asdf_confirm?(prompt)
   print "#{prompt} [y/N] "
   answer = $stdin.gets
   !answer.nil? && answer.strip.casecmp('y').zero?
@@ -91,7 +91,7 @@ def asdf_prune_confirmed?(plan)
     puts 'Nothing to remove'.green
     return false
   end
-  return true if ENV['FORCE'] == '1' || asdf_confirm("Uninstall #{total} tool versions?")
+  return true if ENV['FORCE'] == '1' || asdf_confirm?("Uninstall #{total} tool versions?")
 
   puts 'Aborted'.red
   false
