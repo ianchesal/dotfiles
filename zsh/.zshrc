@@ -65,6 +65,13 @@ fi
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
+# OMZ plugin snippets (kubectl) cache their completions into
+# $ZSH_CACHE_DIR/completions using `=( ... )` process substitution, which needs
+# that directory to already exist. Oh My Zsh normally creates it, but we load
+# the snippets without OMZ and zinit creates only $ZSH_CACHE_DIR itself -- so
+# without this every shell start emits "(anon):2: process substitution failed".
+[[ -d "$ZSH_CACHE_DIR/completions" ]] || mkdir -p "$ZSH_CACHE_DIR/completions"
+
 # Load edit-command-line for use in vi mode
 autoload -U edit-command-line
 zle -N edit-command-line
