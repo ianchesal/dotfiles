@@ -57,7 +57,7 @@
 	keepBackup = true
 
 [push]
-	default = matching
+	default = current
 	autoSetupRemote = true
 
 [branch]
