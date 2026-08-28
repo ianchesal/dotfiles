@@ -5,6 +5,20 @@ task rust: ['rust:all']
 
 CARGO_BIN_DIR = home('.cargo', 'bin').freeze
 
+# Environment that keeps a rustup update from stalling an unattended `rake update`.
+# Long text like a toolchain's release notes gets handed to $PAGER, which is `less` in an
+# interactive shell and then sits on the alternate screen waiting for a keypress. Point
+# PAGER at cat so that text just scrolls past, and belt-and-braces a pager that ignores
+# PAGER by appending -F (quit if it fits one screen) and -X (leave the alternate screen
+# alone) to whatever LESS the caller had -- later less options win. Callers also close
+# stdin so nothing else can block on input.
+RUST_NON_PAGING_ENV = {
+  'PAGER' => 'cat',
+  'MANPAGER' => 'cat',
+  'GIT_PAGER' => 'cat',
+  'LESS' => "#{ENV.fetch('LESS', '')} -F -X".strip
+}.freeze
+
 # Returns the path to rustup, or nil when it isn't installed.
 #
 # rustup lives in ~/.cargo/bin, which zshrc.d/rust.zsh puts on PATH for interactive
@@ -36,9 +50,9 @@ namespace :rust do
   task :update do
     if (rustup = rustup_bin)
       puts 'Update: rustup'.green
-      sh "#{rustup} self update"
+      sh(RUST_NON_PAGING_ENV, "#{rustup} self update < /dev/null")
       puts 'Update: rust toolchains'.green
-      sh "#{rustup} update"
+      sh(RUST_NON_PAGING_ENV, "#{rustup} update < /dev/null")
     else
       puts 'No updates to rust performed -- rustup not found'.red
     end
