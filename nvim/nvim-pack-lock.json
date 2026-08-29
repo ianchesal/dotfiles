@@ -76,9 +76,9 @@
       "version": "'77d7446b9f2452193f13ced9fb73a8b3aa4a4f4d'"
     },
     "mini.diff": {
-      "rev": "b3d8507929f8df54ab9b08c77564c1afd7d62110",
+      "rev": "626b8a5b93874c4d05ca25aedec56cfff0b378fb",
       "src": "https://github.com/nvim-mini/mini.diff",
-      "version": "'b3d8507929f8df54ab9b08c77564c1afd7d62110'"
+      "version": "'626b8a5b93874c4d05ca25aedec56cfff0b378fb'"
     },
     "mini.hipatterns": {
       "rev": "7c840c71d6a91f53d734cab2b6fe2290d285ec3b",
@@ -121,9 +121,9 @@
       "version": "'b7b920947f21339ee41fbb38c79d6445e12900aa'"
     },
     "nvim-treesitter": {
-      "rev": "61df84986b4b4ec469ee745a182e433d49f8c27e",
+      "rev": "0f32dff7f19476629c77467f887b95e5e2d33509",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
-      "version": "'61df84986b4b4ec469ee745a182e433d49f8c27e'"
+      "version": "'0f32dff7f19476629c77467f887b95e5e2d33509'"
     },
     "nvim-treesitter-endwise": {
       "rev": "8fe8a95630f4f2c72a87ba1927af649e0bfaa244",
