@@ -56,9 +56,9 @@
       "version": "'a923f5fc5ba36a3b17e289dc35dc17f66d0548ee'"
     },
     "mason-lspconfig.nvim": {
-      "rev": "7adc933dabcc7c86ae6b07aff7ee68eac398491f",
+      "rev": "67029ccdac1ef8941e13b826417bc0ffac24cc86",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim",
-      "version": "'7adc933dabcc7c86ae6b07aff7ee68eac398491f'"
+      "version": "'67029ccdac1ef8941e13b826417bc0ffac24cc86'"
     },
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
@@ -116,9 +116,9 @@
       "version": "'a219b2c9e5b4765e5c845aba119dad55806fcaf1'"
     },
     "nvim-lspconfig": {
-      "rev": "b7b920947f21339ee41fbb38c79d6445e12900aa",
+      "rev": "9ae2b3b63b924b1329724dae76e9d2c5c40b389c",
       "src": "https://github.com/neovim/nvim-lspconfig",
-      "version": "'b7b920947f21339ee41fbb38c79d6445e12900aa'"
+      "version": "'9ae2b3b63b924b1329724dae76e9d2c5c40b389c'"
     },
     "nvim-treesitter": {
       "rev": "0f32dff7f19476629c77467f887b95e5e2d33509",

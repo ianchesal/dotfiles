@@ -81,6 +81,11 @@
           "first_seen": 1788040993,
           "first_seen_iso": "2026-08-29T22:03:13Z",
           "rev": "76c1a2357d4a9da49a90f922e251e5c32d74c99b"
+        },
+        {
+          "first_seen": 1788141730,
+          "first_seen_iso": "2026-08-31T02:02:10Z",
+          "rev": "2940d5e12f8797620cd47dca984d46119e1fa4b8"
         }
       ],
       "pin": {
@@ -252,11 +257,6 @@
     "mason-lspconfig.nvim": {
       "observed": [
         {
-          "first_seen": 1785505213,
-          "first_seen_iso": "2026-07-31T13:40:13Z",
-          "rev": "67029ccdac1ef8941e13b826417bc0ffac24cc86"
-        },
-        {
           "first_seen": 1786916828,
           "first_seen_iso": "2026-08-16T21:47:08Z",
           "rev": "9d28935aa95fa6c1dc7c4d6747f101a72a8a4bec"
@@ -278,9 +278,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-08-20T01:26:23Z",
-        "pinned_at_epoch": 1787189183,
-        "rev": "7adc933dabcc7c86ae6b07aff7ee68eac398491f"
+        "pinned_at": "2026-08-31T02:02:10Z",
+        "pinned_at_epoch": 1788141730,
+        "rev": "67029ccdac1ef8941e13b826417bc0ffac24cc86"
       }
     },
     "mason.nvim": {
@@ -475,11 +475,6 @@
     "nvim-lspconfig": {
       "observed": [
         {
-          "first_seen": 1785505213,
-          "first_seen_iso": "2026-07-31T13:40:13Z",
-          "rev": "9ae2b3b63b924b1329724dae76e9d2c5c40b389c"
-        },
-        {
           "first_seen": 1785597217,
           "first_seen_iso": "2026-08-01T15:13:37Z",
           "rev": "1c0d8f70dbc8827263eedc3cf7021ceba0f68689"
@@ -548,12 +543,17 @@
           "first_seen": 1787915049,
           "first_seen_iso": "2026-08-28T11:04:09Z",
           "rev": "684cb45c2faa24ce463b4fe9aaf011bfe1e0fb26"
+        },
+        {
+          "first_seen": 1788141730,
+          "first_seen_iso": "2026-08-31T02:02:10Z",
+          "rev": "16286347bdba1333c7d124d9de9fe6630731b2b2"
         }
       ],
       "pin": {
-        "pinned_at": "2026-08-28T15:33:50Z",
-        "pinned_at_epoch": 1787931230,
-        "rev": "b7b920947f21339ee41fbb38c79d6445e12900aa"
+        "pinned_at": "2026-08-31T02:02:10Z",
+        "pinned_at_epoch": 1788141730,
+        "rev": "9ae2b3b63b924b1329724dae76e9d2c5c40b389c"
       }
     },
     "nvim-treesitter": {
