@@ -40,7 +40,7 @@ run = ['move-node-to-workspace 4', 'layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.reminders'
-rum = ['layout floating']
+run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Terminal'
