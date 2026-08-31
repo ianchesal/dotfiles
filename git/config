@@ -72,6 +72,7 @@
 
 [rebase]
 	autosquash = true
+	autoStash = true
 
 [interactive]
   diffFilter = delta --color-only
@@ -88,6 +89,7 @@
   file-style = bold yellow ul
 
 [pull]
+	rebase = true
 	ff = only
 
 [difftool "sourcetree"]
