@@ -3,7 +3,8 @@
 ##? spec-review - Review a spec doc with Claude's /spec-review command
 ##?
 ##? Launches Claude Code in auto permission mode and runs /spec-review against
-##? the given spec document. The review lands in SPEC_REVIEW.md at the repo root.
+##? the given spec document. The review lands in SPEC_REVIEW.md at the repo root,
+##? or spec-review.md if that is the name the repo gitignores.
 ##?
 ##? A bare filename is resolved against docs/superpowers/specs. With no argument
 ##? at all, the most recently modified spec in that directory is reviewed. Run

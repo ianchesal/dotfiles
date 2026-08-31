@@ -11,7 +11,8 @@ Follow these steps:
 1. Read the whole spec before commenting on any part of it
 2. Read enough of the surrounding project to judge the spec against reality: the repo's `CLAUDE.md`, and the files or subsystems the spec says it will touch. A spec that contradicts the codebase is the most valuable kind of finding
 3. Review it against the checks below
-4. Write the review to `SPEC_REVIEW.md` at the repo root, replacing any existing file
+4. Pick the output filename from the repo's ignore rules, then write the review to
+   that file at the repo root, replacing any existing file
 
 Checks:
 
@@ -25,7 +26,17 @@ Checks:
 - **Unstated assumptions** — what the spec takes for granted about environment, data, or user behaviour
 - **YAGNI** — anything that could be cut without hurting the stated goal
 
-Structure `SPEC_REVIEW.md` as:
+Picking the output filename:
+
+- Default to `SPEC_REVIEW.md` at the repo root
+- Some repos gitignore a lowercase `spec-review.md` instead. Check with
+  `git check-ignore -v spec-review.md SPEC_REVIEW.md` (or read `.gitignore` and any
+  nested ones) and, if `spec-review.md` is ignored and `SPEC_REVIEW.md` is not, write
+  to `spec-review.md`
+- If both are ignored, or neither is, use the default `SPEC_REVIEW.md`
+- Say which filename you picked and why
+
+Structure the review file as:
 
 - A one-paragraph verdict: ready to implement, ready with fixes, or needs rework
 - The findings, ordered by severity, blockers first. Each one gets a severity (blocker / should-fix / nit), the spec section it lives in, what's wrong, and a concrete suggested fix
@@ -34,5 +45,5 @@ Structure `SPEC_REVIEW.md` as:
 Quote the spec where quoting makes the finding concrete. Don't pad the review to
 look thorough — if the spec is good, say so and keep it short.
 
-This is a review only: do not edit the spec, and do not implement anything.
-`SPEC_REVIEW.md` is gitignored, so leave it uncommitted.
+This is a review only: do not edit the spec, and do not implement anything. The
+review file is gitignored, so leave it uncommitted.
