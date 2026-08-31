@@ -39,6 +39,10 @@ if.app-id = 'net.kovidgoyal.kitty'
 run = ['move-node-to-workspace 4', 'layout floating']
 
 [[on-window-detected]]
+if.app-id = 'com.apple.reminders'
+rum = ['layout floating']
+
+[[on-window-detected]]
 if.app-id = 'com.apple.Terminal'
 run = ['move-node-to-workspace 4', 'layout floating']
 
