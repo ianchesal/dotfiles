@@ -19,10 +19,22 @@ def apt_claude_version
 end
 
 namespace :claude do
-  task all: [:dirs, :install, :permissions]
+  task all: [:dirs, :install, :permissions, :diff_driver]
 
   task :dirs do
     dolink(home('.claude'), root('claude'))
+  end
+
+  # Claude Code and workmux rewrite claude/settings.json in their own canonical
+  # key order, so raw diffs are mostly reshuffle noise. Pairs with the
+  # sorted-json driver assignment in .gitattributes to keep `git diff` semantic.
+  task :diff_driver do
+    driver = 'jq -S .'
+    current = `git -C #{root} config --get diff.sorted-json.textconv 2>/dev/null`.strip
+    if current != driver
+      sh "git -C #{root} config diff.sorted-json.textconv '#{driver}'"
+      puts 'Registered sorted-json git diff driver for claude/settings.json'.green
+    end
   end
 
   task :install do

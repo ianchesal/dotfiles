@@ -1,0 +1,6 @@
+# Claude Code and workmux rewrite settings.json in their own canonical key
+# order, so raw diffs are mostly reshuffling noise. The sorted-json textconv
+# driver normalizes both sides with `jq -S` so `git diff` shows only real
+# changes. Requires a one-time local config on each machine (done by rake):
+#   git config diff.sorted-json.textconv 'jq -S .'
+claude/settings.json diff=sorted-json
