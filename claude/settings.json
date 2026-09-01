@@ -15,7 +15,6 @@
       "Read(~/.claude/skills/**)"
     ]
   },
-  "model": "claude-fable-5[1m]",
   "hooks": {
     "Notification": [
       {
