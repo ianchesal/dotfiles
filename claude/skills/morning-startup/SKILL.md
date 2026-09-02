@@ -234,6 +234,13 @@ Use `mcp__claude_ai_Slack__slack_search_public_and_private` and
    the message text, or the message is a direct reply to you in a thread you started.
    Drop false positives silently — do not list them.
 
+   **An empty result is NOT proof of no mentions.** This search has returned zero while
+   three genuine literal @-mentions existed in the window (observed 2026-09-02). Never
+   report "no mentions" on the strength of an empty search alone — confirm it against
+   the monitored-channel reads in step 4, scanning message text for
+   `<@{{SLACK_USER_ID}}|`. If the channel reads are also clean, then report nothing
+   outstanding.
+
 2. **VIP DMs** — search for recent messages `from:{{VIP_SLACK_USERNAMES}}`
    using `slack_search_public_and_private`
 3. **Incidents** — read the incidents/on-call channel from your config. Also search
@@ -286,6 +293,17 @@ Use `mcp__claude_ai_Slack__slack_search_public_and_private` and
    (engineers handling their own work, transient tool hiccups, PR activity not requiring
    your review or decision). Test: _would you act differently as head of infrastructure
    because of this item?_
+
+   **Thread-verify channel highlights too — the rule is not just for mentions.**
+   `slack_read_channel` returns only top-level messages, so an infra help request, a
+   bot-filed ticket, or a PR-review ask will look untouched even when it was answered
+   and closed in its own thread. Before writing that anything "needs your call" or is
+   "blocked on you", get the parent `Message_ts` (a `from:<person> <keywords>` search
+   returns it plus `Reply count` and thread context) and read the resolution. For a
+   claim that you owe code, also check directly:
+   `gh pr list --repo persona-id/<repo> --author <your-gh-handle> --search "<keyword>" --state all`.
+   Observed failure (2026-09-02): a help request was reported as blocking when the fix
+   had shipped two days earlier, ~2h after it was raised.
 
 For each item requiring action, produce a clickable Obsidian deep link using
 the Slack `slack://` URL scheme:
@@ -345,6 +363,50 @@ Produce a `### Jira` section as a markdown table:
 ```
 
 If no open issues, note "No open Jira issues assigned."
+
+---
+
+## Step 3d: Verification Gate (do this BEFORE writing anything)
+
+Everything gathered so far is raw. Run these three checks before Step 4. They are cheap
+relative to handing the user a false action item, and both failures they guard against
+have actually happened.
+
+**1. Every action item must be resolution-checked.**
+List the items you are about to write under `⚠️ Heads up`, `🔴 Action Required`,
+`📣 Channel Highlights`, `Today needs from you`, and `The One Thing`. For each one that
+asserts something is unresolved — "needs your call", "blocked on you", "no reply yet",
+"nobody owns it" — confirm it in the thread, in Jira, or in `gh` before it survives into
+the note. Anything you could not confirm gets written as a question ("worth checking
+whether X is still open"), never as an assertion. Delete items that turn out closed;
+do not soften them.
+
+**2. Every number must be derived, not repeated.**
+When someone quotes a dollar figure in Slack, find the underlying quantity and unit price
+in the same thread and recompute it yourself. Show the arithmetic (volume × rate), not
+the quoted total. Rules:
+- **Never convert someone's aggregate into a different rate.** Dividing a quoted
+  "$100k/mo" by 30 to get a daily burn manufactures false precision and hides where the
+  number came from.
+- **A contested figure may not be transformed into any other figure.** If a number is
+  disputed anywhere in your own gathered context, quote it with the dispute attached or
+  drop it — never derive from it.
+- **Watch units.** TiB→GiB is ×1024; per-day vs per-month is the easiest slip to make
+  sound authoritative.
+- **Check which workload a number describes** before attributing it to a narrower one.
+- Observed failure (2026-09-02): "$3.3k/day" was reported for a cost that the source's
+  own inputs put at $45–131/day, because a contested monthly aggregate for a *different*
+  workload was divided by 30.
+
+**3. Pressure-test The One Thing.**
+Name the two or three facts it rests on and confirm each one survived checks 1 and 2. If
+a load-bearing fact collapses, pick a different One Thing rather than propping up the
+original. Observed failure (2026-09-02): The One Thing rested on a colleague being
+blocked, who had in fact been unblocked two days earlier.
+
+If the briefing has already been delivered when a correction surfaces, patch both notes
+in place and mark the change with a dated revision line (e.g. *"Revised at 12:10 PM"*)
+naming what changed and why — the user re-reads these later and needs the trail.
 
 ---
 
@@ -576,6 +638,16 @@ generic. Cover:
 For each attendee, search Slack using mcp__claude_ai_Slack__slack_search_public_and_private:
 - Query: `from:[attendee-first-name] after:[seven-days-ago]`
 - Look for: pending questions, recent decisions, anything unresolved
+- **Check resolution state before calling anything open.** Read the thread to its end,
+  not just the opening message. If someone asked for a decision, find out whether
+  another person already made it — a teammate answering "we're already working on it,
+  don't do that yet" IS the decision, and the ask is closed. Framing a settled thread
+  as needing the user's ruling wastes a 1:1 and makes them re-open something their own
+  team already handled. When a decision was made by someone else, say who made it and
+  what it was; the useful move is usually for the user to ratify or explain it, not
+  adjudicate it.
+- **Do not repeat dollar figures without recomputing them** from the quantity and unit
+  price in the same thread. See the numbers rule in Step 3d — it applies here too.
 - For VIPs: mark any unresolved thread explicitly with "⚠️ unresolved"
 - If an attendee has no Slack activity: note "no recent Slack context"
 
@@ -672,7 +744,10 @@ check partial output at [path]".
   write a warning in the Calendar section and continue — do not skip Slack and
   Jira.
 - **Slack mentions returning nothing**: Verify `{{SLACK_USER_ID}}` is correct.
-  Use `mentions:USER_ID` syntax, not `to:me`.
+  Use `mentions:USER_ID` syntax, not `to:me`. **But do not assume an empty result means
+  the config is wrong OR that there are no mentions** — the search returns false
+  negatives even when correctly formed. Cross-check against the monitored-channel reads
+  before reporting either a config problem or a clean inbox.
 - **Jira returns too many results**: Focus on 🔥 Urgent and 🆕 New first;
   summarize languishing items in a collapsed group.
 - **Incidents channel is noisy**: Supplement channel read with a keyword search
