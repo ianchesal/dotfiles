@@ -297,7 +297,16 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " nmap ; :Buffers<CR>
 " Search files like the old CTRL-P plugin used to do
 " nmap <Leader>p :Files<CR>
-set runtimepath+=/usr/local/opt/fzf
+" Locate fzf across Homebrew prefixes (Apple Silicon, Intel, Linuxbrew) and
+" distro packages, rather than pinning one platform's path.
+let s:fzf_dirs = ['/opt/homebrew/opt/fzf', '/usr/local/opt/fzf', '/home/linuxbrew/.linuxbrew/opt/fzf']
+call extend(s:fzf_dirs, [expand('~/.linuxbrew/opt/fzf'), '/usr/share/doc/fzf/examples', expand('~/.fzf')])
+for s:fzf_dir in s:fzf_dirs
+  if isdirectory(s:fzf_dir)
+    execute 'set runtimepath+=' . fnameescape(s:fzf_dir)
+    break
+  endif
+endfor
 nmap <C-p> :FZF<cr>
 nmap <leader>p :FZF<cr>
 let g:fzf_layout = { 'down': '~30%' }

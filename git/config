@@ -40,7 +40,6 @@
   fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
 
 [core]
-	excludesfile = /Users/ianchesal/.gitignore_global
   editor = nvim
   pager = delta
   # http://stackoverflow.com/questions/18257622/why-is-git-core-preloadindex-default-value-false
@@ -113,6 +112,3 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[maintenance]
-	repo = /Users/ianchesal/src/persona/persona-kubernetes
-	repo = /Users/ianchesal/src/persona/persona-web

@@ -1,0 +1,33 @@
+# Global gitignore, picked up by git's XDG default at ~/.config/git/ignore.
+# Only OS/editor/tooling cruft belongs here -- anything project-specific
+# belongs in that project's own .gitignore.
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+.directory
+.fuse_hidden*
+.nfs*
+
+# Windows / WSL2
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Editors
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+tags
+.nvimlog
+
+# Direnv
+.envrc.local

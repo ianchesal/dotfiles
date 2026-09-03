@@ -77,7 +77,9 @@
 
 # Git
 /git/gh/hosts.yml
-/git/ignore
+# NOTE: git/ignore IS tracked -- it's the shared global gitignore that git picks
+# up via its XDG default at ~/.config/git/ignore. Machine-specific git settings
+# (credential helpers, maintenance.repo paths) belong in git/local instead.
 /git/local
 
 # Homebrew
