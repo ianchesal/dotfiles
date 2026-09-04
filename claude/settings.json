@@ -122,7 +122,8 @@
     "frontier-deploy@persona-frontier": true,
     "lua-lsp@claude-plugins-official": true,
     "ruby-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "humanizer@humanizer": true
   },
   "extraKnownMarketplaces": {
     "persona-claude-marketplace": {
@@ -135,6 +136,12 @@
       "source": {
         "source": "github",
         "repo": "persona-id/frontier-claude-skill"
+      }
+    },
+    "humanizer": {
+      "source": {
+        "source": "github",
+        "repo": "blader/humanizer"
       }
     }
   },
