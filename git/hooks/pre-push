@@ -13,17 +13,22 @@ while read local_ref local_sha remote_ref remote_sha; do
   fi
 
   # Get the range of commits we're pushing
-  range=""
+  range=()
   if [[ "$remote_sha" = $z40 ]]; then
-    # New branch, examine all commits
-    range="$local_sha"
+    # New branch: the remote has no counterpart to diff against, so ask for
+    # everything reachable from this branch that is NOT already on the remote.
+    # Naming just "$local_sha" here would walk the branch's ENTIRE history and
+    # flag fixup commits somebody else already merged to main — commits this
+    # push does not introduce and that cannot be squashed without rewriting a
+    # shared branch.
+    range=("$local_sha" --not --remotes="$remote")
   else
     # Update to existing branch, examine new commits
-    range="$remote_sha..$local_sha"
+    range=("$remote_sha..$local_sha")
   fi
 
   # Look for fixup commits
-  fixup_commits=$(git log --format="%h %s" "$range" | grep -i "fixup!")
+  fixup_commits=$(git log --format="%h %s" "${range[@]}" | grep -i "fixup!")
 
   if [[ -n "$fixup_commits" ]]; then
     echo "ERROR: Found fixup commits that need to be squashed:"
