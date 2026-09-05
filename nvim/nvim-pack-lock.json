@@ -1,9 +1,9 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "885ecf4fa0ffcd20d052b14701540a451898fb34",
+      "rev": "a652fcc01bf03946ab94b815be8c80ee157cbe1a",
       "src": "https://github.com/b0o/SchemaStore.nvim",
-      "version": "'885ecf4fa0ffcd20d052b14701540a451898fb34'"
+      "version": "'a652fcc01bf03946ab94b815be8c80ee157cbe1a'"
     },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
@@ -121,9 +121,9 @@
       "version": "'43ed3797b266e1ee8d222e491379ad471c9d3146'"
     },
     "nvim-treesitter": {
-      "rev": "7b6cc8949f9999c5ed91436cbe24aa5f99c42025",
+      "rev": "3d3321b560a63ff92a8692401f303a5123336b86",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
-      "version": "'7b6cc8949f9999c5ed91436cbe24aa5f99c42025'"
+      "version": "'3d3321b560a63ff92a8692401f303a5123336b86'"
     },
     "nvim-treesitter-endwise": {
       "rev": "8fe8a95630f4f2c72a87ba1927af649e0bfaa244",
