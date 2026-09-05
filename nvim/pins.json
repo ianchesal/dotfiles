@@ -204,7 +204,13 @@
       }
     },
     "hlchunk.nvim": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1788626713,
+          "first_seen_iso": "2026-09-05T16:45:13Z",
+          "rev": "4ddc056e4ca45f1c7dc6aa21935df710b263b1aa"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-09-05T16:24:15Z",
         "pinned_at_epoch": 1788625455,
