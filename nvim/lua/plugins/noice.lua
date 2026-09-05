@@ -38,6 +38,16 @@ return {
         command_palette = true,
         long_message_to_split = true,
       },
+      -- command_palette preset pins cmdline_popup to row 3 (near the top);
+      -- override back to vertical center, applied after presets merge.
+      views = {
+        cmdline_popup = {
+          position = {
+            row = "50%",
+            col = "50%",
+          },
+        },
+      },
     })
 
     -- ── Keymaps ──────────────────────────────────────────────────────────
