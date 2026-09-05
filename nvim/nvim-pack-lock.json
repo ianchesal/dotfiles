@@ -36,9 +36,9 @@
       "version": "'6cd7280adead7f586db6fccbd15d2cac7e2188b9'"
     },
     "hlchunk.nvim": {
-      "rev": "fb5a16ecc4ff15772189679ffdede6ee879288ec",
+      "rev": "4ddc056e4ca45f1c7dc6aa21935df710b263b1aa",
       "src": "https://github.com/shellRaining/hlchunk.nvim",
-      "version": "'fb5a16ecc4ff15772189679ffdede6ee879288ec'"
+      "version": "'4ddc056e4ca45f1c7dc6aa21935df710b263b1aa'"
     },
     "lazydev.nvim": {
       "rev": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d",
