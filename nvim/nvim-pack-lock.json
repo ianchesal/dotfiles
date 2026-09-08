@@ -121,9 +121,9 @@
       "version": "'43ed3797b266e1ee8d222e491379ad471c9d3146'"
     },
     "nvim-treesitter": {
-      "rev": "3d3321b560a63ff92a8692401f303a5123336b86",
+      "rev": "c9f9ed6c1892f629ea399f4ee7905f2686fa13f2",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
-      "version": "'3d3321b560a63ff92a8692401f303a5123336b86'"
+      "version": "'c9f9ed6c1892f629ea399f4ee7905f2686fa13f2'"
     },
     "nvim-treesitter-endwise": {
       "rev": "8fe8a95630f4f2c72a87ba1927af649e0bfaa244",
