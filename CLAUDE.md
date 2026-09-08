@@ -107,7 +107,11 @@ This file provides guidance to AI agents working on this repository.
 - Use descriptive git aliases that enhance workflow speed
 - Git hooks stored in `hooks/` directory (pre-push hook prevents pushing fixup commits)
 - GitHub CLI configuration in `gh/config.yml` with helpful aliases
-- GitHub Dashboard config in `gh-dash/config.yml` for PR management
+- GitHub Dashboard config in `gh-dash/config.yml` for PR management, with
+  `gh-dash/config-work.yml` as a work-machine overlay (`include`s the base
+  config, replaces `prSections` with `org:persona-id`-scoped ones);
+  `gh-dash/gh-dash.sh` selects between them on `WORK_MACHINE` and is what
+  tmux `prefix + h` and the `ghd` alias invoke
 - Delta used for enhanced diffs with side-by-side display
 - Conventions for commit messages: no fixup commits in pushed branches
 - Git workflow relies heavily on custom aliases and integrations

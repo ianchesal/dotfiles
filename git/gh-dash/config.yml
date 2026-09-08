@@ -1,3 +1,12 @@
+# Default (personal) gh-dash config. Work machines layer config-work.yml over
+# this one -- see gh-dash.sh, which picks the config based on WORK_MACHINE.
+
+# Smart filtering injects "repo:<current repo>" into every section that has no
+# explicit repo: filter, which scopes the whole dashboard to whatever clone you
+# happened to launch from. Sections here are deliberately cross-repo, so it's
+# off. Toggle it back on for the current session with `S` inside the dashboard.
+smartFilteringAtLaunch: false
+
 repoPaths:
   :owner/:repo: ~/src/:owner/:repo
   persona-id/*: ~/src/persona/*
@@ -10,9 +19,15 @@ prSections:
       author:
         hidden: true
   - title: Needs My Review
-    filters: is:pr is:open review-requested:@me draft:false review:required
+    filters: is:open review-requested:@me draft:false review:required
   - title: Involved
-    filters: is:pr is:open involves:@me -author:@me
+    filters: is:open involves:@me -author:@me
   - title: Dependabot
-    filters: is:pr is:open author:app/dependabot
-
+    # Repeated org:/user: qualifiers OR together (unlike author:/assignee:).
+    # ianchesal is a user account, so it needs user:, not org:.
+    filters: >-
+      is:open
+      author:app/dependabot
+      org:persona-id
+      org:datenight-team
+      user:ianchesal

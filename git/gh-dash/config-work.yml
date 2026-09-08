@@ -1,0 +1,40 @@
+# Work-machine overlay, selected by gh-dash.sh when WORK_MACHINE=true.
+#
+# include pulls in the personal config for the shared bits (repoPaths,
+# smartFilteringAtLaunch, defaults). Sections are NOT merged -- gh-dash takes
+# prSections whole from the file that defines them -- so every section this
+# machine should see is listed below.
+#
+# GitHub search has no OR operator, so "authored by me or assigned to me" is
+# two sections rather than one filter.
+include:
+  - ./config.yml
+
+prSections:
+  - title: My Pull Requests
+    filters: >-
+      is:open
+      org:persona-id
+      author:@me
+    layout:
+      author:
+        hidden: true
+  - title: Assigned to Me
+    filters: >-
+      is:open
+      org:persona-id
+      assignee:@me
+      -author:@me
+  - title: Needs My Review
+    filters: is:open review-requested:@me draft:false review:required
+  - title: Involved
+    filters: is:open involves:@me -author:@me
+  - title: Dependabot
+    # Repeated org:/user: qualifiers OR together (unlike author:/assignee:).
+    # ianchesal is a user account, so it needs user:, not org:.
+    filters: >-
+      is:open
+      author:app/dependabot
+      org:persona-id
+      org:datenight-team
+      user:ianchesal
