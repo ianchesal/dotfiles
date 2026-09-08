@@ -1,5 +1,5 @@
 # Default (personal) gh-dash config. Work machines layer config-work.yml over
-# this one -- see gh-dash.sh, which picks the config based on WORK_MACHINE.
+# this one -- see gh-dash.sh, which picks the config based on ~/.work_machine.
 
 # Smart filtering injects "repo:<current repo>" into every section that has no
 # explicit repo: filter, which scopes the whole dashboard to whatever clone you

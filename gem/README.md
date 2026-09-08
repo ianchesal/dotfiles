@@ -21,4 +21,4 @@ gemrc      Symlinked to ~/.gemrc (skips rdoc/ri on install and update)
 - `gem:cleanup` removes versions that conflict with Ruby's bundled default gems
   (the source of "Unresolved or ambiguous specs" warnings), but skips any
   version pinned in a `Gemfile.lock`.
-- `gem:cleanup` is skipped when the `WORK_MACHINE` environment variable is set.
+- `gem:cleanup` is skipped on work machines (when `~/.work_machine` exists).

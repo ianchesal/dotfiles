@@ -1,4 +1,4 @@
-# Work-machine overlay, selected by gh-dash.sh when WORK_MACHINE=true.
+# Work-machine overlay, selected by gh-dash.sh when ~/.work_machine exists.
 #
 # include pulls in the personal config for the shared bits (repoPaths,
 # smartFilteringAtLaunch, defaults). Sections are NOT merged -- gh-dash takes

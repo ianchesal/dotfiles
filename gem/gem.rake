@@ -14,8 +14,8 @@ namespace :gem do
 
   desc 'Remove old gem versions and uninstall default gem conflicts'
   task :cleanup do
-    if ENV['WORK_MACHINE']
-      puts 'Skipping gem cleanup on work machine (WORK_MACHINE is set)'.yellow
+    if work_machine?
+      puts 'Skipping gem cleanup on work machine (~/.work_machine exists)'.yellow
       next
     end
 

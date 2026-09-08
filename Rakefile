@@ -79,6 +79,13 @@ def home(*args)
   File.join(File.expand_path('~'), args)
 end
 
+# ~/.work_machine marks this box as a work machine. A file test can't depend on
+# the environment, so it reads the same from rake, a tmux popup, or cron -- which
+# the WORK_MACHINE env var it replaced could not (see zsh/zshrc.d/machine.zsh).
+def work_machine?
+  File.exist? home('.work_machine')
+end
+
 def mkdir_if_needed(path)
   FileUtils.mkdir_p path unless File.directory? path
 end

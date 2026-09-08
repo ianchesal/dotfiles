@@ -42,7 +42,7 @@ gh-dash/gh-dash.sh       Launcher that picks the config for this machine
 - `rake git:setup_gh` installs the `gh-f`, `gh-dash`, and `gh-stack`
   extensions when `gh` is present.
 - gh-dash is launched through `gh-dash/gh-dash.sh` (bound to tmux `prefix + h`
-  and aliased to `ghd`). When `WORK_MACHINE=true` it passes `--config
+  and aliased to `ghd`). When `~/.work_machine` exists it passes `--config
   config-work.yml`, which `include`s `config.yml` and replaces `prSections`
   with org-scoped ones: "My Pull Requests" (`org:persona-id author:@me`) and
   "Assigned to Me" (`org:persona-id assignee:@me -author:@me`). GitHub search

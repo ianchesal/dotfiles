@@ -99,6 +99,13 @@ This file provides guidance to AI agents working on this repository.
 - Use descriptive comments for functions and aliases
 - Follow existing patterns for tool-specific configurations (each tool has its own file)
 - NEVER recommend the forgit zsh plugin -- I hate it
+- Machine identity lives in `zshrc.d/machine.zsh`: `DOTFILES_MACHINE` (gcw vs
+  other, detected from `/etc/workstation-startup.d`) and `WORK_MACHINE`, which is
+  exported from the `~/.work_machine` flag file. That file is the source of truth
+  for work-vs-personal — repo code tests the file (`work_machine?` in the
+  Rakefile, `[ -f ]` in shell), never the exported variable, so the answer is the
+  same in tmux popups, cron and other detached contexts. `touch` to enable, `rm`
+  to disable; it is machine-local and `rake clean` leaves it alone
 
 ## Git Configuration
 
@@ -110,8 +117,8 @@ This file provides guidance to AI agents working on this repository.
 - GitHub Dashboard config in `gh-dash/config.yml` for PR management, with
   `gh-dash/config-work.yml` as a work-machine overlay (`include`s the base
   config, replaces `prSections` with `org:persona-id`-scoped ones);
-  `gh-dash/gh-dash.sh` selects between them on `WORK_MACHINE` and is what
-  tmux `prefix + h` and the `ghd` alias invoke
+  `gh-dash/gh-dash.sh` selects between them on the `~/.work_machine` flag and
+  is what tmux `prefix + h` and the `ghd` alias invoke
 - Delta used for enhanced diffs with side-by-side display
 - Conventions for commit messages: no fixup commits in pushed branches
 - Git workflow relies heavily on custom aliases and integrations

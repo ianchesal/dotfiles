@@ -134,7 +134,7 @@ alias unfuck-mutagen='git clean -df'
 
 # github
 # Same launcher the tmux prefix-h popup uses -- picks the work or
-# personal gh-dash config based on $WORK_MACHINE.
+# personal gh-dash config based on the ~/.work_machine flag.
 alias ghd='${XDG_CONFIG_HOME:-$HOME/.config}/gh-dash/gh-dash.sh'
 alias ghpc='gh pr create --fill --assignee @me'
 alias ghpca='gh pr create --fill --label auto-assign-reviewers --assignee @me'
