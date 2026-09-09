@@ -29,7 +29,9 @@
 /claude/daemon*
 /claude/costs/
 /claude/debug/
+/claude/downloads/
 /claude/file-history/
+/claude/gh-pr-status-cache.json
 /claude/history.jsonl
 /claude/jobs/
 /claude/logs/
@@ -40,7 +42,9 @@
 /claude/policy-limits.json
 /claude/projects/
 /claude/remote-settings.json
+/claude/session-env/
 /claude/sessions/
+/claude/settings.json
 /claude/shell-snapshots/
 /claude/signal-cache/
 /claude/skills/*/config.md
