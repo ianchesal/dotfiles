@@ -6,7 +6,19 @@
 export XDG_CONFIG_HOME=~/.config
 export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.local/share
-export XDG_RUNTIME_DIR=~/.xdg
+
+# Unlike the three above, XDG_RUNTIME_DIR isn't an app-data location: it's the
+# socket dir systemd-logind creates and manages per session, and systemctl
+# --user / the D-Bus session bus / anything session-activated (Polkit,
+# PipeWire...) trusts this var to find it rather than asking logind directly.
+# Redirecting it under $HOME silently breaks all of that. Use the real one
+# when logind actually provides it; fall back to the old location otherwise
+# (e.g. no systemd/logind at all).
+if [[ -d "/run/user/$UID" ]]; then
+  export XDG_RUNTIME_DIR="/run/user/$UID"
+else
+  export XDG_RUNTIME_DIR=~/.xdg
+fi
 
 # ZDOTDIR givs an alternate home for zsh rather than $HOME
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
