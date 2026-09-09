@@ -1,5 +1,3 @@
-require 'pathname'
-
 desc 'Install zsh dotfiles'
 task zsh: ['zsh:dotzsh', 'zsh:rc']
 
