@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 desc 'Install claude dotfiles'
 task claude: ['claude:all']
 
 CLAUDE_SETTINGS_FILE = home('.claude.json').freeze
+CLAUDE_USER_SETTINGS_FILE = home('.claude', 'settings.json').freeze
+CLAUDE_SETTINGS_SKELETON = root('claude', 'settings.skeleton.json').freeze
 
 # Returns the installed claude-code deb version, or nil when the deb isn't installed.
 #
@@ -21,8 +25,18 @@ end
 namespace :claude do
   task all: [:dirs, :install, :permissions, :diff_driver]
 
+  # settings.json is deliberately untracked (Claude Code and workmux rewrite it in
+  # place), so a fresh machine gets the curated skeleton as a starting point. An
+  # existing file is left alone -- it carries local edits we don't want to clobber.
   task :dirs do
     dolink(home('.claude'), root('claude'))
+
+    if File.exist?(CLAUDE_USER_SETTINGS_FILE)
+      puts "#{CLAUDE_USER_SETTINGS_FILE} already exists, leaving it alone".yellow
+    else
+      FileUtils.cp(CLAUDE_SETTINGS_SKELETON, CLAUDE_USER_SETTINGS_FILE)
+      puts "Seeded #{CLAUDE_USER_SETTINGS_FILE} from #{CLAUDE_SETTINGS_SKELETON}".green
+    end
   end
 
   # Claude Code and workmux rewrite claude/settings.json in their own canonical
