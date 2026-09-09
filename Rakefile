@@ -71,8 +71,10 @@ def backup(target)
   puts "Renamed existing file #{target} -> #{target}.#{index}"
 end
 
+# Anchored to this Rakefile's own directory and expanded, so every path a task
+# builds is absolute and independent of the cwd rake was invoked from.
 def root(*args)
-  File.join(File.dirname(__FILE__), args)
+  File.expand_path(File.join(File.dirname(__FILE__), args))
 end
 
 def home(*args)
@@ -130,6 +132,9 @@ task all: []
 desc 'Remove my customizations and restore system default dotfiles'
 task clean: []
 
-Dir.glob('*/*.rake').each { |r| load r }
+# root() rather than a bare relative glob: rake only chdirs to the Rakefile's
+# directory when it finds one by searching upwards, not when handed `-f <path>`,
+# and a cwd-relative glob silently loaded zero task files in that case.
+Dir.glob(root('*', '*.rake')).each { |r| load r }
 
 # rubocop:enable Style/Documentation, Style/SingleLineMethods
