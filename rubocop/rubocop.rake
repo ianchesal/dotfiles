@@ -2,7 +2,9 @@ desc 'Install all Rubocop-related dotfiles'
 task rubocop: ['rubocop:all']
 
 RUBOCOP = 'rubocop --display-cop-names --color'.freeze
-FILES_TO_CHECK = %w[Rakefile].freeze
+# The Rakefile plus every tool's *.rake. root() anchors the glob to the Rakefile's
+# own directory rather than the cwd, so the list is the same however rake is invoked.
+FILES_TO_CHECK = (%w[Rakefile] + Dir.glob(root('*', '*.rake'))).freeze
 
 namespace :rubocop do
   task all: [:rubocop]

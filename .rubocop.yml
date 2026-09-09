@@ -1,8 +1,9 @@
 AllCops:
   NewCops: enable
   Exclude:
-    - "brew/**/*"
-    - "claude/**/*"
+    # Brewfile is Ruby, but it follows Homebrew's double-quoted house style
+    - "brew/Brewfile"
+    - "claude/skills/**/*"
     - "tmux/plugins/**/*"
     - "vendor/**/*"
 
