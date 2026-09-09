@@ -163,6 +163,7 @@ This file provides guidance to AI agents working on this repository.
 - Never include project-specific terminology, conventions, and preferences in the global memory file — those belong in the project's CLAUDE.md
 - Document complex workflows that should be remembered across sessions
 - Skills dividing line: skills for working *on this repo* (e.g., `managing-nvim-plugins`) go in `.claude/skills/` (project-scoped, only loaded in this repo); skills wanted in every session everywhere (e.g., `morning-startup`, `daily-wrap`) go in `claude/skills/` (symlinked to `~/.claude/skills`, global)
+- `claude/settings.json` is gitignored, not tracked — it's live, per-machine state (includes work-specific persona/allowedTools config on work machines) and must never be committed. `claude/settings.skeleton.json` is the tracked, curated set of portable defaults everyone should start from. Use the `claude-settings` skill (`promote`/`apply`) to move changes between the two: `promote` lifts a general-purpose improvement out of the live `settings.json` into the tracked skeleton; `apply` layers the skeleton's defaults onto a live `settings.json` that's drifted behind it
 
 ## Rust Configuration
 
