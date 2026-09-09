@@ -37,6 +37,24 @@ if (( $+commands[brew] )); then
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${ruby_openssl_dir} --without-gmp"
     unset ruby_openssl_dir
 
+    # psych links libyaml, and on linuxbrew boxes the only libyaml lives under the
+    # brew prefix -- which is not on the loader's default search path (no ldconfig
+    # entry for it, no LD_LIBRARY_PATH). brew's compiler shim supplies the -L at
+    # build time so configure succeeds, but nothing records a matching RUNPATH, so
+    # the resulting psych.so dies at require time with
+    #   libyaml-0.so.2: cannot open shared object file
+    # and every YAML-dependent tool goes with it -- including bundler, which needs
+    # psych to read gem checksums, so even `bundle update` fails. Naming the prefix
+    # here gets ruby-build to record the rpath. Guarded on the .so actually being
+    # present so Debian/WSL2 boxes without the brew formula keep using system
+    # libyaml (already on the loader path). Use the opt/ symlink, never a Cellar
+    # path -- see asdf/reinstall-ruby.sh, which passes the same flag.
+    ruby_libyaml_dir="$(brew --prefix libyaml 2>/dev/null)"
+    if [[ -n "$ruby_libyaml_dir" && -e "$ruby_libyaml_dir/lib/libyaml-0.so.2" ]]; then
+      export RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS} --with-libyaml-dir=${ruby_libyaml_dir}"
+    fi
+    unset ruby_libyaml_dir
+
     # linuxbrew's ld (binutils formula) precedes the system ld on PATH but
     # doesn't search Debian's multiarch lib dir, so it can't resolve
     # libcrypt.so.1 (a transitive dependency of libruby.so) when native gem
