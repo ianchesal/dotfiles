@@ -17,7 +17,13 @@ export XDG_DATA_HOME=~/.local/share
 if [[ -d "/run/user/$UID" ]]; then
   export XDG_RUNTIME_DIR="/run/user/$UID"
 else
+  # Nothing else creates this fallback -- logind is what would normally
+  # provision a runtime dir, and it isn't running in this branch -- while the
+  # spec lets apps assume XDG_RUNTIME_DIR already exists with mode 0700. So a
+  # fresh home (rebuilt container, new machine) would otherwise hand every
+  # shell a path that isn't there. Guarded so the common case costs no forks.
   export XDG_RUNTIME_DIR=~/.xdg
+  [[ -d "$XDG_RUNTIME_DIR" ]] || mkdir -p -m 700 "$XDG_RUNTIME_DIR"
 fi
 
 # ZDOTDIR givs an alternate home for zsh rather than $HOME
