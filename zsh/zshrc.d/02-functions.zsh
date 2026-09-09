@@ -191,7 +191,7 @@ function unfuck-podman-on-wsl() {
     echo "Error: This function cannot be run from within a tmux session"
     return 1
   fi
-  rm -rf ~/.xdg/containers ~/.xdg/libpod/tmp && \
+  rm -rf "$XDG_RUNTIME_DIR/containers" "$XDG_RUNTIME_DIR/libpod/tmp" && \
     brew services restart podman && \
     sudo mount -o remount,shared / /
 }
