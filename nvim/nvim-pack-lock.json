@@ -11,9 +11,9 @@
       "version": "'78336bc89ee5365633bcf754d93df01678b5c08f'"
     },
     "conform.nvim": {
-      "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
+      "rev": "00f622cab458d65c12f4f326f108b9b9177cebc1",
       "src": "https://github.com/stevearc/conform.nvim",
-      "version": "'619363c30309d29ffa631e67c8183f2a72caa373'"
+      "version": "'00f622cab458d65c12f4f326f108b9b9177cebc1'"
     },
     "contextindent.nvim": {
       "rev": "27517eb7505482398f31465f2afdfc8bba0d423c",
@@ -116,9 +116,9 @@
       "version": "'a219b2c9e5b4765e5c845aba119dad55806fcaf1'"
     },
     "nvim-lspconfig": {
-      "rev": "43ed3797b266e1ee8d222e491379ad471c9d3146",
+      "rev": "4267d26e60323a45e18f8e7a63a964cc8f53ca4e",
       "src": "https://github.com/neovim/nvim-lspconfig",
-      "version": "'43ed3797b266e1ee8d222e491379ad471c9d3146'"
+      "version": "'4267d26e60323a45e18f8e7a63a964cc8f53ca4e'"
     },
     "nvim-treesitter": {
       "rev": "c9f9ed6c1892f629ea399f4ee7905f2686fa13f2",
