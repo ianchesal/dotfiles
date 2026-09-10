@@ -1,5 +1,6 @@
 # each worktree opens as a seperate session as opposed to windows
 mode: session
+default_session: main
 # don't add dagent icons to tmux windows
 # status_format: false
 # enable nerd fonts, duh
