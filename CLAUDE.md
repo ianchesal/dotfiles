@@ -174,13 +174,3 @@ This file provides guidance to AI agents working on this repository.
 - `rake clean` deliberately does NOT remove the toolchain, matching how `asdf:clean` leaves installed languages alone; use the explicit `rake rust:uninstall` for that
 - `asdf:asdf` depends on `rust:install`: ruby-build only compiles YJIT/ZJIT into Ruby when a Rust toolchain exists at build time, and `rake all` would otherwise reach asdf first
 
-## OpenCode Configuration
-
-- Located in `.config/opencode` following XDG directory structure
-- Configuration managed via `opencode.json` with schema validation from https://opencode.ai/config.json
-- Includes comprehensive agent instructions in `AGENTS.md` for structured problem-solving workflow
-- Agent workflow follows Think → Plan → Iterate → Execute phases for collaborative development
-- Rake tasks available for installation (`rake opencode`), updates (`rake opencode:update`), and cleanup (`rake opencode:clean`)
-- CLI managed via npm with global installation to `~/.npm-global/bin/opencode`
-- Supports upgrade functionality through the opencode CLI
-- Configuration includes security guidelines, development practices, and file operation preferences
