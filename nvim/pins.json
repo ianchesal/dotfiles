@@ -134,7 +134,13 @@
       }
     },
     "conform.nvim": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1789095698,
+          "first_seen_iso": "2026-09-11T03:01:38Z",
+          "rev": "016802de402556da54c36bd7359b441266b01cdd"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-09-11T01:06:28Z",
         "pinned_at_epoch": 1789088788,
@@ -209,6 +215,11 @@
           "first_seen": 1788977903,
           "first_seen_iso": "2026-09-09T18:18:23Z",
           "rev": "a5a73e586521fe5c12d751ad81a0db67649a94ed"
+        },
+        {
+          "first_seen": 1789095698,
+          "first_seen_iso": "2026-09-11T03:01:38Z",
+          "rev": "b4d01b0fdf3c9a549961c2f9ffe8dc09be166219"
         }
       ],
       "pin": {
