@@ -3,11 +3,6 @@
     "SchemaStore.nvim": {
       "observed": [
         {
-          "first_seen": 1786495325,
-          "first_seen_iso": "2026-08-12T00:42:05Z",
-          "rev": "c8170f9628265f5a01510182703bab9125ef15d8"
-        },
-        {
           "first_seen": 1786581244,
           "first_seen_iso": "2026-08-13T00:34:04Z",
           "rev": "6bcdcb22f02b43b990b650b3ab40c65aa193c3f8"
@@ -111,12 +106,17 @@
           "first_seen": 1788998899,
           "first_seen_iso": "2026-09-10T00:08:19Z",
           "rev": "890d8f5cfca338a1f3e59c686569e461f6182f80"
+        },
+        {
+          "first_seen": 1789088788,
+          "first_seen_iso": "2026-09-11T01:06:28Z",
+          "rev": "e37abcf2f337dc2587aae9118f866b0cf8ed96b7"
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-07T14:59:01Z",
-        "pinned_at_epoch": 1788793141,
-        "rev": "427b0ff24377a6cdd18aa822a984a5adf156c3fa"
+        "pinned_at": "2026-09-11T01:06:28Z",
+        "pinned_at_epoch": 1789088788,
+        "rev": "c8170f9628265f5a01510182703bab9125ef15d8"
       }
     },
     "blink.cmp": {
@@ -134,17 +134,11 @@
       }
     },
     "conform.nvim": {
-      "observed": [
-        {
-          "first_seen": 1786495325,
-          "first_seen_iso": "2026-08-12T00:42:05Z",
-          "rev": "016802de402556da54c36bd7359b441266b01cdd"
-        }
-      ],
+      "observed": [],
       "pin": {
-        "pinned_at": "2026-09-10T15:42:19Z",
-        "pinned_at_epoch": 1789054939,
-        "rev": "00f622cab458d65c12f4f326f108b9b9177cebc1"
+        "pinned_at": "2026-09-11T01:06:28Z",
+        "pinned_at_epoch": 1789088788,
+        "rev": "016802de402556da54c36bd7359b441266b01cdd"
       }
     },
     "contextindent.nvim": {

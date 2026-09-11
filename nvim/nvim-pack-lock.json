@@ -1,9 +1,9 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "427b0ff24377a6cdd18aa822a984a5adf156c3fa",
+      "rev": "c8170f9628265f5a01510182703bab9125ef15d8",
       "src": "https://github.com/b0o/SchemaStore.nvim",
-      "version": "'427b0ff24377a6cdd18aa822a984a5adf156c3fa'"
+      "version": "'c8170f9628265f5a01510182703bab9125ef15d8'"
     },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
@@ -11,9 +11,9 @@
       "version": "'78336bc89ee5365633bcf754d93df01678b5c08f'"
     },
     "conform.nvim": {
-      "rev": "00f622cab458d65c12f4f326f108b9b9177cebc1",
+      "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim",
-      "version": "'00f622cab458d65c12f4f326f108b9b9177cebc1'"
+      "version": "'016802de402556da54c36bd7359b441266b01cdd'"
     },
     "contextindent.nvim": {
       "rev": "27517eb7505482398f31465f2afdfc8bba0d423c",
