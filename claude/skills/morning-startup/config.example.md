@@ -25,6 +25,18 @@ Copy this file to `config.md` in this same directory and fill in your values.
 - **Anchor section**: The skill inserts `## Daily Plan` above this section heading in your note:
   `## {{SECTION_HEADING_TO_INSERT_ABOVE}}`
   - Example: `## One thing I'm excited about right now`
+- **Obsidian vault name**: `{{OBSIDIAN_VAULT}}`
+  - The vault name as Obsidian knows it — used to build the `obsidian://` link stored
+    on each Notion entry so you can jump from the briefing back to that day's journal.
+  - Example: `Personal`
+  - Leave blank to skip the link.
+- **Obsidian vault root**: `{{OBSIDIAN_VAULT_ROOT}}`
+  - The vault's folder on disk. `obsidian://` links are relative to this, not to the
+    daily notes path, so both values are needed to build one.
+  - Example: `~/Documents/Personal/`
+
+These notes are **read-only** to this skill, with one exception: it writes a slim
+`## Work Day` stub into today's note pointing at the Notion briefing.
 
 ## Auth
 
@@ -105,13 +117,33 @@ People whose presence on your calendar warrants a prep note:
   - Example: `America/Los_Angeles`
   - Used for lunch window suggestions when your timezone differs from company HQ.
 
-## Work Daily Notes
+## Notion: Daily Startup Database
 
-- **Path**: `{{PATH_TO_WORK_NOTES}}`
-  - Example: `~/Documents/Personal/Work/`
-- **Structure**: `YYYY/MM-MonthName/work-YYYY-MM-DD.md`
-  - Example: `2026/05-May/work-2026-05-04.md`
-  - The `work-` filename prefix keeps bare date wikilinks like `[[2026-05-04]]`
-    resolving unambiguously to the personal daily journal note.
-- **Title format**: `Work Day - YYYY-MM-DD`
-  - Used in the `# Work Day - YYYY-MM-DD` heading and wikilinks from the personal journal.
+The full briefing is written here — one page per workday.
+
+- **Data source**: `{{NOTION_STARTUP_DATA_SOURCE}}`
+  - A `collection://<uuid>` URL, not a page URL.
+  - Find yours: run `notion-fetch` on the database's page URL. The response carries a
+    `<database ... data-source-url="collection://...">` tag — that value is what goes
+    here.
+  - Example: `collection://3d8ef6bc-b0fd-80c5-97d3-000b7ca353c9`
+
+The database needs these properties. The skill reads the live schema at preflight, so
+the live schema wins if it drifts from this list:
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| `Day` | title | `YYYY-MM-DD Ddd` — e.g. `2026-09-10 Thu` |
+| `Entry Date` | date | Canonical date. Used to find today's entry instead of creating duplicates |
+| `Day Shape` | select | `Focus-heavy`, `Balanced`, `Meeting-heavy`, `Back-to-back`, `Light` |
+| `Energy` | select | `High`, `Steady`, `Guarded`, `Low` — read from the personal journal only |
+| `The One Thing` | text | Coaching line, verbatim |
+| `Today Needs` | text | Coaching line, verbatim |
+| `One Question` | text | Coaching line, verbatim |
+| `Flags` | multi-select | `Incident`, `Blocked Jira`, `RSVP Needed`, `Vendor`, `Org Change`, `Travel/PTO`, `Interview`, `Week Ahead` |
+| `1:1s With` | multi-select | People with a 1:1 that day |
+| `Meetings` | number | Real meetings, excluding focus/Clockwise/solo blocks |
+| `Focus Hours` | number | Uninterrupted hours available |
+| `Phase 2 Prep` | checkbox | Set when deep 1:1 and meeting prep lands on the page |
+| `Journal` | url | `obsidian://` link back to that day's personal note |
+| `Notes` | text | Yours. The skill never writes to it |

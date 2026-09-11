@@ -34,25 +34,32 @@ Month folder names use zero-padded month number + full month name, e.g.:
 - `01-January`, `02-February`, `03-March`, `04-April`, `05-May`, `06-June`
 - `07-July`, `08-August`, `09-September`, `10-October`, `11-November`, `12-December`
 
-### Work day notes (optional — only present on work days)
+### Work day briefing (optional — only present on work days)
 
-| Platform | Path |
-|----------|------|
-| Linux terminal | `/data/ian/Obsidian/Personal/Work/YYYY/MM-MonthName/work-YYYY-MM-DD.md` |
-| Windows Claude app | `\\synology01\ian\Obsidian\Personal\Work\YYYY\MM-MonthName\work-YYYY-MM-DD.md` |
+Since 2026-09-10 the work briefing lives in Notion, not in the vault — one page per
+workday in the **Daily Startup** database, titled `YYYY-MM-DD Ddd`:
 
-The `work-` filename prefix keeps bare date wikilinks like `[[YYYY-MM-DD]]` resolving
-to the daily journal note.
+- Database page: https://app.notion.com/p/withpersona/Daily-Startup-3d8ef6bcb0fd803fbb0fc386531cf28c
+- Data source: `collection://3d8ef6bc-b0fd-80c5-97d3-000b7ca353c9`
 
-When a work note exists for a given day, the daily note will contain a link to it,
-formatted like:
+When a briefing exists for a given day, the daily note contains a link to it under
+`## Work Day`, formatted like:
 ```
-[[Work/YYYY/MM-MonthName/work-YYYY-MM-DD|Work Day - YYYY-MM-DD →]]
+[Daily Startup — YYYY-MM-DD →](https://www.notion.so/...)
 ```
 
-If that link is present, follow it and read the work note as well. It contains the
-calendar, Slack, Jira, and executive coaching context that used to live inline in
-the daily note.
+Follow that link with `mcp__claude_ai_Notion__notion-fetch`, or find the page by date:
+```sql
+SELECT url FROM "collection://3d8ef6bc-b0fd-80c5-97d3-000b7ca353c9"
+WHERE "date:Entry Date:start" = '[the day YYYY-MM-DD]'
+```
+
+It contains the calendar, Slack, Jira, and executive coaching context that used to live
+inline in the daily note.
+
+**Notes from before 2026-09-10** link to a markdown work note in the vault instead, as a
+`[[Work/YYYY/MM-MonthName/work-YYYY-MM-DD|Work Day - YYYY-MM-DD →]]` wikilink. Those files
+are still on disk — read them when you see that link.
 
 ### Today.md (persistent context across days)
 
@@ -67,9 +74,11 @@ the daily note.
 
 Use the Filesystem MCP tools to read:
 1. **Today's daily note** — derive the path from today's actual date
-2. **Today's work note** — IF the daily note contains a `[[Work/...]]` link (see File Paths above),
-   read that file too. It holds calendar, Slack, Jira, and executive coaching context that used
-   to be inline. Skip silently if no link is present (weekends, days off, sick days).
+2. **Today's work briefing** — IF the daily note has a `## Work Day` link (see File Paths above),
+   fetch that Notion page. It holds calendar, Slack, Jira, and executive coaching context that
+   used to be inline. On notes from before 2026-09-10 the link is a `[[Work/...]]` wikilink to a
+   markdown file — read that instead. Skip silently if no link is present (weekends, days off,
+   sick days).
 3. **Today.md** — for persistent context (Current Focus, ongoing threads)
 4. **Yesterday's daily note** (optional) — only if today's note is sparse; helps with continuity
 
@@ -86,9 +95,10 @@ Look at each section:
 - What did Ian plan to do?
 - Cross-reference against "Day in Review > What actually got done?" — is it already filled in?
 
-### From the Work Note (if present)
-The work note is a separate file linked from the daily note. It is populated by a separate
-automation and contains structured Calendar / Slack / Jira / Executive Coaching sections.
+### From the Work Briefing (if present)
+The work briefing is a Notion page linked from the daily note. It is written by the
+morning-startup skill and contains structured Calendar / Slack / Jira / Executive Coaching
+sections.
 
 - **Calendar**: what meetings happened? Cross-reference "⚠️ Heads up" / VIP / non-recurring
   items against what Ian actually noted in Random Thoughts. If a flagged meeting isn't mentioned

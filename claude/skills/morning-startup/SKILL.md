@@ -1,16 +1,20 @@
 ---
 name: morning-startup
-description: Use when the user wants to start their workday, get a morning briefing, or says things like "start my day", "morning startup", "good morning", "what's on my plate today", "morning briefing", or "let's get the day started". This skill reads context from yesterday's personal and work notes, gathers context from Calendar, Slack, and Jira in parallel, writes a full Work Daily Note, and places a slim briefing stub with executive coaching highlights into today's personal journal. Invoke whenever the user signals they are beginning their workday.
+description: Use when the user wants to start their workday, get a morning briefing, or says things like "start my day", "morning startup", "good morning", "what's on my plate today", "morning briefing", or "let's get the day started". This skill reads context from yesterday's personal journal and the previous Daily Startup entry, gathers context from Calendar, Slack, and Jira in parallel, writes a full briefing page to the Daily Startup database in Notion, and places a slim briefing stub with executive coaching highlights into today's personal journal. Invoke whenever the user signals they are beginning their workday.
 ---
 
 # Morning Startup
 
 This skill helps you start your workday by:
 1. Checking all data sources are available (preflight check)
-2. Reading context from yesterday's and today's notes (personal and work)
+2. Reading context from your Obsidian daily journal and the previous Daily Startup entry
 3. Gathering today's context from Calendar, Slack, and Jira in parallel
-4. Writing a full Work Daily Note with all work context
-5. Writing a slim `## Work Day` stub (wikilink + coaching highlights) into today's personal journal
+4. Writing a full briefing page to the Daily Startup database in Notion
+5. Writing a slim `## Work Day` stub (Notion link + coaching highlights) into today's personal journal
+
+Obsidian is **read-only** for this skill, with exactly one exception: the `## Work Day`
+stub written in Step 5. Every other output goes to Notion. This skill no longer writes
+a work daily note to disk.
 
 ---
 
@@ -31,7 +35,7 @@ from your `config.md`.
 
 ## Step 0: Preflight Check
 
-Before reading any notes or gathering any data, verify all three MCP data sources
+Before reading any notes or gathering any data, verify all four MCP data sources
 are reachable. Run the following probe calls **in parallel**:
 
 | Source | Probe call |
@@ -39,10 +43,14 @@ are reachable. Run the following probe calls **in parallel**:
 | Google Calendar | `mcp__claude_ai_Google_Calendar__list_calendars` |
 | Slack | `mcp__claude_ai_Slack__slack_search_users` with query `{{SLACK_USER_ID}}` |
 | Jira | `mcp__claude_ai_Atlassian__atlassianUserInfo` |
+| Notion | `mcp__claude_ai_Notion__notion-fetch` with id `{{NOTION_STARTUP_DATA_SOURCE}}` |
 
-**If all three probes succeed**, print:
+The Notion probe doubles as a schema read — keep its response. Step 4 needs the exact
+property names, and they are authoritative over the ones written in this file.
 
-> ✅ All data sources available (Calendar, Slack, Jira) — starting briefing…
+**If all four probes succeed**, print:
+
+> ✅ All data sources available (Calendar, Slack, Jira, Notion) — starting briefing…
 
 Then proceed to Step 2.
 
@@ -81,11 +89,23 @@ need to narrate it to the user.
 - Extract: any intentions already written, todos, personal context, or notes already
   captured before you started.
 
-**Yesterday's work daily note:**
-- Compute yesterday's date and build the path using `{{WORK_NOTES_PATH}}` and
-  `{{WORK_NOTES_STRUCTURE}}`.
-- Read the file. If it doesn't exist, skip silently.
-- Extract: work carries-forward, Jira state, unresolved incidents, key decisions made.
+**The previous Daily Startup entry (Notion):**
+- Query `{{NOTION_STARTUP_DATA_SOURCE}}` for the most recent entry *before* today —
+  do not assume it was yesterday, since weekends and PTO leave gaps:
+
+  ```sql
+  SELECT url, "Day", "The One Thing", "Today Needs", "Phase 2 Prep"
+  FROM "{{NOTION_STARTUP_DATA_SOURCE}}"
+  WHERE "date:Entry Date:start" < '[today YYYY-MM-DD]'
+  ORDER BY "date:Entry Date:start" DESC
+  LIMIT 1
+  ```
+- Fetch that page by its `url` to read the body. If there are no prior entries, skip
+  silently — this is a first run.
+- Extract: work carries-forward, Jira state, unresolved incidents, key decisions made,
+  and whether the previous `The One Thing` actually moved.
+- Note how many days back the entry is. A three-day-old entry is stale context, not
+  yesterday's — say so rather than treating it as current.
 
 Hold all context. Use it in Step 3 to ground the Executive Coaching in both
 personal state and work continuity.
@@ -404,27 +424,35 @@ a load-bearing fact collapses, pick a different One Thing rather than propping u
 original. Observed failure (2026-09-02): The One Thing rested on a colleague being
 blocked, who had in fact been unblocked two days earlier.
 
-If the briefing has already been delivered when a correction surfaces, patch both notes
-in place and mark the change with a dated revision line (e.g. *"Revised at 12:10 PM"*)
-naming what changed and why — the user re-reads these later and needs the trail.
+If the briefing has already been delivered when a correction surfaces, patch both the
+Notion page and the journal stub in place and mark the change with a dated revision line
+(e.g. *"Revised at 12:10 PM"*) naming what changed and why — the user re-reads these
+later and needs the trail.
 
 ---
 
-## Step 4: Write Work Daily Note
+## Step 4: Write the Daily Startup Page in Notion
 
-Determine today's work note path from your config:
-- Base path: `{{WORK_NOTES_PATH}}`
-- Structure: `{{WORK_NOTES_STRUCTURE}}`
-- Title format: `{{WORK_NOTES_TITLE_FORMAT}}`
+The briefing is a page in the Daily Startup database, `{{NOTION_STARTUP_DATA_SOURCE}}`.
+One page per workday. Re-running the skill on the same day **updates that day's page** —
+it never creates a second one.
 
-Build the full path by expanding `~` and substituting today's date into the
-structure. Create any missing directories in the path before writing.
+**4a. Find today's entry, if it already exists.** Query with
+`mcp__claude_ai_Notion__notion-query-data-sources` in `sql` mode:
 
-Write (or replace) the file at that path with the following content:
+```sql
+SELECT url FROM "{{NOTION_STARTUP_DATA_SOURCE}}"
+WHERE "date:Entry Date:start" = '[today YYYY-MM-DD]'
+```
+
+Zero rows means create; one row means update that page. If the query somehow returns
+more than one row, update the oldest and tell the user there are duplicates for today —
+do not delete anything yourself.
+
+**4b. Compose the page body** in Notion-flavored Markdown. Do **not** include an H1
+title — the title lives in the `Day` property. The body is:
 
 ```markdown
-# Work Day - YYYY-MM-DD
-
 ## Calendar
 
 [calendar section from Step 2a — full content including Today at a glance,
@@ -450,7 +478,8 @@ infrastructure?" — specific and actionable, naming 2–3 things maximum. Draw 
 everything gathered: unresolved RSVP/calendar decisions that must happen before the
 day progresses, new high-priority or Blocked Jira interrupts needing routing, any
 incident requiring your action (especially `[LEAD]`/`[ADJ]`), any 1:1 person whose
-signal warrants a conversation today, and the carry-forward from yesterday's work note.
+signal warrants a conversation today, and the carry-forward from the previous Daily
+Startup entry.
 Example: "Today needs: RSVP the 2 PM Google sync, route INFR-456 to the on-call owner,
 and ask Jordan about the migration cutover in your 1:1." If nothing is urgent, say so:
 "Quiet day — protect the afternoon focus block and prep for Thursday's review."]
@@ -462,7 +491,7 @@ Name what the user is walking into so they can set the right intention.]
 
 **The One Thing:**
 [Given everything — calendar, Slack, Jira, yesterday's personal note,
-yesterday's work note, and today's intentions — what is the single most
+the previous Daily Startup entry, and today's intentions — what is the single most
 important thing to move forward today? Name it explicitly. If the day risks
 filling up with busyness that doesn't move the needle, say so.]
 
@@ -486,13 +515,67 @@ you're the organizer — do you have a clear outcome in mind for what you want
 to leave the room having decided?"]
 ```
 
-After writing the work note, hold **Today needs from you (as Head of Infrastructure)**,
-**The One Thing**, and **One Question** values verbatim in memory — you will copy them
-into Step 5.
+**4c. Compose the properties.** Use the exact property names from the schema you read
+in Step 0. Values are a JSON map of property name to SQLite value:
+
+| Property | Value |
+|----------|-------|
+| `Day` | `YYYY-MM-DD Ddd` — e.g. `2026-09-10 Thu`. This is the page title |
+| `date:Entry Date:start` | `YYYY-MM-DD` (today) |
+| `date:Entry Date:is_datetime` | `0` |
+| `Day Shape` | One of `Focus-heavy`, `Balanced`, `Meeting-heavy`, `Back-to-back`, `Light`. Must agree with what **Today's Shape** says in the body — if the prose says the day is packed, the property cannot say `Light` |
+| `Energy` | One of `High`, `Steady`, `Guarded`, `Low`, read from the **personal journal notes** in Step 2 — never inferred from work signals. Omit the property entirely if the journal gave you nothing to go on; a guess here corrupts the trend line |
+| `The One Thing` | The One Thing, verbatim from the body, as plain text (strip markdown) |
+| `Today Needs` | The "Today needs from you" line, verbatim, plain text |
+| `One Question` | The One Question, verbatim, plain text |
+| `Flags` | Array, any of `Incident`, `Blocked Jira`, `RSVP Needed`, `Vendor`, `Org Change`, `Travel/PTO`, `Interview`, `Week Ahead`. Set each only when something in today's gathered data actually warrants it. Add `Week Ahead` on Mondays when you wrote that section |
+| `1:1s With` | Array of display names of the people you have 1:1s with today. **Only names that already exist as options can be written** — see the note below |
+| `Meetings` | Number of real meetings today (exclude focus blocks, Clockwise holds, and solo events — same exclusions as Phase 2) |
+| `Focus Hours` | Hours of uninterrupted focus time available, as a number (`2.5`) |
+| `Phase 2 Prep` | `"__NO__"` — Phase 2 sets it to `"__YES__"` when it finishes |
+| `Journal` | `obsidian://open?vault={{OBSIDIAN_VAULT}}&file=<vault-relative path>`. Build the full note path from `{{DAILY_NOTES_PATH}}` + `{{DAILY_NOTES_STRUCTURE}}`, strip the `{{OBSIDIAN_VAULT_ROOT}}` prefix and the `.md` suffix, then percent-encode. For `~/Documents/Personal/Daily/2026/09-September/2026-09-10.md` under vault root `~/Documents/Personal/` that is `Daily/2026/09-September/2026-09-10`. The path is relative to the vault root, **not** to `{{DAILY_NOTES_PATH}}` — dropping the leading folder produces a link that silently opens nothing. Omit the property if `{{OBSIDIAN_VAULT}}` is blank in config |
+
+Leave `Notes` alone. It is the user's own scratch field on the row — never write to it.
+
+**On `1:1s With`:** Notion does *not* create multi-select options on the fly. Writing a
+name that is not already an option fails the **entire page write** with
+`validation_error`, not just that property. The options are seeded from
+`{{PERSON_SIGNAL_REGISTRY}}`, so spell names exactly as that table does. If today's 1:1
+is with someone who is not yet an option, add them first with `notion-update-data-source`:
+
+```
+ALTER COLUMN "1:1s With" SET MULTI_SELECT('Existing Name':blue, ..., 'New Person':gray)
+```
+
+`SET` replaces the whole option list, so include every existing option or you will drop
+the ones you leave out. If that call fails, omit the person from the property and write
+the page anyway — the body still names them, and a missing tag beats a lost briefing.
+
+**4d. Write the page.**
+
+*If no entry exists for today*, call `mcp__claude_ai_Notion__notion-create-pages` with:
+- `parent`: `{"type": "data_source_id", "data_source_id": "<uuid from {{NOTION_STARTUP_DATA_SOURCE}}>"}`
+- `pages`: a single entry with `properties` (4c), `content` (4b), and `icon` `"☀️"`
+- `allow_async`: `false` — you need the page URL back immediately for Step 5
+
+*If an entry already exists*, make two calls against that page ID:
+1. `notion-update-page` with `command: "replace_content"` and `new_str` set to the 4b body
+2. `notion-update-page` with `command: "update_properties"` and the 4c properties
+
+Replacing content wipes the Phase 2 prep sections from an earlier run today. That is
+intended — Phase 2 runs again after Step 5 and rewrites them. Leave `Phase 2 Prep` set
+to `"__NO__"` on a re-run so the checkbox never claims prep that is no longer on the page.
+
+Keep the returned **page URL** and **page ID**. Step 5 needs the URL; Phase 2 needs both.
+
+Also hold the **Today needs from you (as Head of Infrastructure)**, **The One Thing**,
+and **One Question** values verbatim — you will copy them into Step 5.
 
 ---
 
 ## Step 5: Write Personal Journal Stub
+
+This is the one write this skill makes to Obsidian.
 
 Determine today's personal note path from your config:
 - Base path: `{{DAILY_NOTES_PATH}}`
@@ -502,22 +585,19 @@ Read the current personal daily note. Find `{{ANCHOR_SECTION}}`. Insert the
 `## Work Day` section **above** that line.
 
 If `## Work Day` already exists in the file, **replace** it rather than
-inserting a duplicate.
+inserting a duplicate. An old stub may contain a wikilink to a retired work note
+from before this skill moved to Notion — replacing the section clears it, and you
+should leave any such note on disk alone.
 
-Compute the wikilink path for the work note. The path component is derived from
-`{{WORK_NOTES_STRUCTURE}}` with today's date substituted, without the `.md`
-extension. Example for 2026-05-04: `Work/2026/05-May/work-2026-05-04`.
-
-Note the `work-` filename prefix comes from `{{WORK_NOTES_STRUCTURE}}` — never
-name the work note file bare `YYYY-MM-DD.md`, or wikilinks like `[[YYYY-MM-DD]]`
-become ambiguous with the personal daily journal note of the same date.
+Use the Notion page URL returned in Step 4 as a plain Markdown link — not a wikilink.
+Nothing in the vault backs it any more.
 
 **Content to insert:**
 
 ```markdown
 ## Work Day
 
-[[Work/YYYY/MM-MonthName/work-YYYY-MM-DD|Work Day - YYYY-MM-DD →]]
+[Daily Startup — YYYY-MM-DD →](https://www.notion.so/...)
 
 **Today needs from you (as Head of Infrastructure):** [verbatim from Step 4 coaching]
 
@@ -530,10 +610,11 @@ become ambiguous with the personal daily journal note of the same date.
 ```
 
 If the personal daily note doesn't exist, tell the user — they may need to
-create it from their note template first.
+create it from their note template first. The Notion page is already written at this
+point, so say that too: the briefing is safe, only the journal pointer is missing.
 
-After writing both files, confirm:
-> "Phase 1 complete — work note and journal updated. Starting deep prep…"
+After writing the stub, confirm:
+> "Phase 1 complete — Notion briefing written and journal updated. Starting deep prep…"
 
 ---
 
@@ -546,7 +627,7 @@ actual resolved values from `config.md`. The agent runs in a fresh context witho
 to `config.md`.
 
 Note: this routine does **not** draft Slack replies. Surfacing *what* needs a reply is
-handled in Step 3b (the `🔴 Action Required (Mentions)` section of the work note) —
+handled in Step 3b (the `🔴 Action Required (Mentions)` section of the Notion page) —
 deciding and writing the replies is left to you.
 
 ---
@@ -568,7 +649,8 @@ the IC level.
 - Seven days ago: [YYYY-MM-DD]
 - Jira cloud ID: {{JIRA_CLOUD_ID}}
 - Jira base URL: {{JIRA_BASE_URL}}
-- Today's work note path: [full path, e.g. ~/Documents/Personal/Work/2026/05-May/work-2026-05-13.md]
+- Today's Daily Startup page ID: [page ID returned in Step 4]
+- Today's Daily Startup page URL: [page URL returned in Step 4]
 - Signal cache directory: ~/.claude/signal-cache/  (one JSON file per person, named {shortname}.json)
 
 **Today's meetings (from Phase 1 calendar — do not re-fetch):**
@@ -669,9 +751,16 @@ Generate exactly 3 talking points. Requirements:
 
 **Output:**
 
-Open [today's work note path]. Write TWO sections. For each, if it already exists in
-the file replace it entirely; otherwise append it at the end of the file. Write
-`## 1:1 Prep` before `## Meeting Prep`.
+Write TWO sections into the Daily Startup Notion page. Write `## 1:1 Prep` before
+`## Meeting Prep`, and put both at the end of the page, after `## Executive Coaching`.
+
+Fetch the page first with `mcp__claude_ai_Notion__notion-fetch` on the page ID, then:
+- If neither section is present, add them with `mcp__claude_ai_Notion__notion-update-page`,
+  `command: "insert_content"`, `position: {"type": "end"}`.
+- If a section is already present, replace it with `command: "update_content"`, passing
+  the whole existing section as `old_str` and your new version as `new_str`. Do not
+  append a second copy, and do not use `replace_content` — that would wipe the rest of
+  the briefing.
 
 First, the 1:1 section (omit entirely if there are no 1:1s today):
 
@@ -725,14 +814,18 @@ After the agent completes, print the following (substituting the agent return su
 ```
 ## Morning Prep Complete
 
-✅ Meeting & 1:1 Prep: [paste Meeting & 1:1 Prep agent return summary here] → Work Day note updated
+✅ Meeting & 1:1 Prep: [paste Meeting & 1:1 Prep agent return summary here] → [Daily Startup — YYYY-MM-DD](page URL)
 
-Anything that needs your reply is flagged under 🔴 Action Required in the work note.
+Anything that needs your reply is flagged under 🔴 Action Required in the Notion page.
 ```
 
+If the agent succeeded, set the checkbox: `notion-update-page` with
+`command: "update_properties"` and `{"Phase 2 Prep": "__YES__"}` on today's page.
+
 If the agent failed or returned an error: replace ✅ with ⚠️ and describe the
-error in place of the return summary. If the agent timed out, note "agent timed out —
-check partial output at [path]".
+error in place of the return summary, and leave `Phase 2 Prep` unchecked — the
+checkbox is how you know later whether the prep actually landed. If the agent timed
+out, say so and point at the page URL so the user can see how far it got.
 
 ---
 
@@ -758,8 +851,20 @@ check partial output at [path]".
   incident.io MCP before badging it — see the lifecycle re-post guard in Step 3b.3.
 - **Notes don't exist**: Skip silently and proceed without that context. Don't
   block on missing notes.
-- **Work note directory doesn't exist**: Create it silently before writing the
-  file. The path `Work/YYYY/MM-MonthName/` may not exist on the first run.
+- **`validation_error` naming a multi_select value**: someone in today's 1:1s is not an
+  option on `1:1s With` yet. Add the option first (see the note under Step 4c), then
+  re-run the write. Nothing was written when this error fires — the whole page write is
+  rejected, so there is no half-written page to clean up.
+- **A Daily Startup page already exists for today**: Update it in place (Step 4d) —
+  never create a second page for the same date. The `Entry Date` query in Step 4a is
+  what prevents duplicates; run it even when you are sure this is the first run.
+- **Notion returns an `async_task` instead of a page**: pass `allow_async: false` on
+  the create call. If you still get one, poll `notion-get-async-task` until it reports
+  `succeeded` before Step 5 — you need the real page URL for the journal stub.
+- **The Notion write fails after everything is gathered**: do not silently drop the
+  briefing. Print the full composed body in chat so the user has it, say plainly that
+  the Notion write failed and why, then retry once. Do not fall back to writing a
+  markdown file in the vault.
 - **Signal cache empty or missing**: On first run, no `~/.claude/signal-cache/`
   exists. The Phase 2 meeting & 1:1 prep agent creates it and captures fresh signals — 1:1 prep that
   day notes "first capture." Caches fill in and get richer over subsequent runs (and
@@ -773,4 +878,4 @@ check partial output at [path]".
 
 - Always verify Slack MCP tools are available BEFORE starting context gathering; if unavailable, note this upfront rather than mid-flow
 - When user mentions calendar items, treat each meeting as independent unless explicitly linked (e.g., don't assume Monday prep relates to Wednesday meetings)
-- After verbally updating priorities or plans, ALWAYS write the changes to today's note immediately—don't wait to be asked
+- After verbally updating priorities or plans, ALWAYS write the changes to today's Daily Startup page in Notion immediately—don't wait to be asked
