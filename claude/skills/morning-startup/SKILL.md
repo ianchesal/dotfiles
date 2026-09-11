@@ -814,10 +814,20 @@ After the agent completes, print the following (substituting the agent return su
 ```
 ## Morning Prep Complete
 
-✅ Meeting & 1:1 Prep: [paste Meeting & 1:1 Prep agent return summary here] → [Daily Startup — YYYY-MM-DD](page URL)
+✅ Meeting & 1:1 Prep: [paste Meeting & 1:1 Prep agent return summary here]
 
 Anything that needs your reply is flagged under 🔴 Action Required in the Notion page.
+
+📄 **Today's briefing:** [Daily Startup — YYYY-MM-DD](page URL)
+<page URL>
 ```
+
+The last two lines are the whole point of the summary — the briefing lives in Notion,
+so the run must end with a way to get there in one click. Print **both** forms: the
+Markdown link (renders as a clickable title in terminals that support it) and the bare
+URL on its own line (clickable everywhere else, and copy-pasteable). Substitute the real
+page URL returned in Step 4 — never a placeholder, never a shortened or guessed URL.
+This is always the final thing printed; nothing goes after it.
 
 If the agent succeeded, set the checkbox: `notion-update-page` with
 `command: "update_properties"` and `{"Phase 2 Prep": "__YES__"}` on today's page.
@@ -825,7 +835,8 @@ If the agent succeeded, set the checkbox: `notion-update-page` with
 If the agent failed or returned an error: replace ✅ with ⚠️ and describe the
 error in place of the return summary, and leave `Phase 2 Prep` unchecked — the
 checkbox is how you know later whether the prep actually landed. If the agent timed
-out, say so and point at the page URL so the user can see how far it got.
+out, say so. Still print the briefing link block — a partial page is exactly when the
+user most needs to click through and see how far it got.
 
 ---
 
