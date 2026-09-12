@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Convert a live symlink-into-the-repo into a real directory, preserving
+# untracked runtime state that lives only behind that symlink.
+#
+#   script/cutover <repo-subdir> <target-path>
+#   script/cutover tmux ~/.config/tmux
+#   script/cutover git/gh ~/.config/gh
+#
+# chezmoi apply alone will NOT do this. Verified in
+# script/verify-chezmoi-assumptions.sh (check 5): apply deletes the symlink
+# without prompting -- no drift prompt fires, because a pre-existing symlink
+# is unmanaged -- and writes only tracked files. Untracked state is stranded
+# inside the repo worktree, where the next `git clean` destroys it.
+#
+# Env: CUTOVER_DRY_RUN=1    print actions, change nothing
+#      CUTOVER_SKIP_APPLY=1 skip `chezmoi apply` (used by the tests)
+#      DOTFILES_ROOT=<path> override repo root (used by the tests)
+set -euo pipefail
+
+SUBDIR="${1:?usage: cutover <repo-subdir> <target-path>}"
+TARGET="${2:?usage: cutover <repo-subdir> <target-path>}"
+ROOT="${DOTFILES_ROOT:-$(git rev-parse --show-toplevel)}"
+SRC="$ROOT/$SUBDIR"
+
+die() { echo "cutover: $*" >&2; exit 1; }
+run() { if [ -n "${CUTOVER_DRY_RUN:-}" ]; then echo "  would: $*"; else "$@"; fi; }
+
+[ -L "$TARGET" ] || die "$TARGET is not a symlink (already migrated, or never was)"
+link_dest="$(readlink "$TARGET")"
+case "$link_dest" in
+  "$SRC"|"$SRC"/*) : ;;
+  *) die "$TARGET -> $link_dest does not point at $SRC" ;;
+esac
+[ -d "$SRC" ] || die "$SRC does not exist"
+
+echo "cutover: $TARGET -> real directory, carrying state from $SRC"
+run rm "$TARGET"                 # the symlink ONLY - never rm -r
+run mv "$SRC" "$TARGET"
+
+if [ -z "${CUTOVER_SKIP_APPLY:-}" ] && [ -z "${CUTOVER_DRY_RUN:-}" ]; then
+  echo "cutover: applying tracked files over it"
+  chezmoi apply --error-on-conflict "$TARGET"
+fi
+
+echo "cutover: done. Next: git rm -r --cached $SUBDIR && git commit"
