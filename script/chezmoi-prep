@@ -1,0 +1,177 @@
+#!/usr/bin/env bash
+#
+# chezmoi-prep - ready a machine on `main` for the chezmoi branch.
+#
+#   ./script/chezmoi-prep --dry-run     show what would happen, change nothing
+#   ./script/chezmoi-prep               do it
+#
+# WHY THIS EXISTS
+#
+# On the chezmoi branch the managed config directories no longer live at the
+# repo root - they move into home/ as chezmoi source state. If you simply
+# `git checkout` that branch (or `git pull` it into main), git removes every
+# TRACKED file inside zsh/, claude/, git/ and friends while leaving untracked
+# runtime state behind. Your symlinks then point at near-empty directories:
+# ~/.config/zsh loses .zshrc, and ~/.zshenv - which sets ZDOTDIR - dangles.
+# The next login shell is bare.
+#
+# This script converts every symlink-into-the-repo into a real file or
+# directory FIRST, carrying untracked state (Claude sessions, gh OAuth tokens,
+# tmux plugins) across with it. Afterwards the machine still works on `main`,
+# and switching to the chezmoi branch is a clean no-op for those paths.
+#
+# It is idempotent: anything already converted is skipped.
+#
+# nvim is deliberately NOT touched. It stays a symlink into the repo on both
+# branches.
+set -euo pipefail
+
+DRY=""
+[ "${1:-}" = "--dry-run" ] && DRY=1
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+STAMP="$(date +%F)"
+BACKUP="$HOME/dotfiles-pre-chezmoi-$STAMP.tgz"
+
+say()  { printf '\033[1;36m==> %s\033[0m\n' "$*"; }
+ok()   { printf '    \033[0;32mok\033[0m   %s\n' "$*"; }
+skip() { printf '    \033[0;33mskip\033[0m %s\n' "$*"; }
+die()  { printf '\033[1;31mABORT: %s\033[0m\n' "$*" >&2; exit 1; }
+run()  { if [ -n "$DRY" ]; then printf '    would: %s\n' "$*"; else "$@"; fi; }
+
+# Loose single-file symlinks. ~/.zshenv is first on purpose: it sets ZDOTDIR,
+# so it must never be the thing left dangling.
+LOOSE=".zshenv .gemrc .pylintrc .rubocop.yml .asdfrc .tool-versions"
+
+# Directory symlinks, as "repo-subdir:target". ORDER MATTERS: git/gh and
+# git/gh-dash live INSIDE git/, so they must be moved out before git/ is.
+DIRS="
+git/gh:$HOME/.config/gh
+git/gh-dash:$HOME/.config/gh-dash
+git:$HOME/.config/git
+zsh:$HOME/.config/zsh
+tmux:$HOME/.config/tmux
+claude:$HOME/.claude
+lazygit:$HOME/.config/lazygit
+ripgrep:$HOME/.config/ripgrep
+workmux:$HOME/.config/workmux
+ohmyposh:$HOME/.config/ohmyposh
+kitty:$HOME/.config/kitty
+aerospace:$HOME/.config/aerospace
+"
+
+say "Repo: $ROOT"
+[ -d "$ROOT/.git" ] || die "$ROOT is not a git checkout"
+
+# ---------------------------------------------------------------- backup ---
+say "Step 1/4: back up everything behind the symlinks"
+if [ -f "$BACKUP" ]; then
+  skip "$BACKUP already exists"
+else
+  paths=""
+  for p in .claude .config/nvim .config/zsh .config/tmux .config/git .config/gh \
+           .config/gh-dash .config/ohmyposh .config/lazygit .config/ripgrep \
+           .config/workmux .config/kitty .config/aerospace .config/yt-dlp \
+           .zshenv .tool-versions .asdfrc .rubocop.yml .pylintrc .gemrc; do
+    [ -e "$HOME/$p" ] && paths="$paths $p"
+  done
+  # -h dereferences the symlinks; without it this archives links, not content
+  # shellcheck disable=SC2086
+  run tar czhf "$BACKUP" -C "$HOME" $paths
+  if [ -z "$DRY" ]; then
+    n="$(tar tzf "$BACKUP" | wc -l | tr -d ' ')"
+    # Meaningful check, not an arbitrary count: pick a directory that is
+    # CURRENTLY a symlink and assert the archive holds entries INSIDE it. If
+    # -h failed, tar stored the link itself and there are no children.
+    probe=""
+    for p in .config/zsh .claude .config/tmux .config/git; do
+      [ -L "$HOME/$p" ] && { probe="$p"; break; }
+    done
+    if [ -n "$probe" ]; then
+      inside="$(tar tzf "$BACKUP" | grep -c "^$probe/." || true)"
+      [ "$inside" -gt 0 ] || die "backup archived '$probe' as a symlink, not its contents - the -h flag did not take"
+      ok "dereferenced: $inside entries inside $probe"
+    fi
+    ok "$BACKUP ($n entries, $(du -h "$BACKUP" | cut -f1))"
+  fi
+fi
+
+# ------------------------------------------------------- loose dotfiles ---
+say "Step 2/4: convert loose file symlinks into real files"
+for f in $LOOSE; do
+  t="$HOME/$f"
+  if [ -L "$t" ]; then
+    src="$(readlink "$t")"
+    [ -e "$src" ] || die "$t -> $src is already dangling; restore from backup first"
+    run rm "$t"
+    run cp "$src" "$t"
+    ok "$f"
+  elif [ -e "$t" ]; then
+    skip "$f (already a real file)"
+  else
+    skip "$f (not present on this machine)"
+  fi
+done
+
+# yt-dlp's config is a file symlink inside a directory chezmoi will own
+if [ -L "$HOME/.config/yt-dlp/config" ]; then
+  src="$(readlink "$HOME/.config/yt-dlp/config")"
+  run rm "$HOME/.config/yt-dlp/config"
+  run cp "$src" "$HOME/.config/yt-dlp/config"
+  ok ".config/yt-dlp/config"
+fi
+
+# ------------------------------------------------------------ cutovers ---
+say "Step 3/4: convert directory symlinks into real directories"
+for pair in $DIRS; do
+  sub="${pair%%:*}"; tgt="${pair#*:}"
+  if [ ! -L "$tgt" ]; then
+    if [ -d "$tgt" ]; then skip "$sub (already a real directory)"; else skip "$sub (not present)"; fi
+    continue
+  fi
+  dest="$(readlink "$tgt")"
+  case "$dest" in
+    "$ROOT/$sub"|"$ROOT/$sub"/*) : ;;
+    *) die "$tgt -> $dest does not point at $ROOT/$sub (different checkout?)" ;;
+  esac
+  [ -d "$ROOT/$sub" ] || die "$ROOT/$sub is missing"
+  run rm "$tgt"              # the symlink ONLY - never rm -r
+  run mv "$ROOT/$sub" "$tgt"
+  ok "$sub -> $tgt"
+done
+
+# ------------------------------------------------------------- verify ----
+say "Step 4/4: verify"
+[ -n "$DRY" ] && { printf '\n\033[1;33mDry run - nothing was changed.\033[0m\n'; exit 0; }
+
+fails=0
+for f in $LOOSE; do
+  [ -L "$HOME/$f" ] && { echo "    STILL A SYMLINK: ~/$f"; fails=$((fails+1)); }
+done
+for pair in $DIRS; do
+  tgt="${pair#*:}"
+  [ -L "$tgt" ] && { echo "    STILL A SYMLINK: $tgt"; fails=$((fails+1)); }
+done
+# nvim must be untouched
+[ -L "$HOME/.config/nvim" ] || { echo "    ~/.config/nvim should still be a symlink"; fails=$((fails+1)); }
+# nothing in $HOME should dangle
+while IFS= read -r l; do
+  echo "    DANGLING: $l"; fails=$((fails+1))
+done < <(find "$HOME" -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null)
+
+[ "$fails" -eq 0 ] || die "$fails problem(s) - restore from $BACKUP before continuing"
+
+ok "no symlinks into the repo remain (except nvim, by design)"
+ok "no dangling symlinks in \$HOME"
+cat <<EOF
+
+    Backup: $BACKUP
+
+    This machine still works on 'main'. Next:
+
+      cd $ROOT
+      git checkout explore-not-using-rake-here
+      ./script/chezmoi-migrate
+
+    See MIGRATION.md for the full runbook.
+EOF
