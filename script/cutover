@@ -13,8 +13,12 @@
 # inside the repo worktree, where the next `git clean` destroys it.
 #
 # Env: CUTOVER_DRY_RUN=1    print actions, change nothing
-#      CUTOVER_SKIP_APPLY=1 skip `chezmoi apply` (used by the tests)
+#      CUTOVER_SKIP_APPLY=1 skip `chezmoi apply` entirely
 #      DOTFILES_ROOT=<path> override repo root (used by the tests)
+#      CHEZMOI=<path>       chezmoi binary to use (used by the tests)
+#      CUTOVER_CZ_ARGS=...  extra args for chezmoi apply, word-split
+#                           (used by the tests to point at a scratch
+#                           source/destination instead of the real home)
 set -euo pipefail
 
 SUBDIR="${1:?usage: cutover <repo-subdir> <target-path>}"
@@ -39,7 +43,8 @@ run mv "$SRC" "$TARGET"
 
 if [ -z "${CUTOVER_SKIP_APPLY:-}" ] && [ -z "${CUTOVER_DRY_RUN:-}" ]; then
   echo "cutover: applying tracked files over it"
-  chezmoi apply --error-on-conflict "$TARGET"
+  # shellcheck disable=SC2086  # CUTOVER_CZ_ARGS is intentionally word-split
+  "${CHEZMOI:-chezmoi}" apply --error-on-conflict ${CUTOVER_CZ_ARGS:-} "$TARGET"
 fi
 
 echo "cutover: done. Next: git rm -r --cached $SUBDIR && git commit"
