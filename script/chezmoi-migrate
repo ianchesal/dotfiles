@@ -52,18 +52,34 @@ else
 fi
 
 say "Step 3/5: point chezmoi at this checkout"
+# `chezmoi init --source=...` does NOT persist the path -- it applies to that
+# invocation only, so every later command (and dfu) would need --source again.
+# The durable setting is sourceDir in chezmoi's own config file.
+CFG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/chezmoi"
+CFG="$CFG_DIR/chezmoi.toml"
 current="$(chezmoi source-path 2>/dev/null || true)"
-if [ "$current" = "$ROOT/home" ] || [ "$current" = "$ROOT" ]; then
-  ok "already initialised against $ROOT"
+if [ "$current" = "$ROOT/home" ]; then
+  ok "already pointed at $ROOT"
 elif [ -n "$DRY" ]; then
-  printf '    would: chezmoi init --source=%s\n' "$ROOT"
+  printf '    would: write sourceDir = "%s" to %s\n' "$ROOT" "$CFG"
 else
-  chezmoi init --source="$ROOT"
-  ok "source is now $(chezmoi source-path)"
+  if [ -f "$CFG" ] && ! grep -q "^sourceDir" "$CFG"; then
+    printf 'sourceDir = "%s"\n' "$ROOT" >> "$CFG"
+  elif [ -f "$CFG" ]; then
+    die "$CFG already sets sourceDir to something else - resolve that by hand"
+  else
+    mkdir -p "$CFG_DIR"
+    printf 'sourceDir = "%s"\n' "$ROOT" > "$CFG"
+  fi
+  got="$(chezmoi source-path)"
+  [ "$got" = "$ROOT/home" ] || die "sourceDir did not take: chezmoi reports $got"
+  ok "source is $got (persisted in $CFG)"
 fi
 
 say "Step 4/5: review what would change"
-chezmoi diff --source="$ROOT" || true
+# no --source here on purpose: this must exercise the persisted config,
+# so a sourceDir that did not take fails loudly rather than silently working
+chezmoi diff || true
 cat <<'EOF'
 
     Read that diff. On this machine chezmoi has no record of what it wrote
@@ -80,11 +96,11 @@ read -r reply
 case "$reply" in [yY]*) ;; *) echo "    aborted."; exit 1 ;; esac
 
 say "Step 5/5: apply and verify"
-chezmoi apply --source="$ROOT" --error-on-conflict
+chezmoi apply --error-on-conflict
 
 fails=0
 check() { if eval "$2"; then ok "$1"; else echo "    FAIL: $1"; fails=$((fails+1)); fi; }
-check "chezmoi status is clean"        '[ -z "$(chezmoi status --source="$ROOT")" ]'
+check "chezmoi status is clean"        '[ -z "$(chezmoi status)" ]'
 check ".config/nvim -> repo"           '[ "$(readlink "$HOME/.config/nvim")" = "$ROOT/nvim" ]'
 check ".zshenv is a real file"         '[ -f "$HOME/.zshenv" ] && [ ! -L "$HOME/.zshenv" ]'
 check "no dangling symlinks in HOME"  '[ -z "$(find "$HOME" -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null)" ]'
