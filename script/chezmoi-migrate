@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+#
+# chezmoi-migrate - finish the switch after script/chezmoi-prep (run on main)
+# has converted this machine's symlinks into real files and directories.
+#
+#   ./script/chezmoi-migrate --dry-run    show the diff, apply nothing
+#   ./script/chezmoi-migrate              do it
+#
+# Run this from the chezmoi branch, after:
+#     ./script/chezmoi-prep        (on main)
+#     git checkout <this branch>
+set -euo pipefail
+
+DRY=""
+[ "${1:-}" = "--dry-run" ] && DRY=1
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+say()  { printf '\033[1;36m==> %s\033[0m\n' "$*"; }
+ok()   { printf '    \033[0;32mok\033[0m   %s\n' "$*"; }
+die()  { printf '\033[1;31mABORT: %s\033[0m\n' "$*" >&2; exit 1; }
+
+say "Step 1/5: confirm chezmoi-prep has already run"
+[ -f "$ROOT/.chezmoiroot" ] || die "no .chezmoiroot - are you on the chezmoi branch?"
+
+stragglers=0
+for p in .config/zsh .config/tmux .config/git .config/gh .config/gh-dash .claude \
+         .config/lazygit .config/ripgrep .config/workmux .config/ohmyposh \
+         .config/kitty .config/aerospace; do
+  if [ -L "$HOME/$p" ]; then
+    echo "    ~/$p is still a symlink -> $(readlink "$HOME/$p")"
+    stragglers=$((stragglers+1))
+  fi
+done
+for f in .zshenv .gemrc .pylintrc .rubocop.yml .asdfrc .tool-versions; do
+  [ -L "$HOME/$f" ] && { echo "    ~/$f is still a symlink"; stragglers=$((stragglers+1)); }
+done
+[ "$stragglers" -eq 0 ] || die "$stragglers path(s) not prepped. Run script/chezmoi-prep from main first."
+ok "no symlinks into the repo remain"
+
+# nvim is the deliberate exception and must still be a link
+[ -L "$HOME/.config/nvim" ] || die "\$HOME/.config/nvim should still be a symlink - prep should not have touched it"
+ok "\$HOME/.config/nvim still symlinked (by design)"
+
+say "Step 2/5: ensure chezmoi is installed"
+if command -v chezmoi >/dev/null 2>&1; then
+  ok "$(chezmoi --version | head -1)"
+else
+  [ -n "$DRY" ] && die "chezmoi is not installed (dry run will not install it)"
+  if command -v brew >/dev/null 2>&1; then brew install chezmoi
+  else sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b "$HOME/.local/bin"; export PATH="$HOME/.local/bin:$PATH"; fi
+  ok "$(chezmoi --version | head -1)"
+fi
+
+say "Step 3/5: point chezmoi at this checkout"
+current="$(chezmoi source-path 2>/dev/null || true)"
+if [ "$current" = "$ROOT/home" ] || [ "$current" = "$ROOT" ]; then
+  ok "already initialised against $ROOT"
+elif [ -n "$DRY" ]; then
+  printf '    would: chezmoi init --source=%s\n' "$ROOT"
+else
+  chezmoi init --source="$ROOT"
+  ok "source is now $(chezmoi source-path)"
+fi
+
+say "Step 4/5: review what would change"
+chezmoi diff --source="$ROOT" || true
+cat <<'EOF'
+
+    Read that diff. On this machine chezmoi has no record of what it wrote
+    before, so `apply` treats every existing file as unmanaged and will
+    replace it WITHOUT prompting. The diff above is your only preview.
+EOF
+
+if [ -n "$DRY" ]; then
+  printf '\n\033[1;33mDry run - nothing applied.\033[0m\n'; exit 0
+fi
+
+printf '\n    Apply these changes? [y/N] '
+read -r reply
+case "$reply" in [yY]*) ;; *) echo "    aborted."; exit 1 ;; esac
+
+say "Step 5/5: apply and verify"
+chezmoi apply --source="$ROOT" --error-on-conflict
+
+fails=0
+check() { if eval "$2"; then ok "$1"; else echo "    FAIL: $1"; fails=$((fails+1)); fi; }
+check "chezmoi status is clean"        '[ -z "$(chezmoi status --source="$ROOT")" ]'
+check ".config/nvim -> repo"           '[ "$(readlink "$HOME/.config/nvim")" = "$ROOT/nvim" ]'
+check ".zshenv is a real file"         '[ -f "$HOME/.zshenv" ] && [ ! -L "$HOME/.zshenv" ]'
+check "no dangling symlinks in HOME"  '[ -z "$(find "$HOME" -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null)" ]'
+check "repo worktree is clean"         '[ -z "$(git -C "$ROOT" status --porcelain)" ]'
+[ -d "$HOME/.claude/projects" ] && check ".claude/projects survived" 'true'
+[ -f "$HOME/.config/gh/hosts.yml" ] && check "gh hosts.yml survived" 'true'
+
+echo
+if [ "$fails" -eq 0 ]; then
+  printf '\033[1;32mMigration complete.\033[0m Try: zsh -ic %s and: gh auth status\n' "'echo ok'"
+else
+  die "$fails check(s) failed - your backup is at ~/dotfiles-pre-chezmoi-*.tgz"
+fi
