@@ -73,8 +73,16 @@ Two guards are retained from the original function and must not be dropped:
   uncommitted or staged changes
 - `rake nvim:commit` afterwards if the updater moved the pins
 
-`zinit update` also stays. The tpm external keeps *tpm itself* current but never
-touches the plugins tpm manages; the same is true of zinit and its plugins.
+`zinit update` also stays, and matters more than it looks. Neither zinit nor tpm
+is managed by chezmoi: zinit bootstraps itself in `dot_zshrc`, and tpm is cloned
+by `run_once_after_55-install-tpm.sh` on first apply. Both mechanisms install the
+*manager* and never update the *plugins* — that is what `zinit update` here and
+`prefix + U` in tmux are for.
+
+(`.chezmoiexternal.toml` was the obvious way to do this and is the wrong one:
+chezmoi re-validates externals on every `diff`, `apply` and `verify` — and this
+function runs `chezmoi diff` daily — and an external whose target exists but is
+not a clean git repo fails the entire apply.)
 
 ---
 
