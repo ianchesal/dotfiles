@@ -78,6 +78,24 @@ touches the plugins tpm manages; the same is true of zinit and its plugins.
 
 ---
 
+## Switching an existing machine over
+
+A machine that is still on the rake/symlink model must **not** simply
+`git pull` the migrated repo. The migration commits delete `zsh/`, `claude/`
+and friends from the repo; a pull removes every tracked file inside them while
+leaving untracked state behind, which leaves `~/.config/zsh` pointing at an
+almost-empty directory and `~/.zshenv` — which sets `ZDOTDIR` — dangling. The
+next login shell is bare.
+
+The order that works: back up, de-symlink the loose files, cut over the
+directories, *then* take the new tree, then init and apply. The full procedure
+with the exact commands is in the migration plan's **Per-machine rollout**
+section (`docs/superpowers/plans/2026-09-11-chezmoi-migration.md`).
+
+Once a machine is switched over, `dfu` is the only thing it needs.
+
+---
+
 ## Bootstrapping a new machine
 
 ```bash
