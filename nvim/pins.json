@@ -3,11 +3,6 @@
     "SchemaStore.nvim": {
       "observed": [
         {
-          "first_seen": 1786581244,
-          "first_seen_iso": "2026-08-13T00:34:04Z",
-          "rev": "6bcdcb22f02b43b990b650b3ab40c65aa193c3f8"
-        },
-        {
           "first_seen": 1786665883,
           "first_seen_iso": "2026-08-14T00:04:43Z",
           "rev": "3067d706e9738fbed404fa0397199c9d1921fd1c"
@@ -111,12 +106,17 @@
           "first_seen": 1789088788,
           "first_seen_iso": "2026-09-11T01:06:28Z",
           "rev": "e37abcf2f337dc2587aae9118f866b0cf8ed96b7"
+        },
+        {
+          "first_seen": 1789173359,
+          "first_seen_iso": "2026-09-12T00:35:59Z",
+          "rev": "05e938c0aa5dfbdbb11972fa4c8a85f27f402ba0"
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-11T01:06:28Z",
-        "pinned_at_epoch": 1789088788,
-        "rev": "c8170f9628265f5a01510182703bab9125ef15d8"
+        "pinned_at": "2026-09-12T00:35:59Z",
+        "pinned_at_epoch": 1789173359,
+        "rev": "6bcdcb22f02b43b990b650b3ab40c65aa193c3f8"
       }
     },
     "blink.cmp": {
@@ -525,11 +525,6 @@
     "nvim-lspconfig": {
       "observed": [
         {
-          "first_seen": 1786549686,
-          "first_seen_iso": "2026-08-12T15:48:06Z",
-          "rev": "d2011e1dd0c27569c551f16b688d86029ae015c9"
-        },
-        {
           "first_seen": 1786629827,
           "first_seen_iso": "2026-08-13T14:03:47Z",
           "rev": "51dbf5359da86721662c87ca10eb73add973737b"
@@ -636,9 +631,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-10T15:42:19Z",
-        "pinned_at_epoch": 1789054939,
-        "rev": "4267d26e60323a45e18f8e7a63a964cc8f53ca4e"
+        "pinned_at": "2026-09-12T00:35:59Z",
+        "pinned_at_epoch": 1789173359,
+        "rev": "d2011e1dd0c27569c551f16b688d86029ae015c9"
       }
     },
     "nvim-treesitter": {
@@ -697,6 +692,11 @@
           "first_seen": 1789054939,
           "first_seen_iso": "2026-09-10T15:42:19Z",
           "rev": "d4d59cb369da46b95699bd2200efbcffc6dadb3b"
+        },
+        {
+          "first_seen": 1789173359,
+          "first_seen_iso": "2026-09-12T00:35:59Z",
+          "rev": "de9f0f3dbdab1952f136dc7bd67ff3bafdf994da"
         }
       ],
       "pin": {
