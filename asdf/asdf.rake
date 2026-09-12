@@ -98,13 +98,9 @@ def asdf_prune_confirmed?(plan)
 end
 
 namespace :asdf do
-  task all: [:asdf]
-
   # Depends on rust:install because ruby-build only compiles YJIT/ZJIT into Ruby when a
   # Rust toolchain is present at build time, and `rake all` would otherwise reach asdf first.
   task asdf: ['rust:install'] do
-    dolink(home('.asdfrc'), root('asdf', 'asdfrc'))
-    dolink(home('.tool-versions'), root('asdf', 'tool-versions'))
     sh 'asdf plugin add ruby || true'
     sh 'asdf plugin add nodejs || true'
     sh 'asdf plugin add golang || true'
@@ -138,13 +134,6 @@ namespace :asdf do
       entry[:prune].each { |version| sh "asdf uninstall #{entry[:plugin]} #{version}" }
     end
   end
-
-  task :clean do
-    sh "rm -f #{home('.tool-versions')}"
-    clean_restore home('.asdfrc')
-  end
 end
 
-task all: [:asdf]
 task update: ['asdf:update']
-task clean: ['asdf:clean']

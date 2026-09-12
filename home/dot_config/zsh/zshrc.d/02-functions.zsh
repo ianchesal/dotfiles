@@ -95,42 +95,40 @@ function __my_sleep_spinner() {
 }
 
 function dotfiles_update() {
-  echo "\033[1;36m==> Updating your development environment...\033[0m" && \
-  cd ~/src/dotfiles && \
+  # workingTree is the repo root; sourceDir is <repo>/home. nvim/ lives at the
+  # repo root, so pathspecs resolve against the repo, not the source dir.
+  local REPO="$(chezmoi execute-template '{{ .chezmoi.workingTree }}')"
+  local PINS=(nvim/pins.json nvim/nvim-pack-lock.json)
 
-  # Fail if the nvim pin/lock files have uncommitted changes
-  if ! git diff --quiet nvim/pins.json nvim/nvim-pack-lock.json 2>/dev/null || ! git diff --cached --quiet nvim/pins.json nvim/nvim-pack-lock.json 2>/dev/null; then
-    echo "\033[1;31m==> Error: nvim/pins.json or nvim/nvim-pack-lock.json has uncommitted changes. Commit or discard them first.\033[0m"
+  # Guard: refuse to run with uncommitted or staged pin/lock changes, so an
+  # update can't strand a half-committed pin state.
+  if ! git -C "$REPO" diff --quiet -- $PINS 2>/dev/null || \
+     ! git -C "$REPO" diff --cached --quiet -- $PINS 2>/dev/null; then
+    echo "\033[1;31m==> nvim pins.json or nvim-pack-lock.json has uncommitted changes.\033[0m"
     return 1
-  fi && \
+  fi
 
-  # Stash any local changes
-  if [[ -n "$(git status --porcelain)" ]]; then
-    echo "\033[1;33m==> Stashing local changes...\033[0m" && \
-    git stash push -u -m "dfu auto-stash" && \
-    local STASHED=1
-  fi && \
+  echo "\033[1;36m==> Updating your development environment...\033[0m"
+  chezmoi git pull -- --autostash --rebase || return 1
 
-  # Update everything
-  git pull && \
-  rake nvim:prune && \
-  rake update && \
-  zinit update && \
-  rake ohmyposh:update && \
+  # The gate. `chezmoi diff` only prints; apply is what lands changes, so the
+  # confirmation has to sit between them.
+  chezmoi diff
+  read -q "REPLY?Apply these changes? [y/N] " || return 1
+  echo
+  chezmoi apply --error-on-conflict || return 1
 
-  # Restore stashed changes if they exist
-  if [[ -n "$STASHED" ]]; then
-    echo "\033[1;33m==> Restoring local changes...\033[0m" && \
-    git stash pop
-  fi && \
+  rake update
+  zinit update
 
-  # Check if the nvim pin/lock files were updated and commit if so
-  if ! git diff --quiet nvim/pins.json nvim/nvim-pack-lock.json 2>/dev/null; then
-    echo "\033[1;33m==> Neovim plugins were updated, committing changes...\033[0m" && \
+  # An update run moves the pins; commit them so every machine converges on the
+  # same delayed-pin state.
+  if ! git -C "$REPO" diff --quiet -- $PINS 2>/dev/null; then
+    echo "\033[1;33m==> Neovim plugins were updated, committing...\033[0m"
     rake nvim:commit
-  fi && \
+  fi
 
-  echo "\033[1;32m==> Update complete! Reloading shell...\033[0m" && \
+  echo "\033[1;32m==> Update complete! Reloading shell...\033[0m"
   exec $SHELL
 }
 

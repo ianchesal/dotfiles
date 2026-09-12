@@ -1,14 +1,4 @@
-desc 'Install neovim dotfiles'
-task nvim: ['nvim:all']
-
 namespace :nvim do
-  task all: [:dir]
-
-  task :dir do
-    mkdir_if_needed home('.config')
-    dolink(home('.config/nvim'), root('nvim'))
-  end
-
   desc 'Update nvim plugins (30-day delayed) and Mason packages'
   task :update do
     # These files get big. Nuke them regularly.
@@ -96,6 +86,4 @@ namespace :nvim do
   end
 end
 
-task all: [:nvim]
-task clean: ['nvim:clean']
 task update: ['nvim:update']

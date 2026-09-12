@@ -245,5 +245,10 @@ Editing `nvim/lua/plugins/*.lua` is live immediately — no `apply`. See
   Linux box is inert, and not worth a template guard to suppress.
 - **`~/.claude.json` is a sibling of `~/.claude`**, outside chezmoi's target
   set. Its 0600 chmod is handled by `run_once_after_70-chmod-claude-json.sh`.
+- **`run_once_` scripts always run against the real `$HOME`.** `--destination`
+  redirects file deployment but does **not** change `$HOME`, so testing an apply
+  against a scratch directory will still execute setup scripts against your
+  actual home directory. Always pass `--exclude=scripts` when applying to a
+  scratch destination.
 - **`script/cutover` is migration-only.** Once a directory is a real directory,
   the script refuses to run against it again.

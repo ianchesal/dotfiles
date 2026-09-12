@@ -7,12 +7,46 @@ This file provides guidance to AI agents working on this repository.
 - macOS (zsh/Kitty), Debian Linux, and WSL2
 - Changes should be portable across all three unless explicitly platform-specific
 
+## Deployment (chezmoi)
+
+- Deployment is **chezmoi**, not Rake. The repo is a *source*; configs are
+  copied into place, not symlinked
+- `.chezmoiroot` contains `home`, so the chezmoi source state lives in `home/`
+  and everything else at the repo root (Rakefile, `brew/`, `script/`, `docs/`,
+  `nvim/`) is invisible to chezmoi
+- Source naming: `home/dot_config/tmux/` → `~/.config/tmux/`, `dot_` at **every**
+  level. `chezmoi add` applies the prefixes for you — don't hand-name files
+- Prefixes in use: `executable_` (exec bit), `create_` (seed once, never
+  clobber — this is what protects `~/.claude/settings.json`), `symlink_` (the
+  entry's contents are the link target), `run_once_after_*` (setup scripts)
+- **In templates the repo root is `.chezmoi.workingTree`**, never
+  `.chezmoi.sourceDir` (which resolves to `<repo>/home`)
+- **`nvim/` is deliberately NOT in the source state.** It stays at the repo root
+  and `~/.config/nvim` is a `symlink_` entry pointing at it, so editing a plugin
+  spec is instantly live and `update.lua` keeps writing `pins.json` beside the
+  lockfile. Everything under `~/.config/nvim` is invisible to `chezmoi
+  status`/`diff`/`verify` — that is intended
+- Every config deploys on every platform. No OS gating: a kitty config on Linux
+  is inert and not worth a template guard
+- `~/.work_machine` stays a **runtime** check (`git/gh-dash/gh-dash.sh` reads the
+  file itself) so tmux popups and cron agree with interactive shells. Both
+  `config.yml` and `config-work.yml` deploy everywhere
+- `script/cutover` is migration-only — it converts a live symlink-into-the-repo
+  into a real directory without losing untracked state, and refuses to run twice
+- chezmoi does **not** back up what it replaces, and its drift protection is
+  machine-local (`chezmoistate.boltdb` is not in the repo). On a machine chezmoi
+  has never written to, `apply` replaces pre-existing files with no prompt —
+  `chezmoi diff` first is the only safeguard
+
 ## Build/Test/Lint Commands
 
-- Install dotfiles: `rake all`
-- Install specific configuration: `rake <tool>` (e.g., `rake tmux`, `rake nvim`, `rake zsh`, `rake git`, `rake kitty`, `rake ohmyposh`)
-- Remove customizations: `rake clean`
-- List all rake tasks: `rake -T`
+- Deploy dotfiles: `chezmoi apply --error-on-conflict` (preview first with `chezmoi diff`)
+- Deploy one path: `chezmoi apply --error-on-conflict ~/.config/tmux`
+- Daily update: `dfu` (pull → diff → confirm → apply → `rake update` → `zinit update`)
+- Start managing a new file: `chezmoi add <path>`; capture a live edit: `chezmoi re-add <path>`
+- Stop managing: `chezmoi forget <path>`; remove entirely: `chezmoi destroy <path>`
+- List all rake tasks: `rake -T` (Rake now owns **only** the update fan-out — there is no `rake all` or `rake clean`)
+- See `docs/chezmoi-workflows.md` for the full day-to-day workflows
 - Run Rubocop checks: `rake rubocop:check`
 - Auto-correct Rubocop issues: `rake rubocop:auto_correct`
 - Update configurations: `rake update`
@@ -25,7 +59,7 @@ This file provides guidance to AI agents working on this repository.
 - Check for Oh My Posh updates: `rake ohmyposh:check_update`
 - Update Oh My Posh: `rake ohmyposh:update`
 - Reload tmux config in all sessions: `rake tmux:reload`
-- Update zsh and plugins: `rake zsh:update`
+- Update zsh plugins: `zinit self-update && zinit update` (also run by `dfu`)
 - Install the Rust toolchain: `rake rust`
 - Update rustup and Rust toolchains: `rake rust:update`
 - Update Homebrew packages: `rake brew:update`
@@ -105,7 +139,7 @@ This file provides guidance to AI agents working on this repository.
   for work-vs-personal — repo code tests the file (`work_machine?` in the
   Rakefile, `[ -f ]` in shell), never the exported variable, so the answer is the
   same in tmux popups, cron and other detached contexts. `touch` to enable, `rm`
-  to disable; it is machine-local and `rake clean` leaves it alone
+  to disable; it is machine-local and nothing in the repo manages it
 
 ## Git Configuration
 
@@ -163,7 +197,7 @@ This file provides guidance to AI agents working on this repository.
 - Never include project-specific terminology, conventions, and preferences in the global memory file — those belong in the project's CLAUDE.md
 - Document complex workflows that should be remembered across sessions
 - Skills dividing line: skills for working *on this repo* (e.g., `managing-nvim-plugins`) go in `.claude/skills/` (project-scoped, only loaded in this repo); skills wanted in every session everywhere (e.g., `morning-startup`, `daily-wrap`) go in `claude/skills/` (symlinked to `~/.claude/skills`, global)
-- `claude/settings.json` is gitignored, not tracked — it's live, per-machine state (includes work-specific persona/allowedTools config on work machines) and must never be committed. `claude/settings.skeleton.json` is the tracked, curated set of portable defaults everyone should start from. Use the `claude-settings` skill (`promote`/`apply`) to move changes between the two: `promote` lifts a general-purpose improvement out of the live `settings.json` into the tracked skeleton; `apply` layers the skeleton's defaults onto a live `settings.json` that's drifted behind it
+- `~/.claude/settings.json` is seeded by `home/dot_claude/create_private_settings.json` and then never touched again (`create_` = write if absent). It is not tracked — it's live, per-machine state (includes work-specific persona/allowedTools config on work machines) and must never be committed. `claude/settings.skeleton.json` is the tracked, curated set of portable defaults everyone should start from. Use the `claude-settings` skill (`promote`/`apply`) to move changes between the two: `promote` lifts a general-purpose improvement out of the live `settings.json` into the tracked skeleton; `apply` layers the skeleton's defaults onto a live `settings.json` that's drifted behind it
 
 ## Rust Configuration
 
@@ -171,6 +205,6 @@ This file provides guidance to AI agents working on this repository.
 - Rake tasks in `rust/rust.rake`; shell integration in `zsh/zshrc.d/rust.zsh`
 - Installed with `--no-modify-path` so the installer never edits the managed `.zshrc`; `rust.zsh` sources `~/.cargo/env` instead to put `~/.cargo/bin` on PATH
 - `rake rust:install` is idempotent — it detects an existing rustup (on PATH or in `~/.cargo/bin`) and skips the installer
-- `rake clean` deliberately does NOT remove the toolchain, matching how `asdf:clean` leaves installed languages alone; use the explicit `rake rust:uninstall` for that
-- `asdf:asdf` depends on `rust:install`: ruby-build only compiles YJIT/ZJIT into Ruby when a Rust toolchain exists at build time, and `rake all` would otherwise reach asdf first
+- Removing the toolchain is deliberately never automatic; use the explicit `rake rust:uninstall`
+- `asdf:asdf` depends on `rust:install`: ruby-build only compiles YJIT/ZJIT into Ruby when a Rust toolchain exists at build time
 

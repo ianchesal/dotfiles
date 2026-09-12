@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-desc 'Install claude dotfiles'
-task claude: ['claude:all']
-
 CLAUDE_SETTINGS_FILE = home('.claude.json').freeze
 CLAUDE_USER_SETTINGS_FILE = home('.claude', 'settings.json').freeze
 CLAUDE_SETTINGS_SKELETON = root('claude', 'settings.skeleton.json').freeze
@@ -14,7 +11,7 @@ CLAUDE_SETTINGS_SKELETON = root('claude', 'settings.skeleton.json').freeze
 # and because npm's global prefix can sit inside the asdf node tree, that copy lands
 # ahead of /usr/bin on PATH and shadows the deb.
 def apt_claude_version
-  return nil unless OS.linux? && which('dpkg-query')
+  return nil unless RUBY_PLATFORM.include?('linux') && which('dpkg-query')
 
   status, version = `dpkg-query -W -f='${Status}|${Version}' claude-code 2>/dev/null`.split('|')
   return nil unless status.to_s.include?('install ok installed')
@@ -23,34 +20,6 @@ def apt_claude_version
 end
 
 namespace :claude do
-  task all: [:dirs, :install, :permissions, :diff_driver]
-
-  # settings.json is deliberately untracked (Claude Code and workmux rewrite it in
-  # place), so a fresh machine gets the curated skeleton as a starting point. An
-  # existing file is left alone -- it carries local edits we don't want to clobber.
-  task :dirs do
-    dolink(home('.claude'), root('claude'))
-
-    if File.exist?(CLAUDE_USER_SETTINGS_FILE)
-      puts "#{CLAUDE_USER_SETTINGS_FILE} already exists, leaving it alone".yellow
-    else
-      FileUtils.cp(CLAUDE_SETTINGS_SKELETON, CLAUDE_USER_SETTINGS_FILE)
-      puts "Seeded #{CLAUDE_USER_SETTINGS_FILE} from #{CLAUDE_SETTINGS_SKELETON}".green
-    end
-  end
-
-  # Claude Code and workmux rewrite claude/settings.json in their own canonical
-  # key order, so raw diffs are mostly reshuffle noise. Pairs with the
-  # sorted-json driver assignment in .gitattributes to keep `git diff` semantic.
-  task :diff_driver do
-    driver = 'jq -S .'
-    current = `git -C #{root} config --get diff.sorted-json.textconv 2>/dev/null`.strip
-    if current != driver
-      sh "git -C #{root} config diff.sorted-json.textconv '#{driver}'"
-      puts 'Registered sorted-json git diff driver for claude/settings.json'.green
-    end
-  end
-
   task :install do
     if (deb_version = apt_claude_version)
       puts "claude-code #{deb_version} is apt managed, skipping the installer".yellow
@@ -109,6 +78,4 @@ namespace :claude do
   end
 end
 
-task all: [:claude]
 task update: ['claude:update']
-task clean: ['claude:clean']

@@ -17,81 +17,13 @@
 !/.claude/skills/
 !/.claude/settings.json
 
-# Claude Code - dotfiles config directory (symlinked to ~/.claude)
-/claude/*.db
-/claude/.credentials.json
-/claude/.last-cleanup
-/claude/.last-update-result.json
-/claude/.update.lock
-/claude/backups/
-/claude/cache/
-/claude/claude.json*
-/claude/daemon*
-/claude/costs/
-/claude/debug/
-/claude/downloads/
-/claude/file-history/
-/claude/gh-pr-status-cache.json
-/claude/history.jsonl
-/claude/jobs/
-/claude/logs/
-/claude/mcp-needs-auth-cache.json
-/claude/paste-cache/
-/claude/plans/
-/claude/plugins/
-/claude/policy-limits.json
-/claude/projects/
-/claude/remote-settings.json
-/claude/session-env/
-/claude/sessions/
-/claude/settings.json
-/claude/shell-snapshots/
-/claude/signal-cache/
-/claude/skills/*/config.md
-/claude/skills/council
-/claude/skills/manage-skills
-/claude/stats-cache.json
-/claude/statsig/
-/claude/tasks/
-/claude/teams/
-/claude/telemetry/
-/claude/todos/
-/claude/usage-data/
-
-# Zsh
-/zsh/completions/_claude
-/zsh/*.bak
-/zsh/*.local
-/zsh/*.local.zsh
-/zsh/*.zwc
-/zsh/*.zwc.old
-/zsh/.antidote/
-/zsh/.zcompcache/
-/zsh/.zcompdump*
-/zsh/.zdirs
-/zsh/.zplugins/
-/zsh/.zsh_history
-/zsh/.zsh_plugins.zsh
-/zsh/.zsh_sessions/
-/zsh/plugins/
-/zsh/~*
-
-# Tmux
-/tmux/plugins/
-
 # Git
-/git/gh/hosts.yml
 # NOTE: git/ignore IS tracked -- it's the shared global gitignore that git picks
 # up via its XDG default at ~/.config/git/ignore. Machine-specific git settings
 # (credential helpers, maintenance.repo paths) belong in git/local instead.
-/git/local
 
 # Homebrew
 /brew/Brewfile.lock.json
-
-# Lazygit
-/lazygit/state.yml
-/lazygit/github_pull_requests.json
 
 # Superpowers working docs (plans/specs) -- never committed
 /docs/superpowers/

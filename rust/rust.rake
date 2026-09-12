@@ -68,5 +68,4 @@ namespace :rust do
   end
 end
 
-task all: [:rust]
 task update: ['rust:update']

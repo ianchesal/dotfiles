@@ -1,11 +1,6 @@
-desc 'Install Python and related dependencies'
-task python: ['python:all']
-
 PYTHON_VERSION = '3.11.4'.freeze
 
 namespace :python do
-  task all: [:install, :activate, :rc, :update]
-
   desc 'Install Python and dependencies'
   task :install do
     # Too many ways to install pyenv and it really depends on the OS
@@ -22,10 +17,6 @@ namespace :python do
     sh "pyenv global #{PYTHON_VERSION}"
   end
 
-  task :rc do
-    dolink(home('.pylintrc'), root('python', 'pylintrc'))
-  end
-
   desc 'Update Python packages'
   task update: [:activate] do
     if which('pip')
@@ -38,13 +29,6 @@ namespace :python do
       puts 'Skipping -- no pip found'.yellow
     end
   end
-
-  task :clean do
-    clean_restore home('.pylintrc')
-    puts 'No-op'
-  end
 end
 
-task all: [:python]
-task clean: ['python:clean']
 # task update: ['python:update']
