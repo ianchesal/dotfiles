@@ -57,7 +57,8 @@ lint:
       script/asdf-prune script/gem-cleanup script/nvim-commit script/doctor \
       script/brew-trust \
       script/verify-chezmoi-assumptions.sh home/run_once_*.sh \
-      script/tests/*.test.sh bootstrap/*.sh
+      script/tests/*.test.sh bootstrap/*.sh \
+      home/dot_bashrc home/dot_bash_profile home/dot_config/bash/dot_bashrc.sh
     python3 -c 'import ast, sys; ast.parse(open(sys.argv[1]).read())' script/gen-claude-completions.py
     just --fmt --check --justfile "$REPO/justfile"
 

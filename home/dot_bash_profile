@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# bash only auto-sources ~/.bashrc for non-login interactive shells.
+# macOS Terminal.app and SSH sessions start login shells, which read
+# this file instead -- without this shim the whole config never runs
+# on exactly the platforms it's meant for.
+
+[[ -f "$HOME/.bashrc" ]] && source "$HOME/.bashrc"

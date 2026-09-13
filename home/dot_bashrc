@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Thin loader: the real configuration lives under XDG-style
+# ~/.config/bash so it stays consistent with the rest of this repo's
+# tool configs (see zsh's ZDOTDIR indirection for the same idea).
+
+[[ -f "$HOME/.config/bash/bashrc.sh" ]] && source "$HOME/.config/bash/bashrc.sh"
