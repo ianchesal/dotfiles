@@ -1,7 +1,7 @@
 # dotfiles/bat
 
 Configuration for [bat](https://github.com/sharkdp/bat), a `cat` clone with
-syntax highlighting and Git integration. There is no rake task for this; point
+syntax highlighting and Git integration. There is no `just` recipe for this; point
 bat at the config by setting `BAT_CONFIG_PATH` or placing `bat.conf` in bat's
 config directory (`bat --config-dir`).
 

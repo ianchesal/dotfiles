@@ -7,7 +7,7 @@ description: Use when adding, removing, or reconfiguring a Neovim plugin in this
 
 ## Overview
 
-Plugins are vim.pack-managed. `nvim/pins.json` is the authoritative pin state; `nvim/nvim-pack-lock.json` is vim.pack's own lockfile. **`rake nvim:update` is the only thing that creates pins; vim.pack is the only thing that edits its lockfile.** Hand-editing either with sed/python is how state drifts across machines.
+Plugins are vim.pack-managed. `nvim/pins.json` is the authoritative pin state; `nvim/nvim-pack-lock.json` is vim.pack's own lockfile. **`just nvim::update` is the only thing that creates pins; vim.pack is the only thing that edits its lockfile.** Hand-editing either with sed/python is how state drifts across machines.
 
 ## Adding a plugin
 
@@ -30,7 +30,7 @@ return {
 
    Plugin-bound keymaps live **here**, not in `config/keymaps.lua`. New `<leader>` prefix → add the group to `nvim/lua/plugins/which-key.lua`.
 3. `stylua nvim/lua/plugins/<name>.lua`
-4. `rake nvim:update` — bootstraps a delayed pin (newest rev ≥30 days old by commit date; the one date-trusting moment, accepted by design). Until this runs, **startup hard-errors on the unpinned plugin** — that's intentional, not a bug to work around.
+4. `just nvim::update` — bootstraps a delayed pin (newest rev ≥30 days old by commit date; the one date-trusting moment, accepted by design). Until this runs, **startup hard-errors on the unpinned plugin** — that's intentional, not a bug to work around.
 5. Verify: `nvim --headless "+lua print('ok')" +qa` is clean, and the keymap registered:
    `nvim --headless "+lua assert(vim.fn.maparg('<leader>xy','n') ~= '')" +qa`
 6. Commit the spec + `pins.json` + `nvim-pack-lock.json` together (they must stay consistent).
@@ -57,16 +57,16 @@ jq --sort-keys 'del(.plugins["<name>"])' nvim/pins.json > /tmp/pins.json && mv /
 ## Editing a plugin
 
 - **opts/keymaps**: edit the spec's `config()`, stylua, verify clean startup. No pin impact.
-- **Urgent update before the 30-day window**: set `policy = { mode = "exempt" }`, run `rake nvim:update`, revert the policy. The never-downgrade rule keeps the plugin ahead until the window catches up — expected, not a bug.
-- **Changing `src`** (fork/rename): vim.pack deletes and reinstalls from the new URL on next launch; treat the pin as stale (remove it per step 4 above, then `rake nvim:update` to re-bootstrap).
+- **Urgent update before the 30-day window**: set `policy = { mode = "exempt" }`, run `just nvim::update`, revert the policy. The never-downgrade rule keeps the plugin ahead until the window catches up — expected, not a bug.
+- **Changing `src`** (fork/rename): vim.pack deletes and reinstalls from the new URL on next launch; treat the pin as stale (remove it per step 4 above, then `just nvim::update` to re-bootstrap).
 
 ## Red flags — stop and use the right tool
 
 | If you're about to… | Do this instead |
 |---|---|
-| sed/python/jq-edit `nvim-pack-lock.json` | `vim.pack.del()` / `rake nvim:update` own that file |
-| hand-write a pin rev into `pins.json` | `rake nvim:update` is the only pin creator |
+| sed/python/jq-edit `nvim-pack-lock.json` | `vim.pack.del()` / `just nvim::update` own that file |
+| hand-write a pin rev into `pins.json` | `just nvim::update` is the only pin creator |
 | use `owner/repo` shorthand in `src` | full `https://` URL — vim.pack clones it verbatim |
 | add a keymap without grepping for its lhs | collision check across `nvim/lua/` first |
-| commit `pins.json` without the lockfile (or vice versa) | they travel together; `rake nvim:commit` enforces consistency |
-| "fix" the unpinned-plugin startup error with a branch fallback | run `rake nvim:update`; the hard error is the security model |
+| commit `pins.json` without the lockfile (or vice versa) | they travel together; `just nvim::commit` enforces consistency |
+| "fix" the unpinned-plugin startup error with a branch fallback | run `just nvim::update`; the hard error is the security model |

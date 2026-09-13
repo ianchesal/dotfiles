@@ -1,7 +1,7 @@
 # dotfiles/slack
 
 Tweaks for the macOS Slack desktop app: a font-ligature fix and a dark sidebar theme.
-There is no rake task — apply these manually.
+There is no `just` recipe — apply these manually.
 
 ## Layout
 

@@ -1,7 +1,7 @@
 # dotfiles/debian
 
 One-off provisioning for Debian 10, originally written for a WSL2 install but
-usable on any Debian 10 release. Run by hand, not by rake.
+usable on any Debian 10 release. Run by hand, not by `just`.
 
 ## Layout
 

@@ -2,7 +2,7 @@
   "permissions": {
     "allow": [
       "Bash(git:*)",
-      "Bash(rake -T)",
+      "Bash(just --list:*)",
       "Bash(bundle exec:*)",
       "Bash(gh pr *)",
       "Skill(commit-commands:commit)",

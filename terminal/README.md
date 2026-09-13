@@ -1,7 +1,7 @@
 # dotfiles/terminal
 
 Color themes for the macOS Terminal.app, stored as importable `.terminal`
-profile files. There is no rake task for these — import a theme manually via
+profile files. There is no `just` recipe for these — import a theme manually via
 Terminal > Settings > Profiles > gear menu > Import.
 
 ## Layout
