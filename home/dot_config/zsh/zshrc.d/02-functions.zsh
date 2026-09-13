@@ -114,7 +114,9 @@ function dotfiles_update() {
   # diff` conflates incoming repo changes with local drift and we lose the
   # ability to show a clean local-only diff. Column 1 of `chezmoi status` is
   # exactly "last written state vs actual state", i.e. local drift.
-  local drifted=() line status_col path
+  # NOTE: never name a local `path` -- it's a zsh special parameter tied to
+  # $PATH, and shadowing it empties PATH for the rest of this function.
+  local drifted=() line status_col drift_path
   while IFS= read -r line; do
     [[ -z "$line" ]] && continue
     status_col="${line:0:1}"
@@ -124,9 +126,9 @@ function dotfiles_update() {
 
   if (( ${#drifted[@]} > 0 )); then
     echo "\033[1;33m==> Local changes found that aren't in your dotfiles repo yet:\033[0m"
-    for path in "${drifted[@]}"; do
-      echo "\033[1;33m  - $path\033[0m"
-      chezmoi diff --no-pager "$path"
+    for drift_path in "${drifted[@]}"; do
+      echo "\033[1;33m  - $drift_path\033[0m"
+      chezmoi diff --no-pager "$drift_path"
     done
     echo "\033[1;33m==> Review these and consider 'chezmoi re-add <path>' before rerunning dfu.\033[0m"
     return 1
