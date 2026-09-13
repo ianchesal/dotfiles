@@ -1,0 +1,195 @@
+#!/usr/bin/env python3
+"""Generate home/dot_config/zsh/completions/_claude from `claude --help`.
+
+Ported from the Ruby version so the update path stops needing a Ruby runtime
+(`claude update` regenerates completions on every version bump, which made this
+the most frequently hit Ruby dependency in the repo).
+
+The Ruby wrote to <repo>/zsh/completions/_claude, a directory that stopped
+existing when the zsh config moved under home/dot_config/ for chezmoi -- so it
+had been raising Errno::ENOENT on every claude version bump. The destination
+below is the chezmoi source path that actually deploys.
+
+Run directly or via: just claude::gen-completions
+"""
+
+import pathlib
+import re
+import subprocess
+import sys
+
+
+def capture(*cmd):
+    """Run cmd and return stdout, merging stderr the way the Ruby backticks did."""
+    result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    return result.stdout, result.stderr
+
+
+def parse_help(help_text):
+    """Split `claude --help` into its option and command entries."""
+    options, commands = [], []
+    section = None
+
+    for raw in help_text.splitlines():
+        line = raw.rstrip("\n")
+        stripped = line.strip()
+
+        if stripped == "Options:":
+            section = "options"
+            continue
+        if stripped == "Commands:":
+            section = "commands"
+            continue
+        if stripped == "Arguments:":
+            section = "arguments"
+            continue
+        if not stripped:
+            continue
+
+        if section == "options":
+            match = re.match(r"^\s{2}(-\S.*?)\s{2,}(.+)$", line)
+            if not match:
+                continue
+            flags_and_arg = match.group(1).strip()
+            description = match.group(2).strip()
+
+            arg_spec = ""
+            flags_str = flags_and_arg
+            arg_match = re.match(r"^(.*?)\s+(\[.+?\]|<.+?>)\s*$", flags_and_arg)
+            if arg_match:
+                flags_str = arg_match.group(1)
+                arg_spec = arg_match.group(2)
+
+            flags = [f.strip() for f in re.split(r",\s*", flags_str) if f.strip()]
+
+            choices = []
+            choice_match = re.search(r"\(choices:\s+(.+?)\)\s*$", description)
+            if choice_match:
+                raw_choices = choice_match.group(1)
+                choices = re.findall(r'"([^"]+)"', raw_choices)
+                if not choices:
+                    choices = [c.strip() for c in re.split(r",\s*", raw_choices)]
+
+            options.append(
+                {"flags": flags, "arg": arg_spec, "description": description, "choices": choices}
+            )
+
+        elif section == "commands":
+            match = re.match(r"^\s{2}(\S+)\s{2,}(.+)$", line)
+            if not match:
+                continue
+            commands.append(
+                {"name": match.group(1).split("|")[0], "description": match.group(2).strip()}
+            )
+
+    return options, commands
+
+
+def first_sentence(text):
+    """Truncate to the first sentence, to keep descriptions brief."""
+    parts = re.split(r"(?<=\.)\s+", text)
+    return parts[0] if parts else ""
+
+
+def short_desc(text):
+    return (
+        first_sentence(text)
+        .replace("[", "\\[")  # escape zsh bracket metacharacters
+        .replace("]", "\\]")
+        .replace("'", "'\\''")  # escape single quotes: ' -> '\''
+        .strip()
+    )
+
+
+def short_subcmd_desc(text):
+    return first_sentence(text).replace("'", "'\\''").replace(":", "\\:").strip()
+
+
+def option_spec_lines(options):
+    """Render each option as a zsh _arguments spec line."""
+    lines = []
+    for opt in options:
+        flags = opt["flags"]
+        arg = opt["arg"]
+        desc = short_desc(opt["description"])
+        choices = opt["choices"]
+
+        arg_name = arg.translate(str.maketrans("", "", "<>[]")).strip().split(".")[0].replace(" ", "-")
+        optional = arg.startswith("[")
+
+        if choices:
+            arg_completion = ":%s:(%s)" % (arg_name, " ".join(choices))
+        elif arg:
+            arg_completion = ":%s:" % arg_name
+        else:
+            arg_completion = ""
+        if optional and arg_completion:
+            arg_completion = ":" + arg_completion
+
+        shorts = [f for f in flags if re.match(r"^-[^-]", f)]
+        if len(flags) == 2 and shorts:
+            short = shorts[0]
+            long = next((f for f in flags if f.startswith("--")), None)
+            lines.append(
+                "    '(%s %s)'{%s,%s}'[%s]%s' \\" % (short, long, short, long, desc, arg_completion)
+            )
+        else:
+            for flag in flags:
+                lines.append("    '%s[%s]%s' \\" % (flag, desc, arg_completion))
+    return lines
+
+
+def render(version, options, commands):
+    spec_lines = "\n".join(option_spec_lines(options))
+    subcmd_lines = "\n".join(
+        "      '%s:%s'" % (c["name"], short_subcmd_desc(c["description"])) for c in commands
+    )
+    return f"""#compdef claude
+# Generated by script/gen-claude-completions.py from claude {version}
+# Do not edit by hand — regenerate with: just claude::gen-completions
+
+_claude() {{
+  local context state state_descr line
+  typeset -A opt_args
+
+  _arguments -C \\
+{spec_lines}
+    '1:prompt:' \\
+    '*::args:->subcmd' && return 0
+
+  case $state in
+    subcmd)
+      local -a subcommands
+      subcommands=(
+{subcmd_lines}
+      )
+      _describe 'subcommand' subcommands
+      ;;
+  esac
+}}
+
+_claude "$@"
+"""
+
+
+def main():
+    help_out, help_err = capture("claude", "--help")
+    help_text = help_out + help_err
+    version_out, _ = capture("claude", "--version")
+    version = version_out.strip()
+
+    options, commands = parse_help(help_text)
+    if not options and not commands:
+        print("claude --help produced nothing to parse; refusing to write", file=sys.stderr)
+        return 1
+
+    repo = pathlib.Path(__file__).resolve().parent.parent
+    dest = repo / "home" / "dot_config" / "zsh" / "completions" / "_claude"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(render(version, options, commands))
+    print(f"Wrote {dest} ({version})")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
