@@ -114,10 +114,10 @@ function dotfiles_update() {
   # The gate. `chezmoi diff` only prints; apply is what lands changes, so the
   # confirmation has to sit between them. Skip the prompt entirely when
   # there's nothing to apply.
-  if [[ -z "$(chezmoi diff)" ]]; then
+  if [[ -z "$(chezmoi diff --no-pager)" ]]; then
     echo "\033[1;32m==> No dotfiles changes to apply.\033[0m"
   else
-    chezmoi diff
+    chezmoi diff --no-pager
     read -q "REPLY?Apply these changes? [y/N] " || return 1
     echo
     chezmoi apply --error-on-conflict || return 1
