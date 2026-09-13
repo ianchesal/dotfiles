@@ -75,9 +75,13 @@ else
            .zshenv .tool-versions .asdfrc .rubocop.yml .pylintrc .gemrc; do
     [ -e "$HOME/$p" ] && paths="$paths $p"
   done
-  # -h dereferences the symlinks; without it this archives links, not content
+  # -h dereferences the symlinks; without it this archives links, not content.
+  # .claude/debug holds rotating debug logs; `latest` can be a dangling
+  # symlink to an already-rotated-away log, which makes -h fail the whole
+  # archive ("File removed before we read it"). Excluded: it's not state
+  # worth carrying across the migration.
   # shellcheck disable=SC2086
-  run tar czhf "$BACKUP" -C "$HOME" $paths
+  run tar czhf "$BACKUP" -C "$HOME" --exclude='.claude/debug' $paths
   if [ -z "$DRY" ]; then
     n="$(tar tzf "$BACKUP" | wc -l | tr -d ' ')"
     # Meaningful check, not an arbitrary count: pick a directory that is
