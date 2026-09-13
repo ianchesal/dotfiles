@@ -1,8 +1,8 @@
 # dotfiles/bootstrap
 
 Standalone shell scripts that prepare a fresh machine to the point where the
-rest of the dotfiles (`rake all`) can take over. These are run by hand, not by
-rake.
+rest of the dotfiles (chezmoi, then `just update`) can take over. These are run
+by hand, not by `just`.
 
 ## Layout
 
@@ -12,12 +12,15 @@ centos.sh             Minimal CentOS/RHEL bootstrap: clones pyenv + rbenv (with
 cloud-workstation.sh  Idempotent provisioning for a Linux cloud workstation
 ```
 
-`cloud-workstation.sh` runs in numbered, re-runnable steps (each step skips if
-already satisfied): install Homebrew, `brew bundle install` from
-`../brew/Brewfile`, register Homebrew zsh in `/etc/shells` and make it the
-default shell, source asdf, install the pinned Ruby via asdf, run `rake zsh` to
-lay down the zsh symlinks, and install the `xterm-kitty` terminfo. On
-completion it prints next steps (re-login for zsh, then `rake all`).
+`cloud-workstation.sh` runs in numbered, re-runnable steps (each skips if
+already satisfied): install chezmoi, `chezmoi init --apply` (which installs
+Homebrew and the whole Brewfile via `run_once_before_20-brew-bundle.sh`, deploys
+the configs and runs the `run_once_after` scripts), `just shell::set-default`,
+`just install-runtimes`, the `xterm-kitty` terminfo, and finally `just doctor`.
+
+It used to do Homebrew, the Brewfile, `/etc/shells`, `chsh`, asdf and a pinned
+Ruby by hand — all of that moved into chezmoi or into a `just` recipe, so this
+is now a thin wrapper over the same path a fresh machine takes.
 
 ## Usage
 

@@ -64,6 +64,30 @@ This file provides guidance to AI agents working on this repository.
   ships bash 3.2, so `brew/Brewfile` installs bash and both scripts fail loudly
   if they end up on an older one
 
+## Bootstrapping a new machine
+
+- One command: `sh -c "$(curl -fsLS https://get.chezmoi.io)" -- init --apply
+  --source="$HOME/src/dotfiles" ianchesal/dotfiles`. Only `curl` and `git` need
+  to pre-exist (Homebrew's installer needs them)
+- `home/run_once_before_20-brew-bundle.sh` is what makes that true: it installs
+  Homebrew and everything in `brew/Brewfile` **before** any config is written,
+  so the tools exist before their configs land. Without it a fresh machine gets
+  a zsh config with no zsh and a `dfu` that calls a `just` that was never
+  installed
+- It reads `CHEZMOI_WORKING_TREE` (the repo root), **not** `CHEZMOI_SOURCE_DIR`
+  — `.chezmoiroot` makes the latter `<repo>/home`, and `brew/` sits outside the
+  source state
+- Adding any new `run_once_*` script makes it run once on **every** existing
+  machine at its next `chezmoi apply`, not just on new ones
+- Two steps stay out of `chezmoi apply` on purpose: `just shell::set-default`
+  (`/etc/shells` + `chsh` needs sudo and can lock you out of a box) and `just
+  install-runtimes` (slow, and compiles Ruby)
+- `just doctor` is a read-only health check — core tooling, bash 4+, chezmoi
+  source, Brewfile coverage, asdf runtimes vs `~/.tool-versions`, login shell.
+  Run it after a bootstrap or when something feels off
+- `bootstrap/cloud-workstation.sh` is now a thin wrapper over exactly that path,
+  plus the kitty terminfo a remote box needs
+
 ## Build/Test/Lint Commands
 
 - Deploy dotfiles: `chezmoi apply --error-on-conflict` (preview first with `chezmoi diff`)
@@ -76,6 +100,7 @@ This file provides guidance to AI agents working on this repository.
 - Verify chezmoi still behaves as this layout assumes (run after a chezmoi
   upgrade): `script/verify-chezmoi-assumptions.sh` — scratch-dir only, never
   touches the real home
+- Health-check a machine: `just doctor`
 - Lint shell scripts and justfiles: `just lint` (shellcheck + `just --fmt --check`)
 - Run the shell script tests: `just test-scripts`; those plus the nvim specs: `just test`
 - Update configurations: `just update`

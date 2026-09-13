@@ -30,6 +30,7 @@ mod git 'just/git.just'
 mod nvim 'just/nvim.just'
 mod ohmyposh 'just/ohmyposh.just'
 mod rust 'just/rust.just'
+mod shell 'just/shell.just'
 mod tmux 'just/tmux.just'
 mod winterm 'just/winterm.just'
 mod ytdlp 'just/ytdlp.just'
@@ -44,13 +45,17 @@ update: brew::update asdf::update rust::update claude::update git::update gcloud
 # Install the asdf-managed runtimes, Rust toolchain first
 install-runtimes: rust::install asdf::install
 
+# Check that this machine is correctly provisioned (read-only)
+doctor:
+    @"$REPO/script/doctor"
+
 # Lint every shell script and check justfile formatting
 lint:
     #!/usr/bin/env bash
     set -euo pipefail
     shellcheck --severity=warning \
       script/asdf-prune script/gem-cleanup script/nvim-commit script/doctor \
-      script/verify-chezmoi-assumptions.sh \
+      script/verify-chezmoi-assumptions.sh home/run_once_*.sh \
       script/tests/*.test.sh bootstrap/*.sh
     python3 -c 'import ast, sys; ast.parse(open(sys.argv[1]).read())' script/gen-claude-completions.py
     just --fmt --check --justfile "$REPO/justfile"

@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+#
+# Read-only health check for a machine's dotfiles setup.
+#
+# Answers "is this box actually provisioned, or did something half-land?" --
+# the question a fresh `chezmoi init --apply` used to leave open, and the one
+# worth asking when a tool behaves oddly. Changes nothing on disk.
+#
+# Exits non-zero if any hard check fails, so it can gate a script.
+
+set -euo pipefail
+
+repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+
+if [ -t 1 ]; then
+  red=$'\033[31m' green=$'\033[32m' yellow=$'\033[33m' blue=$'\033[34m' bold=$'\033[1m' reset=$'\033[0m'
+else
+  red='' green='' yellow='' blue='' bold='' reset=''
+fi
+
+fails=0
+warns=0
+
+ok()   { printf '  %sok%s    %s\n' "$green" "$reset" "$1"; }
+warn() { printf '  %swarn%s  %s\n' "$yellow" "$reset" "$1"; warns=$((warns + 1)); }
+bad()  { printf '  %sFAIL%s  %s\n' "$red" "$reset" "$1"; fails=$((fails + 1)); }
+note() { printf '  %s-%s     %s\n' "$blue" "$reset" "$1"; }
+section() { printf '\n%s%s%s\n' "$bold" "$1" "$reset"; }
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+# --- the tools the dotfiles themselves depend on ----------------------------
+section "Core tooling"
+for tool in brew chezmoi just git curl; do
+  if have "$tool"; then ok "$tool ($(command -v "$tool"))"; else bad "$tool not on PATH"; fi
+done
+
+# The update scripts need these; nvim's updater needs jq specifically.
+for tool in jq nvim zsh; do
+  if have "$tool"; then ok "$tool"; else warn "$tool not on PATH"; fi
+done
+
+# Only `just lint` needs shellcheck, so its absence is never a hard failure.
+if have shellcheck; then ok "shellcheck (for just lint)"; else warn "shellcheck not on PATH -- just lint will fail"; fi
+
+# --- bash 4+, which script/asdf-prune and script/gem-cleanup require --------
+section "Bash"
+bash_bin=$(command -v bash)
+bash_major=$("$bash_bin" -c 'echo "${BASH_VERSINFO[0]}"')
+if [ "$bash_major" -ge 4 ]; then
+  ok "bash $bash_major at $bash_bin"
+else
+  bad "bash $bash_major at $bash_bin -- asdf-prune and gem-cleanup need 4+ (brew install bash)"
+fi
+
+# --- chezmoi is pointed at this repo ----------------------------------------
+section "chezmoi"
+if have chezmoi; then
+  tree=$(chezmoi execute-template '{{ .chezmoi.workingTree }}' 2>/dev/null || true)
+  if [ -z "$tree" ]; then
+    bad "chezmoi cannot resolve its working tree (not initialised?)"
+  elif [ "$tree" = "$repo" ]; then
+    ok "source is this repo ($tree)"
+  else
+    note "source is $tree (this checkout is $repo)"
+  fi
+  if chezmoi status >/dev/null 2>&1; then
+    drift=$(chezmoi status | grep -cv '^ ' || true)
+    if [ "$drift" -eq 0 ]; then ok "no local drift"; else warn "$drift path(s) drifted -- run 'chezmoi diff'"; fi
+  fi
+else
+  bad "chezmoi not installed"
+fi
+
+# --- every Brewfile package present -----------------------------------------
+section "Homebrew packages"
+if have brew; then
+  # --verbose is what makes it name the unmet dependencies; without it the
+  # output is just "can't satisfy your Brewfile's dependencies". The || true
+  # matters because a failed check exits non-zero under set -o pipefail.
+  check_out=$(brew bundle check --verbose --file="$repo/brew/Brewfile" 2>&1 || true)
+  missing=$(printf '%s\n' "$check_out" | sed -n 's/^→ Formula \(.*\) needs to be.*/\1/p' | tr '\n' ' ')
+  missing=${missing% }
+  if [ -z "$missing" ]; then
+    ok "all Brewfile dependencies installed"
+  else
+    # brew says "needs to be installed or updated" -- it does not distinguish
+    # the two, and oh-my-posh is deliberately held back (see just/ohmyposh.just),
+    # so this must not claim a package is missing when it is merely behind.
+    warn "missing or out of date: $missing -- 'brew bundle install --file=$repo/brew/Brewfile'"
+  fi
+else
+  bad "brew not installed -- run 'chezmoi apply' to provision it"
+fi
+
+# --- asdf runtimes match ~/.tool-versions ------------------------------------
+section "asdf runtimes"
+if have asdf; then
+  if [ -r "$HOME/.tool-versions" ]; then
+    while read -r plugin version _; do
+      [ -n "${plugin:-}" ] || continue
+      case $plugin in \#*) continue ;; esac
+      if asdf list "$plugin" 2>/dev/null | tr -d ' *' | grep -qxF "$version"; then
+        ok "$plugin $version"
+      else
+        warn "$plugin $version pinned but not installed -- 'just install-runtimes'"
+      fi
+    done < "$HOME/.tool-versions"
+  else
+    note "no ~/.tool-versions"
+  fi
+else
+  warn "asdf not on PATH"
+fi
+
+# --- login shell --------------------------------------------------------------
+section "Login shell"
+login_shell=$(getent passwd "$USER" 2>/dev/null | cut -d: -f7 || true)
+if [ -z "$login_shell" ]; then
+  login_shell=$(dscl . -read "/Users/$USER" UserShell 2>/dev/null | awk '{print $2}' || true)
+fi
+case $login_shell in
+  *zsh) ok "login shell is $login_shell" ;;
+  "")   note "could not determine login shell" ;;
+  *)    warn "login shell is $login_shell -- run 'just shell::set-default'" ;;
+esac
+
+# --- machine identity ---------------------------------------------------------
+section "Machine"
+if [ -f "$HOME/.work_machine" ]; then
+  note "work machine (~/.work_machine exists) -- gem::cleanup is skipped here"
+else
+  note "personal machine (no ~/.work_machine)"
+fi
+
+section "Summary"
+if [ "$fails" -gt 0 ]; then
+  printf '  %s%d failure(s)%s, %d warning(s)\n' "$red" "$fails" "$reset" "$warns"
+  exit 1
+fi
+if [ "$warns" -gt 0 ]; then
+  printf '  %sno failures%s, %d warning(s)\n' "$green" "$reset" "$warns"
+  exit 0
+fi
+printf '  %severything checks out%s\n' "$green" "$reset"
