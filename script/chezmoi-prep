@@ -156,12 +156,17 @@ for pair in $DIRS; do
   tgt="${pair#*:}"
   [ -L "$tgt" ] && { echo "    STILL A SYMLINK: $tgt"; fails=$((fails+1)); }
 done
-# nvim must be untouched
-[ -L "$HOME/.config/nvim" ] || { echo "    ~/.config/nvim should still be a symlink"; fails=$((fails+1)); }
-# nothing in $HOME should dangle
-while IFS= read -r l; do
-  echo "    DANGLING: $l"; fails=$((fails+1))
-done < <(find "$HOME" -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null)
+# nvim must be untouched, and must still resolve. We only assert this about
+# paths the script itself manages (LOOSE, DIRS, nvim) - NOT a blanket scan of
+# $HOME, which routinely holds unrelated stale symlinks (old configs, rotated
+# logs, uninstalled plugin binaries) that have nothing to do with this
+# migration and would make step 4 fail forever regardless of what this script
+# did.
+if [ -L "$HOME/.config/nvim" ]; then
+  [ -e "$HOME/.config/nvim" ] || { echo "    DANGLING: $HOME/.config/nvim"; fails=$((fails+1)); }
+else
+  echo "    ~/.config/nvim should still be a symlink"; fails=$((fails+1))
+fi
 
 [ "$fails" -eq 0 ] || die "$fails problem(s) - restore from $BACKUP before continuing"
 
