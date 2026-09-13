@@ -7,10 +7,13 @@
 --
 -- Enabling strategy (no double-enable): mason-lspconfig v2's automatic_enable
 -- calls vim.lsp.enable() for every mason-installed server, so this file only
--- enables servers mason does NOT manage (e.g. regols, installed via brew) and
--- lets require("mason-lspconfig").setup() -- called here, after all
--- vim.lsp.config() definitions -- handle the rest, with the explicitly
--- disabled servers excluded.
+-- enables servers mason does NOT manage -- those installed some other way, by
+-- brew or by hand -- and lets require("mason-lspconfig").setup() -- called
+-- here, after all vim.lsp.config() definitions -- handle the rest, with the
+-- explicitly disabled servers excluded. The split is computed at runtime from
+-- mason's catalog, so it needs no list here. As of writing every configured
+-- server is in that catalog, making the direct-enable branch dead but correct;
+-- it is what any future non-mason server would land in.
 
 -- Servers disabled in the snapshot. They go to automatic_enable.exclude so
 -- mason-lspconfig never enables them even if their packages are installed
@@ -70,9 +73,6 @@ local servers = {
     },
   },
   marksman = {},
-  -- regols is not managed by Mason; installed with `brew install kitagry/tap/regols`.
-  -- See: https://github.com/kitagry/regols
-  regols = {},
   rubocop = {
     -- See: https://docs.rubocop.org/rubocop/usage/lsp.html
     cmd = { "bundle", "exec", "rubocop", "--lsp" },
