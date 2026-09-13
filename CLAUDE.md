@@ -79,11 +79,22 @@ This file provides guidance to AI agents working on this repository.
   source state
 - Adding any new `run_once_*` script makes it run once on **every** existing
   machine at its next `chezmoi apply`, not just on new ones
+- Homebrew 7 refuses to load a formula/cask from a non-official tap until it is
+  trusted, and the trust store is **machine-local**
+  (`$XDG_CONFIG_HOME/homebrew/trust.json`, else `~/.homebrew/trust.json`) so
+  chezmoi cannot carry it. `brew/trusted` is the repo's declared list and
+  `script/brew-trust` applies it; both bootstrap paths run it *before* `brew
+  bundle`, and the script is called directly rather than via `just` because
+  `just` is one of the things `brew bundle` installs. Adding a third-party tap
+  to `brew/Brewfile` **requires** a matching `brew/trusted` entry or the next
+  fresh machine fails to bootstrap — prefer a `formula`/`cask` entry over a
+  `tap` entry, which grants trust to everything in that repo forever
 - Two steps stay out of `chezmoi apply` on purpose: `just shell::set-default`
   (`/etc/shells` + `chsh` needs sudo and can lock you out of a box) and `just
   install-runtimes` (slow, and compiles Ruby)
 - `just doctor` is a read-only health check — core tooling, bash 4+, chezmoi
-  source, Brewfile coverage, asdf runtimes vs `~/.tool-versions`, login shell.
+  source, Brewfile coverage, third-party tap trust, asdf runtimes vs
+  `~/.tool-versions`, login shell.
   Run it after a bootstrap or when something feels off
 - `bootstrap/cloud-workstation.sh` is now a thin wrapper over exactly that path,
   plus the kitty terminfo a remote box needs
@@ -117,6 +128,7 @@ This file provides guidance to AI agents working on this repository.
 - Install the Rust toolchain: `just rust::install`
 - Update rustup and Rust toolchains: `just rust::update`
 - Update Homebrew packages: `just brew::update`
+- Trust the third-party taps declared in `brew/trusted`: `just brew::trust`
 - Update yt-dlp: `just ytdlp::update`
 - Update gcloud components: `just gcloud::update`
 - Uninstall asdf tool versions older than the one in use: `just asdf::prune` (`FORCE=1` skips the confirmation prompt)

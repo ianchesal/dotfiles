@@ -57,6 +57,19 @@ fi
 
 eval "$("$brew_bin" shellenv)"
 
+# Homebrew 7 will not load formulae from a non-official tap until it is trusted,
+# and the trust store is machine-local -- a fresh box starts empty, so `brew
+# bundle` would fail on the third-party taps the Brewfile declares. Apply the
+# repo's reviewed list first. Called directly, not through `just`: just is one
+# of the things brew bundle is about to install.
+trust_script=$repo/script/brew-trust
+if [ -x "$trust_script" ]; then
+  echo "Trusting third-party taps from $repo/brew/trusted"
+  BREW_BIN=$brew_bin "$trust_script"
+else
+  echo "WARNING: no $trust_script -- brew bundle may fail on third-party taps" >&2
+fi
+
 echo "Installing packages from $brewfile"
 # No --no-lock: current Homebrew dropped the flag and errors on it.
 brew bundle install --file="$brewfile"

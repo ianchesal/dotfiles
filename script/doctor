@@ -93,6 +93,39 @@ else
   bad "brew not installed -- run 'chezmoi apply' to provision it"
 fi
 
+# --- third-party taps trusted (Homebrew 7) -----------------------------------
+# The trust store is machine-local and chezmoi does not manage it, so this is
+# real per-machine state that can be missing even on a fully-applied box. An
+# untrusted tap surfaces later as an opaque "invalid syntax in tap" error.
+section "Homebrew trust"
+trusted_list=$repo/brew/trusted
+if ! have brew; then
+  note "brew not installed -- skipping trust check"
+elif [ ! -r "$trusted_list" ]; then
+  warn "no trust list at $trusted_list"
+elif ! have jq; then
+  note "jq not on PATH -- skipping trust check"
+else
+  trust_json=$(brew trust --json v1 2>/dev/null || echo '{}')
+  while read -r kind name _; do
+    [ -n "${kind:-}" ] || continue
+    case $kind in \#*) continue ;; esac
+    # The JSON keys are the plural of the kind: tap->taps, formula->formulae.
+    case $kind in
+      tap) key=taps ;;
+      formula) key=formulae ;;
+      cask) key=casks ;;
+      *) warn "unknown kind '$kind' in $trusted_list"; continue ;;
+    esac
+    if printf '%s' "$trust_json" | jq -e --arg k "$key" --arg n "$name" \
+      '(.[$k] // []) | index($n)' >/dev/null 2>&1; then
+      ok "$kind $name trusted"
+    else
+      warn "$kind $name NOT trusted -- run 'just brew::trust'"
+    fi
+  done < "$trusted_list"
+fi
+
 # --- asdf runtimes match ~/.tool-versions ------------------------------------
 section "asdf runtimes"
 if have asdf; then

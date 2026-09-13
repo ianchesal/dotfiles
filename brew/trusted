@@ -1,0 +1,23 @@
+# Third-party Homebrew entries this repo trusts, applied by `just brew::trust`.
+#
+# Homebrew 7 will not load a formula or cask from a non-official tap until it is
+# trusted, because a formula is arbitrary Ruby that brew executes. The trust
+# store (~/.config/homebrew/trust.json under a set XDG_CONFIG_HOME, otherwise
+# ~/.homebrew/trust.json) is machine-local and NOT managed by chezmoi, so
+# without this file a fresh machine's `brew bundle` fails on every tap below.
+#
+# This file is the audit trail: trusting something here is a reviewed, committed
+# decision rather than an ad-hoc `brew trust` on one box.
+#
+# Format: <kind> <name>, where kind is tap, formula, or cask.
+#
+# Prefer `formula`/`cask` over `tap`. A tap entry trusts everything in that
+# repo, now and in every future commit; a formula entry is limited to the one
+# thing we actually install. Use tap only where the narrower grant will not do.
+
+# workmux (config at home/dot_config/workmux). Single formula, so scope it.
+formula raine/workmux/workmux
+
+# AeroSpace (config at home/dot_config/aerospace). Trusted tap-wide: this is a
+# cask, and the tap grant is the form already proven to work for it.
+tap nikitabobko/tap

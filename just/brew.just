@@ -31,3 +31,7 @@ update:
     fi
     printf '%s\n' "$keep" | xargs brew upgrade --force
     brew cleanup
+
+# Trust the third-party taps and formulae declared in brew/trusted
+trust:
+    @"$REPO/script/brew-trust"

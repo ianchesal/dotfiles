@@ -20,6 +20,10 @@ else
   exit 1
 fi
 
+# Homebrew 7 will not load formulae from a non-official tap until it is trusted,
+# and the trust store is machine-local, so this has to happen before bundling.
+"$(dirname "$0")/../script/brew-trust"
+
 # Now brew should be in PATH, run bundle
 cd "$(dirname "$0")"
 brew bundle

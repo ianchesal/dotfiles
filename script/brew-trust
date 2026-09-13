@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+#
+# Trust the third-party Homebrew entries declared in brew/trusted.
+#
+# Homebrew 7 refuses to load a formula or cask from a non-official tap until it
+# has been trusted -- a formula is arbitrary Ruby that brew executes, so this is
+# a supply-chain guard, not a formality. The trust store is machine-local
+# (~/.config/homebrew/trust.json under a set XDG_CONFIG_HOME, ~/.homebrew/
+# trust.json otherwise) and chezmoi does not manage it, so a fresh machine
+# starts with an empty store and `brew bundle` fails on every third-party tap.
+#
+# This runs from two places: `just brew::trust` by hand, and the
+# run_once_before brew bootstrap. The bootstrap cannot shell out to `just`
+# -- just is one of the things brew bundle installs -- which is why the logic
+# lives here rather than in the recipe.
+#
+# Idempotent: brew reports "Already trusted" and changes nothing.
+#
+# Seams for script/tests/brew-trust.test.sh:
+#   BREW_BIN     -- brew executable (default: brew from PATH)
+#   TRUSTED_FILE -- the declaration file (default: <repo>/brew/trusted)
+
+set -euo pipefail
+
+repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+
+brew_bin=${BREW_BIN:-brew}
+trusted=${TRUSTED_FILE:-$repo/brew/trusted}
+
+if ! command -v "$brew_bin" >/dev/null 2>&1; then
+  echo "Skipping brew trust -- no brew command found" >&2
+  exit 0
+fi
+
+if [ ! -r "$trusted" ]; then
+  echo "ERROR: no trust list at $trusted" >&2
+  exit 1
+fi
+
+# Entries are "<kind> <name>"; kind maps straight onto the --tap/--formula/--cask
+# flags of `brew trust`. Anything else is a typo worth failing on rather than
+# silently skipping -- a missed entry surfaces later as an opaque tap failure.
+while read -r kind name _; do
+  [ -n "${kind:-}" ] || continue
+  case $kind in \#*) continue ;; esac
+
+  case $kind in
+    tap | formula | cask) ;;
+    *)
+      echo "ERROR: unknown kind '$kind' in $trusted (expected tap, formula or cask)" >&2
+      exit 1
+      ;;
+  esac
+
+  if [ -z "${name:-}" ]; then
+    echo "ERROR: '$kind' entry in $trusted has no name" >&2
+    exit 1
+  fi
+
+  echo "Trusting $kind $name"
+  "$brew_bin" trust "--$kind" "$name"
+done < "$trusted"

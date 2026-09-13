@@ -1,4 +1,12 @@
-tap "kitagry/tap"
+# Third-party taps. Homebrew 7 refuses to load formulae from an untrusted tap,
+# and the trust store is machine-local (~/.config/homebrew/trust.json under a
+# set XDG_CONFIG_HOME, ~/.homebrew/trust.json otherwise) and is NOT in this repo,
+# so a fresh machine must run `just brew::trust` before `brew bundle`. The
+# run_once_before_20-brew-bundle.sh bootstrap script does that for you; brew/trusted
+# is the declared list. Every tap here needs an entry there.
+tap "nikitabobko/tap" if OS.mac?
+tap "raine/workmux"
+
 brew "asdf"
 brew "bash"
 brew "bat"
@@ -17,13 +25,17 @@ brew "neovim"
 brew "oh-my-posh"
 brew "pyenv"
 brew "pyenv-virtualenv"
+brew "raine/workmux/workmux"
 brew "ripgrep"
 brew "shellcheck"
 brew "tmux"
 brew "tree-sitter"
 brew "tree-sitter-cli"
 brew "wget"
-brew "workmux"
 brew "zoxide"
 brew "zsh"
 brew "zsh-completions"
+
+# macOS-only. Unlike a config file, a cask on Linux is a hard `brew bundle`
+# failure rather than something inert, so this one does need the guard.
+cask "aerospace" if OS.mac?
