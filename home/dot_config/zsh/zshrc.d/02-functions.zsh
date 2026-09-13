@@ -112,11 +112,16 @@ function dotfiles_update() {
   chezmoi git pull -- --autostash --rebase || return 1
 
   # The gate. `chezmoi diff` only prints; apply is what lands changes, so the
-  # confirmation has to sit between them.
-  chezmoi diff
-  read -q "REPLY?Apply these changes? [y/N] " || return 1
-  echo
-  chezmoi apply --error-on-conflict || return 1
+  # confirmation has to sit between them. Skip the prompt entirely when
+  # there's nothing to apply.
+  if [[ -z "$(chezmoi diff)" ]]; then
+    echo "\033[1;32m==> No dotfiles changes to apply.\033[0m"
+  else
+    chezmoi diff
+    read -q "REPLY?Apply these changes? [y/N] " || return 1
+    echo
+    chezmoi apply --error-on-conflict || return 1
+  fi
 
   rake update
   zinit update
