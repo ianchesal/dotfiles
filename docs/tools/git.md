@@ -39,8 +39,8 @@ gh-dash/gh-dash.sh       Launcher that picks the config for this machine
 - Handy aliases include `main-branch` (resolves origin's default branch),
   `com`/`track` (switch helpers), `lg`/`tree` (graph logs), and `fixup`
   (fzf-driven `--fixup` picker).
-- `rake git:setup_gh` installs the `gh-f`, `gh-dash`, and `gh-stack`
-  extensions when `gh` is present.
+- `home/run_once_after_60-gh-extensions.sh` installs the `gh-f`, `gh-dash`, and
+  `gh-stack` extensions when `gh` is present.
 - gh-dash is launched through `gh-dash/gh-dash.sh` (bound to tmux `prefix + h`
   and aliased to `ghd`). When `~/.work_machine` exists it passes `--config
   config-work.yml`, which `include`s `config.yml` and replaces `prSections`
@@ -63,5 +63,6 @@ gh-dash/gh-dash.sh       Launcher that picks the config for this machine
 
 ## Tasks
 
-- `rake git` — install git dotfiles (symlinks + gh extension setup)
-- `rake git:update` — upgrade installed `gh` CLI extensions
+- Config is deployed by chezmoi from `home/dot_config/git/`; the gh extensions
+  are installed by `home/run_once_after_60-gh-extensions.sh`
+- `just git::update` — upgrade installed `gh` CLI extensions

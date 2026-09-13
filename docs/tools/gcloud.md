@@ -1,8 +1,8 @@
-# dotfiles/gcloud
+# gcloud
 
-Maintenance tasks for the Google Cloud CLI (`gcloud`). This directory holds no
-dotfiles to symlink — it only provides a rake task that keeps a
-self-managed gcloud SDK installation up to date.
+Maintenance task for the Google Cloud CLI (`gcloud`). There are no dotfiles to
+deploy — just a recipe (`just/gcloud.just`) that keeps a self-managed gcloud SDK
+installation up to date.
 
 ## Notes
 
@@ -14,4 +14,4 @@ self-managed gcloud SDK installation up to date.
 
 ## Tasks
 
-- `rake gcloud:update` — update gcloud command line components
+- `just gcloud::update` — update gcloud command line components

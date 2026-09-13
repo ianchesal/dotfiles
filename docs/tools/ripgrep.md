@@ -4,4 +4,4 @@ Configuration for [ripgrep](https://github.com/BurntSushi/ripgrep), a fast recur
 
 ## Tasks
 
-- `rake ripgrep` — Install ripgrep dotfiles
+- Deployed by chezmoi

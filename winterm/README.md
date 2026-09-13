@@ -9,12 +9,12 @@ Windows file system.
 
 ```
 settings.json   Windows Terminal settings copied into the app's LocalState
-winterm.rake    Install task
+../just/winterm.just  Install recipe
 ```
 
 ## Tasks
 
-- `rake winterm` — install the Windows Terminal settings (copies `settings.json`
+- `just winterm::install` — install the Windows Terminal settings (copies `settings.json`
   into the app's LocalState directory)
 
 ## Notes

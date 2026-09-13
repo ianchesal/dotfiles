@@ -149,14 +149,16 @@ function dotfiles_update() {
     chezmoi apply --error-on-conflict || return 1
   fi
 
-  rake update
+  # --justfile keeps this working from any cwd: `just` only finds the justfile
+  # by searching upwards, and dfu is routinely run from outside the repo.
+  just --justfile "$REPO/justfile" update
   zinit update
 
   # An update run moves the pins; commit them so every machine converges on the
   # same delayed-pin state.
   if ! git -C "$REPO" diff --quiet -- $PINS 2>/dev/null; then
     echo "\033[1;33m==> Neovim plugins were updated, committing...\033[0m"
-    rake nvim:commit
+    just --justfile "$REPO/justfile" nvim::commit
   fi
 
   echo "\033[1;32m==> Update complete! Reloading shell...\033[0m"

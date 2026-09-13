@@ -28,4 +28,4 @@ config.yml          lazygit configuration: theme, delta pager, keybindings,
 
 ## Tasks
 
-- `rake lazygit` — install (symlink) this config
+- Deployed by chezmoi from `home/dot_config/lazygit/`

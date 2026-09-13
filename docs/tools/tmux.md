@@ -14,15 +14,16 @@ theme.conf           VHS Era theme: status bar segments, pane/window styling
 git-aware-popup.sh   Resolves popup dir/name from the git root (used by the `prefix g` popup)
 battery.sh           Status-bar battery/UPS widget (macOS pmset, Linux NUT, no-op on WSL2)
 open-url.sh          Cross-platform URL opener for tmux-fzf-url (open/wslview/xdg-open)
-24-bit-color.sh      Prints a 24-bit color test ramp (rake tmux:testterminal)
+24-bit-color.sh      Prints a 24-bit color test ramp (just tmux::test-terminal)
 plugins/             TPM (Tmux Plugin Manager) and cloned plugins, installed here under XDG
 ```
 
 ## Tasks
 
-- `rake tmux` — install (symlink) the config and clone TPM
-- `rake tmux:reload` — reload the tmux configuration for all sessions
-- `rake clean` — remove the config symlink and tmux state/cache dirs
+- Config is deployed by chezmoi from `home/dot_config/tmux/`; TPM is cloned by
+  `home/run_once_after_55-install-tpm.sh`
+- `just tmux::reload` — reload the tmux configuration for all sessions
+- `just tmux::test-terminal` — print a 24-bit colour test pattern
 
 ## Notes
 

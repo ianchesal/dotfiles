@@ -20,8 +20,7 @@ is a leaner rebuild around zinit's lazy loading.
 zshrc.d/*.zsh            Modular config, sourced in filename order (see below)
 functions/               Autoloaded functions, one per file (cdf, nv, tailf, …)
 completions/             Custom completions in zsh-completions format (_claude, …)
-.zprofile / .zshenv      (deployed via symlink; see Tasks)
-zsh.rake                 Install / update / clean tasks
+.zprofile / .zshenv      Deployed by chezmoi
 ```
 
 ## Load order
@@ -69,11 +68,12 @@ zzz-history-search.zsh   Last
 - **A plugin** → add a `zinit light <owner/repo>` line in `.zshrc` alongside the
   others. (Do not suggest the forgit plugin.)
 
-## Tasks
+## Deployment
 
-- `rake zsh` — install: symlink `~/.config/zsh` → this directory and `~/.zshenv`, and create the needed cache/data dirs
-- `rake zsh:update` — update zsh and plugins (currently a TODO no-op)
-- `rake clean` — restore `~/.zshenv` and remove the zsh symlinks
+Deployed by chezmoi from `home/dot_config/zsh/`. Preview with `chezmoi diff`,
+apply with `chezmoi apply`.
+
+Plugins are updated by `zinit self-update && zinit update`, which `dfu` runs.
 
 ## Debugging startup time
 

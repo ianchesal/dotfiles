@@ -7,7 +7,7 @@ runtime config.
 ## Layout
 
 ```
-asdf.rake           Install/update/clean rake tasks
+../just/asdf.just   Install/update/prune recipes
 asdfrc              Symlinked to ~/.asdfrc (enables legacy_version_file)
 tool-versions       Symlinked to ~/.tool-versions (pinned runtime versions)
 reinstall-ruby.sh   Rebuilds asdf Ruby to fix broken psych/libyaml linkage
@@ -17,8 +17,8 @@ Managed plugins: `ruby`, `nodejs`, `terraform`, `golang`, `packer`, `rust`.
 
 ## Tasks
 
-- `rake asdf` — install all asdf dotfiles (symlink config, add plugins, install runtimes)
-- `rake asdf:update` — update all asdf plugins (`asdf plugin update --all`)
+- `just install-runtimes` — install all asdf dotfiles (symlink config, add plugins, install runtimes)
+- `just asdf::update` — update all asdf plugins (`asdf plugin update --all`)
 
 ## reinstall-ruby.sh
 

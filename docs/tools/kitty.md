@@ -14,12 +14,12 @@ kitty.conf                Main configuration (fonts, keys, tabs, etc.)
                           tokyonight_night, diff)
 themes/                   The upstream kitty-themes collection (~170 .conf files)
 macos-launch-services-cmdline   macOS launch-services arguments
-kitty.rake                Install/clean tasks
 ```
 
 To switch themes, change the `include ./<theme>.conf` line near the bottom of
 `kitty.conf`.
 
-## Tasks
+## Deployment
 
-- `rake kitty` — install kitty terminal configuration (symlink this dir to `~/.config/kitty`)
+Deployed by chezmoi from `home/dot_config/kitty/`. Preview with `chezmoi diff`,
+apply with `chezmoi apply`.

@@ -4,5 +4,5 @@ Configuration for [yt-dlp](https://github.com/yt-dlp/yt-dlp), a video downloader
 
 ## Tasks
 
-- `rake ytdlp` — Install yt-dlp configuration
-- `rake ytdlp:update` — Update yt-dlp
+- Config is deployed by chezmoi from `home/dot_config/yt-dlp/`
+- `just ytdlp::update` — Update yt-dlp

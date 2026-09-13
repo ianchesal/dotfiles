@@ -40,28 +40,29 @@ return {
 Policies: `commit` tracks the default branch with a 30-day delay; `tag`
 tracks stable semver releases with the same delay; `exempt` takes updates
 immediately (also the urgent-update escape hatch — set it, run
-`rake nvim:update`, revert).
+`just nvim::update`, revert).
 
 ## Delayed updates
 
 Updates are held back by first-observed timestamps recorded in `pins.json`:
 a new upstream revision only becomes eligible 30 days (configurable per
 plugin via `days`) after the updater first sees it. A spec with no pin entry
-is a hard startup error — `rake nvim:update` is the only path that creates
+is a hard startup error — `just nvim::update` is the only path that creates
 pins.
 
-The updater must run with `-u NONE` (the rake task does this); loading
+The updater must run with `-u NONE` (the `nvim::update` recipe does this); loading
 init.lua first would pre-register the vim.pack specs and freeze update
 targets.
 
 ## Tasks
 
-- `rake nvim` — install (symlink) this config
-- `rake nvim:update` — apply eligible plugin updates / bootstrap pins for new specs
-- `rake nvim:outdated` — preview eligible updates without applying
-- `rake nvim:commit` — verify pins.json/nvim-pack-lock.json consistency and commit them together
+- `~/.config/nvim` is a chezmoi `symlink_` entry pointing at this directory, so
+  edits here are instantly live and nothing needs installing
+- `just nvim::update` — apply eligible plugin updates / bootstrap pins for new specs
+- `just nvim::outdated` — preview eligible updates without applying
+- `just nvim::commit` — verify pins.json/nvim-pack-lock.json consistency and commit them together
 
-Adding a plugin: create the spec file, then `rake nvim:update` to bootstrap
+Adding a plugin: create the spec file, then `just nvim::update` to bootstrap
 its delayed pin. Removing one: delete the spec file, remove the pin and
 lockfile entries, and delete the on-disk clone. See the
 `managing-nvim-plugins` skill for the full procedure.

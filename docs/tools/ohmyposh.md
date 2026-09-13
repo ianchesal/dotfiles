@@ -16,10 +16,9 @@ ohmyposh.json.bak   Backup of a prior config
 
 ## Tasks
 
-- `rake ohmyposh` — install (symlink) this config to `~/.config/ohmyposh`
-- `rake ohmyposh:check_update` — check for an Oh My Posh update via Homebrew
-- `rake ohmyposh:update` — update Oh My Posh via `brew upgrade` + `brew cleanup`
-- `rake ohmyposh:clean` — remove the `~/.config/ohmyposh` symlink
+- Config is deployed by chezmoi from `home/dot_config/ohmyposh/`
+- `just ohmyposh::check-update` — check for an Oh My Posh update via Homebrew
+- `just ohmyposh::update` — update Oh My Posh via `brew upgrade` + `brew cleanup`
 
 ## Notes
 

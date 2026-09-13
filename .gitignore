@@ -5,6 +5,10 @@
 /.bundle/
 /Gemfile.lock
 
+# Python
+__pycache__/
+*.pyc
+
 # Node.js
 /node_modules/
 /package.json

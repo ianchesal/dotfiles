@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+#
+# Remove old gem versions and uninstall default-gem conflicts.
+#
+# Ported from the gem:cleanup rake task. Still worth keeping after the move off
+# Rake: Mason installs rubocop and ruby-lsp with a plain `gem install`, and when
+# an installed version and a default version of the same gem both exist,
+# Gem::Specification emits "Unresolved or ambiguous specs" on every bundle run.
+#
+# Versions pinned in any Gemfile.lock are left alone so bundler-managed installs
+# survive.
+#
+# Environment:
+#   GEM_BIN   gem executable to drive (default: gem) -- test seam
+
+set -euo pipefail
+
+# mapfile and friends need bash 4+. macOS still ships bash 3.2 as /bin/bash, so
+# fail loudly here rather than misbehaving quietly if brew's bash is not first
+# on PATH (brew/Brewfile installs it).
+if [ "${BASH_VERSINFO[0]:-0}" -lt 4 ]; then
+  echo "${0##*/}: needs bash 4+ (found ${BASH_VERSION:-unknown}); brew install bash" >&2
+  exit 1
+fi
+
+repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+GEM_BIN=${GEM_BIN:-gem}
+
+if [ -t 1 ]; then
+  green=$'\033[32m' yellow=$'\033[33m' blue=$'\033[34m' reset=$'\033[0m'
+else
+  green='' yellow='' blue='' reset=''
+fi
+
+# ~/.work_machine is the source of truth for work-vs-personal, and it is a file
+# test so it reads the same from a shell, a tmux popup, or cron.
+if [ -f "$HOME/.work_machine" ]; then
+  printf '%s\n' "${yellow}Skipping gem cleanup on work machine (~/.work_machine exists)${reset}"
+  exit 0
+fi
+
+printf '%s\n' "${green}Update: gem cleanup${reset}"
+"$GEM_BIN" cleanup
+
+# Gems pinned in any Gemfile.lock, as "name-version", so we never remove a
+# bundler-managed version. Gem stanza lines are indented exactly four spaces;
+# dependency lines are indented six and must not match. BUNDLED WITH names the
+# required bundler version outside the gem stanza.
+locked=$(
+  while IFS= read -r -d '' lockfile; do
+    sed -n 's/^    \([^ ][^ ]*\) (\([^)]*\)).*/\1-\2/p' "$lockfile"
+    awk '/^BUNDLED WITH/ { getline; gsub(/[[:space:]]/, ""); print "bundler-" $0 }' "$lockfile"
+  done < <(find "$repo" -name Gemfile.lock -print0 2>/dev/null)
+)
+
+is_locked() { printf '%s\n' "$locked" | grep -qxF "$1"; }
+
+# Gems where both an installed version AND a default version exist.
+mapfile -t lines < <("$GEM_BIN" list)
+for line in "${lines[@]}"; do
+  [[ $line =~ ^([^[:space:]]+)[[:space:]]+\(([^\)]+)\) ]] || continue
+  name=${BASH_REMATCH[1]}
+  versions=${BASH_REMATCH[2]}
+  [[ $versions == *"default:"* ]] || continue
+
+  IFS=',' read -ra parts <<<"$versions"
+  for part in "${parts[@]}"; do
+    version=${part# }
+    version=${version% }
+    [ -n "$version" ] || continue
+    [[ $version == default:* ]] && continue
+
+    if is_locked "$name-$version"; then
+      printf '%s\n' "${blue}Skipping $name $version (pinned in Gemfile.lock)${reset}"
+    else
+      printf '%s\n' "${yellow}Removing $name $version (conflicts with default gem)${reset}"
+      "$GEM_BIN" uninstall "$name" --version "$version" --ignore-dependencies
+    fi
+  done
+done

@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+#
+# Commit and push nvim dependency updates.
+#
+# Ported from the nvim:commit rake task; the JSON comparison that used Ruby's
+# json library is now jq, which nvim/scripts/update.lua already requires.
+#
+# Invariant: only commit consistent states -- every pin rev in pins.json must
+# agree with the lockfile rev for that plugin. Both hold full 40-char SHAs, but
+# the prefix comparison is kept from the original in case either side ever
+# shortens. Observation-only runs (new observed entries, no pin movement) are
+# fine: those plugins still agree because pin.rev == lock.rev.
+
+set -euo pipefail
+
+repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+pins=$repo/nvim/pins.json
+lock=$repo/nvim/nvim-pack-lock.json
+
+if [ -t 1 ]; then
+  red=$'\033[31m' green=$'\033[32m' blue=$'\033[34m' reset=$'\033[0m'
+else
+  red='' green='' blue='' reset=''
+fi
+
+changed() { ! git -C "$repo" diff --quiet HEAD -- "$1"; }
+
+if ! changed "$pins" && ! changed "$lock"; then
+  printf '%s\n' "${green}No changes to nvim dependencies${reset}"
+  exit 0
+fi
+
+disagreements=$(
+  jq -r -n --slurpfile p "$pins" --slurpfile l "$lock" '
+    ($l[0].plugins // {}) as $lock
+    | [ ($p[0].plugins // {})
+        | to_entries[]
+        | select(.value.pin.rev != null)
+        | . as { key: $name, value: { pin: { rev: $rev } } }
+        | ($lock[$name].rev) as $lrev
+        | select(
+            if $lrev == null then true
+            else (($rev | startswith($lrev)) or ($lrev | startswith($rev))) | not
+            end
+          )
+        | $name
+      ]
+    | join(", ")
+  '
+)
+
+if [ -n "$disagreements" ]; then
+  printf '%s\n' "${red}pins.json and nvim-pack-lock.json disagree for: ${disagreements} — run \`just nvim::update\` to reconverge, then retry${reset}" >&2
+  exit 1
+fi
+
+printf '%s\n' "${blue}Found changes in nvim dependencies:${reset}"
+git -C "$repo" --no-pager diff --stat -- "$pins" "$lock"
+git -C "$repo" add -- "$pins" "$lock"
+# Pathspec'd commit: never sweep up unrelated staged changes
+git -C "$repo" commit -m 'Deps updates' -- "$pins" "$lock"
+git -C "$repo" push
+printf '%s\n' "${green}Successfully committed and pushed dependency updates${reset}"

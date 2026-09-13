@@ -1,5 +1,6 @@
 tap "kitagry/tap"
 brew "asdf"
+brew "bash"
 brew "bat"
 brew "chezmoi"
 brew "eza"

@@ -9,7 +9,6 @@ file deployed to `~/.config/aerospace` via XDG.
 
 ```
 aerospace.toml    Main config: normalizations, window-detection rules, gaps, keybindings
-aerospace.rake    Install/clean rake tasks
 ```
 
 ## Config notes
@@ -25,7 +24,7 @@ aerospace.rake    Install/clean rake tasks
   workspace-tree flatten (`f`).
 - Configuration guide: https://nikitabobko.github.io/AeroSpace/guide
 
-## Tasks
+## Deployment
 
-- `rake aerospace` — install (symlink) this config
-- `rake aerospace:update` — no-op (there are no submodules in this repo)
+Deployed by chezmoi from `home/dot_config/aerospace/`. Preview with `chezmoi diff`,
+apply with `chezmoi apply`. There are no `just` recipes for this config.

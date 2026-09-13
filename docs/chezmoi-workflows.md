@@ -12,7 +12,7 @@ The repo is a **source**, not the live config directory.
     dot_claude/...           -> deployed as ~/.claude/...
   nvim/                      OUTSIDE the source state - symlinked, not copied
   brew/ script/ docs/        never deployed
-  Rakefile, */*.rake         the update fan-out only
+  justfile, just/*.just      the update fan-out only
 ```
 
 Configs are **copied** into place, not symlinked. Two consequences worth
@@ -34,7 +34,7 @@ all ignore it).
 This is not convenience, it is structural. `nvim/scripts/update.lua:20` resolves
 `config_dir` **script-relative** and writes `pins.json` there, while `vim.pack`
 writes `nvim-pack-lock.json` against the *config* dir. Under copy mode those
-two paths diverge, breaking the invariant `rake nvim:commit` enforces — that
+two paths diverge, breaking the invariant `just nvim::commit` enforces — that
 both files agree and travel in one commit. Symlinking keeps them co-located.
 
 The side benefit: editing a plugin spec is still instantly live, on the
@@ -49,8 +49,8 @@ chezmoi git pull -- --autostash --rebase
 chezmoi diff                                  # preview
 read -q "Apply these changes? [y/N] "         # gate
 chezmoi apply --error-on-conflict
-rake update && zinit update
-rake nvim:commit                              # if pins moved
+just update && zinit update
+just nvim::commit                              # if pins moved
 ```
 
 You get a preview and an explicit gate. Under the old symlink model `git pull`
@@ -66,7 +66,7 @@ Two guards are retained from the original function and must not be dropped:
 
 - refuse to run if `nvim/pins.json` or `nvim/nvim-pack-lock.json` have
   uncommitted or staged changes
-- `rake nvim:commit` afterwards if the updater moved the pins
+- `just nvim::commit` afterwards if the updater moved the pins
 
 `zinit update` also stays, and matters more than it looks. Neither zinit nor tpm
 is managed by chezmoi: zinit bootstraps itself in `dot_zshrc`, and tpm is cloned
@@ -102,7 +102,9 @@ Two things to know:
   expects it, and is where `~/.config/nvim` will point.
 
 This replaces `bootstrap/cloud-workstation.sh`, which had to install Homebrew,
-then asdf, then Ruby 3.3.9, before `rake zsh` could create a single symlink.
+then asdf, then Ruby 3.3.9, before a `rake zsh` task could create a single
+symlink. Rake is gone entirely now — `just` runs the update fan-out and nothing
+else (see the Task Running section of CLAUDE.md).
 
 ---
 
@@ -116,11 +118,17 @@ chezmoi cd && git add -A && git commit -m "add newtool" && git push
 `chezmoi add` applies `dot_` prefixes automatically at every level
 (`.hidden-rc` → `dot_hidden-rc`), so source files are never hand-named.
 
-No `.rake` file, no `dolink`, no `task all:` / `task clean:` wiring. Other
-machines pick it up on their next `dfu`.
+No task-runner wiring of any kind — `just` deploys nothing. Other machines pick
+it up on their next `dfu`.
 
-If the tool also needs a package installed, add it to `brew/Brewfile` — the
-`run_once_before_20-brew-bundle` script handles it on new machines.
+If the tool also needs a package installed, add it to `brew/Brewfile` —
+`home/run_once_before_20-brew-bundle.sh` installs Homebrew and everything in the
+Brewfile before any config lands, so a new machine gets the tool and its config
+in one `chezmoi init --apply`.
+
+Note that adding a *new* `run_once_*` script makes it run once on **every**
+existing machine at their next `chezmoi apply`, not only on new ones — chezmoi
+tracks them by name and has never seen it before.
 
 ---
 
@@ -136,7 +144,7 @@ Two caveats:
 
 - **Deletion does not propagate.** Removing an entry from the source leaves the
   target orphaned on your *other* machines — it simply becomes unmanaged there.
-  To actually remove it everywhere, add the path to `.chezmoiremove`. (The old
+  To actually remove it everywhere, add the path to `.chezmoiremove`. (The old symlink-era
   `rake clean` didn't propagate either, so this is not a regression, but it is
   not automatic.)
 - **Tool state directories are outside chezmoi's knowledge.**
@@ -176,9 +184,9 @@ the file, the second is what `apply` would change.
 Unchanged from before the migration:
 
 ```bash
-rake nvim:update      # 30-day delayed pin updates, then mason prune
-rake nvim:outdated    # preview eligible updates
-rake nvim:commit      # commit pins.json + lockfile together
+just nvim::update      # 30-day delayed pin updates, then mason prune
+just nvim::outdated    # preview eligible updates
+just nvim::commit      # commit pins.json + lockfile together
 ```
 
 Editing `nvim/lua/plugins/*.lua` is live immediately — no `apply`. See

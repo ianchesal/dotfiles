@@ -7,7 +7,7 @@ runs `brew bundle`.
 ## Layout
 
 ```
-brew.rake         Update rake task
+../just/brew.just Update recipe
 Brewfile          Declared taps and formulae (installed via `brew bundle`)
 brew-install.sh   Installs Homebrew, sets up PATH, runs `brew bundle`
 ```
@@ -19,7 +19,7 @@ Silicon, macOS Intel, or Linuxbrew), and install everything in the `Brewfile`.
 
 ## Tasks
 
-- `rake brew:update` — update Homebrew-installed packages
+- `just brew::update` — update Homebrew-installed packages
 
 The update task upgrades only outdated formulae, skipping pinned packages and
 `oh-my-posh` (the latter is managed separately via the `ohmyposh` tasks).

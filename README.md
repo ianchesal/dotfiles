@@ -22,7 +22,7 @@ Day to day:
     dfu                 # pull, preview the diff, confirm, apply, then update everything
     chezmoi diff        # what would change?
     chezmoi apply       # deploy
-    rake -T             # the update fan-out (Rake no longer deploys anything)
+    just --list --list-submodules   # the update fan-out (just deploys nothing)
 
 See `docs/chezmoi-workflows.md` for adding and removing tools, changing
 settings, and the gotchas.

@@ -12,7 +12,7 @@ This file provides guidance to AI agents working on this repository.
 - Deployment is **chezmoi**, not Rake. The repo is a *source*; configs are
   copied into place, not symlinked
 - `.chezmoiroot` contains `home`, so the chezmoi source state lives in `home/`
-  and everything else at the repo root (Rakefile, `brew/`, `script/`, `docs/`,
+  and everything else at the repo root (`justfile`, `brew/`, `script/`, `docs/`,
   `nvim/`) is invisible to chezmoi
 - Source naming: `home/dot_config/tmux/` → `~/.config/tmux/`, `dot_` at **every**
   level. `chezmoi add` applies the prefixes for you — don't hand-name files
@@ -36,50 +36,77 @@ This file provides guidance to AI agents working on this repository.
   has never written to, `apply` replaces pre-existing files with no prompt —
   `chezmoi diff` first is the only safeguard
 
+## Task Running (just)
+
+- `just` owns the "update everything" fan-out and the tool utilities that have
+  no chezmoi equivalent. It **deploys nothing** — that is chezmoi's job
+- Replaced a Rakefile in September 2026. The point was to stop needing a Ruby
+  runtime, bundler and gems to shell out; Ruby stays on these machines for work
+  and for Mason's `ruby-lsp`/`rubocop`, but nothing in this repo bootstraps it
+- Root `justfile` holds the fan-out (`update`), `lint`, `test`, and
+  `install-runtimes`. Per-tool recipes live in `just/<tool>.just` and are
+  addressed with `::` — `just brew::update`, `just asdf::prune-preview`
+- `export REPO := justfile_directory()` in the root justfile is how modules find
+  the repo: **a module recipe runs with `just/` as its working directory**, not
+  the repo root and not the tool's directory, so always reach other paths
+  through `$REPO` — never a relative path. `winterm::install` copying
+  `$REPO/winterm/settings.json` is the one recipe that touches a tool directory
+- Each `just/<tool>.just` must repeat `set shell := ["bash", "-eu", "-o", "pipefail", "-c"]`
+  — modules do **not** inherit settings from the root justfile
+- A module cannot depend on a sibling module's recipe. Either compose them in the
+  root justfile (`install-runtimes`) or shell back through
+  `just --justfile "$REPO/justfile" <mod>::<recipe>` (`asdf::install`)
+- Anything with real logic is a script in `script/`, not a recipe: `asdf-prune`,
+  `gem-cleanup`, `nvim-commit`, `gen-claude-completions.py`. Scripts take env
+  var seams (`ASDF_BIN`, `GEM_BIN`, `TOOL_VERSIONS`) so `script/tests/*.test.sh`
+  can drive them against fakes
+- `script/asdf-prune` and `script/gem-cleanup` need bash 4+ (`mapfile`); macOS
+  ships bash 3.2, so `brew/Brewfile` installs bash and both scripts fail loudly
+  if they end up on an older one
+
 ## Build/Test/Lint Commands
 
 - Deploy dotfiles: `chezmoi apply --error-on-conflict` (preview first with `chezmoi diff`)
 - Deploy one path: `chezmoi apply --error-on-conflict ~/.config/tmux`
-- Daily update: `dfu` (pull → diff → confirm → apply → `rake update` → `zinit update`)
+- Daily update: `dfu` (pull → diff → confirm → apply → `just update` → `zinit update`)
 - Start managing a new file: `chezmoi add <path>`; capture a live edit: `chezmoi re-add <path>`
 - Stop managing: `chezmoi forget <path>`; remove entirely: `chezmoi destroy <path>`
-- List all rake tasks: `rake -T` (Rake now owns **only** the update fan-out — there is no `rake all` or `rake clean`)
+- List all tasks: `just --list --list-submodules` (just owns **only** the update fan-out and a few tool utilities — it deploys nothing, and there is no `all` or `clean`)
 - See `docs/chezmoi-workflows.md` for the full day-to-day workflows
 - Verify chezmoi still behaves as this layout assumes (run after a chezmoi
   upgrade): `script/verify-chezmoi-assumptions.sh` — scratch-dir only, never
   touches the real home
-- Run Rubocop checks: `rake rubocop:check`
-- Auto-correct Rubocop issues: `rake rubocop:auto_correct`
-- Update configurations: `rake update`
-- Update Neovim plugins (30-day delayed): `rake nvim:update`
-- Preview eligible Neovim plugin updates without applying: `rake nvim:outdated`
-- Check and commit Neovim dependency updates: `rake nvim:commit`
-- Remove Mason packages no longer wanted by the config: `rake nvim:mason_prune` (runs automatically as the last step of `nvim:update`)
-- Preview which Mason packages would be pruned: `rake nvim:mason_outdated`
+- Lint shell scripts and justfiles: `just lint` (shellcheck + `just --fmt --check`)
+- Run the shell script tests: `just test-scripts`; those plus the nvim specs: `just test`
+- Update configurations: `just update`
+- Update Neovim plugins (30-day delayed): `just nvim::update`
+- Preview eligible Neovim plugin updates without applying: `just nvim::outdated`
+- Check and commit Neovim dependency updates: `just nvim::commit`
+- Remove Mason packages no longer wanted by the config: `just nvim::mason-prune` (runs automatically as the last step of `nvim::update`)
+- Preview which Mason packages would be pruned: `just nvim::mason-outdated`
 - Run Neovim machinery tests: `nvim --headless -u NONE -l nvim/tests/<name>_spec.lua` (delay, gitops, loader)
-- Check for Oh My Posh updates: `rake ohmyposh:check_update`
-- Update Oh My Posh: `rake ohmyposh:update`
-- Reload tmux config in all sessions: `rake tmux:reload`
+- Check for Oh My Posh updates: `just ohmyposh::check-update`
+- Update Oh My Posh: `just ohmyposh::update`
+- Reload tmux config in all sessions: `just tmux::reload`
 - Update zsh plugins: `zinit self-update && zinit update` (also run by `dfu`)
-- Install the Rust toolchain: `rake rust`
-- Update rustup and Rust toolchains: `rake rust:update`
-- Update Homebrew packages: `rake brew:update`
-- Update Python packages: `rake python:update`
-- Update yt-dlp: `rake ytdlp:update`
-- Update gcloud components: `rake gcloud:update`
-- Uninstall asdf tool versions older than the one in use: `rake asdf:prune` (`FORCE=1` skips the confirmation prompt)
-- Preview which asdf tool versions would be pruned: `rake asdf:prune_preview`
+- Install the Rust toolchain: `just rust::install`
+- Update rustup and Rust toolchains: `just rust::update`
+- Update Homebrew packages: `just brew::update`
+- Update yt-dlp: `just ytdlp::update`
+- Update gcloud components: `just gcloud::update`
+- Uninstall asdf tool versions older than the one in use: `just asdf::prune` (`FORCE=1` skips the confirmation prompt)
+- Preview which asdf tool versions would be pruned: `just asdf::prune-preview`
 
 ## Code Style Guidelines
 
-- Ruby: Follow Rubocop guidelines in `./rubocop/rubocop.yml`
+- Shell: bash with `set -euo pipefail`; must pass `shellcheck --severity=warning`
+- justfiles: must pass `just --fmt --check`
 - Line length limit: 160 characters
 - Indentation: 2 spaces
 - Prefer single quotes for strings unless interpolation is needed
 - Use snake_case for methods and variables
-- Use frozen_string_literal pragmas in Ruby files
 - Shell scripts should use proper error handling
-- Document rake tasks with descriptions
+- Document every `just` recipe with a `#` comment on the line directly above it — that comment is what `just --list` shows
 - Method naming: Use descriptive names that reflect functionality
 - File organization: Group related files by tool/function in separate directories
 
@@ -110,14 +137,14 @@ This file provides guidance to AI agents working on this repository.
   - `policy`: `{ mode = "commit" }` (default, 30-day delayed) / `"tag"` (delayed stable semver releases) / `"exempt"` (no delay; also the urgent-update escape hatch); optional `days = N` overrides the window
   - `priority`: lower runs `config()` earlier (colorscheme 10, mini-icons 14, snacks 15, treesitter 20, which-key 25, mason→lspconfig 30–32, blink 40, default 50)
   - `config()`: plain `setup()` calls + `vim.keymap.set` — NO lazy.nvim idioms (`dependencies`/`event`/`keys`/`cmd`/`build`/`opts` spec fields)
-- Updates are delayed by first-observed timestamps: `./nvim/pins.json` is authoritative (GENERATED — never hand-edit); `./nvim/nvim-pack-lock.json` is vim.pack's derived lockfile; both must agree and travel in one commit (`rake nvim:commit` enforces consistency)
+- Updates are delayed by first-observed timestamps: `./nvim/pins.json` is authoritative (GENERATED — never hand-edit); `./nvim/nvim-pack-lock.json` is vim.pack's derived lockfile; both must agree and travel in one commit (`just nvim::commit` enforces consistency)
 - Update machinery: `./nvim/lua/pack/` (delay.lua pure core, gitops.lua git layer, loader.lua) + `./nvim/scripts/update.lua`; tests in `./nvim/tests/*_spec.lua`
 - The updater MUST run with `-u NONE` — init.lua pre-registering vim.pack specs would freeze update targets (re-adds are no-ops)
-- A plugin spec with no pin entry is a hard startup error; `rake nvim:update` is the only path that creates pins (never fall back to branch tips)
-- Adding a plugin: new spec file, then `rake nvim:update` to bootstrap its delayed pin; removing: delete the spec file, then clean up pin/lockfile entries and the on-disk clone
+- A plugin spec with no pin entry is a hard startup error; `just nvim::update` is the only path that creates pins (never fall back to branch tips)
+- Adding a plugin: new spec file, then `just nvim::update` to bootstrap its delayed pin; removing: delete the spec file, then clean up pin/lockfile entries and the on-disk clone
 - Plugin-bound keymaps live in that plugin's spec file; global keymaps in `./nvim/lua/config/keymaps.lua`; autocmds in `./nvim/lua/config/autocmds.lua`; which-key groups in `./nvim/lua/plugins/which-key.lua`
 - nvim-treesitter pins the `main` branch (post-rewrite API — no module system); endwise and contextindent carry commented compat shims in their spec files; lspconfig.lua uses one pcall-guarded internal mason-lspconfig API (check on its pin bumps)
-- Mason packages are NOT tracked by the repo, so dropping a tool/LSP from config leaves orphans on every other machine; `rake nvim:mason_prune` reconciles them (runs as the last step of `nvim:update`). The authoritative "keep" set is assembled at runtime: `mason.lua`'s `ensure_installed` plus the Mason packages backing enabled servers in `lspconfig.lua`, both registered into `./nvim/lua/pack/mason_desired.lua` from their `config()`. The prune script (`./nvim/scripts/mason_prune.lua`) loads the FULL config (NOT `-u NONE`, unlike the updater) and refuses to run if any source failed to register (guards against over-deletion on a startup error)
+- Mason packages are NOT tracked by the repo, so dropping a tool/LSP from config leaves orphans on every other machine; `just nvim::mason-prune` reconciles them (runs as the last step of `nvim::update`). The authoritative "keep" set is assembled at runtime: `mason.lua`'s `ensure_installed` plus the Mason packages backing enabled servers in `lspconfig.lua`, both registered into `./nvim/lua/pack/mason_desired.lua` from their `config()`. The prune script (`./nvim/scripts/mason_prune.lua`) loads the FULL config (NOT `-u NONE`, unlike the updater) and refuses to run if any source failed to register (guards against over-deletion on a startup error)
 - Lua: stylua format (2-space indent, 120 column width); requires Neovim 0.12+; updater needs `jq` and `git`
 
 ## Zsh Configuration
@@ -137,8 +164,8 @@ This file provides guidance to AI agents working on this repository.
 - Machine identity lives in `zshrc.d/machine.zsh`: `DOTFILES_MACHINE` (gcw vs
   other, detected from `/etc/workstation-startup.d`) and `WORK_MACHINE`, which is
   exported from the `~/.work_machine` flag file. That file is the source of truth
-  for work-vs-personal — repo code tests the file (`work_machine?` in the
-  Rakefile, `[ -f ]` in shell), never the exported variable, so the answer is the
+  for work-vs-personal — repo code tests the file (`[ -f ]` in
+  `script/gem-cleanup` and in shell), never the exported variable, so the answer is the
   same in tmux popups, cron and other detached contexts. `touch` to enable, `rm`
   to disable; it is machine-local and nothing in the repo manages it
 
@@ -186,7 +213,7 @@ This file provides guidance to AI agents working on this repository.
 - SSH session information display
 - Command status indicator in prompt color
 - Custom tooltips for AWS, GCP, and Kubernetes tools
-- Managed via Homebrew with update checks in rake tasks
+- Managed via Homebrew; `just ohmyposh::check-update` only reports a waiting update, so a prompt change is never a surprise mid-run
 
 ## Claude Configuration
 
@@ -203,9 +230,9 @@ This file provides guidance to AI agents working on this repository.
 ## Rust Configuration
 
 - Managed by `rustup` (the canonical Linux/macOS installer), not Homebrew or apt
-- Rake tasks in `rust/rust.rake`; shell integration in `zsh/zshrc.d/rust.zsh`
+- Recipes in `just/rust.just`; shell integration in `zsh/zshrc.d/rust.zsh`
 - Installed with `--no-modify-path` so the installer never edits the managed `.zshrc`; `rust.zsh` sources `~/.cargo/env` instead to put `~/.cargo/bin` on PATH
-- `rake rust:install` is idempotent — it detects an existing rustup (on PATH or in `~/.cargo/bin`) and skips the installer
-- Removing the toolchain is deliberately never automatic; use the explicit `rake rust:uninstall`
-- `asdf:asdf` depends on `rust:install`: ruby-build only compiles YJIT/ZJIT into Ruby when a Rust toolchain exists at build time
+- `just rust::install` is idempotent — it detects an existing rustup (on PATH or in `~/.cargo/bin`) and skips the installer
+- Removing the toolchain is deliberately never automatic; use the explicit `just rust::uninstall`
+- `just install-runtimes` runs `rust::install` before `asdf::install`: ruby-build only compiles YJIT/ZJIT into Ruby when a Rust toolchain exists at build time. `asdf::install` also shells back through the root justfile to enforce that ordering on its own, because a just module cannot depend on a sibling module's recipe
 

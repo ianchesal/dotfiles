@@ -13,7 +13,6 @@ CLAUDE.md                Global memory file (persistent context/preferences acro
 settings.json            Claude Code settings (permissions, hooks, env)
 keybindings.json         Custom key bindings
 statusline-command.sh    Script that renders the custom status line
-claude.rake              install / update / clean / completion tasks
 commands/                Custom slash commands
 skills/                  Custom skills
 plugins/                 Installed plugins
@@ -25,12 +24,11 @@ hand-maintained config.
 
 ## Tasks
 
-- `rake claude` — install: symlink `~/.claude`, run the official installer, fix `~/.claude.json` permissions
-- `rake claude:update` — fix permissions, then run `claude update`; regenerates zsh completions if the version changed
-- `rake claude:gen_completions` — regenerate `zsh/completions/_claude` from `claude --help`
-- `rake claude:clean` — remove the `~/.claude` symlink, the `claude` binary, and `~/.local/share/claude`
+- `just claude::install` — run the official installer, unless apt already owns `claude-code`
+- `just claude::update` — fix permissions, then run `claude update`; regenerates zsh completions if the version changed
+- `just claude::gen-completions` — regenerate `home/dot_config/zsh/completions/_claude` from `claude --help`
 
 ## Notes
 
-- `rake claude:permissions` chmods `~/.claude.json` to `600` so credentials are not world-readable.
+- `just claude::permissions` chmods `~/.claude.json` to `600` so credentials are not world-readable. `claude::update` depends on it, so it runs on every update.
 - The global memory file (`CLAUDE.md`) should hold concise, high-value context and preferences only — never project-specific terminology or secrets.
