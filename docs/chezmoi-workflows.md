@@ -1,10 +1,5 @@
 # chezmoi workflows
 
-> **STATUS: not yet in effect.** This describes how the repo works *after* the
-> chezmoi migration. Until that lands, deployment is still `rake all` and the
-> symlink model. See `docs/superpowers/specs/2026-09-11-chezmoi-migration-design.md`
-> for the design and the migration plan beside it.
-
 ## Mental model
 
 The repo is a **source**, not the live config directory.
@@ -83,24 +78,6 @@ by `run_once_after_55-install-tpm.sh` on first apply. Both mechanisms install th
 chezmoi re-validates externals on every `diff`, `apply` and `verify` — and this
 function runs `chezmoi diff` daily — and an external whose target exists but is
 not a clean git repo fails the entire apply.)
-
----
-
-## Switching an existing machine over
-
-A machine that is still on the rake/symlink model must **not** simply
-`git pull` the migrated repo. The migration commits delete `zsh/`, `claude/`
-and friends from the repo; a pull removes every tracked file inside them while
-leaving untracked state behind, which leaves `~/.config/zsh` pointing at an
-almost-empty directory and `~/.zshenv` — which sets `ZDOTDIR` — dangling. The
-next login shell is bare.
-
-The order that works: back up, de-symlink the loose files, cut over the
-directories, *then* take the new tree, then init and apply. The full procedure
-with the exact commands is in the migration plan's **Per-machine rollout**
-section (`docs/superpowers/plans/2026-09-11-chezmoi-migration.md`).
-
-Once a machine is switched over, `dfu` is the only thing it needs.
 
 ---
 
@@ -258,5 +235,3 @@ Editing `nvim/lua/plugins/*.lua` is live immediately — no `apply`. See
   against a scratch directory will still execute setup scripts against your
   actual home directory. Always pass `--exclude=scripts` when applying to a
   scratch destination.
-- **`script/cutover` is migration-only.** Once a directory is a real directory,
-  the script refuses to run against it again.

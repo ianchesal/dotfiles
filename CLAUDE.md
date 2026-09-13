@@ -31,8 +31,6 @@ This file provides guidance to AI agents working on this repository.
 - `~/.work_machine` stays a **runtime** check (`git/gh-dash/gh-dash.sh` reads the
   file itself) so tmux popups and cron agree with interactive shells. Both
   `config.yml` and `config-work.yml` deploy everywhere
-- `script/cutover` is migration-only — it converts a live symlink-into-the-repo
-  into a real directory without losing untracked state, and refuses to run twice
 - chezmoi does **not** back up what it replaces, and its drift protection is
   machine-local (`chezmoistate.boltdb` is not in the repo). On a machine chezmoi
   has never written to, `apply` replaces pre-existing files with no prompt —
@@ -47,6 +45,9 @@ This file provides guidance to AI agents working on this repository.
 - Stop managing: `chezmoi forget <path>`; remove entirely: `chezmoi destroy <path>`
 - List all rake tasks: `rake -T` (Rake now owns **only** the update fan-out — there is no `rake all` or `rake clean`)
 - See `docs/chezmoi-workflows.md` for the full day-to-day workflows
+- Verify chezmoi still behaves as this layout assumes (run after a chezmoi
+  upgrade): `script/verify-chezmoi-assumptions.sh` — scratch-dir only, never
+  touches the real home
 - Run Rubocop checks: `rake rubocop:check`
 - Auto-correct Rubocop issues: `rake rubocop:auto_correct`
 - Update configurations: `rake update`

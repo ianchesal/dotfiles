@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Verifies the chezmoi behaviours the migration design depends on.
-# Runs entirely in a scratch dir - never touches the real home.
+# Verifies the chezmoi behaviours this repo's layout depends on. Run it after
+# a chezmoi upgrade: if a check fails, chezmoi changed under us and the
+# assumptions documented in CLAUDE.md no longer hold.
 #
-# See docs/superpowers/specs/2026-09-11-chezmoi-migration-design.md
+# Runs entirely in a scratch dir - never touches the real home.
 set -euo pipefail
 
 CZ="${CHEZMOI:-chezmoi}"
@@ -49,18 +50,6 @@ if cz apply --error-on-conflict 2>/dev/null; then
 fi
 grep -q 'HAND EDITED' "$D/.config/tmux.conf" || fail "hand edit was clobbered"
 ok "drift reported; --error-on-conflict refused and preserved the edit"
-
-echo "5. apply over a live directory symlink DESTROYS untracked state"
-R2="$WORK/r2"; D2="$WORK/d2"; L2="$WORK/live2"; S2="$WORK/state/s2.boltdb"
-mkdir -p "$R2/home/dot_config/tmux" "$D2/.config" "$L2/plugins"
-printf 'home' > "$R2/.chezmoiroot"
-printf 'set -g mouse on\n' > "$R2/home/dot_config/tmux/tmux.conf"
-echo 'tpm' > "$L2/plugins/tpm"
-ln -s "$L2" "$D2/.config/tmux"
-"$CZ" apply --source "$R2" --destination "$D2" --persistent-state "$S2"
-[ -L "$D2/.config/tmux" ] && fail "symlink survived - hazard assumption wrong"
-[ -e "$D2/.config/tmux/plugins" ] && fail "untracked state survived - hazard assumption wrong"
-ok "confirmed: symlink replaced, untracked state lost -> cutover script is mandatory"
 
 echo
 echo "All assumptions hold for $($CZ --version | head -1)"

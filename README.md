@@ -24,9 +24,5 @@ Day to day:
     chezmoi apply       # deploy
     rake -T             # the update fan-out (Rake no longer deploys anything)
 
-**Switching a machine that still uses the old rake/symlink setup?** Do not just
-`git pull` — see `MIGRATION.md` on the `main` branch. A plain pull removes the
-tracked files out from under the live symlinks and leaves you with a bare shell.
-
 See `docs/chezmoi-workflows.md` for adding and removing tools, changing
 settings, and the gotchas.
