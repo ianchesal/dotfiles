@@ -1,11 +1,8 @@
 version: 2
+# The bundler ecosystem was dropped when the Rakefile and Gemfile went away:
+# there is no Ruby manifest in this repo any more, so dependabot had nothing to
+# resolve. github-actions is the only ecosystem left with a manifest here.
 updates:
-  - package-ecosystem: "bundler"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

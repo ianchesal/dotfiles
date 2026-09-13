@@ -7,31 +7,26 @@ on:
     branches: [main]
 
 jobs:
-  ruby-validation:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1"
-          bundler-cache: true
+      # The task runner is `just`; `just lint` owns shellcheck and justfile
+      # formatting so CI and a local run cannot drift apart.
+      - name: Install just
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh \
+            | bash -s -- --to "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
-      - name: Run Rubocop
-        run: bundle exec rubocop --display-cop-names --color
+      - name: Lint shell scripts and justfiles
+        run: just lint
 
-  shell-linting:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
-        with:
-          scandir: "./bootstrap"
-          format: gcc
-          severity: warning
+      # test-scripts rather than test: the nvim machinery specs need a Neovim
+      # 0.12 build, which is not worth installing here.
+      - name: Run shell script tests
+        run: just test-scripts
 
   config-validation:
     runs-on: ubuntu-latest
@@ -40,7 +35,7 @@ jobs:
 
       - name: Validate YAML files
         run: |
-          find . -not -path "./tmux/plugins/*" \( -name "*.yml" -o -name "*.yaml" \) | xargs -I {} sh -c 'echo "Checking {}" && python3 -c "import yaml; yaml.safe_load(open(\"{}\"))"'
+          find . \( -name "*.yml" -o -name "*.yaml" \) | xargs -I {} sh -c 'echo "Checking {}" && python3 -c "import yaml; yaml.safe_load(open(\"{}\"))"'
 
       # - name: Validate JSON files
       #   run: |
@@ -49,7 +44,7 @@ jobs:
       - name: Validate TOML files
         run: |
           pip install toml
-          find . -not -path "./tmux/plugins/*" -name "*.toml" | xargs -I {} sh -c 'echo "Checking {}" && python3 -c "import toml; toml.load(\"{}\")"'
+          find . -name "*.toml" | xargs -I {} sh -c 'echo "Checking {}" && python3 -c "import toml; toml.load(\"{}\")"'
 
   security-scan:
     runs-on: ubuntu-latest
