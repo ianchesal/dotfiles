@@ -1,6 +1,6 @@
 -- Shared registry of Mason packages the config intends to keep installed.
 -- mason.lua and lspconfig.lua call register() from their config(); the
--- `rake nvim:mason_prune` script reads desired() to find orphaned packages
+-- `just nvim::mason-prune` script reads desired() to find orphaned packages
 -- (installed on disk but no longer wanted) and uninstalls them.
 --
 -- Packages are keyed by source ("mason", "lspconfig") so the prune script can

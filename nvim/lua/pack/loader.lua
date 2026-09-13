@@ -10,7 +10,7 @@ end
 function M.read_pins(path)
   local f, ferr = io.open(path, "r")
   if not f then
-    error(("pins.json unreadable at %s (%s) — refusing to guess. Run `rake nvim:update`."):format(path, ferr))
+    error(("pins.json unreadable at %s (%s) — refusing to guess. Run `just nvim::update`."):format(path, ferr))
   end
   local raw = f:read("*a")
   f:close()
@@ -24,7 +24,7 @@ end
 function M.resolve_version(name, pins)
   local entry = pins.plugins[name]
   if not entry or not entry.pin or not entry.pin.rev then
-    error(("Unpinned plugin '%s'. Run `rake nvim:update` to pin it."):format(name))
+    error(("Unpinned plugin '%s'. Run `just nvim::update` to pin it."):format(name))
   end
   return entry.pin.rev
 end

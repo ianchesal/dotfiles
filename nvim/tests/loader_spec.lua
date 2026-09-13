@@ -1,5 +1,11 @@
 -- nvim/tests/loader_spec.lua — run: nvim --headless -u NONE -l nvim/tests/loader_spec.lua
-package.path = package.path .. ";" .. vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h") .. "/lua/?.lua"
+-- Load the modules from the tree this spec lives in, not from ~/.config/nvim.
+-- That symlink points at the MAIN checkout, and nvim's require() searches
+-- runtimepath (which already contains it) rather than package.path -- so
+-- without this prepend a worktree silently tests the main checkout instead.
+local nvim_dir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h")
+vim.opt.runtimepath:prepend(nvim_dir)
+package.path = nvim_dir .. "/lua/?.lua;" .. package.path
 local loader = require("pack.loader")
 
 -- name derivation
@@ -17,7 +23,7 @@ assert(order[1]._file == "zzz" and order[2]._file == "aaa" and order[3]._file ==
 -- unpinned plugin is a hard error
 local ok, err = pcall(loader.resolve_version, "oil.nvim", { plugins = {} })
 assert(not ok and tostring(err):match("Unpinned plugin"), "missing pin must raise")
-assert(tostring(err):match("rake nvim:update"), "error tells the user the fix")
+assert(tostring(err):match("just nvim::update"), "error tells the user the fix")
 
 -- corrupt pins.json is a hard error
 local ok2 = pcall(loader.read_pins, "/nonexistent/pins.json")

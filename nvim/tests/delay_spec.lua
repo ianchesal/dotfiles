@@ -1,5 +1,11 @@
 -- nvim/tests/delay_spec.lua — run: nvim --headless -u NONE -l nvim/tests/delay_spec.lua
-package.path = package.path .. ";" .. vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h") .. "/lua/?.lua"
+-- Load the modules from the tree this spec lives in, not from ~/.config/nvim.
+-- That symlink points at the MAIN checkout, and nvim's require() searches
+-- runtimepath (which already contains it) rather than package.path -- so
+-- without this prepend a worktree silently tests the main checkout instead.
+local nvim_dir = vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ":h:h")
+vim.opt.runtimepath:prepend(nvim_dir)
+package.path = nvim_dir .. "/lua/?.lua;" .. package.path
 local delay = require("pack.delay")
 local DAY = 86400
 local now = 1781136000 -- fixed; tests use injected clocks

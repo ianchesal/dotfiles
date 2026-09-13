@@ -1,12 +1,12 @@
 -- Removes Mason packages that are installed but no longer wanted by the
 -- config — e.g. a tool dropped from mason.lua's ensure_installed, or an LSP
 -- dropped from lspconfig.lua's servers. This is the Mason analogue of
--- `rake nvim:prune` (which prunes on-disk plugin clones against pins.json).
+-- `just nvim::prune` (which prunes on-disk plugin clones against pins.json).
 --
 -- Unlike scripts/update.lua, this MUST run with the FULL config loaded (no
 -- `-u NONE`): the "keep these" set is assembled at startup when mason.lua and
 -- lspconfig.lua call pack.mason_desired.register() from their config().
--- `rake nvim:mason_prune` invokes it via `nvim --headless -c "luafile ..."`.
+-- `just nvim::mason-prune` invokes it via `nvim --headless -c "luafile ..."`.
 --
 -- Set _G.MASON_PRUNE_DRY = true to list orphans without uninstalling.
 local dry_run = _G.MASON_PRUNE_DRY == true

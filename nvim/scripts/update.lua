@@ -235,4 +235,4 @@ if ts_changed then
   require("nvim-treesitter").update():wait(300000)
 end
 
-print("Done. Commit pins.json AND nvim-pack-lock.json together (rake nvim:commit).")
+print("Done. Commit pins.json AND nvim-pack-lock.json together (just nvim::commit).")
