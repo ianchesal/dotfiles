@@ -108,6 +108,30 @@ function dotfiles_update() {
     return 1
   fi
 
+  # Guard: refuse to run if the destination has drifted from what chezmoi
+  # last applied (hand-edited configs that were never `chezmoi re-add`ed).
+  # This must happen before `git pull` -- once the repo advances, `chezmoi
+  # diff` conflates incoming repo changes with local drift and we lose the
+  # ability to show a clean local-only diff. Column 1 of `chezmoi status` is
+  # exactly "last written state vs actual state", i.e. local drift.
+  local drifted=() line status_col path
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    status_col="${line:0:1}"
+    [[ "$status_col" == " " ]] && continue
+    drifted+=("${line:3}")
+  done < <(chezmoi status --path-style absolute)
+
+  if (( ${#drifted[@]} > 0 )); then
+    echo "\033[1;33m==> Local changes found that aren't in your dotfiles repo yet:\033[0m"
+    for path in "${drifted[@]}"; do
+      echo "\033[1;33m  - $path\033[0m"
+      chezmoi diff --no-pager "$path"
+    done
+    echo "\033[1;33m==> Review these and consider 'chezmoi re-add <path>' before rerunning dfu.\033[0m"
+    return 1
+  fi
+
   echo "\033[1;36m==> Updating your development environment...\033[0m"
   chezmoi git pull -- --autostash --rebase || return 1
 
