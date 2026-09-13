@@ -1,5 +1,4 @@
-desc 'Install oh-my-posh configuration'
-task ohmyposh: ['ohmyposh:all']
+# frozen_string_literal: true
 
 namespace :ohmyposh do
   desc 'Check for oh-my-posh updates'
@@ -29,19 +28,6 @@ namespace :ohmyposh do
       puts 'Skipping: oh-my-posh update -- no brew command found'.blue
     end
   end
-
-  task all: [:dir]
-
-  task :dir do
-    mkdir_if_needed home('.config')
-    dolink(home('.config/ohmyposh'), root('ohmyposh'))
-  end
-
-  task :clean do
-    sh "rm -f #{home('.config/ohmyposh')}"
-  end
 end
 
-task all: [:ohmyposh]
 task update: ['ohmyposh:check_update']
-task clean: ['ohmyposh:clean']

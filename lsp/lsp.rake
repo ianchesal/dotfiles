@@ -40,6 +40,4 @@ namespace :lsp do
   end
 end
 
-task all: [:lsp]
 # task update: ['lsp:update']
-task clean: ['lsp:clean']

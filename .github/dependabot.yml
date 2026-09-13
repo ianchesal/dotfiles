@@ -6,12 +6,6 @@ updates:
       interval: "weekly"
       day: "monday"
 
-  - package-ecosystem: "npm"
-    directory: "/opencode"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

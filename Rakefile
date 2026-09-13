@@ -4,71 +4,17 @@
 
 require 'fileutils'
 
-# rubocop:disable-next Layout/ExtraSpacing -- the bodies line up in a column on purpose
 class String
-  def black;          "\e[30m#{self}\e[0m" end
-  def red;            "\e[31m#{self}\e[0m" end
-  def green;          "\e[32m#{self}\e[0m" end
-  def brown;          "\e[33m#{self}\e[0m" end
-  def yellow;         "\e[33m#{self}\e[0m" end
-  def blue;           "\e[34m#{self}\e[0m" end
-  def magenta;        "\e[35m#{self}\e[0m" end
-  def cyan;           "\e[36m#{self}\e[0m" end
-  def gray;           "\e[37m#{self}\e[0m" end
-  def bold;           "\e[1m#{self}\e[0m" end
-end
-
-module OS
-  def self.windows?
-    !(/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM).nil?
-  end
-
-  def self.mac?
-    !(/darwin/ =~ RUBY_PLATFORM).nil?
-  end
-
-  def self.unix?
-    !OS.windows?
-  end
-
-  def self.linux?
-    OS.unix? and !OS.mac?
-  end
-
-  def self.jruby?
-    RUBY_ENGINE == 'jruby'
-  end
-end
-
-def dolink(target, source)
-  File.delete target if File.symlink? target # Nuke symlinks. We don't care about backing those up
-  backup target if File.exist? target
-  sh "ln -s #{source} #{target}"
-  puts "Linked #{source} -> #{target}"
-end
-
-def clean_restore(target)
-  return unless File.symlink? target
-
-  File.delete target
-  last_backup = find_backup target
-  return unless File.exist? last_backup
-
-  File.rename last_backup, target
-  puts "Restored backup #{last_backup} -> #{target}"
-end
-
-def find_backup(target)
-  index = 0
-  index += 1 while File.exist? target + ".#{index}"
-  target + ".#{index - 1}"
-end
-
-def backup(target)
-  index = 0
-  index += 1 while File.exist? target + ".#{index}"
-  File.rename target, target + ".#{index}"
-  puts "Renamed existing file #{target} -> #{target}.#{index}"
+  def black; "\e[30m#{self}\e[0m" end
+  def red; "\e[31m#{self}\e[0m" end
+  def green; "\e[32m#{self}\e[0m" end
+  def brown; "\e[33m#{self}\e[0m" end
+  def yellow; "\e[33m#{self}\e[0m" end
+  def blue; "\e[34m#{self}\e[0m" end
+  def magenta; "\e[35m#{self}\e[0m" end
+  def cyan; "\e[36m#{self}\e[0m" end
+  def gray; "\e[37m#{self}\e[0m" end
+  def bold; "\e[1m#{self}\e[0m" end
 end
 
 # Anchored to this Rakefile's own directory and expanded, so every path a task
@@ -88,26 +34,6 @@ def work_machine?
   File.exist? home('.work_machine')
 end
 
-def mkdir_if_needed(path)
-  FileUtils.mkdir_p path unless File.directory? path
-end
-
-def npm_install(package)
-  mkdir_if_needed home('.npm-global')
-  sh "npm config set prefix  #{home('.npm-global')}"
-  sh "npm install -g #{package}"
-end
-
-def npm_update(package)
-  sh "npm config set prefix  #{home('.npm-global')}"
-  sh "npm update -g #{package}"
-end
-
-def npm_uninstall(package)
-  sh "npm config set prefix  #{home('.npm-global')}"
-  sh "npm uninstall -g #{package}"
-end
-
 def which(cmd)
   exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
   ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
@@ -125,12 +51,6 @@ end
 
 desc 'Update everything that can be (safely) updated'
 task update: []
-
-desc 'Install all dotfiles (are you really sure you want to do this?)'
-task all: []
-
-desc 'Remove my customizations and restore system default dotfiles'
-task clean: []
 
 # root() rather than a bare relative glob: rake only chdirs to the Rakefile's
 # directory when it finds one by searching upwards, not when handed `-f <path>`,
