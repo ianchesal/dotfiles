@@ -103,7 +103,12 @@ check() { if eval "$2"; then ok "$1"; else echo "    FAIL: $1"; fails=$((fails+1
 check "chezmoi status is clean"        '[ -z "$(chezmoi status)" ]'
 check ".config/nvim -> repo"           '[ "$(readlink "$HOME/.config/nvim")" = "$ROOT/nvim" ]'
 check ".zshenv is a real file"         '[ -f "$HOME/.zshenv" ] && [ ! -L "$HOME/.zshenv" ]'
-check "no dangling symlinks in HOME"  '[ -z "$(find "$HOME" -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null)" ]'
+# Only assert about .config/nvim - the one symlink this script is responsible
+# for. A blanket $HOME scan (as this used to do) also catches unrelated
+# pre-existing stale symlinks (old configs, rotated logs, uninstalled plugin
+# binaries) that have nothing to do with this migration; see 9ab83f96, which
+# made the same fix to chezmoi-prep's identical check.
+check ".config/nvim resolves"          '[ -e "$HOME/.config/nvim" ]'
 check "repo worktree is clean"         '[ -z "$(git -C "$ROOT" status --porcelain)" ]'
 [ -d "$HOME/.claude/projects" ] && check ".claude/projects survived" 'true'
 [ -f "$HOME/.config/gh/hosts.yml" ] && check "gh hosts.yml survived" 'true'
