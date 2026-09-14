@@ -106,9 +106,9 @@
       "version": "'7bfd942445fb63089b59f97ca487d605e715f155'"
     },
     "nui.nvim": {
-      "rev": "de740991c12411b663994b2860f1a4fd0937c130",
+      "rev": "5959922693a785a0e1624b45c968c844822f1ca1",
       "src": "https://github.com/MunifTanjim/nui.nvim",
-      "version": "'de740991c12411b663994b2860f1a4fd0937c130'"
+      "version": "'5959922693a785a0e1624b45c968c844822f1ca1'"
     },
     "nvim-lint": {
       "rev": "9b99aad869102ac01775187abd8d49017b148612",
