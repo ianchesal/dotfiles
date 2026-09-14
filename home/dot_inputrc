@@ -1,11 +1,30 @@
-# By default up/down are bound to previous-history and next-history
-# respectively. The following does the same but gives the extra functionality
-# where if you type any text (or more accurately, if there is any text between
-# the start of the line and the cursor), the subset of the history starting
-# with that text is searched.
-"\e[B": history-search-forward
-"\e[A": history-search-backward
+# Readline tuning shared by bash (and anything else that uses
+# readline). Independent of the bashrc.d sourcing chain -- readline
+# reads this file itself on shell start.
 
 set completion-ignore-case on
-set bell-style none
+set show-all-if-ambiguous on
+set colored-stats on
+set mark-symlinked-directories on
 
+# Type a prefix, then arrow through matching history -- the closest
+# vanilla-readline equivalent to zsh-autosuggestions /
+# history-substring-search, no plugin required.
+#
+# 02-shopts.bash turns on `set -o vi`, which switches readline's active
+# keymap away from `emacs` to `vi-command`/`vi-insert`. A bare
+# "key": function binding only applies to whichever keymap is selected
+# at the time it's read, so these have to be bound explicitly inside
+# vi-insert (where arrow keys are used) as well, or they're silently
+# inert under vi mode.
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+$if mode=vi
+set keymap vi-insert
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+set keymap vi-command
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+$endif
