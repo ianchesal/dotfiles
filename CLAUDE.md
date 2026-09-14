@@ -206,6 +206,31 @@ This file provides guidance to AI agents working on this repository.
   same in tmux popups, cron and other detached contexts. `touch` to enable, `rm`
   to disable; it is machine-local and nothing in the repo manages it
 
+## Bash Configuration
+
+- Standalone fallback config for when zsh isn't the shell in play: root/sudo
+  shells, minimal or embedded Debian boxes, remote servers not managed by
+  this repo. Deliberately has no plugin manager and makes no network calls
+  at shell start
+- bash 3.2+ compatible throughout (macOS ships a frozen bash 3.2 as
+  `/bin/bash`) -- no associative arrays, no `mapfile`; anything bash-4+-only
+  (`globstar`) is guarded behind a `BASH_VERSINFO` check
+- `~/.bashrc` is a thin loader for `~/.config/bash/bashrc.sh`, which sources
+  numbered modules from `~/.config/bash/bashrc.d/*.bash` in order (history,
+  shell options/vi mode, env/Homebrew, aliases, prompt, completion, fzf).
+  `~/.bash_profile` sources `~/.bashrc` so macOS Terminal.app and SSH login
+  shells pick it up -- bash does not do this automatically the way zsh does
+- `~/.inputrc` carries readline tuning independent of bash itself, notably
+  prefix-based history search on the arrow keys -- the closest vanilla
+  equivalent to zsh-autosuggestions/history-substring-search without a
+  plugin
+- Every optional integration (oh-my-posh, fzf, bash-completion, Homebrew) is
+  probed with `command -v` / `[[ -f ]]` and silently no-ops when absent, so
+  the config degrades gracefully on a stripped-down box
+- Feel-only scope by design: no git aliases, no fzf-git, no
+  kubectl/docker/terraform helpers ported from the zsh config -- just
+  history, prompt, safety aliases, readline tuning, and vi keybindings
+
 ## Git Configuration
 
 - Located in `.config/git` following XDG directory structure
