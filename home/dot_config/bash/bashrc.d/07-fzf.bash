@@ -10,10 +10,11 @@ if command -v fzf >/dev/null 2>&1; then
       /usr/share/doc/fzf/examples \
       /usr/share/fzf; do
       [[ -n "$fzf_dir" && -d "$fzf_dir" ]] || continue
-      [[ -f "$fzf_dir/key-bindings.bash" ]] && source "$fzf_dir/key-bindings.bash"
-      [[ -f "$fzf_dir/completion.bash" ]] && source "$fzf_dir/completion.bash"
-      break
+      fzf_found=0
+      [[ -f "$fzf_dir/key-bindings.bash" ]] && { source "$fzf_dir/key-bindings.bash"; fzf_found=1; }
+      [[ -f "$fzf_dir/completion.bash" ]] && { source "$fzf_dir/completion.bash"; fzf_found=1; }
+      [[ $fzf_found -eq 1 ]] && break
     done
-    unset fzf_dir
+    unset fzf_dir fzf_found
   fi
 fi
