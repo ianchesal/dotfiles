@@ -101,6 +101,11 @@
           "first_seen": 1789173359,
           "first_seen_iso": "2026-09-12T00:35:59Z",
           "rev": "05e938c0aa5dfbdbb11972fa4c8a85f27f402ba0"
+        },
+        {
+          "first_seen": 1789397903,
+          "first_seen_iso": "2026-09-14T14:58:23Z",
+          "rev": "72d144a9e014646963b8a5c67a4fde19b9772528"
         }
       ],
       "pin": {
@@ -609,11 +614,6 @@
     "nvim-treesitter": {
       "observed": [
         {
-          "first_seen": 1786800922,
-          "first_seen_iso": "2026-08-15T13:35:22Z",
-          "rev": "074aa4422bf029908338e855d0c0f71470a971bb"
-        },
-        {
           "first_seen": 1787411168,
           "first_seen_iso": "2026-08-22T15:06:08Z",
           "rev": "e82ef6ae2c3eeb96c6916b29917f96bf630b2cdb"
@@ -670,9 +670,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-13T17:03:29Z",
-        "pinned_at_epoch": 1789319009,
-        "rev": "a1bcffc8095c142ad1f7a9671a4ae180333f9209"
+        "pinned_at": "2026-09-14T14:58:23Z",
+        "pinned_at_epoch": 1789397903,
+        "rev": "074aa4422bf029908338e855d0c0f71470a971bb"
       }
     },
     "nvim-treesitter-endwise": {
