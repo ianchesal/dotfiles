@@ -3,5 +3,12 @@
 # macOS Terminal.app and SSH sessions start login shells, which read
 # this file instead -- without this shim the whole config never runs
 # on exactly the platforms it's meant for.
+#
+# bash also skips ~/.profile for login shells once ~/.bash_profile
+# exists, which would silently drop any PATH setup (e.g. Debian's
+# skel ~/.profile adding ~/.local/bin and ~/bin) -- so source it here
+# too, before ~/.bashrc, matching the usual login-shell ordering of
+# PATH setup before the interactive rc chain.
 
+[[ -f "$HOME/.profile" ]] && source "$HOME/.profile"
 [[ -f "$HOME/.bashrc" ]] && source "$HOME/.bashrc"

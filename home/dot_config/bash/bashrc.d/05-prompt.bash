@@ -6,6 +6,19 @@ else
   # Still shells out once to `git rev-parse --git-dir` to locate the
   # repo, but reads .git/HEAD directly for the branch name itself
   # rather than a second git subprocess call per prompt render.
+
+  # PS1 undergoes $(...), `...` and ${...} expansion at *render* time
+  # (bash's `promptvars` option, on by default) -- not just when this
+  # script assigns it. A branch name can legally contain $, backtick,
+  # ( and ), so interpolating it into PS1 unescaped is a command
+  # injection: `cd` into a repo with such a branch and arbitrary code
+  # re-runs on every subsequent prompt. Disabling promptvars makes
+  # bash use PS1 literally after its own one-time backslash-escape
+  # expansion (\u \h \w and the \[...\] color wrapping below still
+  # work -- those are handled unconditionally, not gated by
+  # promptvars).
+  shopt -u promptvars
+
   bash_parse_git_branch() {
     local git_dir head_line
     git_dir=$(git rev-parse --git-dir 2>/dev/null) || return

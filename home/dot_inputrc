@@ -6,6 +6,7 @@ set completion-ignore-case on
 set show-all-if-ambiguous on
 set colored-stats on
 set mark-symlinked-directories on
+set bell-style none
 
 # Type a prefix, then arrow through matching history -- the closest
 # vanilla-readline equivalent to zsh-autosuggestions /

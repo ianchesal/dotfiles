@@ -3,4 +3,10 @@
 # ~/.config/bash so it stays consistent with the rest of this repo's
 # tool configs (see zsh's ZDOTDIR indirection for the same idea).
 
+# bash sources ~/.bashrc for non-interactive shells too (e.g. `ssh host
+# cmd`, anything using BASH_ENV) -- bail out immediately in that case,
+# same guard Debian's own skel .bashrc uses, since aliases aren't even
+# expanded non-interactively and the full chain costs real time to load.
+[[ $- == *i* ]] || return
+
 [[ -f "$HOME/.config/bash/bashrc.sh" ]] && source "$HOME/.config/bash/bashrc.sh"
