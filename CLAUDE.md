@@ -218,8 +218,12 @@ This file provides guidance to AI agents working on this repository.
 - `~/.bashrc` is a thin loader for `~/.config/bash/bashrc.sh`, which sources
   numbered modules from `~/.config/bash/bashrc.d/*.bash` in order (history,
   shell options/vi mode, env/Homebrew, aliases, prompt, completion, fzf).
-  `~/.bash_profile` sources `~/.bashrc` so macOS Terminal.app and SSH login
-  shells pick it up -- bash does not do this automatically the way zsh does
+  `~/.bash_profile` sources `~/.profile` first (if present), then
+  `~/.bashrc`, so macOS Terminal.app and SSH login shells pick up the config
+  -- bash does not do this automatically the way zsh does. `~/.bashrc` has a
+  re-entrancy guard (`BASH_RC_LOADED`) so this can't double-load the
+  bashrc.d chain even though Debian/WSL2's `~/.profile` also sources
+  `~/.bashrc` itself
 - `~/.inputrc` carries readline tuning independent of bash itself, notably
   prefix-based history search on the arrow keys -- the closest vanilla
   equivalent to zsh-autosuggestions/history-substring-search without a

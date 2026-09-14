@@ -9,4 +9,11 @@
 # expanded non-interactively and the full chain costs real time to load.
 [[ $- == *i* ]] || return
 
+# .bash_profile sources both ~/.profile and ~/.bashrc, and on Debian/WSL2
+# ~/.profile itself sources ~/.bashrc -- without this guard a login shell
+# loads the whole bashrc.d chain twice, doubling PROMPT_COMMAND and every
+# eval'd integration (oh-my-posh, fzf).
+[[ -n ${BASH_RC_LOADED:-} ]] && return
+BASH_RC_LOADED=1
+
 [[ -f "$HOME/.config/bash/bashrc.sh" ]] && source "$HOME/.config/bash/bashrc.sh"
