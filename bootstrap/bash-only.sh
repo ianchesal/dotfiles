@@ -13,7 +13,7 @@
 set -euo pipefail
 
 REPO_RAW="${REPO_RAW:-https://raw.githubusercontent.com/ianchesal/dotfiles/main}"
-BASHRC_D_MODULES="01-history.bash 02-shopts.bash 03-env.bash 04-aliases.bash 05-prompt.bash 06-completion.bash 07-fzf.bash"
+BASHRC_D_MODULES="01-history.bash 02-shopts.bash 03-env.bash 04-aliases.bash 05-prompt.bash 06-completion.bash 07-fzf.bash 08-git.bash"
 BACKUP_SUFFIX=".bak.$(date +%Y%m%d%H%M%S)"
 
 BOLD='\033[1m'

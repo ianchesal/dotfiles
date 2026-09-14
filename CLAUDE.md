@@ -231,9 +231,17 @@ This file provides guidance to AI agents working on this repository.
 - Every optional integration (oh-my-posh, fzf, bash-completion, Homebrew) is
   probed with `command -v` / `[[ -f ]]` and silently no-ops when absent, so
   the config degrades gracefully on a stripped-down box
-- Feel-only scope by design: no git aliases, no fzf-git, no
-  kubectl/docker/terraform helpers ported from the zsh config -- just
-  history, prompt, safety aliases, readline tuning, and vi keybindings
+- Scope is feel plus git. History, prompt, safety aliases, readline
+  tuning and vi keybindings, and `08-git.bash` -- the zsh `g*`/`gh*`
+  alias block ported over, since a missing `gs` or `gco` is exactly what
+  makes a shell feel foreign. The `git com`/`fixup`/`main-branch` halves
+  of `gcom`/`gfu`/`grim` need no porting; they are git-config aliases
+  and already resolve in bash. `08-git.bash` also wires `__git_complete`
+  onto the aliases (sourcing git's completion itself first, because
+  bash-completion v2 lazy-loads it and leaves `__git_complete` undefined
+  at shell start) so `gco <TAB>` offers branches, not filenames
+- Still deliberately absent: fzf-git, and the kubectl/docker/terraform
+  helpers from the zsh config
 - Normal deployment is chezmoi, same as everything else. For a machine you
   don't want to (or can't) chezmoi-manage at all -- no git, no Homebrew, no
   repo checkout -- `bootstrap/bash-only.sh` fetches just these files
