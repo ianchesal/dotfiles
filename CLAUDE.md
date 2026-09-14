@@ -307,6 +307,13 @@ This file provides guidance to AI agents working on this repository.
 - Document complex workflows that should be remembered across sessions
 - Skills dividing line: skills for working *on this repo* (e.g., `managing-nvim-plugins`) go in `.claude/skills/` (project-scoped, only loaded in this repo); skills wanted in every session everywhere (e.g., `morning-startup`, `daily-wrap`) go in `claude/skills/` (symlinked to `~/.claude/skills`, global)
 - `~/.claude/settings.json` is seeded by `home/dot_claude/create_private_settings.json` and then never touched again (`create_` = write if absent). It is not tracked — it's live, per-machine state (includes work-specific persona/allowedTools config on work machines) and must never be committed. `claude/settings.skeleton.json` is the tracked, curated set of portable defaults everyone should start from. Use the `claude-settings` skill (`promote`/`apply`) to move changes between the two: `promote` lifts a general-purpose improvement out of the live `settings.json` into the tracked skeleton; `apply` layers the skeleton's defaults onto a live `settings.json` that's drifted behind it
+- Work-specific Claude config stays **out of the source state**, because this
+  repo is public. `~/.claude/oracle-gateway.json` (the `--settings` file that
+  points Claude Code at Persona's Anthropic proxy) was tracked until September
+  2026 and is now machine-local and unmanaged — same category as
+  `settings.json` above. It holds no secret, but the internal hostname isn't
+  worth publishing, and it's inert on a personal machine. Copy it by hand to a
+  new work box; don't `chezmoi add` it back
 
 ## Rust Configuration
 

@@ -21,6 +21,10 @@ __pycache__/
 !/.claude/skills/
 !/.claude/settings.json
 
+# Work-only Claude settings -- machine-local, never published (this repo is
+# public). See the Claude Configuration section of CLAUDE.md.
+/home/dot_claude/oracle-gateway.json
+
 # Git
 # NOTE: git/ignore IS tracked -- it's the shared global gitignore that git picks
 # up via its XDG default at ~/.config/git/ignore. Machine-specific git settings
