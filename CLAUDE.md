@@ -234,6 +234,13 @@ This file provides guidance to AI agents working on this repository.
 - Feel-only scope by design: no git aliases, no fzf-git, no
   kubectl/docker/terraform helpers ported from the zsh config -- just
   history, prompt, safety aliases, readline tuning, and vi keybindings
+- Normal deployment is chezmoi, same as everything else. For a machine you
+  don't want to (or can't) chezmoi-manage at all -- no git, no Homebrew, no
+  repo checkout -- `bootstrap/bash-only.sh` fetches just these files
+  straight from GitHub raw content and writes them into place, backing up
+  anything already there first: `curl -fsSL
+  https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/bash-only.sh
+  | bash`
 
 ## Git Configuration
 

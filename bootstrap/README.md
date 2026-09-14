@@ -10,6 +10,8 @@ by hand, not by `just`.
 centos.sh             Minimal CentOS/RHEL bootstrap: clones pyenv + rbenv (with
                       their plugins) and yum-installs tmux and neovim
 cloud-workstation.sh  Idempotent provisioning for a Linux cloud workstation
+bash-only.sh          Lays down just the standalone bash fallback config --
+                      no git, no chezmoi, no Homebrew, no repo checkout
 ```
 
 `cloud-workstation.sh` runs in numbered, re-runnable steps (each skips if
@@ -22,8 +24,21 @@ It used to do Homebrew, the Brewfile, `/etc/shells`, `chsh`, asdf and a pinned
 Ruby by hand — all of that moved into chezmoi or into a `just` recipe, so this
 is now a thin wrapper over the same path a fresh machine takes.
 
+`bash-only.sh` is the odd one out: it does not expect a repo checkout at all.
+It fetches only the handful of files the standalone bash config needs
+directly from GitHub's raw content and writes them into place, backing up
+anything already at those paths first. Meant for root shells, minimal or
+embedded boxes, and remote servers you don't want to (or can't) fully
+chezmoi-manage.
+
 ## Usage
 
-Run the script directly on the target machine, e.g. `bash bootstrap/centos.sh`
-or `./bootstrap/cloud-workstation.sh`. They expect the repo checked out at
-`$HOME/src/dotfiles` and may invoke `sudo`.
+Run `centos.sh` or `cloud-workstation.sh` directly on the target machine,
+e.g. `bash bootstrap/centos.sh` or `./bootstrap/cloud-workstation.sh`. They
+expect the repo checked out at `$HOME/src/dotfiles` and may invoke `sudo`.
+
+`bash-only.sh` needs no checkout and no `sudo` -- run it straight from GitHub:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/bash-only.sh | bash
+```
