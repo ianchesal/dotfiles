@@ -91,4 +91,9 @@ Pass the body on stdin with a **quoted** heredoc (`<<'EOF'`). Backticks and `$`
 are normal in PR bodies; with `--body "..."` the shell executes them first. This
 is the most common way this skill fails.
 
-Report the URL `gh` prints.
+## 5. Print the URL
+
+End with the URL `gh` printed — the bare `https://github.com/...`, on its own
+line, as the last thing in your reply. Not a markdown link, not `[#123](url)`,
+not wrapped in prose. The raw string survives copy-paste out of a terminal that
+doesn't render links, and gets pasted into Slack and Jira as-is.
