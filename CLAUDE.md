@@ -12,13 +12,22 @@ This file provides guidance to AI agents working on this repository.
 - Deployment is **chezmoi**, not Rake. The repo is a *source*; configs are
   copied into place, not symlinked
 - `.chezmoiroot` contains `home`, so the chezmoi source state lives in `home/`
-  and everything else at the repo root (`justfile`, `brew/`, `script/`, `docs/`,
-  `nvim/`) is invisible to chezmoi
+  and **everything else at the repo root is invisible to chezmoi**: `asdf/`,
+  `bootstrap/`, `brew/`, `claude/`, `debian/`, `docs/`, `just/`, `nvim/`,
+  `script/`, `slack/`, `terminal/`, `winterm/`, plus `justfile`, `README.md`,
+  `TODO.md`, and the `.claude/`, `.devcontainer/` and `.github/` dirs
+- Two chezmoi control files live outside `home/` and inside it respectively:
+  `.chezmoiroot` at the repo root, and `home/.chezmoiremove`, which lists paths
+  chezmoi should delete from a machine on the next apply
 - Source naming: `home/dot_config/tmux/` → `~/.config/tmux/`, `dot_` at **every**
   level. `chezmoi add` applies the prefixes for you — don't hand-name files
-- Prefixes in use: `executable_` (exec bit), `create_` (seed once, never
-  clobber — this is what protects `~/.claude/settings.json`), `symlink_` (the
-  entry's contents are the link target), `run_once_after_*` (setup scripts)
+- Prefixes in use: `executable_` (exec bit, 13 entries), `create_` (seed once,
+  never clobber — one entry, `home/dot_claude/create_private_settings.json`, and
+  what protects `~/.claude/settings.json`), `symlink_` (the entry's contents are
+  the link target — one entry, `symlink_nvim.tmpl`),
+  `run_once_before_*` (one entry, the Brewfile bootstrap) and `run_once_after_*`
+  (four entries, setup scripts). Ordering matters: `before` runs ahead of any
+  config being written, `after` once everything has landed
 - **In templates the repo root is `.chezmoi.workingTree`**, never
   `.chezmoi.sourceDir` (which resolves to `<repo>/home`)
 - **`nvim/` is deliberately NOT in the source state.** It stays at the repo root
@@ -28,9 +37,10 @@ This file provides guidance to AI agents working on this repository.
   status`/`diff`/`verify` — that is intended
 - Every config deploys on every platform. No OS gating: a kitty config on Linux
   is inert and not worth a template guard
-- `~/.work_machine` stays a **runtime** check (`git/gh-dash/gh-dash.sh` reads the
-  file itself) so tmux popups and cron agree with interactive shells. Both
-  `config.yml` and `config-work.yml` deploy everywhere
+- `~/.work_machine` stays a **runtime** check
+  (`home/dot_config/gh-dash/executable_gh-dash.sh` reads the file itself) so
+  tmux popups and cron agree with interactive shells. Both `config.yml` and
+  `config-work.yml` deploy everywhere
 - chezmoi does **not** back up what it replaces, and its drift protection is
   machine-local (`chezmoistate.boltdb` is not in the repo). On a machine chezmoi
   has never written to, `apply` replaces pre-existing files with no prompt —
@@ -112,7 +122,11 @@ This file provides guidance to AI agents working on this repository.
   upgrade): `script/verify-chezmoi-assumptions.sh` — scratch-dir only, never
   touches the real home
 - Health-check a machine: `just doctor`
-- Lint shell scripts and justfiles: `just lint` (shellcheck + `just --fmt --check`)
+- Lint shell scripts and justfiles: `just lint` — shellcheck (`--severity=warning`),
+  an `ast.parse` syntax check on `script/gen-claude-completions.py`, and
+  `just --fmt --check`. This is exactly what CI runs (`.github/workflows/ci.yml`).
+  Markdown is **not** linted: there is no markdown linter in the Brewfile, in
+  `just lint`, or in CI
 - Run the shell script tests: `just test-scripts`; those plus the nvim specs: `just test`
 - Update configurations: `just update`
 - Update Neovim plugins (30-day delayed): `just nvim::update`
@@ -157,11 +171,17 @@ This file provides guidance to AI agents working on this repository.
 
 ## Tmux Configuration
 
-- Deployed to `~/.config/tmux` following XDG directory structure (the repo's `./tmux/` dir is symlinked there)
-- Main configuration in `tmux.conf`, theme in `theme.conf`
+- Source state is `home/dot_config/tmux/`, deployed to `~/.config/tmux`. It is
+  **copied like everything else, not symlinked** — `nvim/` is the only `symlink_`
+  entry in the repo, so a tmux edit needs a `chezmoi apply` to go live
+- Main configuration in `tmux.conf`, theme in `theme.conf`. Also present:
+  `theme-gcw.conf` (cloud-workstation variant), `tmux-minimal.conf`, and a
+  `workmux/` subdirectory of helper scripts
 - Uses TPM (Tmux Plugin Manager) for plugins, installed to `~/.config/tmux/plugins/`
 - VHS Era theme with powerline-style status bar segments and double-arrow separators
-- Custom helper scripts (e.g., `git-aware-popup.sh`) live in the `./tmux/` directory
+- Custom helper scripts live alongside the config in `home/dot_config/tmux/` and
+  carry the `executable_` prefix — `executable_git-aware-popup.sh` deploys as
+  `~/.config/tmux/git-aware-popup.sh`
 - Plugin-specific configuration is grouped in labeled sections within `tmux.conf` (not inline with plugin declarations)
 - Status bar uses the VHS Era color palette defined in the Oh My Posh section
 - TPM bootstrap (`run '~/.config/tmux/plugins/tpm/tpm'`) must always be the last line in `tmux.conf`
@@ -186,13 +206,16 @@ This file provides guidance to AI agents working on this repository.
 
 ## Zsh Configuration
 
-- Organized using XDG directory structure with configs in `.config/zsh`
-- Zsh files are modular and stored in `./zsh/zshrc.d/` directory
+- Source state is `home/dot_config/zsh/`, deployed to `~/.config/zsh`. The
+  `dot_zshrc`/`dot_zprofile` entries there become `~/.config/zsh/.zshrc` and
+  `.zprofile`; `~/.zshenv` comes from `home/dot_zshenv` and is what points ZDOTDIR
+  at the XDG location
+- Zsh files are modular and stored in `home/dot_config/zsh/zshrc.d/`
 - Using `zdharma-continuum/zinit` for zsh plugin support
-- Custom functions go in `./zsh/functions/` directory with one function per file
-- Custom completions go in `completions/` directory following zsh-completions format
-- Aliases go in the `./zsh/zshrc.d/04-aliases.zsh` file
-- Naming convention for zshrc.d files: numeric prefix for load order (e.g., `02-functions.zsh`) (but only if load order is strictly required)
+- Custom functions go in `home/dot_config/zsh/functions/` with one function per file
+- Custom completions go in `home/dot_config/zsh/completions/` following zsh-completions format
+- Aliases go in `home/dot_config/zsh/zshrc.d/04-aliases.zsh`
+- Naming convention for zshrc.d files: numeric prefix for load order (e.g., `02-functions.zsh`) (but only if load order is strictly required); unordered concerns use a bare name, as `machine.zsh` does
 - Global aliases use suffix format (e.g., `alias -g G='| grep -E'`)
 - History settings: large history size, ignore duplicates, share across sessions
 - Use descriptive comments for functions and aliases
@@ -252,16 +275,21 @@ This file provides guidance to AI agents working on this repository.
 
 ## Git Configuration
 
-- Located in `.config/git` following XDG directory structure
-- Main configuration in `config` file with local overrides in `local` file
+- Source state is `home/dot_config/git/`, deployed to `~/.config/git`
+- Main configuration in `config`, which ends with `[include] path = local`.
+  That `local` file is **not tracked** — it is per-machine identity and overrides,
+  so it is absent from the source state by design and exists only on the box
 - Use descriptive git aliases that enhance workflow speed
-- Git hooks stored in `hooks/` directory (pre-push hook prevents pushing fixup commits)
-- GitHub CLI configuration in `gh/config.yml` with helpful aliases
-- GitHub Dashboard config in `gh-dash/config.yml` for PR management, with
-  `gh-dash/config-work.yml` as a work-machine overlay (`include`s the base
-  config, replaces `prSections` with `org:persona-id`-scoped ones);
-  `gh-dash/gh-dash.sh` selects between them on the `~/.work_machine` flag and
-  is what tmux `prefix + h` and the `ghd` alias invoke
+- Git hooks stored in `hooks/` (`executable_pre-push` prevents pushing fixup
+  commits; `workmux-status` backs the worktree tooling)
+- GitHub CLI configuration in `home/dot_config/gh/config.yml` with helpful aliases
+- GitHub Dashboard config in `home/dot_config/gh-dash/config.yml` for PR
+  management, with `config-work.yml` alongside it as a work-machine overlay
+  (`include`s the base config, replaces `prSections` with
+  `org:persona-id`-scoped ones); `executable_gh-dash.sh` in that same directory
+  selects between them on the `~/.work_machine` flag and is what tmux
+  `prefix + h` and the `ghd` alias invoke. Note `gh-dash/` is its own
+  `dot_config` entry — it is **not** nested under `git/`
 - Delta used for enhanced diffs with side-by-side display
 - Conventions for commit messages: no fixup commits in pushed branches
 - Git workflow relies heavily on custom aliases and integrations
@@ -298,8 +326,11 @@ This file provides guidance to AI agents working on this repository.
 
 ## Claude Configuration
 
-- Located in `.config/claude` following XDG directory structure
-- Global memory file stored in `.config/claude/CLAUDE.md` for persistent context across Claude Code sessions
+- Source state is `home/dot_claude/`, deployed to `~/.claude` — **not** under
+  `.config/`. Claude Code does not honour XDG for its own directory, so this one
+  config deliberately breaks the XDG pattern the rest of the repo follows
+- Global memory file is `home/dot_claude/CLAUDE.md`, deployed to
+  `~/.claude/CLAUDE.md`, for persistent context across Claude Code sessions
 - Memory file maintains important context, preferences, and recurring tasks
 - Structure memory file with clear section headers and descriptive content
 - Memory file content should be concise and focused on high-value information
@@ -318,7 +349,14 @@ This file provides guidance to AI agents working on this repository.
   apply` silently overwrites it — `chezmoi re-add` captures such an edit instead
 - There is no `claude/skills/` directory; `claude/` at the repo root holds only
   `apt-claude.sh`
-- `~/.claude/settings.json` is seeded by `home/dot_claude/create_private_settings.json` and then never touched again (`create_` = write if absent). It is not tracked — it's live, per-machine state (includes work-specific persona/allowedTools config on work machines) and must never be committed. `claude/settings.skeleton.json` is the tracked, curated set of portable defaults everyone should start from. Use the `claude-settings` skill (`promote`/`apply`) to move changes between the two: `promote` lifts a general-purpose improvement out of the live `settings.json` into the tracked skeleton; `apply` layers the skeleton's defaults onto a live `settings.json` that's drifted behind it
+- `~/.claude/settings.json` is seeded by `home/dot_claude/create_private_settings.json` and then never touched again (`create_` = write if absent). It is not tracked — it's live, per-machine state (includes work-specific persona/allowedTools config on work machines) and must never be committed. `claude/settings.skeleton.json` was meant to be the tracked, curated set of
+  portable defaults, read and written by the `claude-settings` skill's
+  `promote`/`apply` verbs. **That file does not currently exist anywhere in the
+  repo**, so both verbs are broken as written: `promote` has nowhere to write and
+  `apply` has nothing to read. The skill at
+  `home/dot_claude/skills/claude-settings/SKILL.md` still refers to it. Either
+  recreate the skeleton from a known-good `~/.claude/settings.json` or retire the
+  skill — do not assume the file is there
 - Work-specific Claude config stays **out of the source state**, because this
   repo is public. `~/.claude/oracle-gateway.json` (the `--settings` file that
   points Claude Code at Persona's Anthropic proxy) was tracked until September
