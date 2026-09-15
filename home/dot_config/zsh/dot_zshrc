@@ -51,6 +51,13 @@ if (( $+commands[brew] )); then
     export HOMEBREW_ZSH_COMPLETIONS="$(brew --prefix)/share/zsh-completions"
   fi
   FPATH="$HOMEBREW_ZSH_COMPLETIONS":$FPATH
+
+  # `brew shellenv` above is what normally injects $HOMEBREW_PREFIX/share/zsh/site-functions
+  # (where per-formula completions like chezmoi's actually live), but it only runs when
+  # $HOMEBREW_PREFIX is unset. A long-lived parent process (tmux server, WSL instance) can
+  # hand every child shell an already-exported $HOMEBREW_PREFIX from whenever it started,
+  # forever skipping that eval and leaving this dir off fpath. Add it unconditionally.
+  FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions":$FPATH
 fi
 
 # Set the directory we want to store zinit and plugins
