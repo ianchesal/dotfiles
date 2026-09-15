@@ -349,14 +349,27 @@ This file provides guidance to AI agents working on this repository.
   apply` silently overwrites it — `chezmoi re-add` captures such an edit instead
 - There is no `claude/skills/` directory; `claude/` at the repo root holds only
   `apt-claude.sh`
-- `~/.claude/settings.json` is seeded by `home/dot_claude/create_private_settings.json` and then never touched again (`create_` = write if absent). It is not tracked — it's live, per-machine state (includes work-specific persona/allowedTools config on work machines) and must never be committed. `claude/settings.skeleton.json` was meant to be the tracked, curated set of
-  portable defaults, read and written by the `claude-settings` skill's
-  `promote`/`apply` verbs. **That file does not currently exist anywhere in the
-  repo**, so both verbs are broken as written: `promote` has nowhere to write and
-  `apply` has nothing to read. The skill at
-  `home/dot_claude/skills/claude-settings/SKILL.md` still refers to it. Either
-  recreate the skeleton from a known-good `~/.claude/settings.json` or retire the
-  skill — do not assume the file is there
+- `~/.claude/settings.json` is seeded by
+  `home/dot_claude/create_private_settings.json` and then never touched again
+  (`create_` = write if absent). The live file is not tracked — it is per-machine
+  state and on work machines carries persona/allowedTools config that must never
+  be committed
+- **The tracked seed is itself the curated set of portable defaults.** There is no
+  separate skeleton file and no `claude-settings` skill; both were retired in
+  September 2026 once the seed and the skeleton had converged on the same content.
+  To change the defaults, hand-edit `create_private_settings.json`
+- **Never `chezmoi re-add ~/.claude/settings.json`.** The live file carries
+  `allowedTools`, `enabledPlugins`, `env`, `extraKnownMarketplaces` and
+  `feedbackSurveyState` on top of the seed — machine-local keys, and `env` plus
+  `allowedTools` are exactly what this public repo must not publish. Editing the
+  seed by hand is the only safe direction
+- `create_` will **not** update a machine that already has a `settings.json`, and
+  templating does not change that (verified: `create_` + `.tmpl` leaves an
+  existing file alone even under `chezmoi apply --force`). Improved defaults
+  therefore reach fresh machines only; to re-seed an existing one, delete
+  `~/.claude/settings.json` and apply. If that ever needs to be automatic, the
+  primitive is `modify_` — its script receives the current file on stdin — not a
+  template
 - Work-specific Claude config stays **out of the source state**, because this
   repo is public. `~/.claude/oracle-gateway.json` (the `--settings` file that
   points Claude Code at Persona's Anthropic proxy) was tracked until September
