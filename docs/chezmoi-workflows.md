@@ -50,7 +50,7 @@ chezmoi diff                                  # preview
 read -q "Apply these changes? [y/N] "         # gate
 chezmoi apply --error-on-conflict
 just update && zinit update
-just nvim::commit                              # if pins moved
+just nvim::commit                              # dads-gaming-pc only, if pins moved
 ```
 
 You get a preview and an explicit gate. Under the old symlink model `git pull`
@@ -62,11 +62,23 @@ was chronically dirty with tool-written state, and it carried a real bug: an
 `&&` chain meant any failure between stash and pop left your work silently
 stashed.
 
+**`nvim::update` is deliberately not part of `just update`, and `dfu` only runs
+it on `dads-gaming-pc`** (checked via `hostname`, same pattern as
+`hb_update_node`'s `tranquility` check). Running it from more than one machine
+near-simultaneously produces two "Deps updates" commits that bump
+`pins.json`/`nvim-pack-lock.json` to the same revs but with different
+`first_seen`/`pinned_at` timestamps — a generated-file merge conflict that
+can't be resolved by hand-editing (the files must never be hand-edited) except
+by dropping the redundant commit. `dads-gaming-pc` is the single source of
+truth for nvim plugin pins; every other machine just picks up the committed
+result via its normal `dfu` pull.
+
 Two guards are retained from the original function and must not be dropped:
 
 - refuse to run if `nvim/pins.json` or `nvim/nvim-pack-lock.json` have
-  uncommitted or staged changes
-- `just nvim::commit` afterwards if the updater moved the pins
+  uncommitted or staged changes — this still catches an `nvim::update` run on
+  `dads-gaming-pc` that was never committed before the next `dfu`
+- `just nvim::commit` after `nvim::update`, on `dads-gaming-pc` only, if pins moved
 
 `zinit update` also stays, and matters more than it looks. Neither zinit nor tpm
 is managed by chezmoi: zinit bootstraps itself in `dot_zshrc`, and tpm is cloned
@@ -181,7 +193,8 @@ the file, the second is what `apply` would change.
 
 ## Working on nvim
 
-Unchanged from before the migration:
+`dfu` runs `nvim::update` and `nvim::commit` automatically, but only on
+`dads-gaming-pc` (see above). Elsewhere, or to run it manually:
 
 ```bash
 just nvim::update      # 30-day delayed pin updates, then mason prune

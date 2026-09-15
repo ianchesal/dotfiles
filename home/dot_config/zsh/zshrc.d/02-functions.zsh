@@ -154,11 +154,17 @@ function dotfiles_update() {
   just --justfile "$REPO/justfile" update
   zinit update
 
-  # An update run moves the pins; commit them so every machine converges on the
-  # same delayed-pin state.
-  if ! git -C "$REPO" diff --quiet -- $PINS 2>/dev/null; then
-    echo "\033[1;33m==> Neovim plugins were updated, committing...\033[0m"
-    just --justfile "$REPO/justfile" nvim::commit
+  # nvim::update runs from one designated machine only. Running it from more
+  # than one machine near-simultaneously produces two "Deps updates" commits
+  # that bump pins.json/nvim-pack-lock.json to the same revs but with
+  # different first_seen/pinned_at timestamps -- a generated-file merge
+  # conflict that can only be fixed by dropping the redundant commit.
+  if [[ "$(hostname)" == "dads-gaming-pc" ]]; then
+    just --justfile "$REPO/justfile" nvim::update
+    if ! git -C "$REPO" diff --quiet -- $PINS 2>/dev/null; then
+      echo "\033[1;33m==> Neovim plugins were updated, committing...\033[0m"
+      just --justfile "$REPO/justfile" nvim::commit
+    fi
   fi
 
   echo "\033[1;32m==> Update complete! Reloading shell...\033[0m"
