@@ -97,6 +97,54 @@ the `C...` part at the end of the URL.
 
 Include your incidents/on-call channel here if you have one.
 
+## Gmail: Inbox Triage
+
+The skill reads your inbox to answer "am I missing email?" — an overnight pass, an
+aging sweep for what already slipped, and a check for threads where someone is waiting
+on you. Gmail is **read-only**: nothing is starred, labelled, archived, or replied to.
+
+- **Account index**: `{{GMAIL_ACCOUNT_INDEX}}`
+  - The `u/N` in your Gmail URLs, used to build clickable thread links. `0` if work
+    email is the only account signed in to that browser profile; `1` or higher if you
+    have a personal account signed in ahead of it.
+  - Check by opening Gmail and reading the URL: `mail.google.com/mail/u/1/` → `1`.
+  - Getting this wrong produces links that open the wrong account's inbox, so confirm
+    it rather than assuming `0`.
+  - Example: `0`
+- **Aging window**: `14d`
+  - How far back the aging sweep looks for unread and unanswered mail. Gmail duration
+    syntax (`7d`, `14d`, `1m`). Widen it if things still slip through; narrow it if the
+    Email section is too long to read.
+- **VIP email addresses**: `{{VIP_EMAIL_ADDRESSES}}`
+  - Anything from these senders earns a `[VIP]` badge and is always surfaced. These are
+    **email addresses, not the Slack usernames** from the VIP DMs section above — the
+    same person needs an entry in both places.
+  - Comma-separated. Example: `boss@example.com, ceo@example.com`
+- **External domains**: `{{EXTERNAL_DOMAINS}}`
+  - Vendor, customer, and partner domains. Mail from these earns `[EXTERNAL]`, on the
+    reasoning that outside mail is what actually costs you when it sits unanswered.
+  - Reuse the same domains you listed under **Calendar: People to Flag** below.
+  - Comma-separated. Example: `@google.com, @salesforce.com`
+- **Noise senders**: `{{EMAIL_NOISE_SENDERS}}`
+  - Gmail negative-match terms appended to every triage query, on top of the
+    `-category:promotions/social/forums` exclusions the skill always applies.
+  - Use this for newsletters and automated mail that survives Gmail's own
+    categorisation. Do **not** list Jira, GitHub, Notion, or Slack notifications — the
+    skill already suppresses those, because those systems have their own sections in
+    the briefing and reporting them twice buries real mail.
+  - Example: `-from:newsletter@example.com -from:noreply@example.com -subject:"weekly digest"`
+  - Leave blank to apply only the category exclusions.
+  - Two patterns worth knowing about, both seen in a real inbox rather than invented:
+    **transactional-notification floods** (a spend or billing tool firing several
+    near-identical mails in a minute) survive Gmail's categorisation and will dominate
+    the overnight pass — filter the sender, not the subject. And if you are **migrating
+    off Superhuman**, its `reminder@superhuman.com` follow-ups stay in your threads
+    forever. Do not filter those: the skill uses them as a signal, since each one marks
+    a thread you had already flagged as needing a reply.
+
+If a genuine thread gets missed, suspect this list before widening anything else —
+over-broad noise filtering is the likeliest way this step goes quiet on real mail.
+
 ## Calendar: People to Flag
 
 People whose presence on your calendar warrants a prep note:
@@ -129,7 +177,13 @@ The full briefing is written here — one page per workday.
   - Example: `collection://3d8ef6bc-b0fd-80c5-97d3-000b7ca353c9`
 
 The database needs these properties. The skill reads the live schema at preflight, so
-the live schema wins if it drifts from this list:
+the live schema wins if it drifts from this list.
+
+**If you are adding Gmail triage to an existing database**, seed `Email Backlog` and
+`Awaiting Reply` as `Flags` options before the first run. Notion will not create
+multi-select options on the fly, and the skill omits an unseeded flag rather than
+failing the page write — so without seeding you get briefings that read correctly but
+never carry the email flags.
 
 | Property | Type | Purpose |
 |----------|------|---------|
@@ -140,7 +194,7 @@ the live schema wins if it drifts from this list:
 | `The One Thing` | text | Coaching line, verbatim |
 | `Today Needs` | text | Coaching line, verbatim |
 | `One Question` | text | Coaching line, verbatim |
-| `Flags` | multi-select | `Incident`, `Blocked Jira`, `RSVP Needed`, `Vendor`, `Org Change`, `Travel/PTO`, `Interview`, `Week Ahead` |
+| `Flags` | multi-select | `Incident`, `Blocked Jira`, `RSVP Needed`, `Vendor`, `Org Change`, `Travel/PTO`, `Interview`, `Week Ahead`, `Email Backlog`, `Awaiting Reply` |
 | `1:1s With` | multi-select | People with a 1:1 that day |
 | `Meetings` | number | Real meetings, excluding focus/Clockwise/solo blocks |
 | `Focus Hours` | number | Uninterrupted hours available |

@@ -305,7 +305,19 @@ This file provides guidance to AI agents working on this repository.
 - Memory file content should be concise and focused on high-value information
 - Never include project-specific terminology, conventions, and preferences in the global memory file — those belong in the project's CLAUDE.md
 - Document complex workflows that should be remembered across sessions
-- Skills dividing line: skills for working *on this repo* (e.g., `managing-nvim-plugins`) go in `.claude/skills/` (project-scoped, only loaded in this repo); skills wanted in every session everywhere (e.g., `morning-startup`, `daily-wrap`) go in `claude/skills/` (symlinked to `~/.claude/skills`, global)
+- Skills dividing line: skills for working *on this repo* (e.g.,
+  `managing-nvim-plugins`) go in `.claude/skills/` at the repo root — project-scoped,
+  outside the chezmoi source state, only loaded in this repo. Skills wanted in every
+  session everywhere (e.g., `morning-startup`, `daily-wrap`) go in
+  `home/dot_claude/skills/` — chezmoi source state, deployed to `~/.claude/skills/`
+- Global skills are **copied, not symlinked**. `~/.claude/skills` is a real directory,
+  so a skill edited in the repo is not live until the next `chezmoi apply` — unlike
+  `nvim/`, which is a `symlink_` entry and takes effect instantly. Editing a global
+  skill is a two-step job: change it here, then apply. Conversely, editing one directly
+  under `~/.claude/skills/` puts it out of sync with the repo and the next `chezmoi
+  apply` silently overwrites it — `chezmoi re-add` captures such an edit instead
+- There is no `claude/skills/` directory; `claude/` at the repo root holds only
+  `apt-claude.sh`
 - `~/.claude/settings.json` is seeded by `home/dot_claude/create_private_settings.json` and then never touched again (`create_` = write if absent). It is not tracked — it's live, per-machine state (includes work-specific persona/allowedTools config on work machines) and must never be committed. `claude/settings.skeleton.json` is the tracked, curated set of portable defaults everyone should start from. Use the `claude-settings` skill (`promote`/`apply`) to move changes between the two: `promote` lifts a general-purpose improvement out of the live `settings.json` into the tracked skeleton; `apply` layers the skeleton's defaults onto a live `settings.json` that's drifted behind it
 - Work-specific Claude config stays **out of the source state**, because this
   repo is public. `~/.claude/oracle-gateway.json` (the `--settings` file that

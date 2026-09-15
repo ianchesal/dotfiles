@@ -1,6 +1,6 @@
 ---
 name: morning-startup
-description: Use when the user wants to start their workday, get a morning briefing, or says things like "start my day", "morning startup", "good morning", "what's on my plate today", "morning briefing", or "let's get the day started". This skill reads context from yesterday's personal journal and the previous Daily Startup entry, gathers context from Calendar, Slack, and Jira in parallel, writes a full briefing page to the Daily Startup database in Notion, and places a slim briefing stub with executive coaching highlights into today's personal journal. Invoke whenever the user signals they are beginning their workday.
+description: Use when the user wants to start their workday, get a morning briefing, or says things like "start my day", "morning startup", "good morning", "what's on my plate today", "morning briefing", or "let's get the day started". This skill reads context from yesterday's personal journal and the previous Daily Startup entry, gathers context from Calendar, Slack, Jira, and Gmail in parallel, writes a full briefing page to the Daily Startup database in Notion, and places a slim briefing stub with executive coaching highlights into today's personal journal. Invoke whenever the user signals they are beginning their workday.
 ---
 
 # Morning Startup
@@ -8,7 +8,7 @@ description: Use when the user wants to start their workday, get a morning brief
 This skill helps you start your workday by:
 1. Checking all data sources are available (preflight check)
 2. Reading context from your Obsidian daily journal and the previous Daily Startup entry
-3. Gathering today's context from Calendar, Slack, and Jira in parallel
+3. Gathering today's context from Calendar, Slack, Jira, and Gmail in parallel
 4. Writing a full briefing page to the Daily Startup database in Notion
 5. Writing a slim `## Work Day` stub (Notion link + coaching highlights) into today's personal journal
 
@@ -35,7 +35,7 @@ from your `config.md`.
 
 ## Step 0: Preflight Check
 
-Before reading any notes or gathering any data, verify all four MCP data sources
+Before reading any notes or gathering any data, verify all five MCP data sources
 are reachable. Run the following probe calls **in parallel**:
 
 | Source | Probe call |
@@ -44,13 +44,14 @@ are reachable. Run the following probe calls **in parallel**:
 | Slack | `mcp__claude_ai_Slack__slack_search_users` with query `{{SLACK_USER_ID}}` |
 | Jira | `mcp__claude_ai_Atlassian__atlassianUserInfo` |
 | Notion | `mcp__claude_ai_Notion__notion-fetch` with id `{{NOTION_STARTUP_DATA_SOURCE}}` |
+| Gmail | `mcp__claude_ai_Gmail__list_labels` |
 
 The Notion probe doubles as a schema read — keep its response. Step 4 needs the exact
 property names, and they are authoritative over the ones written in this file.
 
-**If all four probes succeed**, print:
+**If all five probes succeed**, print:
 
-> ✅ All data sources available (Calendar, Slack, Jira, Notion) — starting briefing…
+> ✅ All data sources available (Calendar, Slack, Jira, Notion, Gmail) — starting briefing…
 
 Then proceed to Step 2.
 
@@ -114,7 +115,7 @@ personal state and work continuity.
 
 ## Step 3: Gather Context (Run in Parallel)
 
-Gather all three data sources simultaneously. Do NOT wait for one to finish before
+Gather all four data sources simultaneously. Do NOT wait for one to finish before
 starting the others.
 
 ### 3a. Google Calendar
@@ -386,7 +387,178 @@ If no open issues, note "No open Jira issues assigned."
 
 ---
 
-## Step 3d: Verification Gate (do this BEFORE writing anything)
+### 3d. Gmail — Inbox Triage
+
+Gmail is **read-only** to this skill. Never star, label, archive, trash, or reply —
+surfacing what needs attention is the job; acting on it is the user's.
+
+**⚠️ Gmail search filters leak at thread granularity — never trust a result set at
+face value.** `search_threads` matches whole *threads*: Gmail finds a matching message,
+then returns the entire conversation. Verified against a real inbox (2026-09-15):
+`in:inbox is:unread after:2026/09/14` returned threads whose newest message was from
+April and June, none of them unread, and returned the **same 11 results** as a bare
+`in:inbox is:unread` — the `after:` clause changed nothing.
+
+So the search is a **candidate generator, not a filter**. For every pass below, re-check
+each returned thread locally against the message metadata the response already gives you:
+
+- **Unread** means a message carries `UNREAD` in its `labelIds`. A thread with no
+  `UNREAD` message anywhere is read, whatever the query said.
+- **In the window** means that message's `date`/`internalDate` falls inside it. Do not
+  infer recency from the thread appearing in an `after:` search.
+
+Drop threads that fail the local re-check silently. Both date forms (`2026/09/14` and
+`2026-09-14`) behave identically through this MCP, so either is fine to pass.
+
+**The noise filter.** Append this to every pass below:
+
+```
+-category:promotions -category:social -category:forums {{EMAIL_NOISE_SENDERS}}
+```
+
+Beyond that, **drop notification mail from systems that already have their own section
+in this briefing** — Jira, GitHub, Notion, Slack digests, and calendar invites. The
+Calendar, Slack, and Jira sections are authoritative for those; an `## Email` section
+that re-reports them buries the human mail the user is actually missing, which is the
+entire point of this step. Drop them silently; do not list them as suppressed.
+
+**Pass 1 — Overnight arrivals.** What landed since the last briefing:
+
+```
+in:inbox is:unread after:[yesterday YYYY/MM/DD] <noise filter>
+```
+
+**Pass 2 — Aging sweep.** What already slipped past. This pass is why the step exists,
+and it is deliberately **not** gated on `is:unread`:
+
+```
+in:inbox older_than:1d newer_than:{{EMAIL_AGING_WINDOW}} <noise filter>
+```
+
+**Unread is the wrong gate for "am I missing email?"** The mail that actually goes
+missing has usually been *opened* and then dropped — read in a browser tab, never
+answered. Verified in this inbox (2026-09-15): a GitHub support thread addressed to the
+user, cc'ing their team, had sat in the inbox unanswered since 7 August with no `UNREAD`
+label anywhere. An unread-gated sweep does not see it, and it is exactly the kind of
+thread the user is asking about. Read-and-unanswered is a finding, not a non-event.
+
+Use `mcp__claude_ai_Gmail__search_threads` with `view: THREAD_VIEW_MINIMAL` and
+`pageSize: 50` for both. `THREAD_VIEW_MINIMAL` returns `sender`, `to_recipients`,
+`cc_recipients`, `subject`, `snippet`, `date`, and `label_ids` — everything the badge
+rules below need, so classify from the search response and do **not** spend a
+`get_thread` call per result.
+
+**Pass 3 — Awaiting your reply.** Gmail has no "needs a reply" operator, so this is a
+local check over a capped candidate set. Build the candidates from passes 1 and 2 plus:
+
+```
+in:inbox is:important newer_than:{{EMAIL_AGING_WINDOW}} <noise filter>
+```
+
+Take at most **15** candidates, preferring ones that already earn a `[VIP]`,
+`[EXTERNAL]`, or `[DIRECT]` badge. For each, call `mcp__claude_ai_Gmail__get_thread`
+with `messageFormat: METADATA_ONLY` — that format returns `sender`, `toRecipients`,
+`ccRecipients`, `labelIds`, and `date` per message, which is everything the direction
+check and the badge rules need, with none of the body text.
+
+Find the **last human message** in the thread and compare its `sender` to
+`{{WORK_EMAIL}}`. Not yours → the ball is in your court.
+
+**⚠️ "Last message" is not the last array element.** Automated mail lands at the end of
+threads and masks the real direction. Walk backwards and skip:
+
+- **Superhuman follow-up reminders** (`reminder@superhuman.com`). These are live in this
+  inbox — verified 2026-09-15, several threads have one as their newest message, dated
+  well after the last real exchange. Taking the array's last element makes the thread
+  look like it came from neither party and the direction check silently fails.
+  They are also a useful tell: a Superhuman reminder marks a thread the user had already
+  flagged as needing a reply and then lost when they left the client. Treat a thread
+  carrying one as a strong `[AWAITING]` candidate.
+- **Delivery and auto-reply noise** — bounces, `noreply@`/`no-reply@` senders,
+  out-of-office replies, read receipts.
+- **Your own forwards to filing addresses** (receipts, expense inboxes). A message from
+  `{{WORK_EMAIL}}` to a robot is not you answering the human.
+
+If skipping leaves no human message, drop the thread rather than guessing.
+
+Stop at 15. A wide inbox with a hundred stale threads is a backlog to report as a
+count, not a hundred `get_thread` calls.
+
+**Awaiting is a placement, not a badge.** Pass 3's finding decides which block a thread
+goes in — `🔴 Needs Your Reply` or `⭐ Priority` — and the sender badge below still
+shows. Do not let the two compete: a thread from the user's manager that is waiting on a
+reply must read `[VIP]` *and* appear under Needs Your Reply. Collapsing that to one
+marker loses either who it is from or the fact that they are waiting, and both matter.
+
+**Badge rules.** Beyond placement, assign each surfaced thread exactly one sender badge,
+in priority order — same one-badge discipline as the incident rules in 3b:
+
+- `[VIP]` — sender appears in `{{VIP_EMAIL_ADDRESSES}}`
+- `[EXTERNAL]` — sender's domain appears in `{{EXTERNAL_DOMAINS}}` (vendor, customer,
+  partner). Anything from outside the company that is not a newsletter
+- `[DIRECT]` — `{{WORK_EMAIL}}` is in `to_recipients`, the sender is a human, and the
+  thread has few recipients. Being one of thirty names on a `cc_recipients` list is not
+  `[DIRECT]` — classify that as `[FYI]` and collapse it
+- `[ADMIN]` — deadline-shaped mail from HR, legal, finance, security, or compliance:
+  benefits enrollment, an access review, a signature request, a compliance training due
+  date. These are quiet and easy to miss precisely because they are boring
+
+**What to show.** Show every thread earning `[VIP]`, `[EXTERNAL]`, `[AWAITING]`, or
+`[ADMIN]`. Show `[DIRECT]` threads from the overnight pass. **Collapse** everything
+else to counts — `N other threads, oldest N days` — and collapse `[FYI]` entirely.
+**Omit the whole `## Email` section** (not even a header) when nothing earns a badge
+and there is no backlog to count.
+
+**Backlog signal — this is the "am I missing email?" answer.** Report, plainly:
+- total unread in inbox (`in:inbox is:unread` with the noise filter, re-checked count)
+- the age of the oldest **badged** thread, read or unread — the aging sweep is not
+  unread-gated, so this is the number that reflects real exposure
+- how many threads are awaiting your reply
+
+If the badged backlog is growing relative to the previous Daily Startup entry's Email
+section, say so outright. A count that climbs day over day is the signal the user asked
+for, and it is worth more than any single thread in the list.
+
+**Counts cut both ways.** The verified failure here is **over**-return, not
+under-return — filtered passes hand back more than they should (see the leak warning
+above), so the local re-check is what produces an honest number. Report counts you
+derived from the re-check, never `resultCountEstimate`, which counts the leaked threads
+too and was identical across three differently-filtered queries in testing.
+
+Under-return is still possible, as with the Slack mention search. If every pass comes
+back empty, sanity-check against a bare `in:inbox is:unread` before writing "nothing
+outstanding": a zero there is believable, while a zero from the filtered passes
+alongside a non-zero bare count means `{{EMAIL_NOISE_SENDERS}}` is eating real mail —
+report that discrepancy rather than a clean inbox.
+
+Produce a `### Email` section. Thread links are
+`https://mail.google.com/mail/u/{{GMAIL_ACCOUNT_INDEX}}/#inbox/[threadId]`:
+
+```
+### Email
+
+**🔴 Needs Your Reply:**
+[AWAITING] [Sender] · [N]d · [Subject] — [link]
+  → [one line: what they are waiting on]
+
+**⭐ Priority:**
+[VIP] [Sender] · [Subject] — [link]
+[EXTERNAL] [Sender @domain] · [Subject] — [link]
+[ADMIN] [Sender] · [Subject] · due [date if stated] — [link]
+
+**📥 New Overnight:**
+[DIRECT] [Sender] · [Subject] — [link]
+
+**📊 Backlog:** N unread total · oldest badged thread Nd · N awaiting your reply
+[one line on direction vs. the previous entry, when there is one to compare]
+```
+
+Omit any category with nothing in it. If the inbox is genuinely clear, the whole
+section collapses to a single line: `**📊 Backlog:** inbox clear — nothing awaiting you.`
+
+---
+
+## Step 3e: Verification Gate (do this BEFORE writing anything)
 
 Everything gathered so far is raw. Run these three checks before Step 4. They are cheap
 relative to handing the user a false action item, and both failures they guard against
@@ -394,10 +566,20 @@ have actually happened.
 
 **1. Every action item must be resolution-checked.**
 List the items you are about to write under `⚠️ Heads up`, `🔴 Action Required`,
-`📣 Channel Highlights`, `Today needs from you`, and `The One Thing`. For each one that
+`🔴 Needs Your Reply`, `📣 Channel Highlights`, `Today needs from you`, and
+`The One Thing`. For each one that
 asserts something is unresolved — "needs your call", "blocked on you", "no reply yet",
-"nobody owns it" — confirm it in the thread, in Jira, or in `gh` before it survives into
-the note. Anything you could not confirm gets written as a question ("worth checking
+"nobody owns it" — confirm it in the thread, in Jira, in Gmail, or in `gh` before it
+survives into the note.
+
+**Email claims need a second check beyond the thread.** `[AWAITING]` rests on the last
+message in the thread not being yours, which misses a reply sent *outside* that thread —
+a fresh mail on the same subject, or an answer given in Slack. Before writing that the
+user owes someone a reply, search Sent for it:
+`in:sent to:[their address] newer_than:{{EMAIL_AGING_WINDOW}}`. A hit there means the
+thread metadata is stale — drop the item. This is the email equivalent of the
+thread-verify rule in 3b, and it fails the same way: an answered thread reported as
+outstanding. Anything you could not confirm gets written as a question ("worth checking
 whether X is still open"), never as an assertion. Delete items that turn out closed;
 do not soften them.
 
@@ -455,7 +637,7 @@ title — the title lives in the `Day` property. The body is:
 ```markdown
 ## Calendar
 
-[calendar section from Step 2a — full content including Today at a glance,
+[calendar section from Step 3a — full content including Today at a glance,
 Heads up, Key meetings table, Focus time, Lunch window]
 
 [## Week Ahead — Monday only]
@@ -464,11 +646,17 @@ Prepare now flags, and weekly table]
 
 ## Slack
 
-[slack section from Step 2b — full content including all categories]
+[slack section from Step 3b — full content including all categories]
+
+## Email
+
+[email section from Step 3d — full content including Needs Your Reply, Priority,
+New Overnight, and the Backlog line. Omit this heading entirely if nothing earned a
+badge and there is no backlog to count]
 
 ## Jira
 
-[jira table from Step 2c]
+[jira table from Step 3c]
 
 ## Executive Coaching
 
@@ -477,9 +665,10 @@ Prepare now flags, and weekly table]
 infrastructure?" — specific and actionable, naming 2–3 things maximum. Draw from
 everything gathered: unresolved RSVP/calendar decisions that must happen before the
 day progresses, new high-priority or Blocked Jira interrupts needing routing, any
-incident requiring your action (especially `[LEAD]`/`[ADJ]`), any 1:1 person whose
-signal warrants a conversation today, and the carry-forward from the previous Daily
-Startup entry.
+incident requiring your action (especially `[LEAD]`/`[ADJ]`), any email where someone
+is genuinely waiting on you (`[AWAITING]`) or a dated `[ADMIN]` obligation is about to
+lapse, any 1:1 person whose signal warrants a conversation today, and the carry-forward
+from the previous Daily Startup entry.
 Example: "Today needs: RSVP the 2 PM Google sync, route INFR-456 to the on-call owner,
 and ask Jordan about the migration cutover in your 1:1." If nothing is urgent, say so:
 "Quiet day — protect the afternoon focus block and prep for Thursday's review."]
@@ -528,7 +717,7 @@ in Step 0. Values are a JSON map of property name to SQLite value:
 | `The One Thing` | The One Thing, verbatim from the body, as plain text (strip markdown) |
 | `Today Needs` | The "Today needs from you" line, verbatim, plain text |
 | `One Question` | The One Question, verbatim, plain text |
-| `Flags` | Array, any of `Incident`, `Blocked Jira`, `RSVP Needed`, `Vendor`, `Org Change`, `Travel/PTO`, `Interview`, `Week Ahead`. Set each only when something in today's gathered data actually warrants it. Add `Week Ahead` on Mondays when you wrote that section |
+| `Flags` | Array, any of `Incident`, `Blocked Jira`, `RSVP Needed`, `Vendor`, `Org Change`, `Travel/PTO`, `Interview`, `Week Ahead`, `Email Backlog`, `Awaiting Reply`. Set each only when something in today's gathered data actually warrants it. Add `Week Ahead` on Mondays when you wrote that section. Set `Awaiting Reply` when any thread earned `[AWAITING]`, and `Email Backlog` when the badged unread count is climbing relative to the previous entry. **`Flags` is a multi-select, so the same seeding rule as `1:1s With` applies** — if `Email Backlog` or `Awaiting Reply` is not yet an option, omit it and write the page anyway rather than failing the whole write; the body still says it |
 | `1:1s With` | Array of display names of the people you have 1:1s with today. **Only names that already exist as options can be written** — see the note below |
 | `Meetings` | Number of real meetings today (exclude focus blocks, Clockwise holds, and solo events — same exclusions as Phase 2) |
 | `Focus Hours` | Hours of uninterrupted focus time available, as a number (`2.5`) |
@@ -626,9 +815,14 @@ When building the agent's prompt, substitute all `{{CONFIG_TOKEN}}` values with 
 actual resolved values from `config.md`. The agent runs in a fresh context without access
 to `config.md`.
 
-Note: this routine does **not** draft Slack replies. Surfacing *what* needs a reply is
-handled in Step 3b (the `🔴 Action Required (Mentions)` section of the Notion page) —
-deciding and writing the replies is left to you.
+Note: this routine does **not** draft Slack replies or email replies. Surfacing *what*
+needs a reply is handled in Step 3b (`🔴 Action Required (Mentions)`) and Step 3d
+(`🔴 Needs Your Reply`) — deciding and writing the replies is left to you. Gmail stays
+read-only for the whole routine.
+
+Phase 2 also does **not** pull email threads for meeting prep. Meeting context comes
+from Calendar, Jira, and Slack only. Adding per-meeting thread lookups would roughly
+double this agent's work for prep that is usually already in the invite.
 
 ---
 
@@ -729,7 +923,7 @@ For each attendee, search Slack using mcp__claude_ai_Slack__slack_search_public_
   what it was; the useful move is usually for the user to ratify or explain it, not
   adjudicate it.
 - **Do not repeat dollar figures without recomputing them** from the quantity and unit
-  price in the same thread. See the numbers rule in Step 3d — it applies here too.
+  price in the same thread. See the numbers rule in Step 3e — it applies here too.
 - For VIPs: mark any unresolved thread explicitly with "⚠️ unresolved"
 - If an attendee has no Slack activity: note "no recent Slack context"
 
@@ -876,6 +1070,37 @@ user most needs to click through and see how far it got.
   briefing. Print the full composed body in chat so the user has it, say plainly that
   the Notion write failed and why, then retry once. Do not fall back to writing a
   markdown file in the vault.
+- **The Email section lists old or already-read threads**: the search filters leaked —
+  `search_threads` matches whole threads, so `is:unread` and `after:` both return
+  conversations that do not satisfy them (verified 2026-09-15). The local re-check in
+  Step 3d is not optional; without it the section fills with April mail. Both date
+  formats work through this MCP, so the format is not the problem.
+- **Reported unread counts look too high**: you used `resultCountEstimate`. It counts
+  leaked threads, and returned the same `11` for three different queries in testing.
+  Derive counts from the re-checked set instead.
+- **An `[AWAITING]` thread shows no sender on either side**: the newest message is
+  automated — most likely a `reminder@superhuman.com` follow-up, which this inbox still
+  carries. Walk back to the last human message; see the direction rules in Step 3d.
+- **Gmail passes return nothing / inbox looks clean**: re-run a bare
+  `in:inbox is:unread` for a count. A non-zero bare count next to empty filtered passes
+  means `{{EMAIL_NOISE_SENDERS}}` or the `-category:` exclusions are swallowing real
+  mail; report the discrepancy instead of "nothing outstanding."
+- **Real mail is being suppressed as noise**: the category exclusions are Gmail's own
+  classification and it misfiles genuine vendor and recruiting mail into
+  `promotions`/`updates` regularly. If the user says a thread was missed and it was in
+  the inbox, check whether a `-category:` exclusion or a `{{EMAIL_NOISE_SENDERS}}` entry
+  caught it, then narrow that entry in `config.md` — do not drop the noise filter
+  wholesale, or the section fills with newsletters and buries the human mail.
+- **An `[AWAITING]` thread was already answered**: the reply went out in a different
+  thread, or the answer was given in Slack. Thread metadata alone cannot see either.
+  Run the Sent check in the Step 3e gate before surfacing any "owes a reply" claim.
+- **Too many unread to triage**: do not list them. Cap `get_thread` calls at 15 as
+  Step 3d says, show only badged threads, and let the backlog counts carry the rest.
+  A 400-thread inbox is one number plus the few threads that matter, not 400 lines.
+- **`validation_error` naming `Email Backlog` or `Awaiting Reply`**: those `Flags`
+  options are not seeded in the Notion database yet. Same fix as `1:1s With` — add the
+  options with `ALTER COLUMN` (including every existing option), or omit the flag and
+  write the page.
 - **Signal cache empty or missing**: On first run, no `~/.claude/signal-cache/`
   exists. The Phase 2 meeting & 1:1 prep agent creates it and captures fresh signals — 1:1 prep that
   day notes "first capture." Caches fill in and get richer over subsequent runs (and
