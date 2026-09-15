@@ -174,11 +174,6 @@ alias tfp='terraform plan'
 alias tfpl='terraform providers lock -platform=darwin_arm64 -platform=linux_amd64'
 alias tfv='terraform validate'
 
-# Docker/Podman compatibility
-if (( $+commands[podman] )); then
-  alias docker=podman
-fi
-
 # Dotfiles
 alias dfu=dotfiles_update
 

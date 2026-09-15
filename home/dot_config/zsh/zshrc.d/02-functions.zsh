@@ -214,19 +214,6 @@ function hb_update_node() {
   fi
 }
 
-function unfuck-podman-on-wsl() {
-  # I have to do this after every Windows machine restart to
-  # put rootless podman back in a useable state. Will figure
-  # out why later. For now...
-  if [[ -n "$TMUX" ]]; then
-    echo "Error: This function cannot be run from within a tmux session"
-    return 1
-  fi
-  rm -rf "$XDG_RUNTIME_DIR/containers" "$XDG_RUNTIME_DIR/libpod/tmp" && \
-    brew services restart podman && \
-    sudo mount -o remount,shared / /
-}
-
 function grd() {
   # Navigate to git repository root
   local git_root
