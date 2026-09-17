@@ -1,9 +1,9 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "7e3f6dd6ef6da93f74974521c81d8d5bff0443c5",
+      "rev": "cef8d093b63c9be7e8b49f7dc341e8447fc4c300",
       "src": "https://github.com/b0o/SchemaStore.nvim",
-      "version": "'7e3f6dd6ef6da93f74974521c81d8d5bff0443c5'"
+      "version": "'cef8d093b63c9be7e8b49f7dc341e8447fc4c300'"
     },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
@@ -111,14 +111,14 @@
       "version": "'a25dd472316d806eb38a5dd667c2e40da5570c75'"
     },
     "nvim-lint": {
-      "rev": "9b99aad869102ac01775187abd8d49017b148612",
+      "rev": "5b5b794458b5ff0b17d26c9d7400faaebd00b32d",
       "src": "https://github.com/mfussenegger/nvim-lint",
-      "version": "'9b99aad869102ac01775187abd8d49017b148612'"
+      "version": "'5b5b794458b5ff0b17d26c9d7400faaebd00b32d'"
     },
     "nvim-lspconfig": {
-      "rev": "51dbf5359da86721662c87ca10eb73add973737b",
+      "rev": "6fc041976833841cc9d991f45193533fe2a2e09b",
       "src": "https://github.com/neovim/nvim-lspconfig",
-      "version": "'51dbf5359da86721662c87ca10eb73add973737b'"
+      "version": "'6fc041976833841cc9d991f45193533fe2a2e09b'"
     },
     "nvim-treesitter": {
       "rev": "074aa4422bf029908338e855d0c0f71470a971bb",

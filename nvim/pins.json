@@ -3,11 +3,6 @@
     "SchemaStore.nvim": {
       "observed": [
         {
-          "first_seen": 1787015646,
-          "first_seen_iso": "2026-08-18T01:14:06Z",
-          "rev": "cef8d093b63c9be7e8b49f7dc341e8447fc4c300"
-        },
-        {
           "first_seen": 1787272779,
           "first_seen_iso": "2026-08-21T00:39:39Z",
           "rev": "73e89eb3e536a4dd8f991c963bd37189520c9919"
@@ -116,12 +111,17 @@
           "first_seen": 1789560778,
           "first_seen_iso": "2026-09-16T12:12:58Z",
           "rev": "71cd0300fcf13179978e6a6b1f2fc2db677f9c94"
+        },
+        {
+          "first_seen": 1789611926,
+          "first_seen_iso": "2026-09-17T02:25:26Z",
+          "rev": "ab094b7f788231fe9b68deac78c3d512302c58a6"
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-13T17:03:29Z",
-        "pinned_at_epoch": 1789319009,
-        "rev": "7e3f6dd6ef6da93f74974521c81d8d5bff0443c5"
+        "pinned_at": "2026-09-17T02:25:26Z",
+        "pinned_at_epoch": 1789611926,
+        "rev": "cef8d093b63c9be7e8b49f7dc341e8447fc4c300"
       }
     },
     "blink.cmp": {
@@ -481,11 +481,6 @@
     "nvim-lint": {
       "observed": [
         {
-          "first_seen": 1787015646,
-          "first_seen_iso": "2026-08-18T01:14:06Z",
-          "rev": "5b5b794458b5ff0b17d26c9d7400faaebd00b32d"
-        },
-        {
           "first_seen": 1787233899,
           "first_seen_iso": "2026-08-20T13:51:39Z",
           "rev": "0370fe965697aa8f04252a1562441bdc13723cd1"
@@ -497,23 +492,13 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-13T17:03:29Z",
-        "pinned_at_epoch": 1789319009,
-        "rev": "9b99aad869102ac01775187abd8d49017b148612"
+        "pinned_at": "2026-09-17T02:25:26Z",
+        "pinned_at_epoch": 1789611926,
+        "rev": "5b5b794458b5ff0b17d26c9d7400faaebd00b32d"
       }
     },
     "nvim-lspconfig": {
       "observed": [
-        {
-          "first_seen": 1786972598,
-          "first_seen_iso": "2026-08-17T13:16:38Z",
-          "rev": "fbaef6156f9ad65790931ab543ab1dfec57bbec7"
-        },
-        {
-          "first_seen": 1787015646,
-          "first_seen_iso": "2026-08-18T01:14:06Z",
-          "rev": "6fc041976833841cc9d991f45193533fe2a2e09b"
-        },
         {
           "first_seen": 1787098501,
           "first_seen_iso": "2026-08-19T00:15:01Z",
@@ -606,9 +591,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-13T17:03:29Z",
-        "pinned_at_epoch": 1789319009,
-        "rev": "51dbf5359da86721662c87ca10eb73add973737b"
+        "pinned_at": "2026-09-17T02:25:26Z",
+        "pinned_at_epoch": 1789611926,
+        "rev": "6fc041976833841cc9d991f45193533fe2a2e09b"
       }
     },
     "nvim-treesitter": {
