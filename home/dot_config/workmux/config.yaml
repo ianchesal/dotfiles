@@ -17,8 +17,11 @@ windows:
   # - name: editor
   #   panes:
   #     - command: nvim
-  - name: agent
+  - name: claude
     panes:
       - command: claude --permission-mode auto
         focus: true
+  - name: pi
+    panes:
+      - command: pi || true
   - name: shell
