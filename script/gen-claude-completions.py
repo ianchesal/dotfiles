@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
-"""Generate home/dot_config/zsh/completions/_claude from `claude --help`.
+"""Generate ~/.config/zsh/completions/_claude from `claude --help`.
 
-Ported from the Ruby version so the update path stops needing a Ruby runtime
-(`claude update` regenerates completions on every version bump, which made this
-the most frequently hit Ruby dependency in the repo).
-
-The Ruby wrote to <repo>/zsh/completions/_claude, a directory that stopped
-existing when the zsh config moved under home/dot_config/ for chezmoi -- so it
-had been raising Errno::ENOENT on every claude version bump. The destination
-below is the chezmoi source path that actually deploys.
+Writes directly to the deployed path instead of a chezmoi source file --
+`_claude` isn't chezmoi-managed, so this is the only thing that keeps it
+current, and `claude update` regenerates it on every version bump.
 
 Run directly or via: just claude::gen-completions
 """
@@ -183,8 +178,7 @@ def main():
         print("claude --help produced nothing to parse; refusing to write", file=sys.stderr)
         return 1
 
-    repo = pathlib.Path(__file__).resolve().parent.parent
-    dest = repo / "home" / "dot_config" / "zsh" / "completions" / "_claude"
+    dest = pathlib.Path.home() / ".config" / "zsh" / "completions" / "_claude"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(render(version, options, commands))
     print(f"Wrote {dest} ({version})")

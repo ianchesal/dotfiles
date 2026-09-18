@@ -26,7 +26,7 @@ hand-maintained config.
 
 - `just claude::install` — run the official installer, unless apt already owns `claude-code`
 - `just claude::update` — fix permissions, then run `claude update`; regenerates zsh completions if the version changed
-- `just claude::gen-completions` — regenerate `home/dot_config/zsh/completions/_claude` from `claude --help`
+- `just claude::gen-completions` — regenerate `~/.config/zsh/completions/_claude` directly (not chezmoi-managed) from `claude --help`
 
 ## Notes
 

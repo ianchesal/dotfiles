@@ -62,6 +62,6 @@ update: permissions
       printf '\033[31m%s\033[0m\n' 'No updates to claude components -- claude not found'
     fi
 
-# Regenerate home/dot_config/zsh/completions/_claude from `claude --help`
+# Regenerate ~/.config/zsh/completions/_claude from `claude --help`
 gen-completions:
     @"$REPO/script/gen-claude-completions.py"
