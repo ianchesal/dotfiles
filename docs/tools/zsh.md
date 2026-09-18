@@ -13,13 +13,17 @@ is a leaner rebuild around zinit's lazy loading.
 
 ```
 .zshenv                  Sourced for EVERY shell; sets XDG basedirs + ZDOTDIR. The
-                         one file symlinked into $HOME (~/.zshenv).
+                         one file deployed into $HOME rather than $ZDOTDIR; its
+                         source is home/dot_zshenv, not home/dot_config/zsh/.
 .zprofile                Login shells: BROWSER/EDITOR/PAGER, locale, $PATH, less opts
 .zshrc                   Interactive shells: Homebrew shellenv, zinit + plugins,
                          compinit, oh-my-posh, then sources zshrc.d/*.zsh
 zshrc.d/*.zsh            Modular config, sourced in filename order (see below)
 functions/               Autoloaded functions, one per file (cdf, nv, tailf, …)
-completions/             Custom completions in zsh-completions format (_claude, …)
+completions/             Custom completions in zsh-completions format (_dq, _magick, …).
+                         On fpath, and not an `exact_` dir, so generated specs
+                         dropped in here survive `chezmoi apply` — _claude is one
+                         (see docs/tools/claude.md)
 .zprofile / .zshenv      Deployed by chezmoi
 ```
 

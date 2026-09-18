@@ -4,7 +4,7 @@
 with a defined color palette, rendered as left/right/newline prompt blocks. Shows
 path (powerlevel style), git branch and ahead/behind/stash status, command
 execution time, and a command-status indicator, with tooltips for AWS, GCP, and
-kubectl. Deployed to `~/.config/ohmyposh` (the repo dir is symlinked there).
+kubectl. chezmoi copies `home/dot_config/ohmyposh/` to `~/.config/ohmyposh`.
 
 ## Layout
 

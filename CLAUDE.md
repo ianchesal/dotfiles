@@ -370,6 +370,19 @@ This file provides guidance to AI agents working on this repository.
   `~/.claude/settings.json` and apply. If that ever needs to be automatic, the
   primitive is `modify_` — its script receives the current file on stdin — not a
   template
+- The zsh completion spec (`~/.config/zsh/completions/_claude`) is deliberately
+  **not** in the source state. `script/gen-claude-completions.py` writes it
+  straight to the live dir, because the spec is parsed from the locally
+  installed `claude --help` and is therefore per-machine: tracking it left the
+  repo dirty after every version bump, and `chezmoi apply` on a second machine
+  then overwrote its correct spec with the first machine's. Same category as the
+  `_kubectl` spec `zshrc.d/kubernetes.zsh` caches at runtime. It survives
+  `chezmoi apply` because `home/dot_config/zsh/completions/` carries no
+  `exact_` prefix, and it is on fpath already. `just claude::update`
+  regenerates it on a version change and calls the script with `--if-missing`
+  to seed a machine that has none, so a fresh box gets one without a manual
+  step. The script honours `ZDOTDIR` and owns the destination path — don't
+  duplicate it in a recipe
 - Work-specific Claude config stays **out of the source state**, because this
   repo is public. `~/.claude/oracle-gateway.json` (the `--settings` file that
   points Claude Code at Persona's Anthropic proxy) was tracked until September

@@ -61,6 +61,12 @@ update: permissions
     else
       printf '\033[31m%s\033[0m\n' 'No updates to claude components -- claude not found'
     fi
+    # The completion spec is machine-local and untracked, so a fresh box has none
+    # until the first version bump -- which may be a long way off. Seed it. The
+    # script owns the destination path and no-ops when the spec already exists.
+    if command -v claude >/dev/null; then
+      "$REPO/script/gen-claude-completions.py" --if-missing
+    fi
 
 # Regenerate ~/.config/zsh/completions/_claude from `claude --help`
 gen-completions:

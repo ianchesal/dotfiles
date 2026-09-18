@@ -1,13 +1,24 @@
 #!/usr/bin/env python3
 """Generate ~/.config/zsh/completions/_claude from `claude --help`.
 
-Writes directly to the deployed path instead of a chezmoi source file --
-`_claude` isn't chezmoi-managed, so this is the only thing that keeps it
-current, and `claude update` regenerates it on every version bump.
+Writes straight to the deployed path rather than a chezmoi source file. The spec
+is parsed from the locally installed `claude --help`, which makes it per-machine
+state: while it was tracked, every version bump dirtied the repo and a
+`chezmoi apply` on a second machine clobbered that machine's correct spec with
+the first one's. Same category as the `_kubectl` spec zshrc.d/kubernetes.zsh
+caches at runtime. The destination is already on fpath
+(home/dot_config/zsh/dot_zshrc) and its dir carries no `exact_` prefix, so an
+unmanaged file there survives every apply -- but nothing else regenerates it, so
+this script is the only thing keeping it current.
+
+`--if-missing` exits quietly when the spec is already there. That is how
+`just claude::update` seeds a fresh machine without reparsing on every run, and
+it keeps the destination path known in exactly one place.
 
 Run directly or via: just claude::gen-completions
 """
 
+import os
 import pathlib
 import re
 import subprocess
@@ -15,8 +26,11 @@ import sys
 
 
 def capture(*cmd):
-    """Run cmd and return stdout, merging stderr the way the Ruby backticks did."""
-    result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    """Run cmd and return (stdout, stderr), or (None, None) if it is not installed."""
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    except FileNotFoundError:
+        return None, None
     return result.stdout, result.stderr
 
 
@@ -167,8 +181,27 @@ _claude "$@"
 """
 
 
+def completion_dest():
+    """The live completions dir on fpath -- deliberately not a chezmoi source path."""
+    zdotdir = os.environ.get("ZDOTDIR") or str(pathlib.Path.home() / ".config" / "zsh")
+    return pathlib.Path(zdotdir).expanduser() / "completions" / "_claude"
+
+
 def main():
+    args = sys.argv[1:]
+    if_missing = "--if-missing" in args
+    if [a for a in args if a != "--if-missing"]:
+        print(f"usage: {pathlib.Path(sys.argv[0]).name} [--if-missing]", file=sys.stderr)
+        return 2
+
+    dest = completion_dest()
+    if if_missing and dest.exists():
+        return 0
+
     help_out, help_err = capture("claude", "--help")
+    if help_out is None:
+        print("claude is not installed; nothing to generate", file=sys.stderr)
+        return 1
     help_text = help_out + help_err
     version_out, _ = capture("claude", "--version")
     version = version_out.strip()
@@ -178,7 +211,6 @@ def main():
         print("claude --help produced nothing to parse; refusing to write", file=sys.stderr)
         return 1
 
-    dest = pathlib.Path.home() / ".config" / "zsh" / "completions" / "_claude"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(render(version, options, commands))
     print(f"Wrote {dest} ({version})")

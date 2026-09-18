@@ -12,6 +12,15 @@ Key files: `just/claude.just` (install/update/completion recipes), `CLAUDE.md` (
 - **After major steps**: Update the todo list and show progress
 - **When blocked**: Explain the issue and ask for guidance
 
+## Handoff Prompts
+
+- Prompts written for another agent (e.g. pi) always go in `docs/superpowers/prompts/` in
+  the relevant repo, committed — never a scratchpad, never pasted only into chat. The
+  prompt is a durable artifact that sits alongside the spec and plan it produces, and it
+  has to be reviewable in the PR.
+- Name them `YYYY-MM-DD-<topic>-prompt.md` and match the structure of the prompts already
+  in that directory rather than inventing a new one.
+
 # Technical Preferences
 
 ## Security & Safety

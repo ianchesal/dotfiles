@@ -1,9 +1,10 @@
 # dotfiles/tmux
 
 tmux configuration with a VHS Era theme, powerline-style status bar, and a set of
-plugins managed by TPM. Deployed to `~/.config/tmux` following the XDG directory
-structure (the repo's `tmux/` dir is symlinked there). Portable across macOS,
-Debian Linux, and WSL2.
+plugins managed by TPM. chezmoi **copies** `home/dot_config/tmux/` to
+`~/.config/tmux`, following the XDG directory structure — so a config edit here
+needs a `chezmoi apply` to go live. Portable across macOS, Debian Linux, and
+WSL2.
 
 ## Layout
 

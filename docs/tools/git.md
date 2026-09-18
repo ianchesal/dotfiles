@@ -1,24 +1,37 @@
 # dotfiles/git
 
-Git configuration following the XDG directory structure. The repo's `git/`
-directory is symlinked to `~/.config/git`, with companion configs for the
-GitHub CLI (`gh`) and the GitHub Dashboard TUI (`gh-dash`). The workflow leans
-on a rebase-by-default setup and a large set of custom aliases.
+Git configuration following the XDG directory structure. chezmoi copies
+`home/dot_config/git/` to `~/.config/git`, with companion configs for the
+GitHub CLI (`gh`) and the GitHub Dashboard TUI (`gh-dash`) deployed from their
+own sibling `home/dot_config/` entries — they are **not** nested under `git/`.
+The workflow leans on a rebase-by-default setup and a large set of custom
+aliases.
 
 ## Layout
 
 ```
-config                   Main git config: aliases, delta pager, rebase workflow
-local                    Machine-local overrides (e.g. work email) via [include]
-ignore                   Global gitignore patterns
-hooks/pre-push           Blocks pushing commits whose subject starts with "fixup!"
-templates/               init.templatedir contents seeded into new repos
-gh/config.yml            GitHub CLI config and aliases (co, prs, l)
-gh/hosts.yml             gh host/auth state (machine-local)
-gh-dash/config.yml       Default gh-dash sections and repo path mappings
-gh-dash/config-work.yml  Work overlay: org-scoped my-PRs and assigned sections
-gh-dash/gh-dash.sh       Launcher that picks the config for this machine
+home/dot_config/git/
+  config                       Main git config: aliases, delta pager, rebase workflow
+  ignore                       Global gitignore patterns
+  hooks/executable_pre-push    Blocks pushing commits whose subject starts with "fixup!"
+  hooks/workmux-status         Backs the worktree tooling
+  templates/                   init.templatedir contents seeded into new repos
+home/dot_config/gh/
+  config.yml                   GitHub CLI config and aliases (co, prs, l)
+home/dot_config/gh-dash/
+  config.yml                   Default gh-dash sections and repo path mappings
+  config-work.yml              Work overlay: org-scoped my-PRs and assigned sections
+  executable_gh-dash.sh        Launcher that picks the config for this machine
 ```
+
+These are **source** names; the `executable_` prefix is chezmoi's and is
+stripped on deploy, so `executable_gh-dash.sh` lands as
+`~/.config/gh-dash/gh-dash.sh`.
+
+Two files live only on the machine and are absent from the source state by
+design: `~/.config/git/local` (per-machine identity and overrides, pulled in by
+the `[include]` at the end of `config`) and `~/.config/gh/hosts.yml` (gh's
+host/auth state).
 
 ## Rebase workflow
 

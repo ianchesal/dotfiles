@@ -1,8 +1,8 @@
 # dotfiles/lazygit
 
 Configuration for [lazygit](https://github.com/jesseduffield/lazygit), the
-terminal UI for git. The repo's `lazygit/` directory is symlinked to
-`~/.config/lazygit` following the XDG directory structure.
+terminal UI for git. chezmoi copies `home/dot_config/lazygit/` to
+`~/.config/lazygit`, following the XDG directory structure.
 
 ## Layout
 
