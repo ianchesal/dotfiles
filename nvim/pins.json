@@ -491,20 +491,15 @@
     "nvim-lint": {
       "observed": [
         {
-          "first_seen": 1787233899,
-          "first_seen_iso": "2026-08-20T13:51:39Z",
-          "rev": "0370fe965697aa8f04252a1562441bdc13723cd1"
-        },
-        {
           "first_seen": 1787745890,
           "first_seen_iso": "2026-08-26T12:04:50Z",
           "rev": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e"
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-17T02:25:26Z",
-        "pinned_at_epoch": 1789611926,
-        "rev": "5b5b794458b5ff0b17d26c9d7400faaebd00b32d"
+        "pinned_at": "2026-09-19T14:44:17Z",
+        "pinned_at_epoch": 1789829057,
+        "rev": "0370fe965697aa8f04252a1562441bdc13723cd1"
       }
     },
     "nvim-lspconfig": {
@@ -662,6 +657,11 @@
           "first_seen": 1789220197,
           "first_seen_iso": "2026-09-12T13:36:37Z",
           "rev": "9a168f6357ed21c3a636e1727bc7d382abc451b8"
+        },
+        {
+          "first_seen": 1789829057,
+          "first_seen_iso": "2026-09-19T14:44:17Z",
+          "rev": "f603a2f4da48728f80257fb5fbb90145fd1dc173"
         }
       ],
       "pin": {

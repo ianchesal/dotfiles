@@ -111,9 +111,9 @@
       "version": "'a25dd472316d806eb38a5dd667c2e40da5570c75'"
     },
     "nvim-lint": {
-      "rev": "5b5b794458b5ff0b17d26c9d7400faaebd00b32d",
+      "rev": "0370fe965697aa8f04252a1562441bdc13723cd1",
       "src": "https://github.com/mfussenegger/nvim-lint",
-      "version": "'5b5b794458b5ff0b17d26c9d7400faaebd00b32d'"
+      "version": "'0370fe965697aa8f04252a1562441bdc13723cd1'"
     },
     "nvim-lspconfig": {
       "rev": "bff1bd61cb1455040533201ca1edf1e84efa578f",
