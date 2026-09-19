@@ -40,5 +40,8 @@ __pycache__/
 # Serena
 /.serena/
 
+# Pi
+/.pi/
+
 # Misc
 BROWSE
