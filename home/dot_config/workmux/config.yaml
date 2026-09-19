@@ -24,4 +24,3 @@ windows:
   - name: pi
     panes:
       - command: pi || true
-  - name: shell
