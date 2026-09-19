@@ -147,6 +147,9 @@ This file provides guidance to AI agents working on this repository.
 - Update gcloud components: `just gcloud::update`
 - Uninstall asdf tool versions older than the one in use: `just asdf::prune` (`FORCE=1` skips the confirmation prompt)
 - Preview which asdf tool versions would be pruned: `just asdf::prune-preview`
+- Install pi (on demand, never automatic): `just pi::install`
+- Update pi and its extensions: `just pi::update` (also runs in the `update` fan-out, so `dfu` covers it)
+- Remove pi installs that predate the canonical layout: `just pi::purge-legacy` (preview with `just pi::purge-legacy-preview`; `FORCE=1` skips both the prompt and the running-session refusal)
 
 ## Code Style Guidelines
 
@@ -390,6 +393,54 @@ This file provides guidance to AI agents working on this repository.
   `settings.json` above. It holds no secret, but the internal hostname isn't
   worth publishing, and it's inert on a personal machine. Copy it by hand to a
   new work box; don't `chezmoi add` it back
+
+## Pi Configuration
+
+- `pi` is `@earendil-works/pi-coding-agent`, a Node CLI coding agent. Recipes in
+  `just/pi.just`; the one-shot cleanup is `script/pi-purge-legacy`
+- **Deliberately not asdf-managed.** As an npm global it installs into exactly
+  one node version's tree, and asdf shims are per-version — so every repo whose
+  `.tool-versions` pinned a different node lost the command outright, with the
+  shim reporting `No version is set for command pi`. It bit every repo in
+  `~/src/persona` at once, because none of them pin the global node
+- Three pieces: Homebrew's `node` (a `brew/Brewfile` entry) is the interpreter;
+  `~/.local/share/pi` is pi's own npm prefix; `~/.local/bin/pi` is a generated
+  wrapper that names brew's node outright. No `.tool-versions` can reach any of them
+- **The prefix is off PATH on purpose.** Installing into `$(brew --prefix)`
+  would have npm drop a `bin/pi` whose shebang is `#!/usr/bin/env node` — that
+  resolves node back through the asdf shims, restoring the per-directory
+  interpreter this whole layout exists to avoid. Nothing on PATH points into
+  the prefix, so there is nothing to shadow the wrapper
+- The wrapper is **machine-local and untracked**, same category as the `_claude`
+  completion spec: it bakes in a brew prefix that differs between macOS
+  (`/opt/homebrew`) and Linux (`/home/linuxbrew/.linuxbrew`). `just pi::install`
+  regenerates it; don't hand-edit it and don't `chezmoi add` it
+- Installation is **on demand** — `just pi::install`, never a `run_once_*` script
+  (a new one of those fires on every existing machine at its next apply) and not
+  part of `install-runtimes`. `just pi::update` no-ops quietly when pi is absent,
+  the same way `rust::update` does, so it is safe in the fan-out on a box that
+  never installed it
+- `pi::update` drives `npm install` itself rather than calling `pi update --self`.
+  pi's own updater installs wherever `~/.npmrc` points, which would quietly fork
+  a second copy away from this prefix. Extensions are the half npm knows nothing
+  about, so `pi update --extensions` runs after — `pi update --all` would do both
+  but reintroduces the self-update path
+- `just pi::purge-legacy` is a one-shot for a machine that still carries the old
+  arrangement. It sweeps **every** asdf node version (not just the one pi landed
+  in), the `~/.asdf/shims/pi` shim, and the `~/.npm-global` copy — that last one
+  matters most, because `~/.npm-global/bin` sits ahead of `~/.local/bin` on PATH
+  and a leftover there silently shadows the wrapper
+- Brew's npm is new enough to withhold dependency `postinstall` scripts by
+  default, so every install and update prints an `install-scripts not yet
+  covered by allowScripts` warning for `esbuild`, `protobufjs` and
+  `@google/genai`. It is benign here — esbuild ships its binary in the
+  `@esbuild/linux-x64` platform package rather than downloading it in the hook —
+  so the recipes deliberately do **not** pass `--allow-scripts`
+- **The purge refuses while any pi is running.** pi renames its own process to
+  `pi`, so a `ps | grep node` sweep cannot see it, and it does not die when its
+  files are deleted — the bundle is already resident but the lazily imported
+  chunks and native addons are not, so the session breaks minutes later on
+  whatever it reaches for next. `FORCE=1` overrides, loudly
 
 ## Rust Configuration
 

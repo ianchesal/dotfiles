@@ -29,6 +29,7 @@ mod gem 'just/gem.just'
 mod git 'just/git.just'
 mod nvim 'just/nvim.just'
 mod ohmyposh 'just/ohmyposh.just'
+mod pi 'just/pi.just'
 mod rust 'just/rust.just'
 mod shell 'just/shell.just'
 mod tmux 'just/tmux.just'
@@ -42,7 +43,7 @@ default:
 # Update everything that can be (safely) updated. nvim::update is deliberately excluded --
 # dfu runs it only on dads-gaming-pc (see docs/chezmoi-workflows.md) to avoid racing
 # concurrent `just nvim::update` runs into conflicting pins.json commits.
-update: brew::update asdf::update rust::update claude::update git::update gcloud::update ytdlp::update gem::cleanup ohmyposh::check-update
+update: brew::update asdf::update rust::update claude::update pi::update git::update gcloud::update ytdlp::update gem::cleanup ohmyposh::check-update
 
 # Install the asdf-managed runtimes, Rust toolchain first
 install-runtimes: rust::install asdf::install
@@ -57,7 +58,7 @@ lint:
     set -euo pipefail
     shellcheck --severity=warning \
       script/asdf-prune script/gem-cleanup script/nvim-commit script/doctor \
-      script/brew-trust \
+      script/brew-trust script/pi-purge-legacy \
       script/verify-chezmoi-assumptions.sh home/run_once_*.sh \
       script/tests/*.test.sh bootstrap/*.sh \
       home/dot_bashrc home/dot_bash_profile home/dot_config/bash/bashrc.sh \

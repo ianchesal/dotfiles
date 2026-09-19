@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+#
+# Remove every pi install that predates the canonical one.
+#
+# pi is a node CLI, and installing it as an npm global put it inside exactly one
+# asdf node version. asdf shims are per-version, so every repo whose
+# .tool-versions pinned a different node lost the command entirely -- the shim
+# reports "No version is set for command pi". The canonical install (see
+# just/pi.just) sidesteps that by running pi on Homebrew's node out of its own
+# prefix, which no .tool-versions can reach.
+#
+# This clears the wreckage of the old arrangement. It is a one-shot: once a
+# machine is clean, it is a no-op, and nothing in the update fan-out calls it.
+#
+# The ~/.npm-global copy matters as much as the asdf ones. That prefix sits
+# ahead of ~/.local/bin on PATH, so a leftover bin/pi there silently shadows the
+# canonical wrapper -- the same shadowing bug wearing a different hat.
+#
+# Usage:
+#   pi-purge-legacy              remove, prompting once first
+#   pi-purge-legacy --preview    report what would go and exit
+#
+# Environment:
+#   FORCE=1             skip the prompt, and override the running-session refusal
+#   ASDF_DIR            asdf root to sweep        (default: ~/.asdf)       -- test seam
+#   NPM_GLOBAL_PREFIX   npm prefix to sweep       (default: ~/.npm-global) -- test seam
+#   PI_PREFIX           canonical install, never touched
+#                                                 (default: ~/.local/share/pi) -- test seam
+#   PGREP_BIN           pgrep to drive            (default: pgrep)         -- test seam
+
+set -euo pipefail
+
+ASDF_DIR=${ASDF_DIR:-$HOME/.asdf}
+NPM_GLOBAL_PREFIX=${NPM_GLOBAL_PREFIX:-$HOME/.npm-global}
+PI_PREFIX=${PI_PREFIX:-$HOME/.local/share/pi}
+PGREP_BIN=${PGREP_BIN:-pgrep}
+FORCE=${FORCE:-0}
+
+pkg_scope=@earendil-works
+
+dry_run=0
+case ${1:-} in
+  --preview | --dry-run) dry_run=1 ;;
+  "") ;;
+  *)
+    echo "usage: ${0##*/} [--preview]" >&2
+    exit 2
+    ;;
+esac
+
+if [ -t 1 ]; then
+  red=$'\033[31m' green=$'\033[32m' yellow=$'\033[33m' reset=$'\033[0m'
+else
+  red='' green='' yellow='' reset=''
+fi
+
+# Never sweep a tree that contains the canonical install. Misconfigured seams
+# are the only way to get here, but the cost of being wrong is deleting the
+# install this script exists to protect.
+for sweep in "$ASDF_DIR" "$NPM_GLOBAL_PREFIX"; do
+  case $PI_PREFIX/ in
+    "$sweep"/*)
+      printf '%s\n' "${red}Refusing to run: the canonical prefix $PI_PREFIX sits inside $sweep${reset}" >&2
+      exit 2
+      ;;
+  esac
+done
+
+targets=()
+add_target() { [ -e "$1" ] && targets+=("$1"); return 0; }
+
+# Every asdf node version, not just the one pi happened to land in -- an older
+# bump may have left a copy behind under a version nobody thinks about now.
+for nodedir in "$ASDF_DIR"/installs/nodejs/*/; do
+  [ -d "$nodedir" ] || continue
+  add_target "${nodedir}lib/node_modules/$pkg_scope"
+  add_target "${nodedir}bin/pi"
+done
+add_target "$ASDF_DIR/shims/pi"
+add_target "$NPM_GLOBAL_PREFIX/lib/node_modules/$pkg_scope"
+add_target "$NPM_GLOBAL_PREFIX/bin/pi"
+
+if [ "${#targets[@]}" -eq 0 ]; then
+  printf '%s\n' "${green}Nothing to remove -- no legacy pi install found${reset}"
+  exit 0
+fi
+
+printf '%s\n' "${yellow}Legacy pi installs found:${reset}"
+for target in "${targets[@]}"; do printf '  - %s\n' "$target"; done
+
+[ "$dry_run" -eq 0 ] || exit 0
+
+# pi renames its own process to "pi", so `ps | grep node` cannot see it, and it
+# does not die when its files vanish: the bundle is already resident, but the
+# lazily imported chunks and native addons are not, so the session breaks
+# minutes later on whatever it happens to reach for next. There is no reliable
+# way to tell which tree a given pi is running from, so any live pi blocks.
+running=$("$PGREP_BIN" -x pi 2>/dev/null || true)
+if [ -n "$running" ]; then
+  printf '\n%s\n' "${red}pi is still running -- refusing to remove files out from under it:${reset}" >&2
+  while read -r pid; do
+    [ -n "$pid" ] || continue
+    if [ -r "/proc/$pid/exe" ]; then
+      printf '  pid %s  node=%s  cwd=%s\n' \
+        "$pid" \
+        "$(readlink "/proc/$pid/exe" 2>/dev/null || echo '?')" \
+        "$(readlink "/proc/$pid/cwd" 2>/dev/null || echo '?')" >&2
+    else
+      printf '  pid %s\n' "$pid" >&2
+    fi
+  done <<<"$running"
+  if [ "$FORCE" != "1" ]; then
+    printf '%s\n' "${red}Quit those sessions and rerun, or FORCE=1 to purge anyway.${reset}" >&2
+    exit 1
+  fi
+  printf '%s\n' "${yellow}FORCE=1 set -- purging anyway; those sessions will break.${reset}" >&2
+fi
+
+if [ "$FORCE" != "1" ]; then
+  read -r -p "Remove ${#targets[@]} legacy pi paths? [y/N] " answer || answer=''
+  case $answer in
+    [yY]) ;;
+    *)
+      printf '%s\n' "${red}Aborted${reset}"
+      exit 0
+      ;;
+  esac
+fi
+
+for target in "${targets[@]}"; do
+  rm -rf "$target"
+  printf '%s\n' "${green}removed${reset} $target"
+done
+
+printf '%s\n' "${green}Legacy pi installs removed.${reset}"

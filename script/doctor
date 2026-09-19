@@ -146,6 +146,38 @@ else
   warn "asdf not on PATH"
 fi
 
+# --- pi ------------------------------------------------------------------------
+# pi is installed on demand, so its absence is never a failure. What is worth
+# flagging is a pi that resolves to something other than the wrapper: the old
+# asdf shim and a stray ~/.npm-global/bin/pi both sit ahead of ~/.local/bin on
+# PATH, and either one silently reintroduces a per-directory interpreter.
+section "pi"
+pi_wrapper=$HOME/.local/bin/pi
+if [ ! -x "$pi_wrapper" ]; then
+  note "pi not installed -- 'just pi::install'"
+else
+  ok "pi $("$pi_wrapper" --version 2>/dev/null || echo '?') at $pi_wrapper"
+  resolved=$(command -v pi 2>/dev/null || true)
+  if [ -z "$resolved" ]; then
+    warn "$pi_wrapper exists but pi is not on PATH"
+  elif [ "$resolved" != "$pi_wrapper" ]; then
+    warn "pi resolves to $resolved, shadowing $pi_wrapper -- 'just pi::purge-legacy'"
+  else
+    ok "pi resolves to the wrapper"
+  fi
+  legacy=0
+  for candidate in "$HOME"/.asdf/installs/nodejs/*/lib/node_modules/@earendil-works \
+    "$HOME"/.asdf/installs/nodejs/*/bin/pi "$HOME/.asdf/shims/pi" \
+    "$HOME/.npm-global/lib/node_modules/@earendil-works" "$HOME/.npm-global/bin/pi"; do
+    [ -e "$candidate" ] && legacy=$((legacy + 1))
+  done
+  if [ "$legacy" -eq 0 ]; then
+    ok "no legacy pi installs"
+  else
+    warn "$legacy legacy pi path(s) left over -- 'just pi::purge-legacy'"
+  fi
+fi
+
 # --- login shell --------------------------------------------------------------
 section "Login shell"
 login_shell=$(getent passwd "$USER" 2>/dev/null | cut -d: -f7 || true)
