@@ -510,11 +510,6 @@
     "nvim-lspconfig": {
       "observed": [
         {
-          "first_seen": 1787189183,
-          "first_seen_iso": "2026-08-20T01:26:23Z",
-          "rev": "bff1bd61cb1455040533201ca1edf1e84efa578f"
-        },
-        {
           "first_seen": 1787359808,
           "first_seen_iso": "2026-08-22T00:50:08Z",
           "rev": "221c43884319e791519f0d6c94a7f2fbcd653278"
@@ -606,9 +601,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-18T01:15:56Z",
-        "pinned_at_epoch": 1789694156,
-        "rev": "c8a582abc20a3121a768073df569d088cb5604b5"
+        "pinned_at": "2026-09-19T01:59:18Z",
+        "pinned_at_epoch": 1789783158,
+        "rev": "bff1bd61cb1455040533201ca1edf1e84efa578f"
       }
     },
     "nvim-treesitter": {
