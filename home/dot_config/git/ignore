@@ -31,3 +31,9 @@ tags
 
 # Direnv
 .envrc.local
+
+# Claude Code -- per-machine settings, never shared
+**/.claude/settings.local.json
+
+# Pi -- agent working dir, always repo-local state
+/.pi/
