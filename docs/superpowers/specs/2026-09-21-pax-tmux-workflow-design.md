@@ -2,7 +2,10 @@
 
 Date: 2026-09-21
 Status: approved for planning
-Repos in scope: `ianchesal/dotfiles`, `ianchesal/workmux`, `persona-id/pax`
+Repos in scope: `ianchesal/dotfiles`, `persona-id/pax`
+
+workmux stays on **upstream** (`raine/workmux`, via Homebrew) and is not modified.
+Everything below uses seams it already exposes.
 
 ## Problem
 
@@ -147,20 +150,31 @@ The remaining gap: the sidekick process runs under the lead in window 0, so
 nothing registers an agent in the worktree's own window and workmux shows the
 worktree with blank status.
 
-Two parts:
+This is **entirely pax-side**. workmux already exposes both seams needed.
 
-- **pax side** (PR to `persona-id/pax`): publish per-lane activity. pax knows each
-  lane's cwd; workmux tracks worktrees by path; the join is the path. The existing
-  `suba:activity` shape (`{ activeCount }`) is the minimum that makes the current
-  workmux extension correct; a per-lane event carrying cwd is what makes the
-  dashboard genuinely useful.
-- **workmux side**: consume per-lane events and attribute status to the worktree
-  matching each lane's cwd, rather than rolling everything onto the lead's entry.
-  `agent_statuses` being an array means the data model already allows this.
+- **Correct the lead's status** — pax emits `suba:activity` carrying `activeCount`.
+  Upstream's pi extension
+  (`workmux/resources/pi/extensions/workmux-status.ts`) already subscribes to
+  exactly this event and folds the count into its reported status, so emitting it
+  is sufficient to stop the lead reporting `done` while sidekicks work. No workmux
+  change.
+- **Attribute status to the worktree** — `set-window-status` and `register-agent`
+  resolve their target pane from `$TMUX_PANE`
+  (`workmux/src/multiplexer/tmux.rs:777`; `resolve_status_pane_id` in
+  `src/command/set_window_status.rs`). So for a lane whose cwd is a worktree with
+  a tmux window, invoking
 
-Until the pax PR lands, the lead's entry reports `done` while sidekicks work. That
-is the known-wrong state this bridge exists to fix, and it should not be worked
-around with scraping.
+  ```
+  TMUX_PANE=<that window's pane id> workmux register-agent
+  TMUX_PANE=<that window's pane id> workmux set-window-status working|done
+  ```
+
+  marks the correct window. The lane-cwd → pane-id lookup is the piece to build;
+  it belongs in pax or in a small wrapper pax shells out to.
+
+Until this lands the lead's entry reports `done` while sidekicks work. That is the
+known-wrong state the bridge exists to fix, and it should not be worked around by
+scraping pax's Computer server.
 
 ## Precondition: prompts must be committable
 
@@ -180,8 +194,11 @@ ignored it until this change; other repos must be checked before first dispatch.
   documented in pax's README as open.
 - **`sidekick.maxParallel` is a shared budget** (default 3), so concurrent
   initiatives queue rather than all running at once.
-- **The design depends on a PR to a repo not solely owned here.** The status
-  bridge is the only part that does; everything else works without it.
+- **The status bridge depends on a PR to `persona-id/pax`**, a repo not solely
+  owned here. It is the only part that does; everything else works without it. No
+  part of the design requires modifying workmux — that was an early error, made
+  when `~/src/ianchesal/workmux` was mistaken for an owned tool rather than a
+  pristine fork of `raine/workmux`.
 
 ## Out of scope
 
