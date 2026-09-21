@@ -6,19 +6,26 @@ picture. Companion to `docs/chezmoi-workflows.md`; the design of record is
 
 ## Mental model
 
-**A repo is a tmux session. pax is window 0. Worktrees are the other windows.**
+**A repo is a tmux session. pax is the first window. Worktrees are the others.**
+
+The session is named for the repo with any `persona-` prefix stripped, matching
+how `window-name.sh` labels windows — nearly every work repo is `persona-*`, so
+the prefix is noise in the session list.
 
 ```
-session: persona-web
-  window 0  pax        <- the lead. repo root, on main. runs for hours.
-  window 1  add-sso    <- a worktree. Claude plans here, then pax implements here.
-  window 2  fix-1234   <- another worktree.
+session: web                 <- the persona-web checkout
+  window 1  pax        <- the lead. split: shell on top, pi below. runs for hours.
+  window 2  add-sso    <- a worktree. Claude plans here, then pax implements here.
+  window 3  fix-1234   <- another worktree.
                        (pax's own sidekick worktrees are invisible - its business)
 
 session: dotfiles
-  window 0  pax
+  window 1  pax
   ...
 ```
+
+Indices start at 1 (`base-index`), so the pax window is 1, not 0. Target it by
+name (`:pax`) rather than by number.
 
 Two agents, two jobs:
 
@@ -41,17 +48,23 @@ levels, which is why repos are sessions rather than windows in one big session.
 
 ### 1. Open a repo — `prefix+w` → `open repo` (`R`)
 
-fzf-picks a checkout under `~/src`, creates a session named for the repo, and
-starts pax in window 0 as:
+fzf-picks a checkout under `~/src`, creates a session named for the repo with
+`persona-` stripped, and splits the `pax` window horizontally: a bare shell at
+the repo root on top (~30%), pi below it (~70%) as:
 
 ```
 PAX_COMPUTER_PORT=<stable> pi --session-id pax-<repo>
 ```
 
+The shell is there so the reflexive `git`/`just` command does not cost a new
+window. The basename keeps its `persona-` prefix everywhere it is a *key* — the
+path lookup, the port registry, and `--session-id` — so only the label changes.
+
 Re-running it attaches instead of recreating. The `--session-id` is what makes
-window 0 **cheap to kill and relaunch** — the multi-hour context lives in pi's
+the lead **cheap to kill and relaunch** — the multi-hour context lives in pi's
 session store, not in the pane. A reboot does not cost you a day of dispatcher
-state.
+state. Since the split, that means `prefix+x` on the **lower pane**: killing the
+whole window now takes the shell with it.
 
 Ports come from a registry at `${XDG_STATE_HOME:-~/.local/state}/pax/ports`, not
 a hash of the repo name. Hashing ~22 repos into any memorable range collides far
@@ -84,7 +97,7 @@ Run from the worktree window. It:
 1. finds the prompt the branch added (`git diff --name-only <base>...HEAD`)
 2. sends the lead an instruction naming the worktree as `workingDir`, with the
    prompt as an **absolute** `@` path
-3. switches you to window 0
+3. switches you to the `pax` window
 
 ### 4. pax implements — in that same worktree, on that same branch
 

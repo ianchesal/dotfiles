@@ -8,9 +8,19 @@
 # resolves the path, keys the port registry and keys pax's session store, so
 # stripping the label cannot collide persona-web with a separate web checkout.
 #
-# Window 0 is named "pax" and runs pi under a stable --session-id so the window
-# is cheap to kill and relaunch -- the multi-hour dispatcher context lives in
-# pi's session store, not the pane.
+# The session's one window is named "pax" and split horizontally: a bare shell at
+# the repo root on top, pi below it under a stable --session-id. The shell is
+# there so the reflexive git/just command does not cost a new window, and pi
+# keeps the larger share because its output is long.
+#
+# The split targets the window and pane IDs that -P -F hands back, never an
+# index: tmux.conf sets base-index and pane-base-index to 1, so a computed ":0"
+# matches nothing and the split silently does not happen.
+#
+# Killing a single pane rather than the whole window is what keeps the lead
+# cheap to relaunch: the multi-hour dispatcher context lives in pi's session
+# store, not the pane, so `prefix + x` on the lower pane and a re-open of the
+# repo restores it. Killing the window now takes the shell with it.
 #
 # Computer ports come from a persisted registry rather than a hash of the repo
 # name: hashing ~20 repos into any range small enough to be memorable collides
@@ -76,7 +86,7 @@ focus_session() {
 }
 
 open_repo() {
-  local name=$1 path port session
+  local name=$1 path port session window pane
   path=$(path_for "$name") || {
     echo "pax-open-repo: no repo named '$name' under $src_root" >&2
     return 1
@@ -88,8 +98,28 @@ open_repo() {
     return 0
   fi
   port=$(port_for "$name") || return 1
-  "$tmux_bin" new-session -d -s "$session" -c "$path" -n pax \
-    "PAX_COMPUTER_PORT=$port $pax_bin --session-id pax-$name"
+  # The first pane is left as a plain shell -- no command -- so the prompt is
+  # the top half. pax is split in underneath rather than being the first pane so
+  # that killing it does not take the shell down with it.
+  #
+  # Each step is checked explicitly: open_repo is called from a `||` context,
+  # which disables errexit inside it, so an unchecked tmux failure here would
+  # leave a half-built window and still exit 0.
+  window=$("$tmux_bin" new-session -d -P -F '#{window_id}' \
+    -s "$session" -c "$path" -n pax) || {
+    echo "pax-open-repo: could not create session '$session'" >&2
+    return 1
+  }
+  pane=$("$tmux_bin" split-window -v -l 70% -P -F '#{pane_id}' \
+    -t "$window" -c "$path" \
+    "PAX_COMPUTER_PORT=$port $pax_bin --session-id pax-$name") || {
+    echo "pax-open-repo: could not split pax into window $window" >&2
+    return 1
+  }
+  "$tmux_bin" select-pane -t "$pane" || {
+    echo "pax-open-repo: could not focus pane $pane" >&2
+    return 1
+  }
   focus_session "$session"
 }
 

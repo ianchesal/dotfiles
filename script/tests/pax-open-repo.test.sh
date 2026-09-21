@@ -25,11 +25,18 @@ check() {
 }
 
 # A fake tmux that records its argv one call per line and reports "no session".
+# new-session and split-window print an id because the script captures them
+# with -P -F: real tmux indices start at 1 here (base-index), so the script must
+# never compute ":0" and the fake must not let it get away with doing so.
 cat >"$work/tmux" <<'FAKE'
 #!/usr/bin/env bash
 set -euo pipefail
 echo "$*" >>"$TMUX_CALLS"
-[ "${1:-}" = "has-session" ] && exit 1
+case "${1:-}" in
+  has-session) exit 1 ;;
+  new-session) echo '@9' ;;
+  split-window) echo '%7' ;;
+esac
 exit 0
 FAKE
 chmod +x "$work/tmux"
@@ -39,6 +46,10 @@ cat >"$work/tmux-existing" <<'FAKE'
 #!/usr/bin/env bash
 set -euo pipefail
 echo "$*" >>"$TMUX_CALLS"
+case "${1:-}" in
+  new-session) echo '@9' ;;
+  split-window) echo '%7' ;;
+esac
 exit 0
 FAKE
 chmod +x "$work/tmux-existing"
@@ -71,20 +82,28 @@ check "second repo gets the next port" "8801" "$(awk '$1 == "nested" { print $2 
 run "$work/tmux" toplevel
 check "re-opening reuses the same port" "8800" "$(awk '$1 == "toplevel" { print $2 }' "$work/ports")"
 
-# --- a new session is created with pax in window 0 ---------------------------
+# --- a new session is created with a prompt over pax in window 0 -------------
 rm -f "$work/ports"
 run "$work/tmux" toplevel
 check "creates a detached session named for the repo" "1" \
-  "$(grep -c -- "new-session -d -s toplevel -c $src/toplevel -n pax" "$work/calls" || true)"
+  "$(grep -c -- "new-session -d -P -F #{window_id} -s toplevel -c $src/toplevel -n pax" "$work/calls" || true)"
+check "leaves the first pane a bare shell at the repo root" "1" \
+  "$(grep -c -- "^new-session -d -P -F #{window_id} -s toplevel -c $src/toplevel -n pax$" "$work/calls" || true)"
+check "splits pax in below the prompt, by window id" "1" \
+  "$(grep -c -- "split-window -v -l 70% -P -F #{pane_id} -t @9 -c $src/toplevel " "$work/calls" || true)"
+check "targets no hardcoded index" "0" \
+  "$(grep -c -e ':0\.' -e '=toplevel:0' "$work/calls" || true)"
 check "launches pax with a stable session id" "1" \
   "$(grep -c -- '--session-id pax-toplevel' "$work/calls" || true)"
 check "pins the computer port" "1" "$(grep -c 'PAX_COMPUTER_PORT=8800' "$work/calls" || true)"
+check "focuses the pax pane by id" "1" \
+  "$(grep -c -- 'select-pane -t %7' "$work/calls" || true)"
 
 # --- persona- is stripped from the session name, not from the lookup key -----
 rm -f "$work/ports"
 run "$work/tmux" persona-web
 check "strips persona- from the session name" "1" \
-  "$(grep -c -- "new-session -d -s web -c $src/persona-web -n pax" "$work/calls" || true)"
+  "$(grep -c -- "new-session -d -P -F #{window_id} -s web -c $src/persona-web -n pax" "$work/calls" || true)"
 check "keys the port registry on the full basename" "8800" \
   "$(awk '$1 == "persona-web" { print $2 }' "$work/ports")"
 check "keys the pax session id on the full basename" "1" \
