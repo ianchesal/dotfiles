@@ -33,8 +33,9 @@ __pycache__/
 # Homebrew
 /brew/Brewfile.lock.json
 
-# Superpowers working docs (plans/specs) -- never committed
-/docs/superpowers/
+# Superpowers scratch review output -- never committed. docs/superpowers/ IS
+# committed: prompts handed to another agent have to reach the PR, and pax reads
+# them from the planning branch.
 /SPEC_REVIEW.md
 
 # Serena
