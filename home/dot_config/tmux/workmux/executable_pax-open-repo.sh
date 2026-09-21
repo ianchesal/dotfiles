@@ -2,9 +2,15 @@
 #
 # Open a repo as its own tmux session with a long-running pax lead in window 0.
 #
-# The session is named for the repo's basename; window 0 is named "pax" and runs
-# pi under a stable --session-id so the window is cheap to kill and relaunch --
-# the multi-hour dispatcher context lives in pi's session store, not the pane.
+# The session is named for the repo's basename with any persona- prefix stripped,
+# matching window-name.sh -- nearly every work repo is persona-*, and the prefix
+# is noise in a session list. The basename itself stays the lookup key: it
+# resolves the path, keys the port registry and keys pax's session store, so
+# stripping the label cannot collide persona-web with a separate web checkout.
+#
+# Window 0 is named "pax" and runs pi under a stable --session-id so the window
+# is cheap to kill and relaunch -- the multi-hour dispatcher context lives in
+# pi's session store, not the pane.
 #
 # Computer ports come from a persisted registry rather than a hash of the repo
 # name: hashing ~20 repos into any range small enough to be memorable collides
@@ -70,19 +76,21 @@ focus_session() {
 }
 
 open_repo() {
-  local name=$1 path port
+  local name=$1 path port session
   path=$(path_for "$name") || {
     echo "pax-open-repo: no repo named '$name' under $src_root" >&2
     return 1
   }
-  if "$tmux_bin" has-session -t "=$name" 2>/dev/null; then
-    focus_session "$name"
+  # Label only -- every key below stays on the unstripped basename.
+  session=${name#persona-}
+  if "$tmux_bin" has-session -t "=$session" 2>/dev/null; then
+    focus_session "$session"
     return 0
   fi
   port=$(port_for "$name") || return 1
-  "$tmux_bin" new-session -d -s "$name" -c "$path" -n pax \
+  "$tmux_bin" new-session -d -s "$session" -c "$path" -n pax \
     "PAX_COMPUTER_PORT=$port $pax_bin --session-id pax-$name"
-  focus_session "$name"
+  focus_session "$session"
 }
 
 pick_repo() {
