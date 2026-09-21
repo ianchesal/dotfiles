@@ -463,8 +463,10 @@ echo "pax-dispatch"
 # --- the branch-added prompt is discovered -----------------------------------
 run "$wt"
 check "sends to the repo's main handle" "1" "$(grep -c '^send demo ' "$work/wm-calls" || true)"
-check "names the prompt file" "1" \
-  "$(grep -c '@docs/superpowers/prompts/2026-09-21-thing-prompt.md' "$work/wm-calls" || true)"
+check "names the prompt by absolute path" "1" \
+  "$(grep -c "@$wt/docs/superpowers/prompts/2026-09-21-thing-prompt.md" "$work/wm-calls" || true)"
+check "does not use a worktree-relative prompt path" "0" \
+  "$(grep -c '@docs/superpowers' "$work/wm-calls" || true)"
 check "names the worktree as workingDir" "1" "$(grep -c "workingDir=\"$wt\"" "$work/wm-calls" || true)"
 check "names the branch" "1" "$(grep -c 'branch planning' "$work/wm-calls" || true)"
 check "switches to the pax window" "1" "$(grep -c 'select-window -t :pax' "$work/tmux-calls" || true)"
@@ -598,7 +600,11 @@ if [ "$count" -gt 1 ]; then
 $prompts"
 fi
 
-instruction="Execute the plan in @$prompts.
+# The @ path must be ABSOLUTE. `git diff --name-only` yields a path relative to
+# the worktree, but the lead's cwd is the repo root on main -- where the prompt
+# does not exist, because it is committed on the planning branch. A relative
+# path silently fails to resolve there.
+instruction="Execute the plan in @$worktree/$prompts.
 Delegate it with workingDir=\"$worktree\" so the work happens in that existing worktree on branch $branch, where the spec, plan and prompt are already committed.
 Do not provision a new worktree: implementation commits must land on branch $branch so everything reaches review in one PR."
 
