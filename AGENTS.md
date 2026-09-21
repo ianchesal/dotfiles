@@ -134,6 +134,8 @@ This file provides guidance to AI agents working on this repository.
 - Stop managing: `chezmoi forget <path>`; remove entirely: `chezmoi destroy <path>`
 - List all tasks: `just --list --list-submodules` (just owns **only** the update fan-out and a few tool utilities — it deploys nothing, and there is no `all` or `clean`)
 - See `docs/chezmoi-workflows.md` for the full day-to-day workflows
+- See `docs/pax-workflow.md` for the design/dispatch/implement loop: repo-per-tmux-session
+  with pax in window 0, Claude planning in worktree windows, and the `workingDir` handoff
 - Verify chezmoi still behaves as this layout assumes (run after a chezmoi
   upgrade): `script/verify-chezmoi-assumptions.sh` — scratch-dir only, never
   touches the real home
