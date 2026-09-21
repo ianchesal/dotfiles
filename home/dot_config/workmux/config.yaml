@@ -1,6 +1,8 @@
-# each worktree opens as a seperate session as opposed to windows
-mode: session
-default_session: main
+# Each worktree opens as a window in the repo's own session. pax is per-repo and
+# lives in window 0 of that session (see docs/superpowers/specs/
+# 2026-09-21-pax-tmux-workflow-design.md), so a worktree window runs only the
+# planning agent.
+mode: window
 # don't add dagent icons to tmux windows
 # status_format: false
 # enable nerd fonts, duh
@@ -14,13 +16,7 @@ agent: claude
 
 # default window layout
 windows:
-  # - name: editor
-  #   panes:
-  #     - command: nvim
   - name: claude
     panes:
       - command: claude --permission-mode auto
         focus: true
-  - name: pi
-    panes:
-      - command: pi || true
