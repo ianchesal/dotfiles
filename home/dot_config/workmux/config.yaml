@@ -14,9 +14,9 @@ agent: claude
 # auto_name:
 #   background: true # Always run in background when using --auto-name
 
-# default window layout
-windows:
-  - name: claude
-    panes:
-      - command: claude --permission-mode auto
-        focus: true
+# Default pane layout. In window mode a worktree IS a single window, so the
+# layout is a top-level pane list -- 'windows' is session-mode only and workmux
+# rejects the config outright if both are set (src/command/add.rs).
+panes:
+  - command: claude --permission-mode auto
+    focus: true
