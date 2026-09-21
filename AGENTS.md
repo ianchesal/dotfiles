@@ -45,6 +45,22 @@ This file provides guidance to AI agents working on this repository.
   machine-local (`chezmoistate.boltdb` is not in the repo). On a machine chezmoi
   has never written to, `apply` replaces pre-existing files with no prompt —
   `chezmoi diff` first is the only safeguard
+- **From a worktree, always pass `--source`.** The invocation is
+  `chezmoi --source "$(git rev-parse --show-toplevel)" ...`, which is correct
+  from any directory inside the worktree — `"$PWD"` only works at its root, and
+  from `script/` or `home/dot_config/` points chezmoi at something that is not a
+  source state at all.
+  `~/.config/chezmoi/chezmoi.toml` pins `sourceDir` to the main checkout, so a
+  bare `chezmoi diff`/`apply` run inside `dotfiles__worktrees/<branch>` reads
+  **main's** source state, not the edits in front of you. The diff reads
+  backwards — chezmoi proposing to revert your change is indistinguishable at a
+  glance from your change being applied — and `apply` really does revert it.
+  Point `--source` at the worktree **root**, not `<worktree>/home`:
+  `.chezmoiroot` is honoured from there and resolves the source state to
+  `<worktree>/home` itself. Scope the path as well
+  (`chezmoi --source "$(git rev-parse --show-toplevel)" apply ~/.config/tmux`):
+  unscoped, it also repoints the `~/.config/nvim` symlink at the worktree, and
+  that outlives the worktree
 
 ## Task Running (just)
 
