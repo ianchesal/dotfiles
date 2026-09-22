@@ -13,11 +13,11 @@ how `window-name.sh` labels windows — nearly every work repo is `persona-*`, s
 the prefix is noise in the session list.
 
 ```
-session: web                 <- the persona-web checkout
-  window 1  pax        <- the lead. split: shell on top, pi below. runs for hours.
+session: web           <- the persona-web checkout
+  window 1  pax        <- the lead. split: shell on top, pi below. runs for hours to days.
   window 2  add-sso    <- a worktree. Claude plans here, then pax implements here.
   window 3  fix-1234   <- another worktree.
-                       (pax's own sidekick worktrees are invisible - its business)
+                          (pax's own sidekick worktrees are invisible - its business)
 
 session: dotfiles
   window 1  pax
@@ -61,7 +61,7 @@ window. The basename keeps its `persona-` prefix everywhere it is a *key* — th
 path lookup, the port registry, and `--session-id` — so only the label changes.
 
 Re-running it attaches instead of recreating. The `--session-id` is what makes
-the lead **cheap to kill and relaunch** — the multi-hour context lives in pi's
+the lead **cheap to kill and relaunch** — the multi-day context lives in pi's
 session store, not in the pane. A reboot does not cost you a day of dispatcher
 state. Since the split, that means `prefix+x` on the **lower pane**: killing the
 whole window now takes the shell with it.
@@ -89,6 +89,9 @@ docs/superpowers/prompts/YYYY-MM-DD-<topic>-prompt.md
 branch for pax to read it, and has to reach the PR to be reviewable. A repo that
 gitignores that path cannot be dispatched from — `pax-dispatch.sh` detects this
 and says so rather than reporting a missing prompt.
+
+TODO: Do we need to clean up `docs/superpowers/**` at some point? These are
+eventually out of date artifacts that clutter up the repo.
 
 ### 3. Hand off — `prefix+w` → `dispatch to pax` (`D`)
 
