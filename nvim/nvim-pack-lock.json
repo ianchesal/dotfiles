@@ -1,9 +1,9 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "cef8d093b63c9be7e8b49f7dc341e8447fc4c300",
+      "rev": "77d734dac7aa4f64a5b6b1062052be8f5aa7ff2f",
       "src": "https://github.com/b0o/SchemaStore.nvim",
-      "version": "'cef8d093b63c9be7e8b49f7dc341e8447fc4c300'"
+      "version": "'77d734dac7aa4f64a5b6b1062052be8f5aa7ff2f'"
     },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
@@ -26,9 +26,9 @@
       "version": "'4516612fe98ff56ae0415a259ff6361a89419b0a'"
     },
     "flash.nvim": {
-      "rev": "b6346946d10d07998efee029fb0f7a593806d0cd",
+      "rev": "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a",
       "src": "https://github.com/folke/flash.nvim",
-      "version": "'b6346946d10d07998efee029fb0f7a593806d0cd'"
+      "version": "'5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a'"
     },
     "friendly-snippets": {
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
@@ -56,9 +56,9 @@
       "version": "'a923f5fc5ba36a3b17e289dc35dc17f66d0548ee'"
     },
     "mason-lspconfig.nvim": {
-      "rev": "9d28935aa95fa6c1dc7c4d6747f101a72a8a4bec",
+      "rev": "40276c4df7e6bdce6801d6c035c6227f9115a855",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim",
-      "version": "'9d28935aa95fa6c1dc7c4d6747f101a72a8a4bec'"
+      "version": "'40276c4df7e6bdce6801d6c035c6227f9115a855'"
     },
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
@@ -106,24 +106,24 @@
       "version": "'7bfd942445fb63089b59f97ca487d605e715f155'"
     },
     "nui.nvim": {
-      "rev": "a25dd472316d806eb38a5dd667c2e40da5570c75",
+      "rev": "10fc361835c856ba4233ef5ea135b919bf3dce97",
       "src": "https://github.com/MunifTanjim/nui.nvim",
-      "version": "'a25dd472316d806eb38a5dd667c2e40da5570c75'"
+      "version": "'10fc361835c856ba4233ef5ea135b919bf3dce97'"
     },
     "nvim-lint": {
-      "rev": "0370fe965697aa8f04252a1562441bdc13723cd1",
+      "rev": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e",
       "src": "https://github.com/mfussenegger/nvim-lint",
-      "version": "'0370fe965697aa8f04252a1562441bdc13723cd1'"
+      "version": "'3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e'"
     },
     "nvim-lspconfig": {
-      "rev": "bff1bd61cb1455040533201ca1edf1e84efa578f",
+      "rev": "3928e638fdedf195b23ae5a18f024afa487982bc",
       "src": "https://github.com/neovim/nvim-lspconfig",
-      "version": "'bff1bd61cb1455040533201ca1edf1e84efa578f'"
+      "version": "'3928e638fdedf195b23ae5a18f024afa487982bc'"
     },
     "nvim-treesitter": {
-      "rev": "074aa4422bf029908338e855d0c0f71470a971bb",
+      "rev": "8b98b4470eb326f1c7b50dae79f8c963568e5720",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
-      "version": "'074aa4422bf029908338e855d0c0f71470a971bb'"
+      "version": "'8b98b4470eb326f1c7b50dae79f8c963568e5720'"
     },
     "nvim-treesitter-endwise": {
       "rev": "8fe8a95630f4f2c72a87ba1927af649e0bfaa244",
