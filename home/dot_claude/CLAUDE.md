@@ -1,7 +1,5 @@
 # Claude Tool Configuration
 
-Rake tasks for managing Claude Code installation. Install method uses the official
-installer (`curl -fsSL https://claude.ai/install.sh | bash`), not Homebrew.
 Key files: `just/claude.just` (install/update/completion recipes), `CLAUDE.md` (this file).
 
 # Workflow Management
@@ -36,3 +34,6 @@ Key files: `just/claude.just` (install/update/completion recipes), `CLAUDE.md` (
 
 ## Editing Notes & Documents
 - When the user provides a name, company, or proper noun, verify spelling against existing context (prior notes, calendar entries) before propagating it across a document
+
+## Code Review
+- When leaving review comments as part of a code review use the [Conventional Comments](https://conventionalcomments.org/) style
