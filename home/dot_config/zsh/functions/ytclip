@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+##? ytclip - download a section of a YouTube video at the best available quality
+##?
+##? usage: ytclip <url> <start> <name> [end]
+##?        start/end: seconds or HH:MM:SS; end defaults to the end of the video
+##?        Output is <name>.mkv in the current directory. Cuts are not
+##?        re-encoded, so the clip may begin a second or two early at the
+##?        nearest keyframe.
+
+emulate -L zsh
+
+if (( $# < 3 )); then
+  print -u2 "usage: ytclip <url> <start> <name> [end]"
+  return 1
+fi
+
+if ! (( $+commands[yt-dlp] )); then
+  print -u2 "ytclip: yt-dlp is not installed"
+  return 1
+fi
+
+local url=$1 start=$2 name=$3 end=${4:-inf}
+
+yt-dlp \
+  -f 'bv*+ba/b' \
+  --download-sections "*${start}-${end}" \
+  --merge-output-format mkv \
+  --embed-metadata --embed-chapters \
+  --no-playlist \
+  -o "${name}.%(ext)s" \
+  "$url"
