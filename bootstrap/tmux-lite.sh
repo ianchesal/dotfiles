@@ -9,6 +9,7 @@
 #
 # An existing ~/.tmux.conf is backed up (not silently replaced) before being
 # overwritten, since a box you don't own may already have real content in it.
+# An identical one is left alone. The bash parachute's `dfu` reruns this.
 set -euo pipefail
 
 REPO_RAW="${REPO_RAW:-https://raw.githubusercontent.com/ianchesal/dotfiles/main}"
@@ -21,17 +22,35 @@ RESET='\033[0m'
 
 log()  { printf "\n${BOLD}${GREEN}==>%s${RESET}\n" " $*"; }
 note() { printf "  ${YELLOW}[BACKUP]${RESET} %s\n" "$*"; }
+updated()   { printf "  ${GREEN}[UPDATED]${RESET} %s\n" "$*"; }
+unchanged() { printf "  [UNCHANGED] %s\n" "$*"; }
 warn() { printf "  ${YELLOW}[WARN]${RESET} %s\n" "$*"; }
 
-# Downloads $1 (a path under the repo root) to $2 (a local destination path),
-# backing $2 up first if it already exists.
+# Downloads $1 (a path under the repo root) to $2 (a local destination path).
+# A file that is already identical is left alone, so rerunning to update a
+# machine doesn't leave a backup of every unchanged file behind; one that
+# differs is backed up first, then replaced.
 fetch() {
-  local src="$1" dest="$2"
+  local src="$1" dest="$2" tmp
+  tmp="$(mktemp "$dest.XXXXXX")"
+  if ! curl -fsSL "$REPO_RAW/$src" -o "$tmp"; then
+    rm -f "$tmp"
+    return 1
+  fi
+  if [[ -f "$dest" ]] && cmp -s "$tmp" "$dest"; then
+    rm -f "$tmp"
+    unchanged "$dest"
+    return 0
+  fi
   if [[ -e "$dest" && ! -L "$dest" ]]; then
     note "$dest -> $dest$BACKUP_SUFFIX"
     cp "$dest" "$dest$BACKUP_SUFFIX"
   fi
-  curl -fsSL "$REPO_RAW/$src" -o "$dest"
+  # Write into place rather than mv: keeps the old write-through-a-symlink behaviour and the
+  # umask permissions curl -o gave, where mktemp would leave it 0600.
+  cat "$tmp" > "$dest"
+  rm -f "$tmp"
+  updated "$dest"
 }
 
 log "Installing tmux-lite config from $REPO_RAW"

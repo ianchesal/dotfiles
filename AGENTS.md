@@ -301,6 +301,17 @@ This file provides guidance to AI agents working on this repository.
   anything already there first: `curl -fsSL
   https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/bash-only.sh
   | bash`
+- `bashrc.d/09-parachute.bash` defines `parachute_update`, aliased to `dfu`
+  in bash, which reruns `bash-only.sh` and `tmux-lite.sh` to update a
+  parachute machine. It resolves main's commit hash through the GitHub API
+  and fetches from that commit, because raw.githubusercontent.com caches
+  branch URLs for minutes after a push and a rerun against `main` can lay
+  down the old files. Both installers skip files that are already
+  identical, so a rerun backs up only what actually changed. It refuses on a
+  chezmoi-managed machine (a `chezmoi.toml` or `chezmoistate.boltdb` in the
+  chezmoi config dir; `FORCE=1` overrides). **A new `bashrc.d` module must
+  also be added to `BASHRC_D_MODULES` in `bash-only.sh`**, or parachute
+  machines never receive it
 
 ## Git Configuration
 

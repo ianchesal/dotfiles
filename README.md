@@ -53,4 +53,8 @@ already in place is backed up first:
     # tmux: same keys and theme as the full config, no plugins (~/.tmux.conf)
     curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/tmux-lite.sh | bash
 
-Re-run either one to pull the latest version.
+Once the bash config is in, `dfu` updates both to the latest `main` in one go.
+It pins the download to main's current commit, so it can't pick up a stale
+cached copy right after a push, and it leaves unchanged files alone (only the
+ones that actually changed get a `.bak` copy). On a chezmoi-managed machine it
+refuses and points you at the zsh `dfu`.
