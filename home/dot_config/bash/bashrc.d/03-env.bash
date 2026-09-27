@@ -31,3 +31,16 @@ if ! command -v brew >/dev/null 2>&1; then
   done
   unset brew_candidate
 fi
+
+# Personal and XDG bin dirs, as zsh's 03-env.zsh adds them. Don't lean
+# on ~/.profile for these: it only runs for login shells, macOS has none,
+# and Debian's skel version skips ~/.local/bin if it didn't exist at login.
+# Appended (matching zsh) and deduplicated, since a nested bash inherits
+# a PATH that may already carry them.
+for bin_dir in "$HOME/bin" "$HOME/.local/bin"; do
+  if [[ -d "$bin_dir" && ":$PATH:" != *":$bin_dir:"* ]]; then
+    PATH="$PATH:$bin_dir"
+  fi
+done
+unset bin_dir
+export PATH
