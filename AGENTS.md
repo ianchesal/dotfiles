@@ -196,8 +196,16 @@ This file provides guidance to AI agents working on this repository.
   **copied like everything else, not symlinked** — `nvim/` is the only `symlink_`
   entry in the repo, so a tmux edit needs a `chezmoi apply` to go live
 - Main configuration in `tmux.conf`, theme in `theme.conf`. Also present:
-  `theme-gcw.conf` (cloud-workstation variant), `tmux-minimal.conf`, and a
+  `theme-gcw.conf` (cloud-workstation variant), `tmux-lite.conf`, and a
   `workmux/` subdirectory of helper scripts
+- `tmux-lite.conf` is the standalone twin of the bash fallback: one file, no
+  TPM, no plugins, no helper scripts, tmux 3.0+. It inlines the plugin
+  behaviour that shapes the feel (vim-tmux-navigator's `C-h/j/k/l`, tmux-yank
+  via OSC 52, prefix-highlight, tmux-sensible defaults) and copies the key
+  bindings and palette of `tmux.conf` + `theme.conf` -- **keep it in step when
+  those change**. `bootstrap/tmux-lite.sh` installs it as `~/.tmux.conf` on a
+  box chezmoi doesn't manage. It also deploys to `~/.config/tmux/` everywhere,
+  where it is inert
 - Uses TPM (Tmux Plugin Manager) for plugins, installed to `~/.config/tmux/plugins/`
 - VHS Era theme with powerline-style status bar segments and double-arrow separators
 - Custom helper scripts live alongside the config in `home/dot_config/tmux/` and

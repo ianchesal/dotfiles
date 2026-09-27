@@ -12,6 +12,8 @@ centos.sh             Minimal CentOS/RHEL bootstrap: clones pyenv + rbenv (with
 cloud-workstation.sh  Idempotent provisioning for a Linux cloud workstation
 bash-only.sh          Lays down just the standalone bash fallback config --
                       no git, no chezmoi, no Homebrew, no repo checkout
+tmux-lite.sh          Same idea for tmux: installs the single-file
+                      tmux-lite config as ~/.tmux.conf -- no TPM, no plugins
 ```
 
 `cloud-workstation.sh` runs in numbered, re-runnable steps (each skips if
@@ -37,8 +39,13 @@ Run `centos.sh` or `cloud-workstation.sh` directly on the target machine,
 e.g. `bash bootstrap/centos.sh` or `./bootstrap/cloud-workstation.sh`. They
 expect the repo checked out at `$HOME/src/dotfiles` and may invoke `sudo`.
 
-`bash-only.sh` needs no checkout and no `sudo` -- run it straight from GitHub:
+`bash-only.sh` and `tmux-lite.sh` need no checkout and no `sudo` -- run them
+straight from GitHub:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/bash-only.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/tmux-lite.sh | bash
 ```
+
+`tmux-lite.sh` warns if `~/.config/tmux/tmux.conf` also exists: tmux loads
+every default config file it finds, so that one would be layered on top.

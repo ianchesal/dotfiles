@@ -39,3 +39,18 @@ Day to day:
 
 See `docs/chezmoi-workflows.md` for adding and removing tools, changing
 settings, and the gotchas.
+
+## Parachute configs
+
+For a box you don't want to (or can't) chezmoi-manage — a root shell, an
+appliance, a server you just ssh into — two standalone configs drop in with one
+`curl` each. No git, no Homebrew, no `sudo`, no repo checkout, and anything
+already in place is backed up first:
+
+    # bash: history, prompt, aliases, git shortcuts (~/.bashrc and friends)
+    curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/bash-only.sh | bash
+
+    # tmux: same keys and theme as the full config, no plugins (~/.tmux.conf)
+    curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/tmux-lite.sh | bash
+
+Re-run either one to pull the latest version.
