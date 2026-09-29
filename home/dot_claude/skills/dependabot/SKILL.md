@@ -55,6 +55,15 @@ Classify it:
   2. `gh pr merge <number> --auto --squash`
   3. `gh pr comment <number> --body "@dependabot rebase"`
   Don't poll; note it as "rebase-requested (auto-merge armed)" and move on.
+
+  **Fallback if Dependabot refuses:** Dependabot sometimes replies "The base
+  commit for this pull request has not changed" while GitHub still reports
+  `BEHIND` (confirm with `gh api repos/{owner}/{repo}/compare/main...<headRefName> --jq .behind_by`).
+  Re-asking for a rebase won't help. Comment `@dependabot recreate` instead —
+  it rebuilds the branch from current main, and auto-merge stays armed
+  through the force-push, so the PR merges once CI passes. Prefer this over
+  `gh pr update-branch`, which pushes a non-Dependabot commit and makes
+  Dependabot stop maintaining the PR.
 - **Checks failing** → inspect the failure before giving up on the PR:
   ```
   gh pr checks <number>
