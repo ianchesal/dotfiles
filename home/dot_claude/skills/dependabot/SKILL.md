@@ -17,10 +17,22 @@ checkouts, rebases, or force-pushes.
 ## Step 1: List PRs
 
 ```
-gh pr list --author "app/dependabot" --state open --json number,title,headRefName,mergeable,statusCheckRollup --jq 'sort_by(.number)'
+gh pr list --author "app/dependabot" --state open --json number,title,headRefName,mergeable,mergeStateStatus,statusCheckRollup --jq 'sort_by(.number)'
 ```
 
 If there are none, report that and stop.
+
+`mergeable` is `MERGEABLE` / `CONFLICTING` / `UNKNOWN` (not a boolean).
+`mergeStateStatus` is what tells you whether branch protection will actually
+let it merge: `CLEAN`, `BEHIND` (base moved, protection requires up-to-date),
+`DIRTY` (conflicts), `BLOCKED`, `UNSTABLE`, `UNKNOWN`. `UNKNOWN` in either
+field just means GitHub hasn't computed it yet — wait a few seconds and
+re-fetch (up to ~1 minute) before classifying.
+
+If a PR from an earlier run has disappeared and a new one covers the same
+dependency group, Dependabot closed and recreated it (common after a rebase
+when one of a group's updates already landed on main). Mention it in the
+summary; treat the new PR normally.
 
 ## Step 2: Process PRs one at a time, oldest first
 
@@ -32,9 +44,17 @@ finished.
 Classify it:
 
 - **Checks still pending** → skip, note as "pending" for the summary. Move on.
-- **`mergeable: false` (conflicting)** → comment `@dependabot rebase` on the
-  PR (`gh pr comment <number> --body "@dependabot rebase"`) and move on. Don't
-  wait for it — it'll be clean on a future run of this skill.
+- **`mergeable: CONFLICTING` (`mergeStateStatus: DIRTY`)** → comment
+  `@dependabot rebase` on the PR (`gh pr comment <number> --body "@dependabot rebase"`)
+  and move on. Don't wait for it — it'll be clean on a future run of this skill.
+- **Green but `mergeStateStatus: BEHIND`** → branch protection requires the
+  branch to be up to date, so auto-merge will sit forever. Approve it, arm
+  auto-merge, and ask Dependabot to rebase — once the rebase's CI passes,
+  GitHub merges it with no further runs needed:
+  1. `gh pr review <number> --approve`
+  2. `gh pr merge <number> --auto --squash`
+  3. `gh pr comment <number> --body "@dependabot rebase"`
+  Don't poll; note it as "rebase-requested (auto-merge armed)" and move on.
 - **Checks failing** → inspect the failure before giving up on the PR:
   ```
   gh pr checks <number>
@@ -53,18 +73,29 @@ Classify it:
     2. `gh pr close <number>`
   - **Any other failure reason**: skip, note as "failing (non-Node)" with a
     one-line reason for the summary. Don't close or comment.
-- **Green and `mergeable: true`** →
+- **Green and `mergeStateStatus: CLEAN`** →
   1. `gh pr review <number> --approve`
   2. `gh pr merge <number> --auto --squash` (match the repo's normal merge
      method if it's not squash)
-  3. Poll until it actually merges (`gh pr view <number> --json state`)
+  3. Poll until it actually merges (`gh pr view <number> --json state,mergeStateStatus`)
      before moving to the next PR — a merge can be what unblocks or conflicts
-     the remaining ones.
+     the remaining ones. Keep the poll bounded (~5 minutes, well under the
+     Bash tool timeout) and check `mergeStateStatus` each iteration: if it
+     goes `BEHIND` or `DIRTY`, stop polling and handle it per the rules
+     above. If it's still open when the bound runs out, note it as pending
+     with its `mergeStateStatus` and move on.
+- **Anything else** (`BLOCKED`, `UNSTABLE`, etc.) → skip, note it in the
+  summary with the `mergeStateStatus` so a human can look.
+
+Run polling in the foreground with a bound rather than as a background job.
+If you ever need to kill a stuck command, kill it by PID or task ID — never
+`pkill -f` a pattern, since it can match the shell running the kill.
 
 ## Step 3: Summarize
 
-Report counts and PR numbers for each bucket: merged, rebase-requested,
-closed-for-node, pending, and failing-non-node.
+Report counts and PR numbers for each bucket: merged, rebase-requested
+(flag which have auto-merge armed), closed-for-node, pending, failing-non-node,
+and other-blocked (with `mergeStateStatus`).
 
 ## Step 4: Offer to dig into the leftovers
 
