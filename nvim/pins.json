@@ -3,16 +3,6 @@
     "SchemaStore.nvim": {
       "observed": [
         {
-          "first_seen": 1787965724,
-          "first_seen_iso": "2026-08-29T01:08:44Z",
-          "rev": "2a9b750cbaba7a7417e0d20774374dd0756d967d"
-        },
-        {
-          "first_seen": 1788040993,
-          "first_seen_iso": "2026-08-29T22:03:13Z",
-          "rev": "76c1a2357d4a9da49a90f922e251e5c32d74c99b"
-        },
-        {
           "first_seen": 1788141730,
           "first_seen_iso": "2026-08-31T02:02:10Z",
           "rev": "2940d5e12f8797620cd47dca984d46119e1fa4b8"
@@ -106,12 +96,17 @@
           "first_seen": 1790517141,
           "first_seen_iso": "2026-09-27T13:52:21Z",
           "rev": "cab3cff740114bd6a7d9f862839ed049f5701e47"
+        },
+        {
+          "first_seen": 1790644905,
+          "first_seen_iso": "2026-09-29T01:21:45Z",
+          "rev": "411163b2be396495c76788a016cb1354f1e8acd0"
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-27T13:52:21Z",
-        "pinned_at_epoch": 1790517141,
-        "rev": "b4a92475bb6928810b66a0dd2fd86bea44089aba"
+        "pinned_at": "2026-09-29T01:21:45Z",
+        "pinned_at_epoch": 1790644905,
+        "rev": "76c1a2357d4a9da49a90f922e251e5c32d74c99b"
       }
     },
     "blink.cmp": {
@@ -574,11 +569,6 @@
     "nvim-treesitter": {
       "observed": [
         {
-          "first_seen": 1788040993,
-          "first_seen_iso": "2026-08-29T22:03:13Z",
-          "rev": "857651fce37eba032ebe28f3a206283cdc65c45a"
-        },
-        {
           "first_seen": 1788183880,
           "first_seen_iso": "2026-08-31T13:44:40Z",
           "rev": "19071296d3d643b48615ee574a20e8a03ac40872"
@@ -635,9 +625,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-09-26T22:26:18Z",
-        "pinned_at_epoch": 1790461578,
-        "rev": "8b98b4470eb326f1c7b50dae79f8c963568e5720"
+        "pinned_at": "2026-09-29T01:21:45Z",
+        "pinned_at_epoch": 1790644905,
+        "rev": "857651fce37eba032ebe28f3a206283cdc65c45a"
       }
     },
     "nvim-treesitter-endwise": {
