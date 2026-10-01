@@ -6,26 +6,28 @@ picture. Companion to `docs/chezmoi-workflows.md`; the design of record is
 
 ## Mental model
 
-**A repo is a tmux session. pax is the first window. Worktrees are the others.**
-
-The session is named for the repo with any `persona-` prefix stripped, matching
-how `window-name.sh` labels windows — nearly every work repo is `persona-*`, so
-the prefix is noise in the session list.
+**One pax lead per machine. A repo is a plain tmux session. Worktrees are its
+windows.**
 
 ```
+session: pax           <- the lead. one pane: pi in ~/src. runs for days.
+  window 1  pax
+
 session: web           <- the persona-web checkout
-  window 1  pax        <- the lead. split: shell on top, pi below. runs for hours to days.
+  window 1  zsh        <- a bare shell at the repo root
   window 2  add-sso    <- a worktree. Claude plans here, then pax implements here.
   window 3  fix-1234   <- another worktree.
                           (pax's own sidekick worktrees are invisible - its business)
 
 session: dotfiles
-  window 1  pax
+  window 1  zsh
   ...
 ```
 
-Indices start at 1 (`base-index`), so the pax window is 1, not 0. Target it by
-name (`:pax`) rather than by number.
+Repo sessions are named for the repo with any `persona-` prefix stripped,
+matching how `window-name.sh` labels windows — nearly every work repo is
+`persona-*`, so the prefix is noise in the session list. The one exception is
+`persona-pax`, which keeps its full name so it never collides with the lead.
 
 Two agents, two jobs:
 
@@ -35,41 +37,47 @@ Two agents, two jobs:
 
 The handoff between them is the whole point of this workflow.
 
+### Why one lead, not one per repo
+
+Until October 2026 every repo session carried its own lead (`pi --session-id
+pax-<repo>`) and its own Computer port from a registry. That meant ~20 idle
+dispatchers, a port registry to keep collision-free, and opening a repo always
+cost a pi start. One lead in `~/src` sees every repo on the machine, and pax is
+happy with it: `resolveLaneCwd` (`pax/src/sidekick/lane-cwd.ts`) only refuses a
+`workingDir` that is a subdirectory of the lead's own repo, and `~/src` is not a
+repo, so every checkout and worktree is a valid target. The rest of pax degrades
+cleanly outside a git repo (`workspaceRev` reports `{head: "", dirty: ""}`).
+
 ### Navigation
 
 `prefix+s` (`choose-tree -Zs`) is the only navigation you need. Collapsed it is
-the repo list; expanded it is `pax` plus every worktree for that repo, and a
-window can be selected directly across sessions. One keystroke covers both
-levels, which is why repos are sessions rather than windows in one big session.
+the repo list plus `pax`; expanded it is every worktree for that repo, and a
+window can be selected directly across sessions.
 
 ---
 
 ## The loop
 
+### 0. Start the lead — `prefix+w` → `pax lead` (`P`)
+
+Once per boot, or whenever pi has exited. Creates session `pax` with one window,
+also `pax`, running in `~/src`:
+
+```
+PAX_COMPUTER_PORT=8800 pi --session-id pax
+```
+
+If it is already running, this just switches you to it. The `--session-id` is
+what makes the lead **cheap to kill and relaunch** — the multi-day context lives
+in pi's session store, not in the pane. pi is the session's only process, so
+quitting it ends the session; `P` again picks up where it left off. The Computer
+is always on port 8800, so `http://localhost:8800` is worth bookmarking.
+
 ### 1. Open a repo — `prefix+w` → `open repo` (`R`)
 
-fzf-picks a checkout under `~/src`, creates a session named for the repo with
-`persona-` stripped, and splits the `pax` window horizontally: a bare shell at
-the repo root on top (~30%), pi below it (~70%) as:
-
-```
-PAX_COMPUTER_PORT=<stable> pi --session-id pax-<repo>
-```
-
-The shell is there so the reflexive `git`/`just` command does not cost a new
-window. The basename keeps its `persona-` prefix everywhere it is a *key* — the
-path lookup, the port registry, and `--session-id` — so only the label changes.
-
-Re-running it attaches instead of recreating. The `--session-id` is what makes
-the lead **cheap to kill and relaunch** — the multi-day context lives in pi's
-session store, not in the pane. A reboot does not cost you a day of dispatcher
-state. Since the split, that means `prefix+x` on the **lower pane**: killing the
-whole window now takes the shell with it.
-
-Ports come from a registry at `${XDG_STATE_HOME:-~/.local/state}/pax/ports`, not
-a hash of the repo name. Hashing ~22 repos into any memorable range collides far
-more often than intuition suggests; a registry cannot collide. Each repo
-therefore has a stable Computer URL worth bookmarking.
+fzf-picks a checkout under `~/src` and creates a session for it with one bare
+shell at the repo root. No pi, no split. Re-running it switches to the existing
+session instead of recreating it.
 
 ### 2. Start an initiative — `prefix+w` → `add w/prompt` (`p`)
 
@@ -95,12 +103,20 @@ eventually out of date artifacts that clutter up the repo.
 
 ### 3. Hand off — `prefix+w` → `dispatch to pax` (`D`)
 
-Run from the worktree window. It:
+Run from the worktree window, in any repo session. It:
 
 1. finds the prompt the branch added (`git diff --name-only <base>...HEAD`)
-2. sends the lead an instruction naming the worktree as `workingDir`, with the
+2. pastes the lead an instruction naming the worktree as `workingDir`, with the
    prompt as an **absolute** `@` path
-3. switches you to the `pax` window
+3. switches you to the `pax` session
+
+If the lead is not running it fails with a pointer to `P` rather than starting
+one: pasting into a pi that is still booting can lose the text silently.
+
+Delivery is tmux, not `workmux send` — the lead is not a workmux agent, because
+`~/src` is not a worktree. The instruction goes through a named buffer
+(`pax-dispatch`, so your own paste buffer is untouched), is bracketed-pasted into
+`=pax:pax`, and is submitted with Enter: the same sequence `workmux send` uses.
 
 ### 4. pax implements — in that same worktree, on that same branch
 
@@ -142,9 +158,8 @@ and resolves the lane to that worktree's own root. No worktree is provisioned,
 `pax/...` branch you did not ask for. The instruction wording is the only thing
 steering it away.
 
-**The `@` path must be absolute.** The lead's cwd is the repo root on `main`,
-where a prompt committed on a planning branch does not exist. A worktree-relative
-path silently resolves to nothing.
+**The `@` path must be absolute.** The lead's cwd is `~/src`, where a
+worktree-relative path silently resolves to nothing.
 
 ---
 
@@ -177,7 +192,8 @@ Do **not** work around this by scraping pax's Computer server.
 
 | Action | How |
 |---|---|
-| Open a repo as a session with pax | `prefix+w` → `open repo` (`R`) |
+| Start or switch to the pax lead | `prefix+w` → `pax lead` (`P`) |
+| Open a repo as a session | `prefix+w` → `open repo` (`R`) |
 | New worktree + Claude, with a prompt | `prefix+w` → `add w/prompt` (`p`) |
 | New worktree from an existing branch | `prefix+w` → `add w/branch` (`b`) |
 | Hand the worktree to pax | `prefix+w` → `dispatch to pax` (`D`) |
@@ -191,9 +207,15 @@ Do **not** work around this by scraping pax's Computer server.
 
 ## Gotchas
 
-**`prefix+K` kills a session, and a repo session contains pax.** Less alarming
-than it sounds: `--session-id` means the context survives. Reopen the repo and
-pax continues.
+**`prefix+K` on the `pax` session kills the lead.** Less alarming than it
+sounds: `--session-id` means the context survives. `prefix+w` → `P` and pax
+continues. Killing a repo session no longer touches pax at all.
+
+**Leftovers from the per-repo layout.** Old `pax-<repo>` pi sessions stay in
+pi's session store and the port registry at
+`${XDG_STATE_HOME:-~/.local/state}/pax/ports` stays on disk; nothing reads
+either any more. Any repo session opened before the switch still has its split
+pane with a per-repo pi in it until you kill it.
 
 **Flipping to `mode: window` did not convert existing session-mode worktrees.**
 They still work; they are just sessions. New ones are windows.
@@ -206,8 +228,9 @@ like everything except `nvim/`.
 reads *backwards*, so chezmoi proposing to revert your change looks identical to
 your change being applied. See the chezmoi section of `AGENTS.md`.
 
-**`sidekick.maxParallel` defaults to 3** and is a budget shared across lanes, so
-concurrent initiatives queue rather than all running at once.
+**`sidekick.maxParallel` defaults to 3** and is a budget shared across lanes —
+now across every repo on the machine, since there is one lead — so concurrent
+initiatives queue rather than all running at once.
 
 **Shared-tree hazards.** With a lane pointed at a worktree of the same repo,
 pax's `workspaceRev` hashes the whole tree, so an unrelated edit can abort an

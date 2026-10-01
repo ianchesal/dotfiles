@@ -2,7 +2,7 @@
 #
 # Tests for home/dot_config/tmux/workmux/executable_pax-dispatch.sh. Builds a
 # real git repo with a real worktree in a scratch dir, so prompt discovery is
-# exercised against actual git plumbing, and fakes only workmux and tmux.
+# exercised against actual git plumbing, and fakes only tmux.
 #
 # Run: script/tests/pax-dispatch.test.sh
 
@@ -25,21 +25,17 @@ check() {
   fi
 }
 
-# The instruction is multi-line; flatten each call onto one line so `grep -c`
-# counts calls rather than matching lines.
-cat >"$work/workmux" <<'FAKE'
-#!/usr/bin/env bash
-set -euo pipefail
-echo "$*" | tr '\n' ' ' >>"$WORKMUX_CALLS"
-echo >>"$WORKMUX_CALLS"
-exit 0
-FAKE
-chmod +x "$work/workmux"
-
+# A fake tmux that records its argv one call per line and captures what
+# load-buffer reads from stdin, which is the instruction pasted into the lead.
+# FAKE_NO_PAX makes has-session report that no lead is running.
 cat >"$work/tmux" <<'FAKE'
 #!/usr/bin/env bash
 set -euo pipefail
 echo "$*" >>"$TMUX_CALLS"
+case "${1:-}" in
+  has-session) [ -z "${FAKE_NO_PAX:-}" ] || exit 1 ;;
+  load-buffer) cat >>"$PASTED" ;;
+esac
 exit 0
 FAKE
 chmod +x "$work/tmux"
@@ -62,10 +58,10 @@ git -C "$wt" add -A
 git -C "$wt" commit -q -m 'Add prompt'
 
 run() {
-  : >"$work/wm-calls"
+  : >"$work/pasted"
   : >"$work/tmux-calls"
-  ( cd "${1:-$wt}" && WORKMUX_CALLS=$work/wm-calls TMUX_CALLS=$work/tmux-calls \
-      WORKMUX_BIN=$work/workmux TMUX_BIN=$work/tmux "$subject" ) \
+  ( cd "${1:-$wt}" && PASTED=$work/pasted TMUX_CALLS=$work/tmux-calls \
+      TMUX_BIN=$work/tmux "$subject" ) \
     >"$work/out" 2>"$work/err"
 }
 
@@ -73,14 +69,29 @@ echo "pax-dispatch"
 
 # --- the branch-added prompt is discovered -----------------------------------
 run "$wt"
-check "sends to the repo's main handle" "1" "$(grep -c '^send demo ' "$work/wm-calls" || true)"
+check "checks the lead is running" "1" "$(grep -c '^has-session -t =pax$' "$work/tmux-calls" || true)"
+check "loads the instruction into a named buffer" "1" \
+  "$(grep -c '^load-buffer -b pax-dispatch -$' "$work/tmux-calls" || true)"
+check "pastes it into the lead with bracketed paste" "1" \
+  "$(grep -c '^paste-buffer -p -d -b pax-dispatch -t =pax:pax$' "$work/tmux-calls" || true)"
+check "submits after the paste" "send-keys -t =pax:pax Enter" \
+  "$(grep -A1 '^paste-buffer' "$work/tmux-calls" | tail -1)"
 check "names the prompt by absolute path" "1" \
-  "$(grep -c "@$wt/docs/superpowers/prompts/2026-09-21-thing-prompt.md" "$work/wm-calls" || true)"
+  "$(grep -c "@$wt/docs/superpowers/prompts/2026-09-21-thing-prompt.md" "$work/pasted" || true)"
 check "does not use a worktree-relative prompt path" "0" \
-  "$(grep -c '@docs/superpowers' "$work/wm-calls" || true)"
-check "names the worktree as workingDir" "1" "$(grep -c "workingDir=\"$wt\"" "$work/wm-calls" || true)"
-check "names the branch" "1" "$(grep -c 'branch planning' "$work/wm-calls" || true)"
-check "switches to the pax window" "1" "$(grep -c 'select-window -t :pax' "$work/tmux-calls" || true)"
+  "$(grep -c '@docs/superpowers' "$work/pasted" || true)"
+check "names the worktree as workingDir" "1" "$(grep -c "workingDir=\"$wt\"" "$work/pasted" || true)"
+check "names the branch" "yes" "$(grep -q 'branch planning' "$work/pasted" && echo yes || echo no)"
+check "switches to the pax session" "1" "$(grep -c '^switch-client -t =pax$' "$work/tmux-calls" || true)"
+
+# --- no lead running is an error, and nothing is pasted ----------------------
+if FAKE_NO_PAX=1 run "$wt"; then
+  check "missing lead fails" "nonzero exit" "exit 0"
+else
+  check "missing lead fails" "nonzero exit" "nonzero exit"
+fi
+check "missing lead says how to start it" "1" "$(grep -c 'pax lead' "$work/err" || true)"
+check "missing lead pastes nothing" "0" "$(grep -c -e load-buffer -e paste-buffer "$work/tmux-calls" || true)"
 
 # --- a worktree that added no prompt is an error -----------------------------
 wt2=$work/demo__worktrees/empty
@@ -90,7 +101,7 @@ if run "$wt2"; then
 else
   check "no prompt file fails" "nonzero exit" "nonzero exit"
 fi
-check "no prompt file sends nothing" "0" "$(wc -l <"$work/wm-calls" | tr -d ' ')"
+check "no prompt file pastes nothing" "0" "$(wc -c <"$work/pasted" | tr -d ' ')"
 
 # --- two prompts is ambiguous and must not guess -----------------------------
 wt3=$work/demo__worktrees/two
