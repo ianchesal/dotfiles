@@ -66,9 +66,10 @@
         },
         {
           "options": {
-            "style": "powerlevel"
+            "style": "powerlevel",
+            "max_width": 40
           },
-          "template": "<b>{{ .Path }}</b> ",
+          "template": "<b>{{ if not (or (hasPrefix \"~\" .Path) (hasPrefix \"/\" .Path)) }}/{{ end }}{{ .Path }}</b> ",
           "foreground": "p:terminal-blue",
           "foreground_templates": [
             "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}p:gcw-lime{{ end }}"
