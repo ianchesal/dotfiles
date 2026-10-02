@@ -1,5 +1,5 @@
 [init]
-	templatedir = ~/src/dotfiles/git/templates
+	templatedir = ~/.config/git/templates
 	defaultBranch = main
 
 [alias]
