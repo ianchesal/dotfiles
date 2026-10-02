@@ -4,3 +4,15 @@
 .config/tmux/tmux-minimal.conf
 .config/tmux/workmux/pax-open-repo.sh
 .config/ohmyposh/ohmyposh.json.bak
+.config/*/*.rake
+.config/aerospace/README.md
+.config/bash/README.md
+.config/bat/README.md
+.config/git/README.md
+.config/kitty/README.md
+.config/lazygit/README.md
+.config/ohmyposh/README.md
+.config/ripgrep/README.md
+.config/tmux/README.md
+.config/yt-dlp/README.md
+.config/zsh/README.md
