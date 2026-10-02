@@ -56,7 +56,7 @@
           "style": "plain"
         },
         {
-          "template": "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}{{ .UserName }}@gcw{{ else }}{{ .UserName }}@{{ .HostName }}{{ end }} ",
+          "template": "{{ if or .SSHSession (eq .Env.DOTFILES_MACHINE \"gcw\") }}{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}{{ .UserName }}@gcw{{ else }}{{ .UserName }}@{{ .HostName }}{{ end }} {{ end }}",
           "foreground": "p:terminal-yellow",
           "foreground_templates": [
             "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}p:gcw-lime{{ end }}"
@@ -66,25 +66,33 @@
         },
         {
           "options": {
-            "style": "powerlevel",
-            "max_width": 40
+            "branch_icon": "",
+            "commit_icon": "@",
+            "merge_icon": "MERGE ",
+            "cherry_pick_icon": "PICK ",
+            "revert_icon": "REVERT ",
+            "fetch_status": true
           },
-          "template": "<b>{{ if not (or (hasPrefix \"~\" .Path) (hasPrefix \"/\" .Path)) }}/{{ end }}{{ .Path }}</b> ",
+          "template": "<b>{{ .RepoName }}{{ if .RelativeDir }}/{{ $parts := splitList \"/\" .RelativeDir }}{{ if and (gt (len .RelativeDir) 30) (gt (len $parts) 2) }}\u2026/{{ index $parts (sub (len $parts) 2) }}/{{ last $parts }}{{ else }}{{ .RelativeDir }}{{ end }}{{ end }}</b> <p:terminal-white>on</> {{ if .Rebase }}<p:terminal-red>REBASE {{ .Rebase.HEAD }} onto {{ .Rebase.Onto }} {{ .Rebase.Current }}/{{ .Rebase.Total }}</>{{ else if or .Merge .CherryPick .Revert }}<p:terminal-red>{{ .HEAD }}</>{{ else }}<p:pistachio-green>{{ .HEAD }}</>{{ end }}{{ if .Staging.Changed }}<p:terminal-yellow>~</>{{ end }}{{ if .Working.Changed }}<p:terminal-red>*</>{{ end }}{{ if or (gt .Ahead 0) (gt .Behind 0) }} <p:terminal-green>{{ if gt .Ahead 0 }}\u2191{{ .Ahead }}{{ end }}{{ if gt .Behind 0 }}\u2193{{ .Behind }}{{ end }}</>{{ end }}{{ if gt .StashCount 0 }} <p:terminal-yellow>${{ .StashCount }}</>{{ end }}{{ if .IsWorkTree }} <p:terminal-black>worktree</>{{ end }} ",
+          "type": "git",
+          "style": "plain",
+          "foreground": "p:terminal-blue",
+          "foreground_templates": [
+            "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}p:gcw-lime{{ end }}"
+          ]
+        },
+        {
+          "options": {
+            "style": "powerlevel",
+            "max_width": 40,
+            "display_root": true
+          },
+          "template": "{{ if not (.Segments.Contains \"Git\") }}<b>{{ .Path }}</b> {{ end }}",
           "foreground": "p:terminal-blue",
           "foreground_templates": [
             "{{ if eq .Env.DOTFILES_MACHINE \"gcw\" }}p:gcw-lime{{ end }}"
           ],
           "type": "path",
-          "style": "plain"
-        },
-        {
-          "options": {
-            "branch_icon": "",
-            "commit_icon": "@",
-            "fetch_status": true
-          },
-          "template": "on <p:pistachio-green>{{ .HEAD}}{{ if .Staging.Changed }}<p:terminal-yellow>~</>{{ end }}{{ if .Working.Changed }}<p:terminal-red>*</>{{ end }}</> <p:terminal-green>{{ if gt .Behind 0 }}\u2193{{ end }}{{ if gt .Ahead 0 }}\u2191{{ end }}{{ if gt .StashCount 0 }} ${{ .StashCount }}{{ end }}</>",
-          "type": "git",
           "style": "plain"
         }
       ]
@@ -102,6 +110,30 @@
           "options": {
             "threshold": 2000
           }
+        },
+        {
+          "type": "ruby",
+          "style": "plain",
+          "foreground": "p:terminal-red",
+          "template": " rb {{ .Full }}"
+        },
+        {
+          "type": "node",
+          "style": "plain",
+          "foreground": "p:terminal-green",
+          "template": " node {{ .Full }}"
+        },
+        {
+          "type": "go",
+          "style": "plain",
+          "foreground": "p:celeste-blue",
+          "template": " go {{ .Full }}"
+        },
+        {
+          "type": "python",
+          "style": "plain",
+          "foreground": "p:terminal-yellow",
+          "template": " py {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{ end }}"
         }
       ]
     },
@@ -110,7 +142,7 @@
       "alignment": "left",
       "segments": [
         {
-          "template": "{{ if gt .Code 0 }}<p:terminal-red>></>{{ else if eq .Env.DOTFILES_MACHINE \"gcw\" }}<p:gcw-lime>></>{{ else }}<p:terminal-magenta>></>{{ end }}",
+          "template": "{{ if gt .Code 0 }}<p:terminal-red>\u2717 {{ .Code }} ></>{{ else if eq .Env.DOTFILES_MACHINE \"gcw\" }}<p:gcw-lime>></>{{ else }}<p:terminal-magenta>></>{{ end }}",
           "foreground": "p:terminal-magenta",
           "background": "transparent",
           "type": "text",

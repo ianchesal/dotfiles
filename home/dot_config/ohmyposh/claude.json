@@ -17,7 +17,9 @@
           "style": "plain",
           "foreground": "p:terminal-blue",
           "options": {
-            "style": "powerlevel"
+            "style": "powerlevel",
+            "max_width": 40,
+            "display_root": true
           },
           "template": "<b>{{ .Path }}</b> "
         },

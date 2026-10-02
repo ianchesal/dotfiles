@@ -58,7 +58,7 @@ lint:
     set -euo pipefail
     shellcheck --severity=warning \
       script/asdf-prune script/gem-cleanup script/nvim-commit script/doctor \
-      script/brew-trust script/pi-purge-legacy \
+      script/brew-trust script/pi-purge-legacy script/ohmyposh-preview \
       script/verify-chezmoi-assumptions.sh home/run_once_*.sh \
       script/tests/*.test.sh bootstrap/*.sh \
       home/dot_bashrc home/dot_bash_profile home/dot_config/bash/bashrc.sh \

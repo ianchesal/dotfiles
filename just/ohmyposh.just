@@ -31,3 +31,7 @@ update:
     else
       printf '\033[34m%s\033[0m\n' 'Skipping: oh-my-posh update -- no brew command found'
     fi
+
+# Render the repo's prompt config across paths, git states and exit codes
+preview:
+    @"$REPO/script/ohmyposh-preview"

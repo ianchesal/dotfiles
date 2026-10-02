@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+#
+# Render the oh-my-posh prompt across a fixed set of situations so a config
+# change can be judged in one screen, without opening shells.
+#
+# Two things make editing the prompt in place misleading, and this sidesteps
+# both:
+#   - oh-my-posh caches the config per shell session (POSH_SESSION_ID), so an
+#     already-open shell keeps drawing the old prompt after an edit. Every
+#     render here gets a fresh session id.
+#   - chezmoi copies the config into ~/.config/ohmyposh, so the live file lags
+#     the repo until the next apply. This renders the repo's copy by default.
+#
+# Throwaway git repos in a temp dir supply the states that are awkward to be
+# in on demand: dirty, ahead/behind, mid-rebase, mid-merge, a linked worktree.
+#
+# Usage: script/ohmyposh-preview [config]   (default: the repo's ohmyposh.json)
+#
+# Environment:
+#   OMP_BIN   oh-my-posh executable to drive (default: oh-my-posh)
+
+set -euo pipefail
+
+repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+config=${1:-$repo/home/dot_config/ohmyposh/ohmyposh.json}
+OMP_BIN=${OMP_BIN:-oh-my-posh}
+
+if [ ! -f "$config" ]; then
+  echo "${0##*/}: no such config: $config" >&2
+  exit 1
+fi
+
+if [ -t 1 ]; then
+  dim=$'\033[2m' bold=$'\033[1m' reset=$'\033[0m'
+else
+  dim='' bold='' reset=''
+fi
+
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+
+# Fixture repos must not pick up the real global git config: signing, hooks or
+# a default branch name other than main would all change what gets drawn.
+fixture_git() {
+  GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 \
+    git -c user.name=preview -c user.email=preview@example.com \
+    -c init.defaultBranch=main -c advice.detachedHead=false "$@"
+}
+
+new_repo() {
+  local dir=$1
+  mkdir -p "$dir"
+  fixture_git -C "$dir" init -q
+  echo one >"$dir/file"
+  fixture_git -C "$dir" add file
+  fixture_git -C "$dir" commit -qm one
+}
+
+src=$work/src
+new_repo "$src/clean"
+mkdir -p "$src/clean/lib/deep" "$src/clean/a/really/long/directory/structure/inside/the/repo"
+
+new_repo "$src/dirty"
+echo two >"$src/dirty/file" && fixture_git -C "$src/dirty" stash -q
+echo staged >"$src/dirty/staged" && fixture_git -C "$src/dirty" add staged
+echo three >"$src/dirty/file"
+mkdir -p "$src/dirty/lib"
+
+# 2 ahead / 1 behind its upstream.
+fixture_git clone -q --bare "$src/clean" "$work/upstream.git"
+fixture_git clone -q "$work/upstream.git" "$src/tracking"
+fixture_git clone -q "$work/upstream.git" "$work/other"
+fixture_git -C "$work/other" commit -q --allow-empty -m theirs
+fixture_git -C "$work/other" push -q origin main
+fixture_git -C "$src/tracking" commit -q --allow-empty -m mine-1
+fixture_git -C "$src/tracking" commit -q --allow-empty -m mine-2
+fixture_git -C "$src/tracking" fetch -q
+
+# Conflicting edits on two branches, for the rebase and merge states.
+conflicted_repo() {
+  local dir=$1
+  new_repo "$dir"
+  fixture_git -C "$dir" checkout -qb topic
+  echo topic >"$dir/file" && fixture_git -C "$dir" commit -qam topic
+  fixture_git -C "$dir" checkout -q main
+  echo main >"$dir/file" && fixture_git -C "$dir" commit -qam main
+}
+conflicted_repo "$src/rebasing"
+fixture_git -C "$src/rebasing" checkout -q topic
+fixture_git -C "$src/rebasing" rebase -q main >/dev/null 2>&1 || true
+conflicted_repo "$src/merging"
+fixture_git -C "$src/merging" merge -q topic >/dev/null 2>&1 || true
+
+new_repo "$src/detached"
+fixture_git -C "$src/detached" checkout -q --detach
+
+fixture_git -C "$src/clean" worktree add -q -b feature "$src/clean__worktrees/feature"
+
+new_repo "$src/app"
+touch "$src/app/Gemfile" "$src/app/package.json" "$src/app/go.mod"
+
+long_abs=$work/usr/share/some/very/deep/nested/path/here
+mkdir -p "$long_abs"
+
+# label | directory | extra env (space-separated VAR=value) | extra print flags
+scenarios=(
+  "filesystem root|/||"
+  "/tmp|/tmp||"
+  "home|$HOME||"
+  "long absolute path|$long_abs||"
+  "clean repo|$src/clean||"
+  "repo subdirectory|$src/clean/lib/deep||"
+  "long repo subdirectory|$src/clean/a/really/long/directory/structure/inside/the/repo||"
+  "staged, unstaged, stash|$src/dirty/lib||"
+  "2 ahead, 1 behind|$src/tracking||"
+  "rebase conflict|$src/rebasing||"
+  "merge conflict|$src/merging||"
+  "detached HEAD|$src/detached||"
+  "linked worktree|$src/clean__worktrees/feature||"
+  "ruby/node/go project|$src/app||"
+  "last command failed (127)|/tmp||--status 127"
+  "last command took 5.3s|/tmp||--execution-time 5300"
+  "over ssh|/tmp|SSH_CONNECTION=10.0.0.1_1_10.0.0.2_22|"
+  "cloud workstation|$src/clean|DOTFILES_MACHINE=gcw|"
+)
+
+render() {
+  local dir=$1 envs=$2 flags=$3
+  local -a env_args=() flag_args=()
+  local e v
+  # SSH_CONNECTION's value carries spaces in real life; underscores in a value
+  # stand in for them so the scenario table can stay space-separated.
+  for e in $envs; do
+    v=${e#*=}
+    env_args+=("${e%%=*}=${v//_/ }")
+  done
+  read -ra flag_args <<<"$flags"
+  # Clear the variables the scenarios toggle, so the caller's own shell (an ssh
+  # session, a gcw box) does not leak into the "local" renders.
+  (cd "$dir" && env -u SSH_CONNECTION -u SSH_CLIENT -u SSH_TTY -u DOTFILES_MACHINE \
+    POSH_SESSION_ID="preview-$RANDOM$RANDOM" "${env_args[@]}" \
+    "$OMP_BIN" print primary --config "$config" --shell zsh --escape=false \
+    --pwd "$dir" --terminal-width 120 "${flag_args[@]}" 2>&1)
+}
+
+printf '%sconfig: %s%s\n' "$dim" "$config" "$reset"
+for s in "${scenarios[@]}"; do
+  IFS='|' read -r label dir envs flags <<<"$s"
+  printf '\n%s%s%s\n' "$bold" "$label" "$reset"
+  # --escape=false still leaves zsh's %{ %} width markers, so strip those and
+  # the console-title escape. The prompt also opens with a blank line of its
+  # own; drop it so each render sits directly under its label. The right-hand
+  # block comes back inline, padded out to --terminal-width.
+  render "$dir" "$envs" "$flags" |
+    sed -e 's/%[{}]//g' -e 's/%%/%/g' -e $'s/\x1b\\][^\a]*\a//g' |
+    sed -e $'1{/^\\(\x1b\\[[0-9;]*m\\)*[[:space:]]*$/d;}' -e 's/^/    /'
+  printf '%s\n' "$reset"
+done

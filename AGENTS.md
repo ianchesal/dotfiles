@@ -154,6 +154,7 @@ This file provides guidance to AI agents working on this repository.
 - Remove Mason packages no longer wanted by the config: `just nvim::mason-prune` (runs automatically as the last step of `nvim::update`)
 - Preview which Mason packages would be pruned: `just nvim::mason-outdated`
 - Run Neovim machinery tests: `nvim --headless -u NONE -l nvim/tests/<name>_spec.lua` (delay, gitops, loader)
+- Preview the prompt across paths, git states and exit codes: `just ohmyposh::preview`
 - Check for Oh My Posh updates: `just ohmyposh::check-update`
 - Update Oh My Posh: `just ohmyposh::update`
 - Reload tmux config in all sessions: `just tmux::reload`
@@ -352,17 +353,34 @@ This file provides guidance to AI agents working on this repository.
 
 ## Oh My Posh Configuration
 
-- Located in `.config/ohmyposh` following XDG directory structure
-- Configured via JSON in `ohmyposh.json` using the official schema
-- Custom VHS Era theme with defined color palette
-- Prompt structured in multiple blocks (left-aligned, right-aligned, newline prompt)
-- Features path segment with powerlevel style
-- Git integration showing branch, changes, and ahead/behind status
-- Programming language version display (Node, PHP, Python, Julia, Ruby, Go)
-- Execution time tracking for commands
-- SSH session information display
-- Command status indicator in prompt color
-- Custom tooltips for AWS, GCP, and Kubernetes tools
+- Source state is `home/dot_config/ohmyposh/`, deployed to `~/.config/ohmyposh`.
+  `ohmyposh.json` is the shell prompt; `claude.json` is a slim variant that
+  `home/dot_claude/executable_statusline-command.sh` renders as the Claude Code
+  status line
+- JSON in the official schema, `"version": 4`. Segment settings live under
+  `options` (the pre-v4 key was `properties`)
+- VHS Era palette, plain colored text over two lines -- no powerline blocks or
+  backgrounds. `docs/tools/ohmyposh.md` describes what each segment shows
+- **Check an edit with `just ohmyposh::preview`, never a live shell.**
+  oh-my-posh caches the config per shell session (`POSH_SESSION_ID`), so an
+  open shell keeps drawing the old prompt after both an edit and a `chezmoi
+  apply`; only a new shell (`exec zsh`) reloads it. The preview
+  (`script/ohmyposh-preview`) renders the repo's copy with a fresh session id
+  against throwaway git repos in every state the prompt distinguishes
+- Inside a git repo the **git** segment draws the location (repo name +
+  `.RelativeDir`) and the path segment hides itself via `.Segments.Contains
+  "Git"`. `.Segments` only sees segments already rendered, so git must stay
+  ahead of path in the block
+- The path segment's `powerlevel` style abbreviates every folder to one letter
+  when `max_width` is unset (`/tmp` drew as `t`), and drops the root `/` unless
+  `display_root` is set. Keep both options
+- `.UpstreamGone` is also true for a branch that never had an upstream, so it
+  cannot flag a deleted remote branch -- don't build a marker on it
+- `user@host` shows only over SSH or on the cloud workstation
+  (`DOTFILES_MACHINE=gcw`, which also recolors the prompt lime)
+- Language segments (`ruby`, `node`, `go`, `python`) each shell out for a
+  version, but only in a directory holding that language's files: ~100ms in a
+  project with all three of ruby/node/go, ~45ms in a plain repo
 - Managed via Homebrew; `just ohmyposh::check-update` only reports a waiting update, so a prompt change is never a surprise mid-run
 
 ## Claude Configuration
