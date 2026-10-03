@@ -2,7 +2,8 @@
 .config/zsh/zshrc.d/helix.zsh
 .config/zsh/zshrc.d/podman.zsh
 .config/tmux/tmux-minimal.conf
-.config/tmux/workmux/pax-open-repo.sh
+.config/tmux/workmux/open-repo.sh
+.config/tmux/workmux/pax-lead.sh
 .config/ohmyposh/ohmyposh.json.bak
 .config/*/*.rake
 .config/aerospace/README.md

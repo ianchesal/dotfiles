@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 #
-# Hand the current Claude planning worktree to the machine-wide pax lead.
-#
-# The lead is the single pi in tmux session "pax", rooted at ~/src
-# (pax-lead.sh). It is not a workmux agent -- ~/src is not a worktree, so
-# `workmux send` cannot address it -- so the instruction is pasted straight into
-# its pane, the same way workmux delivers one: load a buffer, bracketed-paste it,
-# then Enter.
+# Hand the current Claude planning worktree to this repo's pax lead.
 #
 # pax baselines its own lane worktrees off origin/main, so the only way the
 # planning artifacts (spec, plan, prompt) reach the implementation is to point a
@@ -20,16 +14,15 @@
 # see.
 #
 # Seams for script/tests/pax-dispatch.test.sh:
+#   WORKMUX_BIN          -- workmux executable (default: workmux)
 #   TMUX_BIN             -- tmux executable (default: tmux)
 #   PAX_DISPATCH_DRY_RUN -- when non-empty, print the instruction and stop
 
 set -euo pipefail
 
+workmux_bin=${WORKMUX_BIN:-workmux}
 tmux_bin=${TMUX_BIN:-tmux}
 prompt_dir=docs/superpowers/prompts
-lead_session=pax
-lead_pane="=$lead_session:pax"
-buffer=pax-dispatch
 
 fail() {
   echo "pax-dispatch: $*" >&2
@@ -41,9 +34,11 @@ git rev-parse --git-dir >/dev/null 2>&1 || fail "not a git repository"
 worktree=$(git rev-parse --show-toplevel)
 branch=$(git rev-parse --abbrev-ref HEAD)
 
-# The first entry of `git worktree list` is always the main working tree.
-# Dispatching from it would have pax commit straight onto main.
+# The first entry of `git worktree list` is always the main working tree; its
+# basename is the repo name, which is also workmux's handle for the is_main
+# entry and therefore the target of `workmux send`.
 main_tree=$(git worktree list --porcelain | awk '/^worktree /{print $2; exit}')
+repo=$(basename "$main_tree")
 
 [ "$worktree" != "$main_tree" ] ||
   fail "this is the main checkout, not a planning worktree -- dispatch from the worktree window"
@@ -69,8 +64,9 @@ $prompts"
 fi
 
 # The @ path must be ABSOLUTE. `git diff --name-only` yields a path relative to
-# the worktree, but the lead's cwd is ~/src -- where the prompt does not exist.
-# A relative path silently fails to resolve there.
+# the worktree, but the lead's cwd is the repo root on main -- where the prompt
+# does not exist, because it is committed on the planning branch. A relative
+# path silently fails to resolve there.
 instruction="Execute the plan in @$worktree/$prompts.
 Delegate it with workingDir=\"$worktree\" so the work happens in that existing worktree on branch $branch, where the spec, plan and prompt are already committed.
 Do not provision a new worktree: implementation commits must land on branch $branch so everything reaches review in one PR."
@@ -80,12 +76,5 @@ if [ -n "${PAX_DISPATCH_DRY_RUN:-}" ]; then
   exit 0
 fi
 
-# A named buffer, so the dispatch never clobbers the paste buffer you are using.
-"$tmux_bin" has-session -t "=$lead_session" 2>/dev/null ||
-  fail "no pax session -- start it with prefix+w -> pax lead"
-printf '%s' "$instruction" | "$tmux_bin" load-buffer -b "$buffer" - ||
-  fail "could not load the instruction into tmux buffer '$buffer'"
-"$tmux_bin" paste-buffer -p -d -b "$buffer" -t "$lead_pane" ||
-  fail "could not paste into $lead_pane"
-"$tmux_bin" send-keys -t "$lead_pane" Enter || fail "could not submit to $lead_pane"
-"$tmux_bin" switch-client -t "=$lead_session" || true
+"$workmux_bin" send "$repo" "$instruction" || fail "workmux send to '$repo' failed"
+"$tmux_bin" select-window -t :pax || true

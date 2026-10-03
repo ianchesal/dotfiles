@@ -2,8 +2,6 @@
 
 Date: 2026-09-21
 Status: approved for planning
-Superseded in part (2026-10-01): the per-repo lead is gone. One machine-wide lead
-runs in the `pax` session rooted at `~/src`; see `docs/pax-workflow.md`.
 Repos in scope: `ianchesal/dotfiles`, `persona-id/pax`
 
 workmux stays on **upstream** (`raine/workmux`, via Homebrew) and is not modified.
