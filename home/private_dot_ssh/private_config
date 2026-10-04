@@ -56,6 +56,12 @@ Host github.com
   IdentityFile ~/.ssh/github-personal.pub
   IdentitiesOnly yes
 
+Host macmini
+  HostName 192.168.1.79
+  User ian
+  IdentityFile ~/.ssh/macmini.pub
+  IdentitiesOnly yes
+
 # 1Password's agent, only when its socket exists. An unconditional
 # IdentityAgent would silently disable a forwarded or hand-started agent
 # (it overrides SSH_AUTH_SOCK) on any box without 1Password. In an SSH session
