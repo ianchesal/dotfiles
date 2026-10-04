@@ -39,7 +39,8 @@ brew "zoxide"
 brew "zsh"
 brew "zsh-completions"
 
+# Deliberately unguarded: this cask works on Linux (WSL runs the ssh sync).
+cask "1password-cli"
 # macOS-only. Unlike a config file, a cask on Linux is a hard `brew bundle`
 # failure rather than something inert, so this one does need the guard.
-cask "1password-cli"
 cask "aerospace" if OS.mac?
