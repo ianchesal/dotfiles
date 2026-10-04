@@ -359,9 +359,12 @@ This file provides guidance to AI agents working on this repository.
   as `IdentityFile` so the agent knows which key to sign with
 - `home/private_dot_ssh/private_config` → `~/.ssh/config` (0600). Public: LAN
   hosts (`192.168.1.x`), `github.com`, and a `Match exec "test -S
-  ~/.1password/agent.sock"` block that sets `IdentityAgent`. Never make that
-  unconditional: `IdentityAgent` overrides `SSH_AUTH_SOCK`, so a missing socket
-  silently disables forwarded agents
+  ~/.1password/agent.sock" !exec "test -n \"$SSH_CONNECTION\" -a -S \"$SSH_AUTH_SOCK\""`
+  block that sets `IdentityAgent`. Never make that unconditional:
+  `IdentityAgent` overrides `SSH_AUTH_SOCK`, so a missing socket silently
+  disables forwarded agents. The `!exec` half is the forwarded-agent exception:
+  in an SSH session carrying a forwarded agent, that agent wins (1Password's
+  approval prompt would otherwise hang on a console nobody sees)
 - `Include config.d/*` is the first line. Host blocks that must not be published
   (public IPs, ports) are Secure Notes in 1Password tagged `ssh-config`; the
   title is the file name. `script/ssh-config-sync` (`just ssh::sync`, in the
@@ -371,7 +374,8 @@ This file provides guidance to AI agents working on this repository.
   (the sign-in probe; `op whoami` succeeds even when signed out) fails or exceeds 60s, and **on macOS over SSH** — the 1Password app's auth
   prompt appears on the Mac's display and `op` blocks on it forever
 - `~/.ssh` deploys to **personal machines only** (`home/.chezmoiignore`), the one
-  exception to "every config deploys everywhere"
+  exception to "every config deploys everywhere"; `~/.1password` is likewise
+  skipped on work/gcw boxes, and `zshrc.d/1password.zsh` does nothing there
 - One agent path everywhere, `~/.1password/agent.sock`: native on Linux, a
   chezmoi `symlink_` to the group-container socket on macOS, and on WSL a
   `socat` + `npiperelay.exe` relay started by `zshrc.d/1password.zsh` under

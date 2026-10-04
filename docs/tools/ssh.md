@@ -13,6 +13,9 @@ Keys live in 1Password; config comes from this repo plus 1Password.
 | `~/.1password/agent.sock` | native (Linux), symlink (macOS), relay (WSL) | 1Password / chezmoi / `zshrc.d/1password.zsh` |
 | `known_hosts`, `authorized_keys` | the machine | nobody |
 
+`zshrc.d/1password.zsh` also exports `SSH_AUTH_SOCK` to that socket (except in an
+SSH session that carries a forwarded agent, and not on work/gcw boxes).
+
 Work machines and the cloud workstation get none of this (`home/.chezmoiignore`).
 
 ## Adding a host
@@ -37,8 +40,9 @@ public half into the repo:
    integration on macOS).
 2. WSL only: `winget install albertony.npiperelay`; stop and disable the Windows
    *OpenSSH Authentication Agent* service; open a new shell.
-3. `ssh-add -l` lists the 1Password keys.
-4. `chezmoi apply`, then `just ssh::sync` (at the console on macOS — over SSH it
+3. `chezmoi apply`, then open a new shell.
+4. `ssh-add -l` lists the 1Password keys.
+5. `just ssh::sync` (at the console on macOS — over SSH it
    skips, because the 1Password prompt would appear on the Mac's display).
 
 ## Troubleshooting

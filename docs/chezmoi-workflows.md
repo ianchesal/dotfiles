@@ -120,7 +120,10 @@ else (see the Task Running section of CLAUDE.md).
 
 SSH is a separate step after `chezmoi apply`, because the keys are in
 1Password: enable the 1Password SSH agent, then run `just ssh::sync` (at the
-console on macOS). See `docs/tools/ssh.md`.
+console on macOS). See `docs/tools/ssh.md`. The deployed `~/.ssh/config` pins
+`.pub` files with `IdentitiesOnly yes` and ssh never falls back to an on-disk
+private key, so an existing personal machine needs the agent enabled (`ssh-add -l`
+lists the keys; on WSL the relay running) **before** its next `dfu`.
 
 ---
 
@@ -258,7 +261,8 @@ Editing `nvim/lua/plugins/*.lua` is live immediately — no `apply`. See
   cron agree with interactive shells. Both `config.yml` and `config-work.yml`
   deploy everywhere.
 - **Every config deploys on every platform.** No OS gating: a kitty config on a
-  Linux box is inert, and not worth a template guard to suppress.
+  Linux box is inert, and not worth a template guard to suppress. The exception
+  is `~/.ssh` and `~/.1password` (see `home/.chezmoiignore`).
 - **`~/.claude.json` is a sibling of `~/.claude`**, outside chezmoi's target
   set. Its 0600 chmod is handled by `run_once_after_70-chmod-claude-json.sh`.
 - **`run_once_` scripts always run against the real `$HOME`.** `--destination`

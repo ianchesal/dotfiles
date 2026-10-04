@@ -1,7 +1,7 @@
 # Design: SSH keys and config from 1Password
 
 Date: 2026-10-04
-Status: revised after spec review (`SPEC_REVIEW.md`, 16 findings); awaiting approval
+Status: implemented on branch ssh-1password
 Repos in scope: `ianchesal/dotfiles`
 
 ## Problem
@@ -102,11 +102,15 @@ below). In order:
 3. `Host github.com`, pinned to `github-personal.pub`, `IdentitiesOnly yes`.
 4. Last, a guarded agent block:
    ```
-   Match exec "test -S ~/.1password/agent.sock"
+   Match exec "test -S ~/.1password/agent.sock" !exec "test -n \"$SSH_CONNECTION\" -a -S \"$SSH_AUTH_SOCK\""
      IdentityAgent ~/.1password/agent.sock
    ```
    When the socket is absent nothing is set, so ssh falls back to
    `SSH_AUTH_SOCK` (a forwarded or hand-started agent) instead of to no agent.
+   Forwarded-agent exception: inside an SSH session (`SSH_CONNECTION` set) whose
+   `SSH_AUTH_SOCK` names an existing socket, the block does not match, so the
+   forwarded agent wins. Otherwise ssh/git over SSH would go to 1Password, and
+   on macOS its approval prompt would land on the console and hang.
 
 `home/private_dot_1password/symlink_agent.sock.tmpl` → `~/.1password/agent.sock`
 on **macOS only**, pointing at
@@ -130,7 +134,8 @@ offers it).
 
 - ignores `.ssh` and `.ssh/**` when `~/.work_machine` exists **or**
   `/etc/workstation-startup.d` exists (gcw, same detector as `machine.zsh`);
-- ignores `.1password` and `.1password/**` unless `.chezmoi.os` is `darwin`.
+- ignores `.1password` and `.1password/**` unless `.chezmoi.os` is `darwin`,
+  and also on work and gcw boxes (same conditions as `.ssh`).
 
 Both use `stat`, so the files are the source of truth, never an exported
 variable. Skipping `.ssh` on work and gcw boxes is a **deliberate exception** to
@@ -197,7 +202,9 @@ shellcheck list.
 
 ### 3. Agent wiring
 
-`home/dot_config/zsh/zshrc.d/1password.zsh`:
+`home/dot_config/zsh/zshrc.d/1password.zsh` (does nothing on work or gcw boxes:
+the whole body is skipped when `~/.work_machine` or `/etc/workstation-startup.d`
+exists, tested as file/dir, never via an exported variable):
 
 - **WSL relay** — WSL only (kernel release contains `microsoft`), when
   `npiperelay.exe`, `socat` and `flock` are on PATH:
@@ -211,8 +218,10 @@ shellcheck list.
     others' socket and orphaning socat processes.
   - Creates `~/.1password` (0700) if needed.
 - **`SSH_AUTH_SOCK`, all platforms** — export it to `~/.1password/agent.sock`
-  when that socket is live, **unless** `SSH_CONNECTION` is set and the existing
-  `SSH_AUTH_SOCK` is itself live (keep a forwarded agent).
+  when that socket exists (`-S`), **unless** `SSH_CONNECTION` is set and the
+  existing `SSH_AUTH_SOCK` exists (`-S`; keep a forwarded agent). The WSL relay
+  branch above does a real liveness check (`ssh-add -l`, bounded by
+  `timeout 2` where available) before this.
 - No bash port: the bash config targets machines without 1Password.
 
 Brewfile additions: `jq`, `socat` and `cask "1password-cli"`, all
@@ -236,6 +245,12 @@ Run by hand. Every destructive step comes after verification.
 
 0. **Before merging:** confirm `~/.work_machine` exists on every work machine,
    so the first `dfu` after this ships cannot replace a work `~/.ssh/config`.
+   Likewise, **before merging / before each personal machine's next `dfu`:**
+   enable the 1Password SSH agent (and, on WSL, have the relay running) and
+   confirm `ssh-add -l` lists the keys. The deployed config pins
+   `IdentityFile ~/.ssh/<name>.pub` + `IdentitiesOnly yes`; ssh does not fall
+   back to the on-disk private key, so pinned hosts and github.com stop working
+   on a machine whose agent is not set up.
 1. ~~Import `~/.ssh/id_rsa` into 1Password.~~ Done 2026-10-04: item
    `ian@dads-gaming-pc`, fingerprint
    `SHA256:XSc3vPUj+r5GUwTfcnwYdlHKiYlCgUSyn+U/j7tCoNo` verified.
