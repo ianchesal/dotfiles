@@ -645,7 +645,13 @@
       }
     },
     "nvim-treesitter-textobjects": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1791079284,
+          "first_seen_iso": "2026-10-04T02:01:24Z",
+          "rev": "5c7b0263797dfd1bd6202f2b219f3b53a80b2187"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-10-03T21:43:09Z",
         "pinned_at_epoch": 1791063789,
