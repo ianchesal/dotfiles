@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Clone tpm if it isn't already there. Ported from the tmux:plugins rake task.
+# Clone tpm if it isn't already there, then install the plugins tmux.conf
+# declares. Ported from the tmux:plugins rake task.
 #
 # This is deliberately NOT a .chezmoiexternal.toml git-repo entry. An external
 # would be re-validated on every `chezmoi diff`, `apply` and `verify` -- and dfu
@@ -18,4 +19,15 @@ else
   echo "Cloning tpm into $dir"
   mkdir -p "$(dirname "$dir")"
   git clone --depth 1 https://github.com/tmux-plugins/tpm "$dir"
+fi
+
+# Without this a fresh machine has tpm but no plugins until someone presses
+# `prefix + I`, and the status bar shows a literal `#U` and the raw DHCP
+# hostname because tmux-current-pane-hostname never loaded. install_plugins
+# reads tmux.conf directly and needs no running server; it skips plugins that
+# are already present, so re-running it is harmless.
+if [ -x "$dir/bin/install_plugins" ] && command -v tmux >/dev/null 2>&1; then
+  "$dir/bin/install_plugins"
+else
+  echo "WARNING: tmux or tpm missing - skipping plugin install (prefix + I installs them later)" >&2
 fi
