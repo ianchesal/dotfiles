@@ -233,6 +233,12 @@ Editing `nvim/lua/plugins/*.lua` is live immediately — no `apply`. See
 - **`.chezmoi.workingTree` is the repo root; `.chezmoi.sourceDir` is
   `<repo>/home`.** Under `.chezmoiroot`, templates that need the repo (the nvim
   symlink, the Brewfile path) must use `workingTree`.
+- **`sourceDir` comes from `home/.chezmoi.toml.tmpl`.** `chezmoi init`
+  renders it into `~/.config/chezmoi/chezmoi.toml`. If that file goes missing,
+  chezmoi silently uses `~/.local/share/chezmoi`; `dfu` refuses with "not a git
+  checkout", and `chezmoi init --source ~/src/dotfiles` regenerates it. After
+  the template changes, chezmoi warns `config file template has changed` until
+  `chezmoi init` is rerun.
 - **Drift protection is machine-local.** `chezmoistate.boltdb` lives beside the
   config, not in the repo. On a machine chezmoi has not written to before,
   every existing file counts as pre-existing and unmanaged, and `apply` will

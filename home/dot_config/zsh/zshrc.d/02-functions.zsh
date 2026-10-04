@@ -97,13 +97,23 @@ function __my_sleep_spinner() {
 function dotfiles_update() {
   # workingTree is the repo root; sourceDir is <repo>/home. nvim/ lives at the
   # repo root, so pathspecs resolve against the repo, not the source dir.
-  local REPO="$(chezmoi execute-template '{{ .chezmoi.workingTree }}')"
+  local REPO
+  REPO="$(chezmoi execute-template '{{ .chezmoi.workingTree }}')" || return 1
   local PINS=(nvim/pins.json nvim/nvim-pack-lock.json)
+
+  # Guard: chezmoi must resolve to a real checkout. Without sourceDir in
+  # chezmoi.toml it falls back to ~/.local/share/chezmoi, and every git call
+  # below would fail -- which the pin guard would misreport as dirty pins.
+  if ! git -C "$REPO" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "\033[1;31m==> chezmoi's source ($REPO) is not a git checkout.\033[0m"
+    echo "\033[1;31m    Regenerate ~/.config/chezmoi/chezmoi.toml: chezmoi init --source ~/src/dotfiles\033[0m"
+    return 1
+  fi
 
   # Guard: refuse to run with uncommitted or staged pin/lock changes, so an
   # update can't strand a half-committed pin state.
-  if ! git -C "$REPO" diff --quiet -- $PINS 2>/dev/null || \
-     ! git -C "$REPO" diff --cached --quiet -- $PINS 2>/dev/null; then
+  if ! git -C "$REPO" diff --quiet -- $PINS || \
+     ! git -C "$REPO" diff --cached --quiet -- $PINS; then
     echo "\033[1;31m==> nvim pins.json or nvim-pack-lock.json has uncommitted changes.\033[0m"
     return 1
   fi

@@ -1,0 +1,5 @@
+{{- /* Rendered by `chezmoi init` into ~/.config/chezmoi/chezmoi.toml.
+       --source on the bootstrap one-liner lasts one invocation; this is what
+       makes it stick. workingTree is the repo root (.chezmoiroot resolves
+       <repo>/home from there) -- never .chezmoi.sourceDir, which is <repo>/home. */ -}}
+sourceDir = {{ .chezmoi.workingTree | quote }}

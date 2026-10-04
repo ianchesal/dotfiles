@@ -51,5 +51,14 @@ fi
 grep -q 'HAND EDITED' "$D/.config/tmux.conf" || fail "hand edit was clobbered"
 ok "drift reported; --error-on-conflict refused and preserved the edit"
 
+echo "5. .chezmoi.toml.tmpl pins sourceDir to the repo root and is not deployed"
+C="$WORK/cfg/chezmoi.toml"
+cp "$(cd "$(dirname "$0")/.." && pwd)/home/.chezmoi.toml.tmpl" "$R/home/"
+"$CZ" init --source "$R" --config "$C" --destination "$D" --persistent-state "$S" >/dev/null
+grep -qxF "sourceDir = \"$R\"" "$C" || fail "generated config: $(cat "$C")"
+[ "$("$CZ" execute-template --config "$C" '{{ .chezmoi.workingTree }}')" = "$R" ] || fail "bare chezmoi does not find the repo"
+[ ! -e "$D/.chezmoi.toml" ] && [ ! -e "$D/.chezmoi.toml.tmpl" ] || fail "config template was deployed"
+ok "init writes sourceDir=<repo>; bare commands resolve workingTree"
+
 echo
 echo "All assumptions hold for $($CZ --version | head -1)"

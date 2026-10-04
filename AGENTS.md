@@ -16,9 +16,15 @@ This file provides guidance to AI agents working on this repository.
   `bootstrap/`, `brew/`, `claude/`, `debian/`, `docs/`, `just/`, `nvim/`,
   `script/`, `slack/`, `terminal/`, `winterm/`, plus `justfile`, `README.md`,
   `TODO.md`, and the `.claude/`, `.devcontainer/` and `.github/` dirs
-- Two chezmoi control files live outside `home/` and inside it respectively:
-  `.chezmoiroot` at the repo root, and `home/.chezmoiremove`, which lists paths
-  chezmoi should delete from a machine on the next apply
+- Three chezmoi control files: `.chezmoiroot` at the repo root;
+  `home/.chezmoiremove`, which lists paths chezmoi should delete from a machine
+  on the next apply; and `home/.chezmoi.toml.tmpl`, which `chezmoi init` renders
+  into `~/.config/chezmoi/chezmoi.toml` with `sourceDir` set to the repo root.
+  The bootstrap one-liner's `--source` lasts one invocation, so without that
+  template a fresh machine falls back to `~/.local/share/chezmoi` and every
+  `.chezmoi.workingTree` lookup (including `dfu`'s) points at nothing. Editing
+  the template makes chezmoi warn `config file template has changed` on every
+  machine until `chezmoi init` is run there
 - Source naming: `home/dot_config/tmux/` → `~/.config/tmux/`, `dot_` at **every**
   level. `chezmoi add` applies the prefixes for you — don't hand-name files
 - Prefixes in use: `executable_` (exec bit, 13 entries), `create_` (seed once,
