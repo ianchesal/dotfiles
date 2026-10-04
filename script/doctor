@@ -178,6 +178,31 @@ else
   fi
 fi
 
+# --- SSH via 1Password ----------------------------------------------------------
+# ~/.ssh is chezmoi-managed on personal machines only; a managed config on a work
+# or gcw box means .chezmoiignore did not catch it (flag missing at apply time).
+section "SSH / 1Password"
+ssh_excluded=0
+{ [ -f "$HOME/.work_machine" ] || [ -d /etc/workstation-startup.d ]; } && ssh_excluded=1
+if [ "$ssh_excluded" -eq 1 ]; then
+  if grep -qF 'Managed by chezmoi from ianchesal/dotfiles' "$HOME/.ssh/config" 2>/dev/null; then
+    warn "SSH config (~/.ssh/config) is chezmoi-managed on a work/gcw box -- restore the machine's own config"
+  else
+    ok "SSH at ~/.ssh left to this machine (work/gcw)"
+  fi
+else
+  if [ -S "$HOME/.1password/agent.sock" ]; then
+    ok "1Password agent socket at ~/.1password/agent.sock"
+  else
+    note "no 1Password agent socket -- ssh falls back to SSH_AUTH_SOCK"
+  fi
+  if grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null; then
+    if have npiperelay.exe; then ok "npiperelay.exe"; else warn "npiperelay.exe not on PATH -- 'winget install albertony.npiperelay'"; fi
+    if have socat; then ok "socat"; else warn "socat not on PATH -- 'brew bundle install --file=$repo/brew/Brewfile'"; fi
+  fi
+  if have op; then ok "op $(op --version 2>/dev/null || echo '?')"; else note "op not installed -- just ssh::sync will skip"; fi
+fi
+
 # --- login shell --------------------------------------------------------------
 section "Login shell"
 login_shell=$(getent passwd "$USER" 2>/dev/null | cut -d: -f7 || true)
