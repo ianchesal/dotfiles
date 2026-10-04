@@ -33,8 +33,9 @@ This file provides guidance to AI agents working on this repository.
 - Prefixes in use: `executable_` (exec bit, 15 entries), `create_` (seed once,
   never clobber — one entry, `home/dot_claude/create_private_settings.json`, and
   what protects `~/.claude/settings.json`), `symlink_` (the entry's contents are
-  the link target — two entries, `symlink_nvim.tmpl` and
-  `symlink_agent.sock.tmpl` (macOS 1Password agent socket)), `private_` (0700
+  the link target — three entries, `symlink_nvim.tmpl`,
+  `symlink_agent.sock.tmpl` (macOS 1Password agent socket) and
+  `dot_config/zsh/symlink_dot_zshenv.tmpl` (see Zsh Configuration)), `private_` (0700
   dirs / 0600 files: `private_dot_ssh`, `private_dot_ssh/private_config`,
   `private_dot_1password`, plus `create_private_settings.json`) — it applies
   per entry, so a file inside a `private_` dir still needs its own prefix,
@@ -213,7 +214,7 @@ This file provides guidance to AI agents working on this repository.
 
 - Source state is `home/dot_config/tmux/`, deployed to `~/.config/tmux`. It is
   **copied like everything else, not symlinked** — `nvim/` is the only `symlink_`
-  entry in the repo, so a tmux edit needs a `chezmoi apply` to go live
+  entry that points into the repo, so a tmux edit needs a `chezmoi apply` to go live
 - Main configuration in `tmux.conf`, theme in `theme.conf`. Also present:
   `theme-gcw.conf` (cloud-workstation variant), `tmux-lite.conf`, and a
   `workmux/` subdirectory of helper scripts
@@ -258,6 +259,13 @@ This file provides guidance to AI agents working on this repository.
   `dot_zshrc`/`dot_zprofile` entries there become `~/.config/zsh/.zshrc` and
   `.zprofile`; `~/.zshenv` comes from `home/dot_zshenv` and is what points ZDOTDIR
   at the XDG location
+- **`~/.config/zsh/.zshenv` is a symlink to `~/.zshenv`**
+  (`symlink_dot_zshenv.tmpl`). `~/.zshenv` exports `ZDOTDIR`, and zsh reads
+  `$ZDOTDIR/.zshenv` *instead of* `~/.zshenv` whenever ZDOTDIR is already set —
+  so every nested shell (tmux panes, `zsh -c`, agents) reads the ZDOTDIR copy.
+  The September 2026 migration off the symlink model left that path as a stale,
+  unmanaged copy, which silently froze `.zshenv` for every non-top-level shell;
+  the link keeps both readers on one file
 - Zsh files are modular and stored in `home/dot_config/zsh/zshrc.d/`
 - Using `zdharma-continuum/zinit` for zsh plugin support
 - Custom functions go in `home/dot_config/zsh/functions/` with one function per file
@@ -397,8 +405,11 @@ This file provides guidance to AI agents working on this repository.
   `~/.ssh/agent-forwarded.sock` at each login's forwarded socket and exports
   that fixed path, so panes in a long-lived tmux session follow reconnects.
   Last login wins, so a short second login that exits leaves the link
-  dangling; a precmd hook (`_ssh_agent_heal`) repoints it at the newest live
-  `/tmp/ssh-*/agent.*` socket at the next prompt
+  dangling; `_ssh_agent_heal` repoints it at the newest live
+  `/tmp/ssh-*/agent.*` socket. It is defined and run in `~/.zshenv`, so every
+  zsh heals on start -- including non-interactive ones (agents, `zsh -c`) that
+  never draw a prompt -- and `ssh-agent.zsh` also registers it as a precmd hook
+  so long-lived panes heal at their next prompt
 - `known_hosts` and `authorized_keys` are machine-local; `private_dot_ssh` has no
   `exact_` prefix, so chezmoi leaves them and `config.d/` alone
 - Two global skills drive the add-a-key / add-a-host flows end to end:

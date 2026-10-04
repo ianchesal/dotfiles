@@ -57,7 +57,10 @@ integration **off** on that box -- their approval prompts would appear on its
 unwatched screen. Signing prompts then appear on the machine you're sitting at.
 `zshrc.d/ssh-agent.zsh` keeps tmux panes working across reconnects by pointing
 `SSH_AUTH_SOCK` at `~/.ssh/agent-forwarded.sock`, which each new SSH login
-repoints at its own forwarded socket. `just ssh::sync` there needs
+repoints at its own forwarded socket. If a short second login leaves that link
+dangling when it exits, the next zsh to start (from `~/.zshenv`, interactive or
+not) or the next prompt in any pane repoints it at the newest live forwarded
+socket. `just ssh::sync` there needs
 `eval "$(op signin)"` in the session first; without it, it skips.
 
 ## Troubleshooting

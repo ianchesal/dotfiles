@@ -86,6 +86,36 @@ if [[ -n "$WSL_DISTRO_NAME" || -n "$WSL_INTEROP" ]]; then
   }
 fi
 
+# Forwarded SSH agent: repair a dangling ~/.ssh/agent-forwarded.sock.
+#
+# zshrc.d/ssh-agent.zsh points SSH_AUTH_SOCK at that fixed link and repoints it
+# on each SSH login, so a short-lived second login leaves it dangling when it
+# exits. Interactive panes repair it from a precmd hook, but non-interactive
+# shells (agents, scripts, `zsh -c` from tmux) never draw a prompt and would
+# stay broken until someone pressed Enter somewhere. Every zsh reads this file,
+# so heal here as well; ssh-agent.zsh registers the same function as its hook.
+#
+# Costs one stat in the common case. Self-guarded: does nothing unless
+# SSH_AUTH_SOCK is the fixed link, and never on work or gcw boxes, which keep
+# their own ~/.ssh (the flag file and marker dir are tested directly).
+_ssh_agent_heal() {
+  emulate -L zsh
+  [[ "${SSH_AUTH_SOCK:-}" == "$HOME/.ssh/agent-forwarded.sock" ]] || return 0
+  [[ -S "$SSH_AUTH_SOCK" ]] && return 0
+  [[ -f "$HOME/.work_machine" || -d /etc/workstation-startup.d ]] && return 0
+  local sock
+  # sshd's per-login sockets: owned by us (U), sockets only (=), newest first (om)
+  for sock in /tmp/ssh-*/agent.*(N=Uom); do
+    # exit 2 means nothing is listening; 0 or 1 is a live agent
+    SSH_AUTH_SOCK="$sock" ssh-add -l >/dev/null 2>&1
+    (( $? != 2 )) || continue
+    ln -sfn "$sock" "$SSH_AUTH_SOCK" 2>/dev/null
+    return 0
+  done
+  return 0
+}
+_ssh_agent_heal
+
 # define environment for non-login, non-interactive shells which don't source .zprofile
 if [[ ("$SHLVL" -eq 1 && ! -o LOGIN) && -s $ZDOTDIR/.zprofile ]]; then
   source $ZDOTDIR/.zprofile

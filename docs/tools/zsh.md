@@ -15,6 +15,8 @@ is a leaner rebuild around zinit's lazy loading.
 .zshenv                  Sourced for EVERY shell; sets XDG basedirs + ZDOTDIR. The
                          one file deployed into $HOME rather than $ZDOTDIR; its
                          source is home/dot_zshenv, not home/dot_config/zsh/.
+.zshenv (in $ZDOTDIR)     Symlink to ~/.zshenv. Nested shells inherit ZDOTDIR and read
+                         this one instead of ~/.zshenv, so it must be the same file
 .zprofile                Login shells: BROWSER/EDITOR/PAGER, locale, $PATH, less opts
 .zshrc                   Interactive shells: Homebrew shellenv, zinit + plugins,
                          compinit, oh-my-posh, then sources zshrc.d/*.zsh
