@@ -1,0 +1,180 @@
+#!/usr/bin/env bash
+#
+# Pull ~/.ssh/config.d/ host blocks out of 1Password.
+#
+# Host entries too sensitive for this public repo (public IPs, ports, users)
+# live in 1Password as Secure Notes tagged `ssh-config` in the Private vault.
+# The item title is the file name; the note body is the raw `Host ...` block.
+# ~/.ssh/config (chezmoi-managed) does `Include config.d/*`, so whatever lands
+# here takes effect on the next ssh.
+#
+# Runs from `just ssh::sync` and the `just update` fan-out, so it must never
+# fail or hang `dfu` over a locked or absent 1Password:
+#   - no op, a work machine, the cloud workstation, or macOS over SSH (where
+#     the app's auth prompt lands on a display nobody can see) -> skip, exit 0
+#   - `op whoami` fails or exceeds OP_TIMEOUT                     -> skip, exit 0
+#   - anything failing AFTER that preflight is a real fault       -> exit 1
+# Everything is fetched and validated before anything is written, so a fault
+# leaves config.d exactly as it was.
+#
+# Only files whose first line is the managed header are ever overwritten or
+# pruned; hand-written files in config.d are left alone.
+#
+# Seams for script/tests/ssh-config-sync.test.sh:
+#   OP_BIN            -- op executable (default: op from PATH)
+#   OP_ACCOUNT        -- passed as --account when set
+#   OP_VAULT          -- vault to read (default: Private)
+#   OP_TAG            -- tag selecting the notes (default: ssh-config)
+#   OP_TIMEOUT        -- seconds to wait for `op whoami` (default: 60)
+#   SSH_CONFIG_D      -- destination (default: ~/.ssh/config.d)
+#   WORK_MACHINE_FLAG -- work-machine flag file (default: ~/.work_machine)
+#   GCW_MARKER        -- cloud-workstation marker dir (default: /etc/workstation-startup.d)
+#   UNAME_S           -- kernel name (default: uname -s)
+
+set -euo pipefail
+
+op_bin=${OP_BIN:-op}
+vault=${OP_VAULT:-Private}
+tag=${OP_TAG:-ssh-config}
+op_timeout=${OP_TIMEOUT:-60}
+config_d=${SSH_CONFIG_D:-$HOME/.ssh/config.d}
+work_flag=${WORK_MACHINE_FLAG:-$HOME/.work_machine}
+gcw_marker=${GCW_MARKER:-/etc/workstation-startup.d}
+uname_s=${UNAME_S:-$(uname -s)}
+
+header_prefix='# managed by ssh-config-sync -- edit in 1Password: '
+
+skip() {
+  printf '%s\n' "$1" >&2
+  exit 0
+}
+fault() {
+  printf 'ERROR: %s\n' "$1" >&2
+  exit 1
+}
+warn() { printf 'WARNING: %s\n' "$1" >&2; }
+
+run_op() {
+  if [ -n "${OP_ACCOUNT:-}" ]; then
+    "$op_bin" --account "$OP_ACCOUNT" "$@"
+  else
+    "$op_bin" "$@"
+  fi
+}
+
+# Run "$@" with a deadline. macOS has no timeout(1), so poll instead; a poll
+# loop also leaves no watchdog process behind holding the caller's pipes.
+with_timeout() {
+  local secs=$1 pid ticks=0
+  shift
+  "$@" &
+  pid=$!
+  while kill -0 "$pid" 2>/dev/null; do
+    if [ "$ticks" -ge $((secs * 10)) ]; then
+      kill -TERM "$pid" 2>/dev/null || true
+      wait "$pid" 2>/dev/null || true
+      return 124
+    fi
+    sleep 0.1
+    ticks=$((ticks + 1))
+  done
+  wait "$pid"
+}
+
+is_managed() {
+  local first=''
+  [ -f "$1" ] || return 1
+  IFS= read -r first <"$1" || true
+  case $first in "$header_prefix"*) return 0 ;; esac
+  return 1
+}
+
+# --- skips that must not touch op at all ---------------------------------------
+[ -f "$work_flag" ] && skip "Skipping ssh-config-sync -- work machine ($work_flag exists)"
+[ -d "$gcw_marker" ] && skip 'Skipping ssh-config-sync -- cloud workstation'
+command -v "$op_bin" >/dev/null 2>&1 || skip 'Skipping ssh-config-sync -- no op command found'
+if [ "$uname_s" = Darwin ] && [ -n "${SSH_CONNECTION:-}" ]; then
+  skip "1Password would prompt on the Mac's display -- skipping over SSH. Run 'just ssh::sync' at the console."
+fi
+
+# --- preflight: signed in? ------------------------------------------------------
+if ! with_timeout "$op_timeout" run_op whoami >/dev/null 2>&1; then
+  skip '1Password CLI not signed in -- skipping. Run: eval "$(op signin)" && just ssh::sync'
+fi
+
+# --- fetch and validate everything before writing anything -----------------------
+staging=$(mktemp -d)
+trap 'rm -rf "$staging"' EXIT
+
+list_json=$(run_op item list --vault "$vault" --tags "$tag" --format json) || fault 'op item list failed'
+[ -n "$list_json" ] || list_json='[]'
+rows=$(printf '%s' "$list_json" | jq -r '.[] | [.id, .title] | @tsv') || fault 'could not parse op item list output'
+
+titles=''
+while IFS=$'\t' read -r id title; do
+  [ -n "${id:-}" ] || continue
+  if ! grep -Eq '^[A-Za-z0-9][A-Za-z0-9._-]*$' <<<"$title"; then
+    warn "invalid title '$title' (item $id) -- skipped"
+    continue
+  fi
+  titles="$titles$title"$'\n'
+  printf '%s\n' "$id" >"$staging/$title.id"
+done <<<"$rows"
+
+dups=$(printf '%s' "$titles" | sort | uniq -d)
+[ -z "$dups" ] || fault "duplicate titles in 1Password: $(printf '%s' "$dups" | tr '\n' ' ')-- nothing written"
+
+written=''
+while IFS= read -r title; do
+  [ -n "$title" ] || continue
+  id=$(cat "$staging/$title.id")
+  item_json=$(run_op item get "$id" --vault "$vault" --format json) || fault "op item get failed for '$title'"
+  body=$(printf '%s' "$item_json" | jq -r '.fields[]? | select(.id == "notesPlain") | .value // ""') ||
+    fault "could not parse note '$title'"
+  body=$(printf '%s' "$body" | tr -d '\r')
+  if [ -z "$body" ]; then
+    warn "empty note '$title' -- skipped"
+    continue
+  fi
+  if [ -e "$config_d/$title" ] && ! is_managed "$config_d/$title"; then
+    warn "$config_d/$title exists and is not managed by ssh-config-sync -- skipped"
+    continue
+  fi
+  printf '%s%s\n%s\n' "$header_prefix" "$title" "$body" >"$staging/$title"
+  written="$written$title"$'\n'
+done <<<"$titles"
+
+# --- write ------------------------------------------------------------------------
+(
+  umask 077
+  mkdir -p "$(dirname "$config_d")" "$config_d"
+)
+chmod 700 "$config_d"
+
+while IFS= read -r title; do
+  [ -n "$title" ] || continue
+  tmp=$(mktemp "$config_d/.$title.XXXXXX")
+  cat "$staging/$title" >"$tmp"
+  chmod 600 "$tmp"
+  mv -f "$tmp" "$config_d/$title"
+  echo "Wrote $config_d/$title"
+done <<<"$written"
+
+# --- prune ------------------------------------------------------------------------
+if [ -z "$written" ]; then
+  for f in "$config_d"/*; do
+    if is_managed "$f"; then
+      warn "1Password returned no '$tag' notes but managed files exist -- refusing to prune"
+      break
+    fi
+  done
+  exit 0
+fi
+
+for f in "$config_d"/*; do
+  is_managed "$f" || continue
+  name=${f##*/}
+  grep -qxF "$name" <<<"$written" && continue
+  rm -f "$f"
+  echo "Removed $f (no longer in 1Password)"
+done
