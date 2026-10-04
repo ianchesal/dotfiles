@@ -251,7 +251,7 @@ Run by hand. Every destructive step comes after verification.
 4. `cp ~/.ssh/config ~/.ssh/config.pre-chezmoi` (chezmoi keeps no backup), then
    `chezmoi diff ~/.ssh`, `chezmoi apply ~/.ssh`, `just ssh::sync`.
 5. Verify: `ssh -G <host>` for every host resolves the right
-   `identityfile`/`identityagent` (and `pubkeyauthentication no` for `imac`,
+   `identityfile`/`identityagent` (and `pubkeyauthentication false` for `imac`,
    `udm-pro`); a real login to each reachable host, including `chesal.net`
    (proves the passphrase-protected `digitalocean` key in 1Password);
    `ssh -T git@github.com`.
