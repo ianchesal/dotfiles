@@ -22,11 +22,15 @@ Host rpi-basement-1
   IdentityFile ~/.ssh/rpi-basement-1.pub
   IdentitiesOnly yes
 
+# Worked on headless over SSH, so it borrows this machine's 1Password agent:
+# signing prompts then appear here, where someone is looking. Forward to this
+# host only -- while connected, root on it can ask the agent for signatures.
 Host tranquility
   HostName 192.168.1.26
   User ian
   IdentityFile ~/.ssh/tranquility.pub
   IdentitiesOnly yes
+  ForwardAgent yes
 
 Host synology01
   HostName 192.168.1.4

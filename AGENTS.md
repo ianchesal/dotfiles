@@ -387,6 +387,13 @@ This file provides guidance to AI agents working on this repository.
 - Pull a public key out of 1Password with `op item get '<title>' --vault
   Private --fields 'public key'` — not `op read`, whose references reject the
   `@` in titles like `ian@tranquility`
+- Headless boxes worked on over SSH (tranquility) borrow the client's agent:
+  their `Host` block sets `ForwardAgent yes` (per host, never `Host *` -- root
+  on the far end can use a forwarded agent while you're connected), and they
+  leave 1Password's own SSH agent **off**, since its approval prompt would land
+  on a screen nobody watches. `zshrc.d/ssh-agent.zsh` repoints
+  `~/.ssh/agent-forwarded.sock` at each login's forwarded socket and exports
+  that fixed path, so panes in a long-lived tmux session follow reconnects
 - `known_hosts` and `authorized_keys` are machine-local; `private_dot_ssh` has no
   `exact_` prefix, so chezmoi leaves them and `config.d/` alone
 

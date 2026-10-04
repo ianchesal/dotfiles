@@ -45,6 +45,18 @@ public half into the repo:
 5. `just ssh::sync` (at the console on macOS — over SSH it
    skips, because the 1Password prompt would appear on the Mac's display).
 
+## Headless machines (tranquility)
+
+A box you only reach over SSH should borrow your agent instead of running its
+own: give its `Host` block `ForwardAgent yes` in
+`home/private_dot_ssh/private_config`, and leave 1Password's SSH agent and CLI
+integration **off** on that box -- their approval prompts would appear on its
+unwatched screen. Signing prompts then appear on the machine you're sitting at.
+`zshrc.d/ssh-agent.zsh` keeps tmux panes working across reconnects by pointing
+`SSH_AUTH_SOCK` at `~/.ssh/agent-forwarded.sock`, which each new SSH login
+repoints at its own forwarded socket. `just ssh::sync` there needs
+`eval "$(op signin)"` in the session first; without it, it skips.
+
 ## Troubleshooting
 
 - `just ssh::sync` says not signed in: on WSL `eval "$(op signin)"`; on macOS
