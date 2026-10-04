@@ -27,22 +27,37 @@ if [[ ! -f "$HOME/.work_machine" && ! -d /etc/workstation-startup.d ]]; then
     (( $? != 2 && $? != 124 ))
   }
 
+  # Full path to the Windows-side npiperelay.exe, or failure. It is normally NOT
+  # on PATH here: dot_zshenv trims the Windows PATH for startup speed, and a tmux
+  # server started before the install keeps the old one anyway. So also look
+  # where winget puts it. Every probe of /mnt/c is slow (9p), which is why this
+  # only runs when the relay actually needs starting -- about once per boot.
+  _op_find_npiperelay() {
+    local c
+    for c in ${commands[npiperelay.exe]-} \
+      /mnt/c/Users/*/AppData/Local/Microsoft/WinGet/{Links,Packages/albertony.npiperelay_*}/npiperelay.exe(N); do
+      [[ -x "$c" ]] && { print -r -- "$c"; return 0; }
+    done
+    return 1
+  }
+
   # WSL: relay the Windows 1Password pipe onto the unix socket. Needs
   # npiperelay.exe on the Windows side (winget install albertony.npiperelay) and
   # socat/flock/setsid here. flock serialises shells started together (tmux
   # restoring panes) so they cannot unlink each other's socket; the liveness check
   # is repeated inside the lock. socat must not inherit the lock fd, or the lock
-  # would be held for the relay's whole life.
+  # would be held for the relay's whole life. socat's EXEC splits on spaces, so
+  # this assumes no space in the npiperelay.exe path (winget's paths have none).
   if [[ -r /proc/sys/kernel/osrelease && "$(</proc/sys/kernel/osrelease)" == *[Mm]icrosoft* ]] \
-    && (( $+commands[npiperelay.exe] && $+commands[socat] && $+commands[flock] && $+commands[setsid] )); then
+    && (( $+commands[socat] && $+commands[flock] && $+commands[setsid] )); then
     mkdir -p -m 700 "$HOME/.1password"
-    if ! _op_sock_live "$_op_sock"; then
+    if ! _op_sock_live "$_op_sock" && _op_relay=$(_op_find_npiperelay); then
       (
         flock -w 5 9 || exit 0
         _op_sock_live "$_op_sock" && exit 0
         rm -f "$_op_sock"
         setsid socat "UNIX-LISTEN:$_op_sock,fork" \
-          "EXEC:npiperelay.exe -ei -s //./pipe/openssh-ssh-agent,nofork" </dev/null >/dev/null 2>&1 9>&- &
+          "EXEC:$_op_relay -ei -s //./pipe/openssh-ssh-agent,nofork" </dev/null >/dev/null 2>&1 9>&- &
         for _i in {1..20}; do [[ -S "$_op_sock" ]] && break; sleep 0.05; done
       ) 9>"$HOME/.1password/.relay.lock"
     fi
@@ -55,5 +70,5 @@ if [[ ! -f "$HOME/.work_machine" && ! -d /etc/workstation-startup.d ]]; then
   fi
 fi
 
-unset _op_sock _i
-unfunction _op_sock_live 2>/dev/null
+unset _op_sock _op_relay _i
+unfunction _op_sock_live _op_find_npiperelay 2>/dev/null

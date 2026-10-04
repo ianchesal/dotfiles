@@ -197,7 +197,16 @@ else
     note "no 1Password agent socket -- ssh falls back to SSH_AUTH_SOCK"
   fi
   if grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null; then
-    if have npiperelay.exe; then ok "npiperelay.exe"; else warn "npiperelay.exe not on PATH -- 'winget install albertony.npiperelay'"; fi
+    # Not usually on PATH: dot_zshenv trims the Windows PATH, so also look where
+    # winget installs it -- the same places zshrc.d/1password.zsh searches.
+    relay=$(command -v npiperelay.exe 2>/dev/null || true)
+    if [ -z "$relay" ]; then
+      for c in /mnt/c/Users/*/AppData/Local/Microsoft/WinGet/Links/npiperelay.exe \
+        /mnt/c/Users/*/AppData/Local/Microsoft/WinGet/Packages/albertony.npiperelay_*/npiperelay.exe; do
+        [ -x "$c" ] && { relay=$c; break; }
+      done
+    fi
+    if [ -n "$relay" ]; then ok "npiperelay.exe ($relay)"; else warn "npiperelay.exe not found -- 'winget install albertony.npiperelay'"; fi
     if have socat; then ok "socat"; else warn "socat not on PATH -- 'brew bundle install --file=$repo/brew/Brewfile'"; fi
   fi
   if have op; then ok "op $(op --version 2>/dev/null || echo '?')"; else note "op not installed -- just ssh::sync will skip"; fi
