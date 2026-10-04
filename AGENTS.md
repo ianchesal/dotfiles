@@ -138,7 +138,7 @@ This file provides guidance to AI agents working on this repository.
   `~/.tool-versions`, login shell.
   Run it after a bootstrap or when something feels off
 - `bootstrap/cloud-workstation.sh` is now a thin wrapper over exactly that path,
-  plus the kitty terminfo a remote box needs
+  plus the kitty terminfo a remote box needs (`just kitty::terminfo`)
 
 ## Build/Test/Lint Commands
 
@@ -182,6 +182,7 @@ This file provides guidance to AI agents working on this repository.
 - Uninstall asdf tool versions older than the one in use: `just asdf::prune` (`FORCE=1` skips the confirmation prompt)
 - Preview which asdf tool versions would be pruned: `just asdf::prune-preview`
 - Install the fonts listed in `just/fonts.just` (Homebrew casks; on macOS also strips the download quarantine so Font Book sees them): `just fonts::install`
+- Install the `xterm-kitty` terminfo on a remote Linux box so kitty clients get a working TERM (no-op if present; `FORCE=1` reinstalls): `just kitty::terminfo`
 - Install pi (on demand, never automatic): `just pi::install`
 - Update pi and its extensions: `just pi::update` (also runs in the `update` fan-out, so `dfu` covers it)
 - Pull `~/.ssh/config.d` host blocks from 1Password: `just ssh::sync` (also runs in the `update` fan-out)

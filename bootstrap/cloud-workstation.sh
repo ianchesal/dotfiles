@@ -79,13 +79,8 @@ just --justfile "$DOTFILES/justfile" install-runtimes
 # ── Step 5: Install kitty terminfo ────────────────────────────────────────────
 # Remote boxes need this to accept a kitty client's TERM.
 log "Step 5: Install kitty terminfo"
-if infocmp xterm-kitty &>/dev/null; then
-  skip "xterm-kitty terminfo already installed"
-else
-  action "Fetching and installing kitty.terminfo"
-  curl -fsSL https://raw.githubusercontent.com/kovidgoyal/kitty/master/terminfo/kitty.terminfo |
-    tic -x -o "$HOME/.terminfo" -
-fi
+action "Running just kitty::terminfo"
+just --justfile "$DOTFILES/justfile" kitty::terminfo
 
 # ── Step 6: Health check ──────────────────────────────────────────────────────
 log "Step 6: Verify the result"
