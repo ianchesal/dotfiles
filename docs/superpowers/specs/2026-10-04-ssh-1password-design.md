@@ -62,9 +62,10 @@ Checked on the WSL2 box on 2026-10-04, not assumed.
   variable. Sessions end after 30 idle minutes; signed out, `op item list`
   fails immediately with `You are not currently signed in` even on a TTY.
   On macOS with the 1Password app's CLI integration, each call instead asks the
-  app, which shows Touch ID on the Mac's own screen. **Not verified:** what
-  `op whoami` does in that mode when nobody is at the console (e.g. `dfu` over
-  SSH) — it may block. The design bounds it with a timeout (§2).
+  app, which shows Touch ID on the Mac's own screen. **Over SSH it blocks**
+  (confirmed by the user, 2026-10-04): the auth prompt appears on the Mac's
+  display, invisible and unanswerable from the SSH session, and `op` waits on
+  it.
 - **chezmoi's `private_` is per entry.** A scratch apply of
   `private_dot_ssh/config` gave the directory 0700 but the file **0644**;
   `private_dot_ssh/private_config` gave 0600.
@@ -147,8 +148,14 @@ The script, in order:
 
 1. **No-ops** (exit 0, one-line notice) when `op` is not on PATH, when
    `~/.work_machine` exists, or when `/etc/workstation-startup.d` exists.
+   Also skips (exit 0, **without calling `op` at all**) on macOS when
+   `SSH_CONNECTION` is set, printing
+   `1Password would prompt on the Mac's display -- skipping over SSH. Run 'just ssh::sync' at the console.`
+   Calling `op` there would block on a prompt nobody can answer.
 2. **Preflights auth with `op whoami`, bounded by a timeout** (`OP_TIMEOUT`,
    default 60s; a bash background watchdog, since macOS has no `timeout(1)`).
+   The timeout is a backstop for an unattended console session (screen locked,
+   nobody there), not the SSH case, which step 1 already handles.
    On failure or timeout it prints
    `1Password CLI not signed in -- skipping. Run: eval "$(op signin)" && just ssh::sync`,
    touches nothing, and exits 0, so a locked, signed-out or unattended
@@ -179,7 +186,8 @@ The script, in order:
 Env seams: `OP_BIN`, `OP_ACCOUNT` (passed as `--account` when set; unset
 means the single signed-in account), `OP_VAULT` (default `Private`), `OP_TAG`
 (default `ssh-config`), `OP_TIMEOUT`, `SSH_CONFIG_D`, `WORK_MACHINE_FLAG`,
-`GCW_MARKER`.
+`GCW_MARKER`, `UNAME_S` (default `$(uname -s)`, so tests can exercise the
+`Darwin` + `SSH_CONNECTION` skip on Linux).
 
 Wiring: `just/ssh.just` with a documented `sync` recipe; `mod ssh` in the root
 justfile; `ssh::sync` appended to the `update` fan-out so `dfu` keeps every
@@ -258,8 +266,7 @@ Run by hand. Every destructive step comes after verification.
    `chezmoi apply`, `just ssh::sync`, then step 5. Also: confirm
    `~/.1password/agent.sock` is the symlink and `ssh -G github.com | grep
    identityagent` shows it; run `just ssh::sync` from an SSH session to the
-   Mac and record whether the preflight blocks until the timeout or fails
-   fast (resolves the unverified constraint).
+   Mac and confirm it skips immediately with the over-SSH notice.
 
 ### 5. Testing and docs
 
@@ -273,6 +280,7 @@ Run by hand. Every destructive step comes after verification.
   - no-ops without `op`, on a work machine, and on a gcw marker;
   - `op whoami` failing → exit 0, nothing touched;
   - `op whoami` hanging past `OP_TIMEOUT` → exit 0, nothing touched;
+  - `UNAME_S=Darwin` with `SSH_CONNECTION` set → exit 0, `op` never invoked;
   - an `op` failure after the preflight → non-zero, nothing changed;
   - `OP_ACCOUNT` set → `--account` passed to every `op` call.
 - `just lint` (with the new script in its list) and `just test-scripts` pass.
