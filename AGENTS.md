@@ -396,6 +396,11 @@ This file provides guidance to AI agents working on this repository.
   that fixed path, so panes in a long-lived tmux session follow reconnects
 - `known_hosts` and `authorized_keys` are machine-local; `private_dot_ssh` has no
   `exact_` prefix, so chezmoi leaves them and `config.d/` alone
+- Two global skills drive the add-a-key / add-a-host flows end to end:
+  `home/dot_claude/skills/ssh-new-key` (generate in 1Password, commit the `.pub`)
+  and `ssh-new-host` (install + prove key auth, then place the block in
+  `private_config` or an `ssh-config` note). Both refuse on work machines and gcw.
+  Keep them in step with this section when the SSH layout changes
 
 ## Kitty Configuration
 
