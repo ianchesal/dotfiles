@@ -118,6 +118,10 @@ then asdf, then Ruby 3.3.9, before a `rake zsh` task could create a single
 symlink. Rake is gone entirely now — `just` runs the update fan-out and nothing
 else (see the Task Running section of CLAUDE.md).
 
+SSH is a separate step after `chezmoi apply`, because the keys are in
+1Password: enable the 1Password SSH agent, then run `just ssh::sync` (at the
+console on macOS). See `docs/tools/ssh.md`.
+
 ---
 
 ## Adding a tool
@@ -262,3 +266,6 @@ Editing `nvim/lua/plugins/*.lua` is live immediately — no `apply`. See
   against a scratch directory will still execute setup scripts against your
   actual home directory. Always pass `--exclude=scripts` when applying to a
   scratch destination.
+- `~/.ssh` is not deployed on a box that has `~/.work_machine` or
+  `/etc/workstation-startup.d`. Touch the flag **before** the first apply on a
+  work machine — chezmoi keeps no backup of the `~/.ssh/config` it would replace.

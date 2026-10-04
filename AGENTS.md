@@ -16,9 +16,12 @@ This file provides guidance to AI agents working on this repository.
   `bootstrap/`, `brew/`, `claude/`, `debian/`, `docs/`, `just/`, `nvim/`,
   `script/`, `slack/`, `terminal/`, `winterm/`, plus `justfile`, `README.md`,
   `TODO.md`, and the `.claude/`, `.devcontainer/` and `.github/` dirs
-- Three chezmoi control files: `.chezmoiroot` at the repo root;
+- Four chezmoi control files: `.chezmoiroot` at the repo root;
   `home/.chezmoiremove`, which lists paths chezmoi should delete from a machine
-  on the next apply; and `home/.chezmoi.toml.tmpl`, which `chezmoi init` renders
+  on the next apply; `home/.chezmoiignore`, a template that skips `~/.ssh` on
+  work machines (`~/.work_machine`) and the cloud workstation
+  (`/etc/workstation-startup.d`), and skips `~/.1password` everywhere but macOS;
+  and `home/.chezmoi.toml.tmpl`, which `chezmoi init` renders
   into `~/.config/chezmoi/chezmoi.toml` with `sourceDir` set to the repo root.
   The bootstrap one-liner's `--source` lasts one invocation, so without that
   template a fresh machine falls back to `~/.local/share/chezmoi` and every
@@ -30,7 +33,11 @@ This file provides guidance to AI agents working on this repository.
 - Prefixes in use: `executable_` (exec bit, 13 entries), `create_` (seed once,
   never clobber — one entry, `home/dot_claude/create_private_settings.json`, and
   what protects `~/.claude/settings.json`), `symlink_` (the entry's contents are
-  the link target — one entry, `symlink_nvim.tmpl`),
+  the link target — two entries, `symlink_nvim.tmpl` and
+  `symlink_agent.sock.tmpl` (macOS 1Password agent socket)), `private_` (0700
+  dirs / 0600 files: `private_dot_ssh`, `private_dot_ssh/private_config`,
+  `private_dot_1password`, plus `create_private_settings.json`) — it applies
+  per entry, so a file inside a `private_` dir still needs its own prefix,
   `run_once_before_*` (one entry, the Brewfile bootstrap) and `run_once_after_*`
   (four entries, setup scripts). Ordering matters: `before` runs ahead of any
   config being written, `after` once everything has landed
@@ -42,7 +49,9 @@ This file provides guidance to AI agents working on this repository.
   lockfile. Everything under `~/.config/nvim` is invisible to `chezmoi
   status`/`diff`/`verify` — that is intended
 - Every config deploys on every platform. No OS gating: a kitty config on Linux
-  is inert and not worth a template guard
+  is inert and not worth a template guard. The one exception is `~/.ssh` (and
+  the macOS-only `~/.1password` symlink), gated in `home/.chezmoiignore` — see
+  SSH Configuration
 - `~/.work_machine` stays a **runtime** check
   (`home/dot_config/gh-dash/executable_gh-dash.sh` reads the file itself) so
   tmux popups and cron agree with interactive shells. Both `config.yml` and
@@ -174,6 +183,7 @@ This file provides guidance to AI agents working on this repository.
 - Preview which asdf tool versions would be pruned: `just asdf::prune-preview`
 - Install pi (on demand, never automatic): `just pi::install`
 - Update pi and its extensions: `just pi::update` (also runs in the `update` fan-out, so `dfu` covers it)
+- Pull `~/.ssh/config.d` host blocks from 1Password: `just ssh::sync` (also runs in the `update` fan-out)
 - Remove pi installs that predate the canonical layout: `just pi::purge-legacy` (preview with `just pi::purge-legacy-preview`; `FORCE=1` skips both the prompt and the running-session refusal)
 
 ## Code Style Guidelines
@@ -341,6 +351,40 @@ This file provides guidance to AI agents working on this repository.
 - Conventions for commit messages: no fixup commits in pushed branches
 - Git workflow relies heavily on custom aliases and integrations
 - Repository configuration uses a rebase workflow with `autosetuprebase = always`
+
+## SSH Configuration
+
+- Private keys live **only** in 1Password (Private vault). Nothing in the repo or
+  on disk holds a private key; `~/.ssh/*.pub` files are the public halves, used
+  as `IdentityFile` so the agent knows which key to sign with
+- `home/private_dot_ssh/private_config` → `~/.ssh/config` (0600). Public: LAN
+  hosts (`192.168.1.x`), `github.com`, and a `Match exec "test -S
+  ~/.1password/agent.sock"` block that sets `IdentityAgent`. Never make that
+  unconditional: `IdentityAgent` overrides `SSH_AUTH_SOCK`, so a missing socket
+  silently disables forwarded agents
+- `Include config.d/*` is the first line. Host blocks that must not be published
+  (public IPs, ports) are Secure Notes in 1Password tagged `ssh-config`; the
+  title is the file name. `script/ssh-config-sync` (`just ssh::sync`, in the
+  `update` fan-out) writes them with a `# managed by ssh-config-sync` header and
+  only ever overwrites or prunes files carrying that header
+- The sync skips (exit 0) without `op`, on a work machine or gcw, when `op whoami`
+  fails or exceeds 60s, and **on macOS over SSH** — the 1Password app's auth
+  prompt appears on the Mac's display and `op` blocks on it forever
+- `~/.ssh` deploys to **personal machines only** (`home/.chezmoiignore`), the one
+  exception to "every config deploys everywhere"
+- One agent path everywhere, `~/.1password/agent.sock`: native on Linux, a
+  chezmoi `symlink_` to the group-container socket on macOS, and on WSL a
+  `socat` + `npiperelay.exe` relay started by `zshrc.d/1password.zsh` under
+  `flock`. `npiperelay.exe` is Windows-side (`winget install albertony.npiperelay`)
+  and the Windows *OpenSSH Authentication Agent* service must be disabled
+- Every key-auth host pins its key (`IdentityFile <name>.pub` + `IdentitiesOnly
+  yes`); password hosts set `PubkeyAuthentication no`. With nine keys in the
+  agent an unpinned host hits `MaxAuthTries`
+- Pull a public key out of 1Password with `op item get '<title>' --vault
+  Private --fields 'public key'` — not `op read`, whose references reject the
+  `@` in titles like `ian@tranquility`
+- `known_hosts` and `authorized_keys` are machine-local; `private_dot_ssh` has no
+  `exact_` prefix, so chezmoi leaves them and `config.d/` alone
 
 ## Kitty Configuration
 
