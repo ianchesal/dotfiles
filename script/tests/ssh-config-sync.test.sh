@@ -175,6 +175,36 @@ add_item d3 fine 'Host fine'
 check "duplicate titles exit nonzero" nonzero "$(exit_of)"
 check "duplicate titles write nothing" "" "$(ls_cfgd)"
 
+# --- titles differing only in case are duplicates too ------------------------
+# On macOS's case-insensitive filesystem they would land in the same file, so
+# they are refused everywhere and every machine behaves the same.
+reset
+add_item u1 Fractal 'Host one'
+add_item u2 fractal 'Host two'
+check "case-only duplicate titles exit nonzero" nonzero "$(exit_of)"
+check "case-only duplicate titles write nothing" "" "$(ls_cfgd)"
+
+# --- a title ending in .id cannot clobber another note's staged state --------
+reset
+add_item x1 x.id 'Host dot-id'
+add_item x2 x 'Host plain'
+check "x and x.id both sync" 0 "$(exit_of)"
+check "x and x.id both written" "x x.id" "$(ls_cfgd)"
+check "x keeps its own body" "Host plain" "$(sed -n 2p "$cfgd/x")"
+check "x.id keeps its own body" "Host dot-id" "$(sed -n 2p "$cfgd/x.id")"
+
+# --- notes returned but all skipped: say so, prune nothing -------------------
+reset
+mkdir -p "$cfgd"
+printf '%s\nHost old\n' "$(header old)" >"$cfgd/old"
+add_item k1 skipped ''
+check "all-skipped exits 0" 0 "$(exit_of)"
+check "all-skipped prunes nothing" old "$(ls_cfgd)"
+check "all-skipped warning names the skips" yes \
+  "$(grep -q '1 note(s) but all were skipped' "$work/err" && echo yes || echo no)"
+check "all-skipped warning does not claim no notes" no \
+  "$(grep -q 'returned no' "$work/err" && echo yes || echo no)"
+
 # --- empty body is skipped with a warning ------------------------------------
 reset
 add_item e1 empty ''

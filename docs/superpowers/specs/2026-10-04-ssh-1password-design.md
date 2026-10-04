@@ -178,7 +178,8 @@ The script, in order:
    - A title must match `^[A-Za-z0-9][A-Za-z0-9._-]*$` (leading alphanumeric:
      rules out `.`, `..` and hidden files). A bad title is skipped with a
      warning.
-   - Two items with the same title are a fault: exit non-zero, write nothing.
+   - Two items whose titles match ignoring case are a fault: exit non-zero, write
+     nothing (on macOS they would be the same file).
    - An empty body is skipped with a warning; no header-only file.
 5. **Writes** each file to `config.d/<title>` atomically (temp file in the same
    directory, then `mv`), mode 0600, directory 0700, with a first line of

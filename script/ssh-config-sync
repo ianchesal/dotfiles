@@ -114,29 +114,36 @@ fi
 # --- fetch and validate everything before writing anything -----------------------
 staging=$(mktemp -d)
 trap 'rm -rf "$staging"' EXIT
+# Item ids and rendered bodies live in separate dirs: titles may contain dots,
+# so a shared dir would let note "x.id" overwrite note "x"'s staged id.
+mkdir "$staging/ids" "$staging/bodies"
 
 list_json=$(run_op item list --vault "$vault" --tags "$tag" --format json) || fault 'op item list failed'
 [ -n "$list_json" ] || list_json='[]'
 rows=$(printf '%s' "$list_json" | "$jq_bin" -r '.[] | [.id, .title] | @tsv') || fault 'could not parse op item list output'
 
 titles=''
+listed=0
 while IFS=$'\t' read -r id title; do
   [ -n "${id:-}" ] || continue
+  listed=$((listed + 1))
   if ! grep -Eq '^[A-Za-z0-9][A-Za-z0-9._-]*$' <<<"$title"; then
     warn "invalid title '$title' (item $id) -- skipped"
     continue
   fi
   titles="$titles$title"$'\n'
-  printf '%s\n' "$id" >"$staging/$title.id"
+  printf '%s\n' "$id" >"$staging/ids/$title"
 done <<<"$rows"
 
-dups=$(printf '%s' "$titles" | sort | uniq -d)
-[ -z "$dups" ] || fault "duplicate titles in 1Password: $(printf '%s' "$dups" | tr '\n' ' ')-- nothing written"
+# Case-insensitive: on macOS "Fractal" and "fractal" are the same file, so they
+# are refused on every platform and every machine syncs the same set.
+dups=$(printf '%s' "$titles" | tr '[:upper:]' '[:lower:]' | sort | uniq -d)
+[ -z "$dups" ] || fault "duplicate titles in 1Password (ignoring case): $(printf '%s' "$dups" | tr '\n' ' ')-- nothing written"
 
 written=''
 while IFS= read -r title; do
   [ -n "$title" ] || continue
-  id=$(cat "$staging/$title.id")
+  id=$(cat "$staging/ids/$title")
   item_json=$(run_op item get "$id" --vault "$vault" --format json) || fault "op item get failed for '$title'"
   body=$(printf '%s' "$item_json" | "$jq_bin" -r '.fields[]? | select(.id == "notesPlain") | .value // ""') ||
     fault "could not parse note '$title'"
@@ -149,7 +156,7 @@ while IFS= read -r title; do
     warn "$config_d/$title exists and is not managed by ssh-config-sync -- skipped"
     continue
   fi
-  printf '%s%s\n%s\n' "$header_prefix" "$title" "$body" >"$staging/$title"
+  printf '%s%s\n%s\n' "$header_prefix" "$title" "$body" >"$staging/bodies/$title"
   written="$written$title"$'\n'
 done <<<"$titles"
 
@@ -163,7 +170,7 @@ chmod 700 "$config_d"
 while IFS= read -r title; do
   [ -n "$title" ] || continue
   tmp=$(mktemp "$config_d/.$title.XXXXXX")
-  cat "$staging/$title" >"$tmp"
+  cat "$staging/bodies/$title" >"$tmp"
   chmod 600 "$tmp"
   mv -f "$tmp" "$config_d/$title"
   echo "Wrote $config_d/$title"
@@ -173,7 +180,11 @@ done <<<"$written"
 if [ -z "$written" ]; then
   for f in "$config_d"/*; do
     if is_managed "$f"; then
-      warn "1Password returned no '$tag' notes but managed files exist -- refusing to prune"
+      if [ "$listed" -eq 0 ]; then
+        warn "1Password returned no '$tag' notes but managed files exist -- refusing to prune"
+      else
+        warn "1Password returned $listed note(s) but all were skipped (see above) -- refusing to prune"
+      fi
       break
     fi
   done

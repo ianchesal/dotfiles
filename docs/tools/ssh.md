@@ -16,7 +16,10 @@ Keys live in 1Password; config comes from this repo plus 1Password.
 `zshrc.d/1password.zsh` also exports `SSH_AUTH_SOCK` to that socket (except in an
 SSH session that carries a forwarded agent, and not on work/gcw boxes).
 
-Work machines and the cloud workstation get none of this (`home/.chezmoiignore`).
+Work machines and the cloud workstation get none of this: `home/.chezmoiignore`
+skips `~/.ssh` and `~/.1password` there, and `zshrc.d/1password.zsh` and
+`zshrc.d/ssh-agent.zsh` do nothing (both test `~/.work_machine` and
+`/etc/workstation-startup.d` directly).
 
 ## Adding a host
 
@@ -24,8 +27,8 @@ Work machines and the cloud workstation get none of this (`home/.chezmoiignore`)
   pins `IdentityFile ~/.ssh/<name>.pub` + `IdentitiesOnly yes`, password auth
   sets `PubkeyAuthentication no`. `chezmoi apply ~/.ssh`.
 - **Anything with a public IP:** create a Secure Note in Private, title = file
-  name (letters, digits, `.`, `_`, `-`; must start with a letter or digit), tag
-  `ssh-config`, body = the `Host` block. `just ssh::sync`.
+  name (letters, digits, `.`, `_`, `-`; must start with a letter or digit; unique
+  ignoring case), tag `ssh-config`, body = the `Host` block. `just ssh::sync`.
 
 ## Adding a key
 

@@ -30,7 +30,7 @@ This file provides guidance to AI agents working on this repository.
   machine until `chezmoi init` is run there
 - Source naming: `home/dot_config/tmux/` → `~/.config/tmux/`, `dot_` at **every**
   level. `chezmoi add` applies the prefixes for you — don't hand-name files
-- Prefixes in use: `executable_` (exec bit, 13 entries), `create_` (seed once,
+- Prefixes in use: `executable_` (exec bit, 15 entries), `create_` (seed once,
   never clobber — one entry, `home/dot_claude/create_private_settings.json`, and
   what protects `~/.claude/settings.json`), `symlink_` (the entry's contents are
   the link target — two entries, `symlink_nvim.tmpl` and
