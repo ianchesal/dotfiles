@@ -1,0 +1,61 @@
+# Managed by chezmoi from ianchesal/dotfiles (home/private_dot_ssh/private_config)
+# Edit there and `chezmoi apply`; local edits are overwritten.
+#
+# Host blocks that must stay out of the public repo live in 1Password as Secure
+# Notes tagged `ssh-config`; `just ssh::sync` writes them to config.d/. They are
+# included first because ssh keeps the first value it sees for each option.
+Include config.d/*
+
+# Keys live in 1Password; each IdentityFile is the PUBLIC half, which tells the
+# agent which key to sign with. IdentitiesOnly stops the agent offering all of
+# its keys and tripping the server's MaxAuthTries.
+
+# password auth
+Host imac
+  HostName 192.168.1.104
+  User ian
+  PubkeyAuthentication no
+
+Host rpi-basement-1
+  HostName 192.168.1.3
+  User root
+  IdentityFile ~/.ssh/rpi-basement-1.pub
+  IdentitiesOnly yes
+
+Host tranquility
+  HostName 192.168.1.26
+  User ian
+  IdentityFile ~/.ssh/tranquility.pub
+  IdentitiesOnly yes
+
+Host synology01
+  HostName 192.168.1.4
+  Port 2201
+  User ian
+  IdentityFile ~/.ssh/synology01.pub
+  IdentitiesOnly yes
+
+# password auth
+Host udm-pro
+  HostName 192.168.1.1
+  User root
+  PubkeyAuthentication no
+
+Host fractal-devenv
+  HostName 192.168.1.222
+  User ian
+  IdentityFile ~/.ssh/dads-gaming-pc.pub
+  IdentitiesOnly yes
+
+Host github.com
+  User git
+  IdentityFile ~/.ssh/github-personal.pub
+  IdentitiesOnly yes
+
+# 1Password's agent, only when its socket exists. An unconditional
+# IdentityAgent would silently disable a forwarded or hand-started agent
+# (it overrides SSH_AUTH_SOCK) on any box without 1Password.
+# ~/.1password/agent.sock: native on Linux, a chezmoi symlink on macOS, the
+# zsh relay on WSL (zshrc.d/1password.zsh).
+Match exec "test -S ~/.1password/agent.sock"
+  IdentityAgent ~/.1password/agent.sock

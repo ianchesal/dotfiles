@@ -1,0 +1,19 @@
+{{- /*
+  Work machines and the cloud workstation keep their own ~/.ssh: the skeleton
+  config and keys are for personal machines only. This is a deliberate
+  exception to "every config deploys everywhere" (see AGENTS.md). destDir, not
+  homeDir, so a scratch --destination can exercise both branches.
+*/ -}}
+{{- if or (stat (joinPath .chezmoi.destDir ".work_machine")) (stat "/etc/workstation-startup.d") }}
+.ssh
+.ssh/**
+{{- end }}
+{{- /*
+  ~/.1password/agent.sock is a symlink only on macOS. On Linux 1Password
+  creates the socket itself, and on WSL the zsh relay serves it -- chezmoi
+  must never touch it there.
+*/ -}}
+{{- if ne .chezmoi.os "darwin" }}
+.1password
+.1password/**
+{{- end }}
