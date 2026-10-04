@@ -10,7 +10,7 @@
 #
 # Runs from `just ssh::sync` and the `just update` fan-out, so it must never
 # fail or hang `dfu` over a locked or absent 1Password:
-#   - no op, a work machine, the cloud workstation, or macOS over SSH (where
+#   - no op or jq, a work machine, the cloud workstation, or macOS over SSH (where
 #     the app's auth prompt lands on a display nobody can see) -> skip, exit 0
 #   - `op vault get` fails or exceeds OP_TIMEOUT (signed out/locked) -> skip, exit 0
 #     (`op whoami` is no use here: it succeeds even when signed out)
@@ -23,6 +23,7 @@
 #
 # Seams for script/tests/ssh-config-sync.test.sh:
 #   OP_BIN            -- op executable (default: op from PATH)
+#   JQ_BIN            -- jq executable (default: jq from PATH)
 #   OP_ACCOUNT        -- passed as --account when set
 #   OP_VAULT          -- vault to read (default: Private)
 #   OP_TAG            -- tag selecting the notes (default: ssh-config)
@@ -35,6 +36,7 @@
 set -euo pipefail
 
 op_bin=${OP_BIN:-op}
+jq_bin=${JQ_BIN:-jq}
 vault=${OP_VAULT:-Private}
 tag=${OP_TAG:-ssh-config}
 op_timeout=${OP_TIMEOUT:-60}
@@ -55,11 +57,14 @@ fault() {
 }
 warn() { printf 'WARNING: %s\n' "$1" >&2; }
 
+# exec: every caller runs this in a subshell (a `&` job in with_timeout, or
+# $(...)), so exec replaces that subshell with op and a timeout's kill reaches
+# op itself instead of orphaning it.
 run_op() {
   if [ -n "${OP_ACCOUNT:-}" ]; then
-    "$op_bin" --account "$OP_ACCOUNT" "$@"
+    exec "$op_bin" --account "$OP_ACCOUNT" "$@"
   else
-    "$op_bin" "$@"
+    exec "$op_bin" "$@"
   fi
 }
 
@@ -94,6 +99,7 @@ is_managed() {
 [ -f "$work_flag" ] && skip "Skipping ssh-config-sync -- work machine ($work_flag exists)"
 [ -d "$gcw_marker" ] && skip 'Skipping ssh-config-sync -- cloud workstation'
 command -v "$op_bin" >/dev/null 2>&1 || skip 'Skipping ssh-config-sync -- no op command found'
+command -v "$jq_bin" >/dev/null 2>&1 || skip 'Skipping ssh-config-sync -- no jq command found'
 if [ "$uname_s" = Darwin ] && [ -n "${SSH_CONNECTION:-}" ]; then
   skip "1Password would prompt on the Mac's display -- skipping over SSH. Run 'just ssh::sync' at the console."
 fi
@@ -111,7 +117,7 @@ trap 'rm -rf "$staging"' EXIT
 
 list_json=$(run_op item list --vault "$vault" --tags "$tag" --format json) || fault 'op item list failed'
 [ -n "$list_json" ] || list_json='[]'
-rows=$(printf '%s' "$list_json" | jq -r '.[] | [.id, .title] | @tsv') || fault 'could not parse op item list output'
+rows=$(printf '%s' "$list_json" | "$jq_bin" -r '.[] | [.id, .title] | @tsv') || fault 'could not parse op item list output'
 
 titles=''
 while IFS=$'\t' read -r id title; do
@@ -132,7 +138,7 @@ while IFS= read -r title; do
   [ -n "$title" ] || continue
   id=$(cat "$staging/$title.id")
   item_json=$(run_op item get "$id" --vault "$vault" --format json) || fault "op item get failed for '$title'"
-  body=$(printf '%s' "$item_json" | jq -r '.fields[]? | select(.id == "notesPlain") | .value // ""') ||
+  body=$(printf '%s' "$item_json" | "$jq_bin" -r '.fields[]? | select(.id == "notesPlain") | .value // ""') ||
     fault "could not parse note '$title'"
   body=$(printf '%s' "$body" | tr -d '\r')
   if [ -z "$body" ]; then

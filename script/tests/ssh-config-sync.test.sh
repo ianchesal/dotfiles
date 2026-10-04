@@ -28,7 +28,7 @@ case "${1:-}" in
     exit 0
     ;;
   vault)
-    [ -f "$FIXTURES/auth-hang" ] && exec sleep 30
+    [ -f "$FIXTURES/auth-hang" ] && exec sleep 3017
     if [ -f "$FIXTURES/auth-fail" ]; then
       echo '[ERROR] You are not currently signed in' >&2
       exit 1
@@ -210,6 +210,12 @@ add_item s1 skipme 'Host skipme'
 check "absent op skips cleanly" 0 "$(exit_of OP_BIN="$work/definitely-not-op")"
 check "absent op writes nothing" "" "$(ls_cfgd)"
 
+check "absent jq skips cleanly" 0 "$(exit_of JQ_BIN="$work/definitely-not-jq")"
+check "absent jq writes nothing" "" "$(ls_cfgd)"
+check "absent jq never calls op" no "$([ -s "$fx/calls" ] && echo yes || echo no)"
+check "absent jq notice" yes \
+  "$(grep -qF 'Skipping ssh-config-sync -- no jq command found' "$work/err" && echo yes || echo no)"
+
 touch "$work/flag"
 check "work machine skips" 0 "$(exit_of WORK_MACHINE_FLAG="$work/flag")"
 check "work machine never calls op" no "$([ -s "$fx/calls" ] && echo yes || echo no)"
@@ -246,6 +252,9 @@ check "hung vault check exits 0" 0 "$(exit_of OP_TIMEOUT=1)"
 elapsed=$(($(date +%s) - start))
 check "hung vault check gives up within the timeout" yes "$([ "$elapsed" -lt 10 ] && echo yes || echo no)"
 check "hung vault check writes nothing" "" "$(ls_cfgd)"
+# The fake sleeps for a distinctive 3017s; none may be left after the timeout kill.
+check "hung vault check leaves no orphaned op" no "$(pgrep -f 'sleep 301[7]' >/dev/null && echo yes || echo no)"
+pkill -f 'sleep 301[7]' 2>/dev/null || true
 
 # --- op failure after the preflight: nonzero, nothing changed ---------------------
 reset
