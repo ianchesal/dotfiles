@@ -12,7 +12,8 @@
 # fail or hang `dfu` over a locked or absent 1Password:
 #   - no op, a work machine, the cloud workstation, or macOS over SSH (where
 #     the app's auth prompt lands on a display nobody can see) -> skip, exit 0
-#   - `op whoami` fails or exceeds OP_TIMEOUT                     -> skip, exit 0
+#   - `op vault get` fails or exceeds OP_TIMEOUT (signed out/locked) -> skip, exit 0
+#     (`op whoami` is no use here: it succeeds even when signed out)
 #   - anything failing AFTER that preflight is a real fault       -> exit 1
 # Everything is fetched and validated before anything is written, so a fault
 # leaves config.d exactly as it was.
@@ -25,7 +26,7 @@
 #   OP_ACCOUNT        -- passed as --account when set
 #   OP_VAULT          -- vault to read (default: Private)
 #   OP_TAG            -- tag selecting the notes (default: ssh-config)
-#   OP_TIMEOUT        -- seconds to wait for `op whoami` (default: 60)
+#   OP_TIMEOUT        -- seconds to wait for the `op vault get` auth check (default: 60)
 #   SSH_CONFIG_D      -- destination (default: ~/.ssh/config.d)
 #   WORK_MACHINE_FLAG -- work-machine flag file (default: ~/.work_machine)
 #   GCW_MARKER        -- cloud-workstation marker dir (default: /etc/workstation-startup.d)
@@ -98,7 +99,9 @@ if [ "$uname_s" = Darwin ] && [ -n "${SSH_CONNECTION:-}" ]; then
 fi
 
 # --- preflight: signed in? ------------------------------------------------------
-if ! with_timeout "$op_timeout" run_op whoami >/dev/null 2>&1; then
+# `op whoami` exits 0 and prints the account even when signed out, so it cannot
+# be the probe; `op vault get` fails with "not currently signed in" instead.
+if ! with_timeout "$op_timeout" run_op vault get "$vault" --format json >/dev/null 2>&1; then
   skip '1Password CLI not signed in -- skipping. Run: eval "$(op signin)" && just ssh::sync'
 fi
 

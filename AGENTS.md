@@ -367,8 +367,8 @@ This file provides guidance to AI agents working on this repository.
   title is the file name. `script/ssh-config-sync` (`just ssh::sync`, in the
   `update` fan-out) writes them with a `# managed by ssh-config-sync` header and
   only ever overwrites or prunes files carrying that header
-- The sync skips (exit 0) without `op`, on a work machine or gcw, when `op whoami`
-  fails or exceeds 60s, and **on macOS over SSH** — the 1Password app's auth
+- The sync skips (exit 0) without `op`, on a work machine or gcw, when `op vault get`
+  (the sign-in probe; `op whoami` succeeds even when signed out) fails or exceeds 60s, and **on macOS over SSH** — the 1Password app's auth
   prompt appears on the Mac's display and `op` blocks on it forever
 - `~/.ssh` deploys to **personal machines only** (`home/.chezmoiignore`), the one
   exception to "every config deploys everywhere"

@@ -26,6 +26,7 @@ Checked on the WSL2 box on 2026-10-04, not assumed.
   `Bitbucket Personal`, which have no on-disk copy here. For every
   unencrypted on-disk key the fingerprint was derived from the private half;
   `digitalocean` has a passphrase and was matched on its `.pub` only.
+- **`op whoami` cannot detect sign-in.** Signed out, it still prints the account identity and exits 0, while `op item list` and `op vault get` exit 1 with `You are not currently signed in` (op 2.40.0, verified 2026-10-04). The auth probe is `op vault get "$OP_VAULT"`.
 - **Keys only on disk:** `id_rsa` (comment changed from
   `ichesal@DESKTOP-MP4PLF9` to `ian@dads-gaming-pc` on 2026-10-04; used by
   `fractal-devenv`) — imported. `home-router` and both `identity.heroku.*` —
@@ -152,7 +153,7 @@ The script, in order:
    `SSH_CONNECTION` is set, printing
    `1Password would prompt on the Mac's display -- skipping over SSH. Run 'just ssh::sync' at the console.`
    Calling `op` there would block on a prompt nobody can answer.
-2. **Preflights auth with `op whoami`, bounded by a timeout** (`OP_TIMEOUT`,
+2. **Preflights auth with `op vault get "$OP_VAULT"`, bounded by a timeout** (`OP_TIMEOUT`,
    default 60s; a bash background watchdog, since macOS has no `timeout(1)`).
    The timeout is a backstop for an unattended console session (screen locked,
    nobody there), not the SSH case, which step 1 already handles.
@@ -278,8 +279,8 @@ Run by hand. Every destructive step comes after verification.
   - duplicate titles → non-zero, nothing written;
   - empty note body → skipped with a warning;
   - no-ops without `op`, on a work machine, and on a gcw marker;
-  - `op whoami` failing → exit 0, nothing touched;
-  - `op whoami` hanging past `OP_TIMEOUT` → exit 0, nothing touched;
+  - the vault check failing → exit 0, nothing touched;
+  - the vault check hanging past `OP_TIMEOUT` → exit 0, nothing touched;
   - `UNAME_S=Darwin` with `SSH_CONNECTION` set → exit 0, `op` never invoked;
   - an `op` failure after the preflight → non-zero, nothing changed;
   - `OP_ACCOUNT` set → `--account` passed to every `op` call.

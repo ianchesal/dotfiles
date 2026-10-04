@@ -23,22 +23,35 @@ echo "$*" >>"$FIXTURES/calls"
 if [ "${1:-}" = --account ]; then shift 2; fi
 case "${1:-}" in
   whoami)
-    [ -f "$FIXTURES/whoami-hang" ] && exec sleep 30
-    if [ -f "$FIXTURES/whoami-fail" ]; then
+    # Models reality: whoami succeeds even when signed out.
+    echo 'URL: https://example.1password.com'
+    exit 0
+    ;;
+  vault)
+    [ -f "$FIXTURES/auth-hang" ] && exec sleep 30
+    if [ -f "$FIXTURES/auth-fail" ]; then
       echo '[ERROR] You are not currently signed in' >&2
       exit 1
     fi
-    echo 'URL: https://example.1password.com'
+    echo '{"id":"v1","name":"Private"}'
     exit 0
     ;;
   item)
     case "${2:-}" in
       list)
+        if [ -f "$FIXTURES/auth-fail" ]; then
+          echo '[ERROR] You are not currently signed in' >&2
+          exit 1
+        fi
         [ -f "$FIXTURES/list-fail" ] && exit 1
         cat "$FIXTURES/list.json"
         exit 0
         ;;
       get)
+        if [ -f "$FIXTURES/auth-fail" ]; then
+          echo '[ERROR] You are not currently signed in' >&2
+          exit 1
+        fi
         [ -f "$FIXTURES/get-fail-$3" ] && exit 1
         cat "$FIXTURES/items/$3.json"
         exit 0
@@ -214,24 +227,25 @@ check "macOS over SSH notice" yes \
 check "Linux over SSH still syncs" 0 "$(exit_of SSH_CONNECTION='10.0.0.1 1 10.0.0.2 22')"
 check "Linux over SSH writes" skipme "$(ls_cfgd)"
 
-# --- signed out: exit 0, notice, nothing touched --------------------------------
+# --- vault check fails (signed out; whoami still succeeds): exit 0, notice, nothing touched --------------------------------
 reset
 add_item w1 locked 'Host locked'
-touch "$fx/whoami-fail"
-check "signed out exits 0" 0 "$(exit_of)"
-check "signed out writes nothing" "" "$(ls_cfgd)"
-check "signed out notice" yes \
+touch "$fx/auth-fail"
+check "signed-out vault check exits 0" 0 "$(exit_of)"
+check "signed-out vault check writes nothing" "" "$(ls_cfgd)"
+check "signed-out vault check never reaches item list" no "$(grep -q 'item list' "$fx/calls" && echo yes || echo no)"
+check "signed-out vault check notice" yes \
   "$(grep -qF '1Password CLI not signed in -- skipping. Run: eval "$(op signin)" && just ssh::sync' "$work/err" && echo yes || echo no)"
 
-# --- whoami hanging past OP_TIMEOUT: exit 0, nothing touched ---------------------
+# --- vault check hanging past OP_TIMEOUT: exit 0, nothing touched ---------------------
 reset
 add_item h1 hung 'Host hung'
-touch "$fx/whoami-hang"
+touch "$fx/auth-hang"
 start=$(date +%s)
-check "hung whoami exits 0" 0 "$(exit_of OP_TIMEOUT=1)"
+check "hung vault check exits 0" 0 "$(exit_of OP_TIMEOUT=1)"
 elapsed=$(($(date +%s) - start))
-check "hung whoami gives up within the timeout" yes "$([ "$elapsed" -lt 10 ] && echo yes || echo no)"
-check "hung whoami writes nothing" "" "$(ls_cfgd)"
+check "hung vault check gives up within the timeout" yes "$([ "$elapsed" -lt 10 ] && echo yes || echo no)"
+check "hung vault check writes nothing" "" "$(ls_cfgd)"
 
 # --- op failure after the preflight: nonzero, nothing changed ---------------------
 reset
