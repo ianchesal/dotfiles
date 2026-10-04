@@ -181,6 +181,7 @@ This file provides guidance to AI agents working on this repository.
 - Update gcloud components: `just gcloud::update`
 - Uninstall asdf tool versions older than the one in use: `just asdf::prune` (`FORCE=1` skips the confirmation prompt)
 - Preview which asdf tool versions would be pruned: `just asdf::prune-preview`
+- Install the fonts listed in `just/fonts.just` (Homebrew casks; on macOS also strips the download quarantine so Font Book sees them): `just fonts::install`
 - Install pi (on demand, never automatic): `just pi::install`
 - Update pi and its extensions: `just pi::update` (also runs in the `update` fan-out, so `dfu` covers it)
 - Pull `~/.ssh/config.d` host blocks from 1Password: `just ssh::sync` (also runs in the `update` fan-out)

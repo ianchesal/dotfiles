@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+# Install font casks and, on macOS, make sure the system actually loads them.
+#
+# Usage: fonts-install <cask>...   (the list lives in just/fonts.just)
+#
+# On macOS, `brew install --cask` copies the font files into ~/Library/Fonts
+# but leaves the com.apple.quarantine attribute from the download on each one,
+# and fontd does not register them: Font Book shows nothing. Stripping the
+# attribute and restarting fontd (launchd respawns it) makes them appear. Only
+# the files each cask installed are touched -- the paths come from the
+# cask's own artifact list, so other fonts in ~/Library/Fonts are left alone.
+#
+# Idempotent: brew skips a cask that is already current, and a file without
+# the attribute is skipped.
+#
+# Seams for script/tests/fonts-install.test.sh:
+#   BREW_BIN    -- brew executable (default: brew from PATH)
+#   XATTR_BIN   -- xattr executable (default: xattr from PATH)
+#   KILLALL_BIN -- killall executable (default: killall from PATH)
+#   FONTS_OS    -- uname -s override (default: uname -s)
+
+set -euo pipefail
+
+brew_bin=${BREW_BIN:-brew}
+xattr_bin=${XATTR_BIN:-xattr}
+killall_bin=${KILLALL_BIN:-killall}
+os=${FONTS_OS:-$(uname -s)}
+
+if [ "$#" -eq 0 ]; then
+  echo "usage: fonts-install <cask>..." >&2
+  exit 1
+fi
+
+if ! command -v "$brew_bin" >/dev/null 2>&1; then
+  echo "ERROR: no brew command found -- fonts are installed as Homebrew casks" >&2
+  exit 1
+fi
+
+for cask in "$@"; do
+  printf '\033[32m%s\033[0m\n' "Install: $cask"
+  "$brew_bin" install --cask "$cask"
+done
+
+[ "$os" = Darwin ] || exit 0
+
+if ! command -v jq >/dev/null 2>&1; then
+  echo "ERROR: jq is needed to find the installed font files" >&2
+  exit 1
+fi
+
+cleared=0
+while IFS= read -r target; do
+  [ -f "$target" ] || continue
+  # Capture first: under pipefail, `xattr | grep -q` can fail on SIGPIPE.
+  attrs=$("$xattr_bin" "$target")
+  if grep -qx com.apple.quarantine <<<"$attrs"; then
+    "$xattr_bin" -d com.apple.quarantine "$target"
+    cleared=$((cleared + 1))
+  fi
+done < <("$brew_bin" info --cask --json=v2 "$@" | jq -r '.casks[].artifacts[] | select(has("font")) | .target')
+
+if [ "$cleared" -gt 0 ]; then
+  printf '\033[32m%s\033[0m\n' "Unquarantined $cleared font file(s); restarting fontd"
+  "$killall_bin" fontd 2>/dev/null || true
+  echo 'Quit and reopen Font Book (Cmd-Q) if it is open, to see them.'
+fi

@@ -24,6 +24,7 @@ export REPO := justfile_directory()
 mod asdf 'just/asdf.just'
 mod brew 'just/brew.just'
 mod claude 'just/claude.just'
+mod fonts 'just/fonts.just'
 mod gcloud 'just/gcloud.just'
 mod gem 'just/gem.just'
 mod git 'just/git.just'
@@ -59,7 +60,7 @@ lint:
     set -euo pipefail
     shellcheck --severity=warning \
       script/asdf-prune script/gem-cleanup script/nvim-commit script/doctor \
-      script/brew-trust script/pi-purge-legacy script/ohmyposh-preview script/ssh-config-sync \
+      script/brew-trust script/fonts-install script/pi-purge-legacy script/ohmyposh-preview script/ssh-config-sync \
       script/verify-chezmoi-assumptions.sh home/run_once_*.sh \
       script/tests/*.test.sh bootstrap/*.sh \
       home/dot_bashrc home/dot_bash_profile home/dot_config/bash/bashrc.sh \
