@@ -32,6 +32,7 @@ mod ohmyposh 'just/ohmyposh.just'
 mod pi 'just/pi.just'
 mod rust 'just/rust.just'
 mod shell 'just/shell.just'
+mod ssh 'just/ssh.just'
 mod tmux 'just/tmux.just'
 mod winterm 'just/winterm.just'
 mod ytdlp 'just/ytdlp.just'
@@ -43,7 +44,7 @@ default:
 # Update everything that can be (safely) updated. nvim::update is deliberately excluded --
 # dfu runs it only on dads-gaming-pc (see docs/chezmoi-workflows.md) to avoid racing
 # concurrent `just nvim::update` runs into conflicting pins.json commits.
-update: brew::update asdf::update rust::update claude::update pi::update git::update gcloud::update ytdlp::update gem::cleanup ohmyposh::check-update
+update: brew::update asdf::update rust::update claude::update pi::update git::update gcloud::update ytdlp::update gem::cleanup ohmyposh::check-update ssh::sync
 
 # Install the asdf-managed runtimes, Rust toolchain first
 install-runtimes: rust::install asdf::install

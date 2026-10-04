@@ -17,6 +17,7 @@ brew "fzf"
 brew "gh"
 brew "git"
 brew "git-delta"
+brew "jq"
 brew "just"
 brew "lazygit"
 brew "libyaml"
@@ -29,6 +30,7 @@ brew "pyenv-virtualenv"
 brew "raine/workmux/workmux"
 brew "ripgrep"
 brew "shellcheck"
+brew "socat"
 brew "tmux"
 brew "tree-sitter"
 brew "tree-sitter-cli"
@@ -39,4 +41,5 @@ brew "zsh-completions"
 
 # macOS-only. Unlike a config file, a cask on Linux is a hard `brew bundle`
 # failure rather than something inert, so this one does need the guard.
+cask "1password-cli"
 cask "aerospace" if OS.mac?
