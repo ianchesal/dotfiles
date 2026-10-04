@@ -54,8 +54,10 @@ Host github.com
 
 # 1Password's agent, only when its socket exists. An unconditional
 # IdentityAgent would silently disable a forwarded or hand-started agent
-# (it overrides SSH_AUTH_SOCK) on any box without 1Password.
+# (it overrides SSH_AUTH_SOCK) on any box without 1Password. In an SSH session
+# that carries a forwarded agent, the forwarded agent wins: 1Password's
+# approval prompt would land on a console nobody is looking at.
 # ~/.1password/agent.sock: native on Linux, a chezmoi symlink on macOS, the
 # zsh relay on WSL (zshrc.d/1password.zsh).
-Match exec "test -S ~/.1password/agent.sock"
+Match exec "test -S ~/.1password/agent.sock" !exec "test -n \"$SSH_CONNECTION\" -a -S \"$SSH_AUTH_SOCK\""
   IdentityAgent ~/.1password/agent.sock
