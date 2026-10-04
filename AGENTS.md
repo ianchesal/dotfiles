@@ -394,7 +394,10 @@ This file provides guidance to AI agents working on this repository.
   leave 1Password's own SSH agent **off**, since its approval prompt would land
   on a screen nobody watches. `zshrc.d/ssh-agent.zsh` repoints
   `~/.ssh/agent-forwarded.sock` at each login's forwarded socket and exports
-  that fixed path, so panes in a long-lived tmux session follow reconnects
+  that fixed path, so panes in a long-lived tmux session follow reconnects.
+  Last login wins, so a short second login that exits leaves the link
+  dangling; a precmd hook (`_ssh_agent_heal`) repoints it at the newest live
+  `/tmp/ssh-*/agent.*` socket at the next prompt
 - `known_hosts` and `authorized_keys` are machine-local; `private_dot_ssh` has no
   `exact_` prefix, so chezmoi leaves them and `config.d/` alone
 - Two global skills drive the add-a-key / add-a-host flows end to end:
