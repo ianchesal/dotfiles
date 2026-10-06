@@ -14,9 +14,7 @@ update:
     printf '\033[32m%s\033[0m\n' 'Update: Homebrew'
     pinned=$(brew list --pinned --quiet 2>/dev/null || true)
     outdated=$(brew outdated --quiet || true)
-    # oh-my-posh is deliberately excluded: ohmyposh::check-update only reports a
-    # waiting update, so a prompt change is never a surprise mid-run.
-    keep=$(printf '%s\n' "$outdated" | grep -vxF 'oh-my-posh' || true)
+    keep=$outdated
     if [ -n "$pinned" ]; then
       keep=$(printf '%s\n' "$keep" | grep -vxF "$pinned" || true)
     fi

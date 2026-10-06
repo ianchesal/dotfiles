@@ -37,8 +37,8 @@ claude.json         Slim variant for the Claude Code status line (model + token 
 - `just ohmyposh::preview` — render the repo's config across a fixed set of
   situations (paths, dirty/ahead/rebasing/worktree repos, failed and slow
   commands, ssh, cloud workstation) using throwaway git repos
-- `just ohmyposh::check-update` — check for an Oh My Posh update via Homebrew
-- `just ohmyposh::update` — update Oh My Posh via `brew upgrade` + `brew cleanup`
+- Oh My Posh itself is upgraded by `just brew::update` (and so by `dfu`);
+  `brew pin oh-my-posh` holds it back if a release breaks the prompt
 
 ## Notes
 

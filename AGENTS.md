@@ -170,8 +170,6 @@ This file provides guidance to AI agents working on this repository.
 - Preview which Mason packages would be pruned: `just nvim::mason-outdated`
 - Run Neovim machinery tests: `nvim --headless -u NONE -l nvim/tests/<name>_spec.lua` (delay, gitops, loader)
 - Preview the prompt across paths, git states and exit codes: `just ohmyposh::preview`
-- Check for Oh My Posh updates: `just ohmyposh::check-update`
-- Update Oh My Posh: `just ohmyposh::update`
 - Reload tmux config in all sessions: `just tmux::reload`
 - Update zsh plugins: `zinit self-update && zinit update` (also run by `dfu`)
 - Install the Rust toolchain: `just rust::install`
@@ -462,7 +460,10 @@ This file provides guidance to AI agents working on this repository.
 - Language segments (`ruby`, `node`, `go`, `python`) each shell out for a
   version, but only in a directory holding that language's files: ~100ms in a
   project with all three of ruby/node/go, ~45ms in a plain repo
-- Managed via Homebrew; `just ohmyposh::check-update` only reports a waiting update, so a prompt change is never a surprise mid-run
+- Managed via Homebrew and upgraded by `brew::update` like any other formula (so
+  `dfu` covers it). It was held back for years over breaking releases; if one
+  lands, `brew pin oh-my-posh` holds it (`brew::update` skips pinned formulas)
+  and `just ohmyposh::preview` is the check after an upgrade
 
 ## Claude Configuration
 

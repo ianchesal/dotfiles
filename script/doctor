@@ -85,8 +85,8 @@ if have brew; then
     ok "all Brewfile dependencies installed"
   else
     # brew says "needs to be installed or updated" -- it does not distinguish
-    # the two, and oh-my-posh is deliberately held back (see just/ohmyposh.just),
-    # so this must not claim a package is missing when it is merely behind.
+    # the two, and a `brew pin`ned package is deliberately held back, so this
+    # must not claim a package is missing when it is merely behind.
     warn "missing or out of date: $missing -- 'brew bundle install --file=$repo/brew/Brewfile'"
   fi
 else
