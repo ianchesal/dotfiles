@@ -1,9 +1,4 @@
 gui:
-  authorColors:
-    "Ian Chesal": "green"
-    "*": "#0000ff"
-  branchColors:
-    "production": "red"
   showIcons: true
   # Tokyo Night-ish theme
   theme:
@@ -14,6 +9,11 @@ gui:
       - "#565f89" # Tokyo Night comment
     selectedLineBgColor:
       - "#283457" # Tokyo Night selection
+    authorColors:
+      "Ian Chesal": "green"
+      "*": "#0000ff"
+    branchColorPatterns:
+      "^production(/|$)": "red"
   # More compact display
   showFileTree: true
   showListFooter: false
