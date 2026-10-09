@@ -637,7 +637,13 @@
       }
     },
     "sidekick.nvim": {
-      "observed": [],
+      "observed": [
+        {
+          "first_seen": 1791514622,
+          "first_seen_iso": "2026-10-09T02:57:02Z",
+          "rev": "3d80a47e6375f6d647c9695d3afea6fa1b3275df"
+        }
+      ],
       "pin": {
         "pinned_at": "2026-10-09T02:29:27Z",
         "pinned_at_epoch": 1791512967,
