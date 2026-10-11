@@ -6,7 +6,8 @@ picture. Companion to `docs/chezmoi-workflows.md`; the design of record is
 
 ## Mental model
 
-**A repo is a tmux session. pax is the first window. Worktrees are the others.**
+**A repo is a tmux session. A shell and pax are the first two windows. Worktrees
+are the others.**
 
 The session is named for the repo with any `persona-` prefix stripped, matching
 how `window-name.sh` labels windows — nearly every work repo is `persona-*`, so
@@ -14,18 +15,20 @@ the prefix is noise in the session list.
 
 ```
 session: web           <- the persona-web checkout
-  window 1  pax        <- the lead. split: shell on top, pi below. runs for hours to days.
-  window 2  add-sso    <- a worktree. Claude plans here, then pax implements here.
-  window 3  fix-1234   <- another worktree.
+  window 1  shell      <- a bare prompt at the repo root.
+  window 2  pax        <- the lead: pi, full window. runs for hours to days.
+  window 3  add-sso    <- a worktree. Claude plans here, then pax implements here.
+  window 4  fix-1234   <- another worktree.
                           (pax's own sidekick worktrees are invisible - its business)
 
 session: dotfiles
-  window 1  pax
+  window 1  shell
+  window 2  pax
   ...
 ```
 
-Indices start at 1 (`base-index`), so the pax window is 1, not 0. Target it by
-name (`:pax`) rather than by number.
+Indices start at 1 (`base-index`) and `renumber-windows` closes gaps, so the pax
+window's number is not stable. Target it by name (`:pax`) rather than by number.
 
 Two agents, two jobs:
 
@@ -38,7 +41,7 @@ The handoff between them is the whole point of this workflow.
 ### Navigation
 
 `prefix+s` (`choose-tree -Zs`) is the only navigation you need. Collapsed it is
-the repo list; expanded it is `pax` plus every worktree for that repo, and a
+the repo list; expanded it is `shell`, `pax` and every worktree for that repo, and a
 window can be selected directly across sessions. One keystroke covers both
 levels, which is why repos are sessions rather than windows in one big session.
 
@@ -49,22 +52,23 @@ levels, which is why repos are sessions rather than windows in one big session.
 ### 1. Open a repo — `prefix+w` → `open repo` (`R`)
 
 fzf-picks a checkout under `~/src`, creates a session named for the repo with
-`persona-` stripped, and splits the `pax` window horizontally: a bare shell at
-the repo root on top (~30%), pi below it (~70%) as:
+`persona-` stripped, and opens two full windows at the repo root: `shell`, a
+bare prompt, then `pax`, running pi as:
 
 ```
 PAX_COMPUTER_PORT=<stable> pi --session-id pax-<repo>
 ```
 
-The shell is there so the reflexive `git`/`just` command does not cost a new
-window. The basename keeps its `persona-` prefix everywhere it is a *key* — the
+You land on `pax`. The shell is there so the reflexive `git`/`just` command
+does not cost a new window. The basename keeps its `persona-` prefix everywhere it is a *key* — the
 path lookup, the port registry, and `--session-id` — so only the label changes.
 
 Re-running it attaches instead of recreating. The `--session-id` is what makes
 the lead **cheap to kill and relaunch** — the multi-day context lives in pi's
-session store, not in the pane. A reboot does not cost you a day of dispatcher
-state. Since the split, that means `prefix+x` on the **lower pane**: killing the
-whole window now takes the shell with it.
+session store, not in the window. A reboot does not cost you a day of
+dispatcher state. Killing just the `pax` window leaves `shell`, and so the
+session, standing, and re-running only focuses an existing session — so to
+relaunch the lead, kill the session (`prefix+K`) and reopen the repo.
 
 Ports come from a registry at `${XDG_STATE_HOME:-~/.local/state}/pax/ports`, not
 a hash of the repo name. Hashing ~22 repos into any memorable range collides far
