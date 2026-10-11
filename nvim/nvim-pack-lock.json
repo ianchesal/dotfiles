@@ -1,9 +1,9 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "890d8f5cfca338a1f3e59c686569e461f6182f80",
+      "rev": "e37abcf2f337dc2587aae9118f866b0cf8ed96b7",
       "src": "https://github.com/b0o/SchemaStore.nvim",
-      "version": "'890d8f5cfca338a1f3e59c686569e461f6182f80'"
+      "version": "'e37abcf2f337dc2587aae9118f866b0cf8ed96b7'"
     },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
@@ -31,9 +31,9 @@
       "version": "'5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a'"
     },
     "friendly-snippets": {
-      "rev": "a5a73e586521fe5c12d751ad81a0db67649a94ed",
+      "rev": "b4d01b0fdf3c9a549961c2f9ffe8dc09be166219",
       "src": "https://github.com/rafamadriz/friendly-snippets",
-      "version": "'a5a73e586521fe5c12d751ad81a0db67649a94ed'"
+      "version": "'b4d01b0fdf3c9a549961c2f9ffe8dc09be166219'"
     },
     "hlchunk.nvim": {
       "rev": "4ddc056e4ca45f1c7dc6aa21935df710b263b1aa",
@@ -56,9 +56,9 @@
       "version": "'a923f5fc5ba36a3b17e289dc35dc17f66d0548ee'"
     },
     "mason-lspconfig.nvim": {
-      "rev": "b5576cd62899a1a478d0e67ef3d378ee55dba82d",
+      "rev": "0c5d026dcd39bc3433be16a01395699cabbd1019",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim",
-      "version": "'b5576cd62899a1a478d0e67ef3d378ee55dba82d'"
+      "version": "'0c5d026dcd39bc3433be16a01395699cabbd1019'"
     },
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
