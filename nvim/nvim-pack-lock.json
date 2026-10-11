@@ -1,9 +1,9 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "2224119e0794fa979d435a7390fa6278877bf3ae",
+      "rev": "890d8f5cfca338a1f3e59c686569e461f6182f80",
       "src": "https://github.com/b0o/SchemaStore.nvim",
-      "version": "'2224119e0794fa979d435a7390fa6278877bf3ae'"
+      "version": "'890d8f5cfca338a1f3e59c686569e461f6182f80'"
     },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
@@ -31,9 +31,9 @@
       "version": "'5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a'"
     },
     "friendly-snippets": {
-      "rev": "30bfd475adadfd4f286f86168831348dfd8aecdc",
+      "rev": "a5a73e586521fe5c12d751ad81a0db67649a94ed",
       "src": "https://github.com/rafamadriz/friendly-snippets",
-      "version": "'30bfd475adadfd4f286f86168831348dfd8aecdc'"
+      "version": "'a5a73e586521fe5c12d751ad81a0db67649a94ed'"
     },
     "hlchunk.nvim": {
       "rev": "4ddc056e4ca45f1c7dc6aa21935df710b263b1aa",
@@ -56,9 +56,9 @@
       "version": "'a923f5fc5ba36a3b17e289dc35dc17f66d0548ee'"
     },
     "mason-lspconfig.nvim": {
-      "rev": "5d32a9b8de9f90466797a740edb0fb4b3c27e423",
+      "rev": "b5576cd62899a1a478d0e67ef3d378ee55dba82d",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim",
-      "version": "'5d32a9b8de9f90466797a740edb0fb4b3c27e423'"
+      "version": "'b5576cd62899a1a478d0e67ef3d378ee55dba82d'"
     },
     "mason.nvim": {
       "rev": "2a6940af80375532e5e9e7c1f2fc6319a1b7a69d",
@@ -116,14 +116,14 @@
       "version": "'3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e'"
     },
     "nvim-lspconfig": {
-      "rev": "19576de1c1b6d1b5e231ea6ef9cba9a811c322bb",
+      "rev": "ac9d2f7c4757db6320cab6697fe73e5e8adb2457",
       "src": "https://github.com/neovim/nvim-lspconfig",
-      "version": "'19576de1c1b6d1b5e231ea6ef9cba9a811c322bb'"
+      "version": "'ac9d2f7c4757db6320cab6697fe73e5e8adb2457'"
     },
     "nvim-treesitter": {
-      "rev": "5cb0114e6242625db56dd6440e945ed1ece10bc7",
+      "rev": "d4d59cb369da46b95699bd2200efbcffc6dadb3b",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
-      "version": "'5cb0114e6242625db56dd6440e945ed1ece10bc7'"
+      "version": "'d4d59cb369da46b95699bd2200efbcffc6dadb3b'"
     },
     "nvim-treesitter-endwise": {
       "rev": "8fe8a95630f4f2c72a87ba1927af649e0bfaa244",
