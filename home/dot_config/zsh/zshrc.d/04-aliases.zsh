@@ -174,6 +174,9 @@ alias tfp='terraform plan'
 alias tfpl='terraform providers lock -platform=darwin_arm64 -platform=linux_amd64'
 alias tfv='terraform validate'
 
+# AI Stuff
+alias pax="pi --session-id pax-$(basename $(pwd))"
+
 # Dotfiles
 alias dfu=dotfiles_update
 
