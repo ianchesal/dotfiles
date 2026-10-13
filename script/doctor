@@ -147,30 +147,48 @@ else
 fi
 
 # --- pi ------------------------------------------------------------------------
-# pi is installed on demand, so its absence is never a failure. What is worth
-# flagging is a pi that resolves to something other than the wrapper: the old
-# asdf shim and a stray ~/.npm-global/bin/pi both sit ahead of ~/.local/bin on
-# PATH, and either one silently reintroduces a per-directory interpreter.
+# pi is installed on demand by its own installer, so its absence is never a
+# failure. What is worth flagging: a pi on PATH that is not the managed install
+# (an old asdf shim or ~/.npm-global/bin/pi sits ahead of ~/bin and shadows it),
+# and a missing pi-node link, which leaves pi on whatever node asdf picks per
+# directory -- "No version is set for command node" in any repo whose pinned
+# node isn't installed.
 section "pi"
-pi_wrapper=$HOME/.local/bin/pi
-if [ ! -x "$pi_wrapper" ]; then
-  note "pi not installed -- 'just pi::install'"
+pi_launcher=${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/bin/pi
+pi_node_link=${XDG_DATA_HOME:-$HOME/.local/share}/pi-node/current
+pi_old_wrapper=$HOME/.local/bin/pi
+if [ ! -x "$pi_launcher" ]; then
+  if [ -f "$pi_old_wrapper" ] && [ ! -L "$pi_old_wrapper" ]; then
+    warn "pi is on the old npm-prefix layout and no longer updates -- 'just pi::install'"
+  else
+    note "pi not installed -- 'just pi::install'"
+  fi
 else
-  ok "pi $("$pi_wrapper" --version 2>/dev/null || echo '?') at $pi_wrapper"
+  ok "pi $("$pi_launcher" --version 2>/dev/null || echo '?') (managed install)"
   resolved=$(command -v pi 2>/dev/null || true)
   if [ -z "$resolved" ]; then
-    warn "$pi_wrapper exists but pi is not on PATH"
-  elif [ "$resolved" != "$pi_wrapper" ]; then
-    warn "pi resolves to $resolved, shadowing $pi_wrapper -- 'just pi::purge-legacy'"
+    warn "pi's entrypoint is not on PATH -- rerun 'just pi::install'"
+  elif [ "$(readlink -f "$resolved")" != "$(readlink -f "$pi_launcher")" ]; then
+    warn "pi resolves to $resolved, shadowing the managed install -- 'just pi::purge-legacy'"
   else
-    ok "pi resolves to the wrapper"
+    ok "pi resolves to the managed install ($resolved)"
+  fi
+  if [ -x "$pi_node_link/bin/node" ]; then
+    ok "pi runs on node $("$pi_node_link/bin/node" --version) ($(readlink "$pi_node_link" || echo "$pi_node_link"))"
+  else
+    warn "pi's node is not pinned, so asdf picks it per directory -- 'just pi::link-node'"
   fi
   legacy=0
   for candidate in "$HOME"/.asdf/installs/nodejs/*/lib/node_modules/@earendil-works \
     "$HOME"/.asdf/installs/nodejs/*/bin/pi "$HOME/.asdf/shims/pi" \
-    "$HOME/.npm-global/lib/node_modules/@earendil-works" "$HOME/.npm-global/bin/pi"; do
+    "$HOME/.npm-global/lib/node_modules/@earendil-works" "$HOME/.npm-global/bin/pi" \
+    "$HOME/.local/share/pi"; do
     [ -e "$candidate" ] && legacy=$((legacy + 1))
   done
+  # ~/.local/bin/pi is only legacy when it is not the installer's own entrypoint.
+  if [ -e "$pi_old_wrapper" ] && [ "$(readlink -f "$pi_old_wrapper")" != "$(readlink -f "$pi_launcher")" ]; then
+    legacy=$((legacy + 1))
+  fi
   if [ "$legacy" -eq 0 ]; then
     ok "no legacy pi installs"
   else

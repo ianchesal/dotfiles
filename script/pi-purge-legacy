@@ -1,38 +1,45 @@
 #!/usr/bin/env bash
 #
-# Remove every pi install that predates the canonical one.
+# Remove every pi install that predates pi's own installer.
 #
 # pi is a node CLI, and installing it as an npm global put it inside exactly one
 # asdf node version. asdf shims are per-version, so every repo whose
 # .tool-versions pinned a different node lost the command entirely -- the shim
-# reports "No version is set for command pi". The canonical install (see
-# just/pi.just) sidesteps that by running pi on Homebrew's node out of its own
-# prefix, which no .tool-versions can reach.
+# reports "No version is set for command pi". The next layout ran pi on
+# Homebrew's node out of its own npm prefix (~/.local/share/pi) behind a
+# generated wrapper (~/.local/bin/pi). pi.dev's installer has replaced that too:
+# its managed install lives under ~/.pi/agent, and this script never touches it
+# (see just/pi.just).
 #
-# This clears the wreckage of the old arrangement. It is a one-shot: once a
+# This clears the wreckage of both old arrangements. It is a one-shot: once a
 # machine is clean, it is a no-op, and nothing in the update fan-out calls it.
+# `just pi::install` runs it when the old wrapper is in the installer's way.
 #
 # The ~/.npm-global copy matters as much as the asdf ones. That prefix sits
-# ahead of ~/.local/bin on PATH, so a leftover bin/pi there silently shadows the
-# canonical wrapper -- the same shadowing bug wearing a different hat.
+# ahead of ~/bin on PATH, so a leftover bin/pi there silently shadows the
+# managed install -- the same shadowing bug wearing a different hat.
 #
 # Usage:
 #   pi-purge-legacy              remove, prompting once first
 #   pi-purge-legacy --preview    report what would go and exit
 #
 # Environment:
-#   FORCE=1             skip the prompt, and override the running-session refusal
-#   ASDF_DIR            asdf root to sweep        (default: ~/.asdf)       -- test seam
-#   NPM_GLOBAL_PREFIX   npm prefix to sweep       (default: ~/.npm-global) -- test seam
-#   PI_PREFIX           canonical install, never touched
-#                                                 (default: ~/.local/share/pi) -- test seam
-#   PGREP_BIN           pgrep to drive            (default: pgrep)         -- test seam
+#   FORCE=1               skip the prompt, and override the running-session refusal
+#   ASDF_DIR              asdf root to sweep        (default: ~/.asdf)       -- test seam
+#   NPM_GLOBAL_PREFIX     npm prefix to sweep       (default: ~/.npm-global) -- test seam
+#   PI_PREFIX             brew-node npm prefix      (default: ~/.local/share/pi) -- test seam
+#   PI_WRAPPER            brew-node wrapper         (default: ~/.local/bin/pi) -- test seam
+#   PI_CODING_AGENT_DIR   pi's agent dir, holding the managed install, never touched
+#                                                   (default: ~/.pi/agent)   -- pi's own variable
+#   PGREP_BIN             pgrep to drive            (default: pgrep)         -- test seam
 
 set -euo pipefail
 
 ASDF_DIR=${ASDF_DIR:-$HOME/.asdf}
 NPM_GLOBAL_PREFIX=${NPM_GLOBAL_PREFIX:-$HOME/.npm-global}
 PI_PREFIX=${PI_PREFIX:-$HOME/.local/share/pi}
+PI_WRAPPER=${PI_WRAPPER:-$HOME/.local/bin/pi}
+PI_CODING_AGENT_DIR=${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}
 PGREP_BIN=${PGREP_BIN:-pgrep}
 FORCE=${FORCE:-0}
 
@@ -54,13 +61,13 @@ else
   red='' green='' yellow='' reset=''
 fi
 
-# Never sweep a tree that contains the canonical install. Misconfigured seams
+# Never sweep a tree that contains the managed install. Misconfigured seams
 # are the only way to get here, but the cost of being wrong is deleting the
 # install this script exists to protect.
-for sweep in "$ASDF_DIR" "$NPM_GLOBAL_PREFIX"; do
-  case $PI_PREFIX/ in
+for sweep in "$ASDF_DIR" "$NPM_GLOBAL_PREFIX" "$PI_PREFIX"; do
+  case $PI_CODING_AGENT_DIR/ in
     "$sweep"/*)
-      printf '%s\n' "${red}Refusing to run: the canonical prefix $PI_PREFIX sits inside $sweep${reset}" >&2
+      printf '%s\n' "${red}Refusing to run: the managed install in $PI_CODING_AGENT_DIR sits inside $sweep${reset}" >&2
       exit 2
       ;;
   esac
@@ -79,6 +86,13 @@ done
 add_target "$ASDF_DIR/shims/pi"
 add_target "$NPM_GLOBAL_PREFIX/lib/node_modules/$pkg_scope"
 add_target "$NPM_GLOBAL_PREFIX/bin/pi"
+add_target "$PI_PREFIX"
+# The installer may pick ~/.local/bin for its own entrypoint, a symlink to the
+# launcher. Only a pi there that resolves anywhere else is the old wrapper.
+if [ "$(readlink -f "$PI_WRAPPER" 2>/dev/null || true)" != \
+  "$(readlink -f "$PI_CODING_AGENT_DIR/bin/pi" 2>/dev/null || true)" ]; then
+  add_target "$PI_WRAPPER"
+fi
 
 if [ "${#targets[@]}" -eq 0 ]; then
   printf '%s\n' "${green}Nothing to remove -- no legacy pi install found${reset}"

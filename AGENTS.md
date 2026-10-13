@@ -182,10 +182,11 @@ This file provides guidance to AI agents working on this repository.
 - Preview which asdf tool versions would be pruned: `just asdf::prune-preview`
 - Install the fonts listed in `just/fonts.just` (Homebrew casks; on macOS also strips the download quarantine so Font Book sees them): `just fonts::install`
 - Install the `xterm-kitty` terminfo on a remote Linux box so kitty clients get a working TERM (no-op if present; `FORCE=1` reinstalls): `just kitty::terminfo`
-- Install pi (on demand, never automatic): `just pi::install`
+- Install pi with pi.dev's installer (on demand, never automatic): `just pi::install`
 - Update pi and its extensions: `just pi::update` (also runs in the `update` fan-out, so `dfu` covers it)
+- Pin pi to Homebrew's node: `just pi::link-node` (also run by `pi::install` and `pi::update`)
 - Pull `~/.ssh/config.d` host blocks from 1Password: `just ssh::sync` (also runs in the `update` fan-out)
-- Remove pi installs that predate the canonical layout: `just pi::purge-legacy` (preview with `just pi::purge-legacy-preview`; `FORCE=1` skips both the prompt and the running-session refusal)
+- Remove pi installs that predate pi's own installer: `just pi::purge-legacy` (preview with `just pi::purge-legacy-preview`; `FORCE=1` skips both the prompt and the running-session refusal)
 
 ## Code Style Guidelines
 
@@ -536,49 +537,67 @@ This file provides guidance to AI agents working on this repository.
 
 - `pi` is `@earendil-works/pi-coding-agent`, a Node CLI coding agent. Recipes in
   `just/pi.just`; the one-shot cleanup is `script/pi-purge-legacy`
-- **Deliberately not asdf-managed.** As an npm global it installs into exactly
-  one node version's tree, and asdf shims are per-version — so every repo whose
-  `.tool-versions` pinned a different node lost the command outright, with the
-  shim reporting `No version is set for command pi`. It bit every repo in
-  `~/src/persona` at once, because none of them pin the global node
-- Three pieces: Homebrew's `node` (a `brew/Brewfile` entry) is the interpreter;
-  `~/.local/share/pi` is pi's own npm prefix; `~/.local/bin/pi` is a generated
-  wrapper that names brew's node outright. No `.tool-versions` can reach any of them
-- **The prefix is off PATH on purpose.** Installing into `$(brew --prefix)`
-  would have npm drop a `bin/pi` whose shebang is `#!/usr/bin/env node` — that
-  resolves node back through the asdf shims, restoring the per-directory
-  interpreter this whole layout exists to avoid. Nothing on PATH points into
-  the prefix, so there is nothing to shadow the wrapper
-- The wrapper is **machine-local and untracked**, same category as the `_claude`
-  completion spec: it bakes in a brew prefix that differs between macOS
-  (`/opt/homebrew`) and Linux (`/home/linuxbrew/.linuxbrew`). `just pi::install`
-  regenerates it; don't hand-edit it and don't `chezmoi add` it
-- Installation is **on demand** — `just pi::install`, never a `run_once_*` script
-  (a new one of those fires on every existing machine at its next apply) and not
-  part of `install-runtimes`. `just pi::update` no-ops quietly when pi is absent,
-  the same way `rust::update` does, so it is safe in the fan-out on a box that
-  never installed it
-- `pi::update` drives `npm install` itself rather than calling `pi update --self`.
-  pi's own updater installs wherever `~/.npmrc` points, which would quietly fork
-  a second copy away from this prefix. Extensions are the half npm knows nothing
-  about, so `pi update --extensions` runs after — `pi update --all` would do both
-  but reintroduces the self-update path
-- `just pi::purge-legacy` is a one-shot for a machine that still carries the old
+- **Installed and updated by pi's own installer** since October 2026 (`curl
+  -fsSL https://pi.dev/install.sh | sh`, which `just pi::install` wraps). It is
+  a managed install: `~/.pi/agent/install/releases/<version>` with every
+  dependency pinned by a lockfile, `current-version` naming the live one, a
+  launcher at `~/.pi/agent/bin/pi`, and a symlink to that launcher in the first
+  of `~/bin` / `~/.local/bin` on PATH -- `~/bin` here, since `03-env.zsh` always
+  adds it. `pi update` swaps releases in place and keeps the previous one.
+  Uninstalling is the installer's job too: `just pi::install`, then `u` at its menu
+- **Deliberately not asdf-managed**, twice over. As an npm global pi lived
+  inside one node version's tree, so every repo whose `.tool-versions` pinned a
+  different node lost the command (`No version is set for command pi`); the
+  managed install sits outside every node tree, which ends that. But a release's
+  bin is still `#!/usr/bin/env node`, so left alone pi runs on whatever node
+  asdf picks per directory -- and dies with `No version is set for command node`
+  in any repo whose pinned node isn't installed (persona-web and persona-scanner
+  when the installer landed)
+- **`~/.local/share/pi-node/current` pins the interpreter.** The launcher puts
+  its `bin/` at the front of PATH whenever it holds a `node`; it is where the
+  installer drops a standalone node on a box that has none. `just
+  pi::link-node` points it at Homebrew's `node` (a `brew/Brewfile` entry)
+  through `$(brew --prefix)/opt/node`, so the link survives brew upgrades, and
+  `pi::install` and `pi::update` both run it. The link is **machine-local and
+  untracked** -- brew's prefix differs between macOS and Linux -- so don't
+  `chezmoi add` it
+- **The cost: pi's children see brew's node too.** The launcher exports that
+  PATH, so commands pi's bash tool runs in a repo get brew's `node`/`npm` ahead
+  of the repo's asdf pin. Accepted on purpose: the alternative was pi failing to
+  start in any repo whose pinned node isn't installed. A wrapper of our own at
+  `~/bin/pi` naming brew's node outright (what the old layout did) would keep
+  children on asdf, but the installer refuses to reinstall or uninstall over a
+  pi it doesn't recognise, and the wrapper would depend on pi's internal
+  `releases/` layout
+- Installation is **on demand** -- `just pi::install`, never a `run_once_*`
+  script (a new one of those fires on every existing machine at its next apply)
+  and not part of `install-runtimes`. `just pi::update` no-ops quietly when pi
+  is absent, the same way `rust::update` does, so it is safe in the fan-out on a
+  box that never installed it. On a box still on the old npm-prefix layout it
+  no-ops with a pointer to `just pi::install`, and `just doctor` warns
+- `pi::update` is `pi update --all --no-approve`: pi and its extensions in one
+  pass. The old layout drove `npm install` itself because pi's updater then
+  installed wherever `~/.npmrc` pointed; the managed updater installs into its
+  own `releases/`, so self-update is now the right path. `--no-approve` keeps a
+  repo's `.pi/` settings out of a global update, and stdin is closed so `dfu`
+  cannot stall on a prompt
+- **The installer refuses to replace a pi it doesn't own** (`Managed install
+  refused to replace Pi at ... Uninstall it first`), and the old generated
+  wrapper is one. `pi::install` therefore runs `pi-purge-legacy` first whenever
+  `~/.local/bin/pi` is a regular file
+- `just pi::purge-legacy` is a one-shot for a machine that still carries an old
   arrangement. It sweeps **every** asdf node version (not just the one pi landed
-  in), the `~/.asdf/shims/pi` shim, and the `~/.npm-global` copy — that last one
-  matters most, because `~/.npm-global/bin` sits ahead of `~/.local/bin` on PATH
-  and a leftover there silently shadows the wrapper
-- Brew's npm is new enough to withhold dependency `postinstall` scripts by
-  default, so every install and update prints an `install-scripts not yet
-  covered by allowScripts` warning for `esbuild`, `protobufjs` and
-  `@google/genai`. It is benign here — esbuild ships its binary in the
-  `@esbuild/linux-x64` platform package rather than downloading it in the hook —
-  so the recipes deliberately do **not** pass `--allow-scripts`
+  in), the `~/.asdf/shims/pi` shim, the `~/.npm-global` copy, and the brew-node
+  layout: the `~/.local/share/pi` prefix and the `~/.local/bin/pi` wrapper --
+  unless that path is the installer's own entrypoint symlink. It never touches
+  `~/.pi/agent`. `~/.npm-global/bin` and the asdf shims sit ahead of `~/bin` on
+  PATH, so a leftover there silently shadows the managed install
 - **The purge refuses while any pi is running.** pi renames its own process to
   `pi`, so a `ps | grep node` sweep cannot see it, and it does not die when its
-  files are deleted — the bundle is already resident but the lazily imported
+  files are deleted -- the bundle is already resident but the lazily imported
   chunks and native addons are not, so the session breaks minutes later on
-  whatever it reaches for next. `FORCE=1` overrides, loudly
+  whatever it reaches for next. A managed pi looks the same by name, so quit pax
+  sessions first. `FORCE=1` overrides, loudly
 
 ## Rust Configuration
 

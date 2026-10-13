@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #
-# Tests for script/pi-purge-legacy. Builds fake asdf and npm-global trees in a
-# scratch dir so the removal logic runs without touching a real install, and
-# fakes pgrep so the "a pi is still running" refusal can be exercised.
+# Tests for script/pi-purge-legacy. Builds fake asdf, npm-global, brew-node and
+# managed-install trees in a scratch dir so the removal logic runs without
+# touching a real install, and fakes pgrep so the "a pi is still running"
+# refusal can be exercised.
 #
 # Run: script/tests/pi-purge-legacy.test.sh
 
@@ -38,9 +39,10 @@ check() {
 pkg=@earendil-works/pi-coding-agent
 
 # A machine in the pre-cleanup state: pi installed under two asdf node versions,
-# a stray shim, the interim ~/.npm-global copy, and the canonical install.
+# a stray shim, the interim ~/.npm-global copy, the brew-node prefix and its
+# wrapper, and the managed install that replaced them all.
 build_tree() {
-  rm -rf "$work/asdf" "$work/npm-global" "$work/pi-prefix" "$work/local-bin"
+  rm -rf "$work/asdf" "$work/npm-global" "$work/pi-prefix" "$work/local-bin" "$work/pi-agent"
   rm -f "$work/running"
   local v
   for v in 24.10.0 26.7.0; do
@@ -60,15 +62,21 @@ build_tree() {
   echo bundle >"$work/npm-global/lib/node_modules/$pkg/cli.js"
   echo link >"$work/npm-global/bin/pi"
 
-  # The canonical install and its wrapper: must come through untouched.
+  # The brew-node layout: an npm prefix and a generated wrapper.
   mkdir -p "$work/pi-prefix/lib/node_modules/$pkg" "$work/local-bin"
-  echo canonical >"$work/pi-prefix/lib/node_modules/$pkg/cli.js"
+  echo bundle >"$work/pi-prefix/lib/node_modules/$pkg/cli.js"
   echo wrapper >"$work/local-bin/pi"
+
+  # The managed install: must come through untouched.
+  mkdir -p "$work/pi-agent/bin" "$work/pi-agent/install/releases/1.2.0"
+  echo launcher >"$work/pi-agent/bin/pi"
+  echo 1.2.0 >"$work/pi-agent/install/current-version"
 }
 
 run_purge() {
   FIXTURES=$work PGREP_BIN=$work/pgrep \
     ASDF_DIR=$work/asdf NPM_GLOBAL_PREFIX=$work/npm-global PI_PREFIX=$work/pi-prefix \
+    PI_WRAPPER=$work/local-bin/pi PI_CODING_AGENT_DIR=$work/pi-agent \
     "$subject" "$@"
 }
 
@@ -89,14 +97,36 @@ check "removes the asdf shim" "no" "$(exists "$work/asdf/shims/pi")"
 check "removes the npm-global package tree" \
   "no" "$(exists "$work/npm-global/lib/node_modules/@earendil-works")"
 check "removes the npm-global bin entry" "no" "$(exists "$work/npm-global/bin/pi")"
+check "removes the brew-node prefix" "no" "$(exists "$work/pi-prefix")"
+check "removes the brew-node wrapper" "no" "$(exists "$work/local-bin/pi")"
 
 # --- and touches nothing else ------------------------------------------------
-check "leaves the canonical install alone" \
-  "yes" "$(exists "$work/pi-prefix/lib/node_modules/@earendil-works/pi-coding-agent/cli.js")"
-check "leaves the wrapper alone" "yes" "$(exists "$work/local-bin/pi")"
+check "leaves the managed launcher alone" "yes" "$(exists "$work/pi-agent/bin/pi")"
+check "leaves the managed releases alone" "yes" "$(exists "$work/pi-agent/install/releases/1.2.0")"
 check "leaves unrelated npm packages alone" \
   "yes" "$(exists "$work/asdf/installs/nodejs/24.10.0/lib/node_modules/typescript/index.js")"
 check "leaves other shims alone" "yes" "$(exists "$work/asdf/shims/node")"
+
+# --- a managed entrypoint in ~/.local/bin is not the old wrapper ------------
+# The installer links its launcher into the first of ~/bin or ~/.local/bin on
+# PATH, so on some machines ~/.local/bin/pi is the live install.
+build_tree
+rm "$work/local-bin/pi"
+ln -s ../pi-agent/bin/pi "$work/local-bin/pi"
+FORCE=1 run_purge >/dev/null
+check "leaves a managed entrypoint alone" "yes" "$(exists "$work/local-bin/pi")"
+check "still removes the brew-node prefix beside it" "no" "$(exists "$work/pi-prefix")"
+
+# --- refuses to sweep a tree holding the managed install --------------------
+build_tree
+if FIXTURES=$work PGREP_BIN=$work/pgrep ASDF_DIR=$work/asdf NPM_GLOBAL_PREFIX=$work/npm-global \
+  PI_PREFIX=$work PI_WRAPPER=$work/local-bin/pi PI_CODING_AGENT_DIR=$work/pi-agent \
+  FORCE=1 "$subject" >/dev/null 2>&1; then
+  check "refuses a sweep containing the managed install" "nonzero exit" "exit 0"
+else
+  check "refuses a sweep containing the managed install" "nonzero exit" "nonzero exit"
+fi
+check "that refusal deletes nothing" "yes" "$(exists "$work/pi-agent/bin/pi")"
 
 # --- refuses while a pi session is live -------------------------------------
 build_tree
