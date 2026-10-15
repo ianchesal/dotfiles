@@ -3,11 +3,6 @@
     "SchemaStore.nvim": {
       "observed": [
         {
-          "first_seen": 1789397903,
-          "first_seen_iso": "2026-09-14T14:58:23Z",
-          "rev": "72d144a9e014646963b8a5c67a4fde19b9772528"
-        },
-        {
           "first_seen": 1789513701,
           "first_seen_iso": "2026-09-15T23:08:21Z",
           "rev": "495680182003292e686b84903bc005fc1099291c"
@@ -101,12 +96,17 @@
           "first_seen": 1791985637,
           "first_seen_iso": "2026-10-14T13:47:17Z",
           "rev": "1c6d5e0b721c877c4c8061d2361f8fc20adaf896"
+        },
+        {
+          "first_seen": 1792026583,
+          "first_seen_iso": "2026-10-15T01:09:43Z",
+          "rev": "9485dacfff2828f06c4678b059e382e49ec54aeb"
         }
       ],
       "pin": {
-        "pinned_at": "2026-10-12T14:27:43Z",
-        "pinned_at_epoch": 1791815263,
-        "rev": "05e938c0aa5dfbdbb11972fa4c8a85f27f402ba0"
+        "pinned_at": "2026-10-15T01:09:43Z",
+        "pinned_at_epoch": 1792026583,
+        "rev": "72d144a9e014646963b8a5c67a4fde19b9772528"
       }
     },
     "blink.cmp": {
