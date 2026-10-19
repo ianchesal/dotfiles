@@ -1,9 +1,9 @@
 {
   "plugins": {
     "SchemaStore.nvim": {
-      "rev": "ab094b7f788231fe9b68deac78c3d512302c58a6",
+      "rev": "460358f4de896230269a76c23ab558069f6e1e43",
       "src": "https://github.com/b0o/SchemaStore.nvim",
-      "version": "'ab094b7f788231fe9b68deac78c3d512302c58a6'"
+      "version": "'460358f4de896230269a76c23ab558069f6e1e43'"
     },
     "blink.cmp": {
       "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
