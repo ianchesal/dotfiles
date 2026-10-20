@@ -1,48 +1,27 @@
 #!/usr/bin/env bash
 #
-# Open a repo as its own tmux session: a shell window, then a long-running pax
-# lead in the window after it.
+# Open a repo as its own tmux session with a single shell window at the repo
+# root.
 #
 # The session is named for the repo's basename with any persona- prefix stripped,
 # matching window-name.sh -- nearly every work repo is persona-*, and the prefix
-# is noise in a session list. The basename itself stays the lookup key: it
-# resolves the path, keys the port registry and keys pax's session store, so
+# is noise in a session list. The basename itself stays the lookup key, so
 # stripping the label cannot collide persona-web with a separate web checkout.
 #
-# The session opens with two full windows, both at the repo root: "shell", a
-# bare prompt, then "pax", running pi under a stable --session-id. The shell is
-# there so the reflexive git/just command does not cost a new window; pi gets a
-# whole window because its output is long.
-#
-# The pax window is placed by the window ID that -P -F hands back, never an
-# index: tmux.conf sets base-index to 1, so a computed ":0" matches nothing and
-# the window silently does not land.
-#
-# The --session-id is what keeps the lead cheap to relaunch: the multi-hour
-# dispatcher context lives in pi's session store, not the window. Killing the
-# pax window leaves the shell, and so the session, standing -- and a re-open of
-# an existing session only focuses it. Kill the session and re-open the repo to
-# relaunch the lead.
-#
-# Computer ports come from a persisted registry rather than a hash of the repo
-# name: hashing ~20 repos into any range small enough to be memorable collides
-# far more often than intuition suggests, and a registry cannot collide at all.
+# This used to open a long-running pax lead in a second window, with a stable
+# --session-id and a per-repo PAX_COMPUTER_PORT from a port registry. That was
+# dropped in October 2026 while pax is out of use; the git history has it if it
+# comes back. Re-opening an existing session only focuses it.
 #
 # Seams for script/tests/pax-open-repo.test.sh:
 #   SRC_ROOT      -- where checkouts live (default: $HOME/src)
-#   PORT_REGISTRY -- repo->port map (default: $XDG_STATE_HOME/pax/ports)
 #   TMUX_BIN      -- tmux executable (default: tmux)
-#   PAX_BIN       -- pax/pi executable (default: pi)
 #   PAX_LIST_ONLY -- when non-empty, print "<name> <path>" per repo and exit
 
 set -euo pipefail
 
 src_root=${SRC_ROOT:-$HOME/src}
 tmux_bin=${TMUX_BIN:-tmux}
-pax_bin=${PAX_BIN:-pi}
-registry=${PORT_REGISTRY:-${XDG_STATE_HOME:-$HOME/.local/state}/pax/ports}
-port_base=8800
-port_span=1000
 
 # BSD find has no -printf, so strip the /.git suffix with sed instead.
 list_repos() {
@@ -60,27 +39,6 @@ EOF
   return 1
 }
 
-port_for() {
-  local name=$1 port
-  mkdir -p "$(dirname "$registry")"
-  [ -f "$registry" ] || : >"$registry"
-  port=$(awk -v n="$name" '$1 == n { print $2; exit }' "$registry")
-  if [ -n "$port" ]; then
-    printf '%s\n' "$port"
-    return 0
-  fi
-  port=$port_base
-  while awk -v p="$port" '$2 == p { found = 1 } END { exit !found }' "$registry"; do
-    port=$((port + 1))
-    if [ "$port" -ge $((port_base + port_span)) ]; then
-      echo "pax-open-repo: port registry exhausted at $registry" >&2
-      return 1
-    fi
-  done
-  printf '%s %s\n' "$name" "$port" >>"$registry"
-  printf '%s\n' "$port"
-}
-
 focus_session() {
   local name=$1
   "$tmux_bin" switch-client -t "=$name" 2>/dev/null ||
@@ -88,38 +46,21 @@ focus_session() {
 }
 
 open_repo() {
-  local name=$1 path port session shell_window pax_window
+  local name=$1 path session
   path=$(path_for "$name") || {
     echo "pax-open-repo: no repo named '$name' under $src_root" >&2
     return 1
   }
-  # Label only -- every key below stays on the unstripped basename.
+  # Label only -- the lookup above stays on the unstripped basename.
   session=${name#persona-}
   if "$tmux_bin" has-session -t "=$session" 2>/dev/null; then
     focus_session "$session"
     return 0
   fi
-  port=$(port_for "$name") || return 1
-  # The first window is left as a plain shell -- no command. pax gets its own
-  # window after it rather than being the first window, so that killing it does
-  # not take the shell down with it.
-  #
-  # Each step is checked explicitly: open_repo is called from a `||` context,
-  # which disables errexit inside it, so an unchecked tmux failure here would
-  # leave a half-built session and still exit 0.
-  shell_window=$("$tmux_bin" new-session -d -P -F '#{window_id}' \
-    -s "$session" -c "$path" -n shell) || {
+  # Checked explicitly: open_repo is called from a `||` context, which disables
+  # errexit inside it, so an unchecked tmux failure here would still exit 0.
+  "$tmux_bin" new-session -d -s "$session" -c "$path" -n shell || {
     echo "pax-open-repo: could not create session '$session'" >&2
-    return 1
-  }
-  pax_window=$("$tmux_bin" new-window -a -P -F '#{window_id}' \
-    -t "$shell_window" -c "$path" -n pax \
-    "PAX_COMPUTER_PORT=$port $pax_bin --session-id pax-$name") || {
-    echo "pax-open-repo: could not open a pax window after $shell_window" >&2
-    return 1
-  }
-  "$tmux_bin" select-window -t "$pax_window" || {
-    echo "pax-open-repo: could not focus window $pax_window" >&2
     return 1
   }
   focus_session "$session"

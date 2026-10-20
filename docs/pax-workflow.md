@@ -4,10 +4,16 @@ How design, dispatch and implementation fit together now that pax is in the
 picture. Companion to `docs/chezmoi-workflows.md`; the design of record is
 `docs/superpowers/specs/2026-09-21-pax-tmux-workflow-design.md`.
 
+> **October 2026:** pax is out of use, so `open repo` no longer launches it — a
+> session opens with just the `shell` window — and `dispatch to pax` is gone
+> from the `prefix+w` menu. The rest of this doc describes the loop as it ran
+> with pax; to run it again, start pi by hand in a window named `pax` (see step
+> 1) and run `~/.config/tmux/workmux/pax-dispatch.sh` directly (see step 3).
+
 ## Mental model
 
-**A repo is a tmux session. A shell and pax are the first two windows. Worktrees
-are the others.**
+**A repo is a tmux session. A shell is the first window, then pax if you start
+it. Worktrees are the others.**
 
 The session is named for the repo with any `persona-` prefix stripped, matching
 how `window-name.sh` labels windows — nearly every work repo is `persona-*`, so
@@ -52,28 +58,20 @@ levels, which is why repos are sessions rather than windows in one big session.
 ### 1. Open a repo — `prefix+w` → `open repo` (`R`)
 
 fzf-picks a checkout under `~/src`, creates a session named for the repo with
-`persona-` stripped, and opens two full windows at the repo root: `shell`, a
-bare prompt, then `pax`, running pi as:
+`persona-` stripped, and opens one window at the repo root: `shell`, a bare
+prompt. Re-running it focuses the existing session instead of recreating it.
+
+It used to open pax in a second window too. To bring the lead up by hand, run
+this from the shell window (the window must be named `pax`, because dispatch
+targets `:pax`):
 
 ```
-PAX_COMPUTER_PORT=<stable> pi --session-id pax-<repo>
+tmux new-window -a -n pax 'pi --session-id pax-<repo>'
 ```
 
-You land on `pax`. The shell is there so the reflexive `git`/`just` command
-does not cost a new window. The basename keeps its `persona-` prefix everywhere it is a *key* — the
-path lookup, the port registry, and `--session-id` — so only the label changes.
-
-Re-running it attaches instead of recreating. The `--session-id` is what makes
-the lead **cheap to kill and relaunch** — the multi-day context lives in pi's
-session store, not in the window. A reboot does not cost you a day of
-dispatcher state. Killing just the `pax` window leaves `shell`, and so the
-session, standing, and re-running only focuses an existing session — so to
-relaunch the lead, kill the session (`prefix+K`) and reopen the repo.
-
-Ports come from a registry at `${XDG_STATE_HOME:-~/.local/state}/pax/ports`, not
-a hash of the repo name. Hashing ~22 repos into any memorable range collides far
-more often than intuition suggests; a registry cannot collide. Each repo
-therefore has a stable Computer URL worth bookmarking.
+Use the full basename, including any `persona-` prefix, for `<repo>`. The
+`--session-id` is what makes the lead **cheap to kill and relaunch**: the
+multi-day context lives in pi's session store, not in the window.
 
 ### 2. Start an initiative — `prefix+w` → `add w/prompt` (`p`)
 
@@ -97,7 +95,7 @@ and says so rather than reporting a missing prompt.
 TODO: Do we need to clean up `docs/superpowers/**` at some point? These are
 eventually out of date artifacts that clutter up the repo.
 
-### 3. Hand off — `prefix+w` → `dispatch to pax` (`D`)
+### 3. Hand off — `~/.config/tmux/workmux/pax-dispatch.sh`
 
 Run from the worktree window. It:
 
@@ -181,10 +179,10 @@ Do **not** work around this by scraping pax's Computer server.
 
 | Action | How |
 |---|---|
-| Open a repo as a session with pax | `prefix+w` → `open repo` (`R`) |
+| Open a repo as a session | `prefix+w` → `open repo` (`R`) |
 | New worktree + Claude, with a prompt | `prefix+w` → `add w/prompt` (`p`) |
 | New worktree from an existing branch | `prefix+w` → `add w/branch` (`b`) |
-| Hand the worktree to pax | `prefix+w` → `dispatch to pax` (`D`) |
+| Hand the worktree to pax | `~/.config/tmux/workmux/pax-dispatch.sh` (no longer in the `prefix+w` menu) |
 | Navigate repos and worktrees | `prefix+s` |
 | Agent status across the machine | `prefix+w` → `dashboard` (`d`) — *see caveat above* |
 | pax's real activity | `/pax-computer` in the lead |

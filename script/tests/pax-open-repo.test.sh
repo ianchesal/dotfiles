@@ -25,17 +25,12 @@ check() {
 }
 
 # A fake tmux that records its argv one call per line and reports "no session".
-# new-session and new-window print an id because the script captures them
-# with -P -F: real tmux indices start at 1 here (base-index), so the script must
-# never compute ":0" and the fake must not let it get away with doing so.
 cat >"$work/tmux" <<'FAKE'
 #!/usr/bin/env bash
 set -euo pipefail
 echo "$*" >>"$TMUX_CALLS"
 case "${1:-}" in
   has-session) exit 1 ;;
-  new-session) echo '@9' ;;
-  new-window) echo '@10' ;;
 esac
 exit 0
 FAKE
@@ -46,10 +41,6 @@ cat >"$work/tmux-existing" <<'FAKE'
 #!/usr/bin/env bash
 set -euo pipefail
 echo "$*" >>"$TMUX_CALLS"
-case "${1:-}" in
-  new-session) echo '@9' ;;
-  new-window) echo '@10' ;;
-esac
 exit 0
 FAKE
 chmod +x "$work/tmux-existing"
@@ -61,54 +52,29 @@ mkdir -p "$src/toplevel/.git" "$src/org/nested/.git" "$src/org/nested__worktrees
 run() {
   : >"$work/calls"
   TMUX_CALLS=$work/calls SRC_ROOT=$src TMUX_BIN=${1:-$work/tmux} \
-    PORT_REGISTRY=$work/ports PAX_BIN=paxfake \
     "$subject" "${@:2}" >"$work/out" 2>"$work/err"
 }
 
 echo "pax-open-repo"
 
 # --- enumeration finds both depths and excludes worktree storage -------------
-PAX_LIST_ONLY=1 SRC_ROOT=$src PORT_REGISTRY=$work/ports "$subject" >"$work/list" 2>&1
+PAX_LIST_ONLY=1 SRC_ROOT=$src "$subject" >"$work/list" 2>&1
 check "lists both repo depths" "nested persona-web toplevel" "$(awk '{print $1}' "$work/list" | sort | tr '\n' ' ' | sed 's/ $//')"
 check "excludes __worktrees" "0" "$(grep -c '__worktrees' "$work/list" || true)"
 
-# --- port allocation is stable and collision-free ----------------------------
-rm -f "$work/ports"
-run "$work/tmux" toplevel
-first=$(awk '$1 == "toplevel" { print $2 }' "$work/ports")
-check "first repo gets the base port" "8800" "$first"
-run "$work/tmux" nested
-check "second repo gets the next port" "8801" "$(awk '$1 == "nested" { print $2 }' "$work/ports")"
-run "$work/tmux" toplevel
-check "re-opening reuses the same port" "8800" "$(awk '$1 == "toplevel" { print $2 }' "$work/ports")"
-
-# --- a new session is created with a shell window, then a pax window ---------
-rm -f "$work/ports"
+# --- a new session is a single shell window, with no pax window -------------
 run "$work/tmux" toplevel
 check "creates a detached session named for the repo" "1" \
-  "$(grep -c -- "new-session -d -P -F #{window_id} -s toplevel -c $src/toplevel -n shell" "$work/calls" || true)"
-check "leaves the first window a bare shell at the repo root" "1" \
-  "$(grep -c -- "^new-session -d -P -F #{window_id} -s toplevel -c $src/toplevel -n shell$" "$work/calls" || true)"
-check "opens pax in its own window after the shell, by window id" "1" \
-  "$(grep -c -- "new-window -a -P -F #{window_id} -t @9 -c $src/toplevel -n pax " "$work/calls" || true)"
-check "does not split either window" "0" "$(grep -c -- 'split-window' "$work/calls" || true)"
-check "targets no hardcoded index" "0" \
-  "$(grep -c -e ':0\.' -e '=toplevel:0' "$work/calls" || true)"
-check "launches pax with a stable session id" "1" \
-  "$(grep -c -- '--session-id pax-toplevel' "$work/calls" || true)"
-check "pins the computer port" "1" "$(grep -c 'PAX_COMPUTER_PORT=8800' "$work/calls" || true)"
-check "focuses the pax window by id" "1" \
-  "$(grep -c -- 'select-window -t @10' "$work/calls" || true)"
+  "$(grep -c -- "^new-session -d -s toplevel -c $src/toplevel -n shell$" "$work/calls" || true)"
+check "opens no second window" "0" "$(grep -c -- 'new-window' "$work/calls" || true)"
+check "does not split the shell window" "0" "$(grep -c -- 'split-window' "$work/calls" || true)"
+check "does not launch pax" "0" "$(grep -c -e 'PAX_COMPUTER_PORT' -e '--session-id' "$work/calls" || true)"
+check "focuses the new session" "1" "$(grep -c -- 'switch-client -t =toplevel' "$work/calls" || true)"
 
 # --- persona- is stripped from the session name, not from the lookup key -----
-rm -f "$work/ports"
 run "$work/tmux" persona-web
 check "strips persona- from the session name" "1" \
-  "$(grep -c -- "new-session -d -P -F #{window_id} -s web -c $src/persona-web -n shell" "$work/calls" || true)"
-check "keys the port registry on the full basename" "8800" \
-  "$(awk '$1 == "persona-web" { print $2 }' "$work/ports")"
-check "keys the pax session id on the full basename" "1" \
-  "$(grep -c -- '--session-id pax-persona-web' "$work/calls" || true)"
+  "$(grep -c -- "new-session -d -s web -c $src/persona-web -n shell" "$work/calls" || true)"
 check "focuses the stripped session name" "1" \
   "$(grep -c -- 'switch-client -t =web' "$work/calls" || true)"
 
