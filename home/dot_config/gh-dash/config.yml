@@ -18,6 +18,11 @@ prSections:
     layout:
       author:
         hidden: true
+  - title: My Drafts
+    filters: is:open author:@me draft:true
+    layout:
+      author:
+        hidden: true
   - title: Needs My Review
     filters: is:open review-requested:@me draft:false review:required
   - title: Involved

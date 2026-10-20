@@ -19,6 +19,15 @@ prSections:
     layout:
       author:
         hidden: true
+  - title: My Drafts
+    filters: >-
+      is:open
+      org:persona-id
+      author:@me
+      draft:true
+    layout:
+      author:
+        hidden: true
   - title: Assigned to Me
     filters: >-
       is:open
