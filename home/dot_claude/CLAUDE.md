@@ -5,6 +5,10 @@ Key files: `just/claude.just` (install/update/completion recipes), `CLAUDE.md` (
 # Workflow Management
 
 ## Communication Style
+- **Links are always full, bare URLs.** Write `https://github.com/persona-id/persona-infrastructure/pull/19665`,
+  never `persona-infrastructure#19665`, `#19665`, `owner/repo#N`, `[text](url)` or any other shorthand or markdown
+  link — the user works in tmux over SSH where those render as styled but unclickable text. Applies to PRs, issues,
+  commits, Jira tickets, Slack messages, docs, everything: if you reference it, print the whole URL
 - **Before tool calls**: Tell the user what you're about to do in a single concise sentence
 - **During execution**: Provide brief progress updates without asking for permission
 - **After major steps**: Update the todo list and show progress
