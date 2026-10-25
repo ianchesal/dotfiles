@@ -16,71 +16,77 @@ checks in with Ian to confirm/correct, writes the Day in Review, and updates Tod
 
 ---
 
+## Step 0: Figure Out the Platform and Vault Root
+
+Ian runs this from both Windows and macOS. The vault lives in a different place on each,
+and the file tools available differ. Resolve this first, silently — don't narrate it.
+
+### Detect the OS
+- If a Filesystem MCP is available and serves `\\synology01\...` paths → **Windows**.
+- If you're reaching Ian's computer through device/bridge tools (e.g. `mcp__remote-devices__*`),
+  check the device info or run `uname` via the device shell → `Darwin` means **macOS**.
+- If running directly on the Mac (e.g. Claude Code / desktop app with local file tools) → **macOS**.
+- If still unclear, ask Ian in one line: "Mac or Windows tonight?"
+
+### Vault root (`<VAULT>`)
+| OS      | Vault root                                   |
+|---------|----------------------------------------------|
+| Windows | `\\synology01\ian\Obsidian\Personal`          |
+| macOS   | `~/Documents/Personal` (expand `~` to the real home dir, e.g. `/Users/<user>/Documents/Personal`) |
+
+On macOS, the vault is synced via Obsidian Sync. Write only to the local `~/Documents/Personal`
+copy — never to an SMB-mounted NAS copy of the same vault, or you'll create sync conflicts.
+
+### File access
+- **Windows:** Filesystem MCP (`read_text_file` / `edit_file`).
+- **macOS via device bridge:** the vault folder must be connected to the conversation. If it isn't,
+  request folder access for `~/Documents/Personal` (or ask Ian to add it via "+" → Add folder), then
+  read/edit with the device shell (`cat`, a small `python3` script, etc.). Edit files in place —
+  these are Ian's notes and in-place edits are the point of the skill.
+- **macOS local:** use the local Read/Edit tools.
+- Whatever the tool, the rules below about what to edit and what to preserve are the same.
+
+Use forward slashes on macOS and backslashes on Windows when building paths.
+
+---
+
 ## File Paths
 
-**Platform detection:** Check what OS and environment you're running in before constructing paths.
+All paths below are relative to `<VAULT>`.
 
-- **Linux terminal** (WSL2 or native Linux shell): use the `/data/ian/...` mount path
-- **Windows Claude app**: use the `\\synology01\ian\...` UNC path
-
-### Daily notes
-
-| Platform | Path |
-|----------|------|
-| Linux terminal | `/data/ian/Obsidian/Personal/Daily/YYYY/MM-MonthName/YYYY-MM-DD.md` |
-| Windows Claude app | `\\synology01\ian\Obsidian\Personal\Daily\YYYY\MM-MonthName\YYYY-MM-DD.md` |
+Daily notes:
+```
+<VAULT>/Daily/YYYY/MM-MonthName/YYYY-MM-DD.md
+```
 
 Month folder names use zero-padded month number + full month name, e.g.:
 - `01-January`, `02-February`, `03-March`, `04-April`, `05-May`, `06-June`
 - `07-July`, `08-August`, `09-September`, `10-October`, `11-November`, `12-December`
 
-### Work day briefing (optional — only present on work days)
-
-Since 2026-09-10 the work briefing lives in Notion, not in the vault — one page per
-workday in the **Daily Startup** database, titled `YYYY-MM-DD Ddd`:
-
-- Database page: https://app.notion.com/p/withpersona/Daily-Startup-3d8ef6bcb0fd803fbb0fc386531cf28c
-- Data source: `collection://3d8ef6bc-b0fd-80c5-97d3-000b7ca353c9`
-
-When a briefing exists for a given day, the daily note contains a link to it under
-`## Work Day`, formatted like:
+Today.md (persistent context across days):
 ```
-[Daily Startup — YYYY-MM-DD →](https://www.notion.so/...)
+<VAULT>/Today.md
 ```
 
-Follow that link with `mcp__claude_ai_Notion__notion-fetch`, or find the page by date:
-```sql
-SELECT url FROM "collection://3d8ef6bc-b0fd-80c5-97d3-000b7ca353c9"
-WHERE "date:Entry Date:start" = '[the day YYYY-MM-DD]'
+Daily note template:
+```
+<VAULT>/Extras/Templates/Template, Daily Note.md
 ```
 
-It contains the calendar, Slack, Jira, and executive coaching context that used to live
-inline in the daily note.
+Examples:
+- Windows: `\\synology01\ian\Obsidian\Personal\Daily\2026\10-October\2026-10-24.md`
+- macOS: `~/Documents/Personal/Daily/2026/10-October/2026-10-24.md`
 
-**Notes from before 2026-09-10** link to a markdown work note in the vault instead, as a
-`[[Work/YYYY/MM-MonthName/work-YYYY-MM-DD|Work Day - YYYY-MM-DD →]]` wikilink. Those files
-are still on disk — read them when you see that link.
-
-### Today.md (persistent context across days)
-
-| Platform | Path |
-|----------|------|
-| Linux terminal | `/data/ian/Obsidian/Personal/Today.md` |
-| Windows Claude app | `\\synology01\ian\Obsidian\Personal\Today.md` |
+Use Ian's local date (America/New_York) to derive today's path, not UTC.
 
 ---
 
 ## Step 1: Read the Files
 
-Use the Filesystem MCP tools to read:
+Using the file access method from Step 0, read:
 1. **Today's daily note** — derive the path from today's actual date
-2. **Today's work briefing** — IF the daily note has a `## Work Day` link (see File Paths above),
-   fetch that Notion page. It holds calendar, Slack, Jira, and executive coaching context that
-   used to be inline. On notes from before 2026-09-10 the link is a `[[Work/...]]` wikilink to a
-   markdown file — read that instead. Skip silently if no link is present (weekends, days off,
-   sick days).
-3. **Today.md** — for persistent context (Current Focus, ongoing threads)
-4. **Yesterday's daily note** (optional) — only if today's note is sparse; helps with continuity
+2. **Today.md** — for persistent context (Current Focus, ongoing threads)
+3. **Yesterday's daily note** (optional) — only if today's note is sparse; helps with continuity
 
 If today's note doesn't exist yet, tell Ian and offer to help him create it from the template.
 
@@ -95,22 +101,12 @@ Look at each section:
 - What did Ian plan to do?
 - Cross-reference against "Day in Review > What actually got done?" — is it already filled in?
 
-### From the Work Briefing (if present)
-The work briefing is a Notion page linked from the daily note. It is written by the
-morning-startup skill and contains structured Calendar / Slack / Jira / Executive Coaching
-sections.
+### From "Daily Plan" (if present — populated by a separate automation)
+- Calendar: what meetings happened? Any notable external/customer/vendor meetings?
+- Slack: any open incidents? Any VIP activity that needed a response?
+- Jira: any overdue or high-priority tickets?
 
-- **Calendar**: what meetings happened? Cross-reference "⚠️ Heads up" / VIP / non-recurring
-  items against what Ian actually noted in Random Thoughts. If a flagged meeting isn't mentioned
-  anywhere, it's worth asking about.
-- **Slack**: any open incidents? Any VIP activity (Rick, Charles, Chuck) that needed a response?
-  Look for Ian's inline replies on action items — things like "Responded" or "Done and merged."
-- **Jira**: any overdue or high-priority tickets aging past attention? Stale tickets that keep
-  appearing day after day are worth flagging in carry-forward.
-- **Executive Coaching > The One Thing**: this was the stated focus going in. Did it actually
-  get done, or did the day get hijacked? High-signal for whether the day held its shape.
-
-### From "Random Thoughts"
+### From "Random Notes"
 - Personal observations, home stuff, health, mood signals, side projects
 - These often contain the most honest snapshot of how the day *actually* felt
 
@@ -123,7 +119,7 @@ sections.
 
 ### From "Claude:" directives (anywhere in the note)
 Scan the entire note for any bullet point starting with `Claude:` — these can appear in
-Today's Intentions, Random Thoughts, or anywhere else. They are explicit instructions Ian left
+Today's Intentions, Random Notes, or anywhere else. They are explicit instructions Ian left
 for himself (and you) earlier in the day.
 
 Collect all `Claude:` directives before the check-in and treat them as **overrides** —
@@ -176,9 +172,9 @@ interpret them. Then ask targeted follow-up questions to fill in gaps.
 **Guidelines for the check-in:**
 - Be direct and honest, not flattering. If it looks like a rough day, say so.
 - If the Day in Review is already filled in well, say so and ask only what's missing.
-- Probe personal/home/health when there are signals in Random Thoughts (mini-split, Krista, exercise, etc.)
+- Probe personal/home/health when there are signals in Random Notes (mini-split, Krista, exercise, etc.)
 - Don't ask about things that are clearly documented — only ask about gaps.
-- If the note is basically empty (sparse Intentions, no Day in Review, no Random Thoughts), be more curious: ask more open-ended questions about how the day went.
+- If the note is basically empty (sparse Intentions, no Day in Review, no Random Notes), be more curious: ask more open-ended questions about how the day went.
 
 ---
 
@@ -199,7 +195,8 @@ The two fields to fill:
 
 Write the updated section out clearly in your response so Ian can review it before you write it to disk.
 
-Once Ian confirms (or adjusts), use the Filesystem MCP `edit_file` tool to update the note.
+Once Ian confirms (or adjusts), edit the note in place using the file access method from Step 0
+(Filesystem MCP `edit_file` on Windows; device shell or local Edit on macOS).
 
 The Day in Review section looks like this in the file:
 ```markdown
@@ -212,6 +209,8 @@ The Day in Review section looks like this in the file:
 ```
 
 Replace the empty bullets with real content. Preserve everything above this section unchanged.
+When editing via a shell, read the current file from disk and do a targeted replacement of just this
+section — never rewrite the whole file from an earlier (possibly truncated) tool output.
 
 ---
 
@@ -248,7 +247,7 @@ The "one thing to let go of" is important — don't skip it. It's often more use
 After the Tomorrow Advisory is confirmed, write the top carry-forward items into tomorrow's daily note as Today's Intentions.
 
 **How:**
-1. Derive tomorrow's note path from today's date + 1
+1. Derive tomorrow's note path from today's date + 1 (same `<VAULT>` as Step 0)
 2. Read the file — check if Today's Intentions already has content (don't clobber anything Ian wrote himself)
 3. Write the top 2-3 items from "What carries forward?" as intention bullets, using concise action-oriented language
 4. Leave at least one blank bullet after them so Ian has room to add his own
@@ -279,7 +278,8 @@ focused on right now — not aspirational goals, but the real live wires. Update
 The **A Thought to Carry** quote can be updated if the day surfaced something that calls for a
 different framing tomorrow. Don't change it just to change it — only if something better fits.
 
-Show Ian the proposed Today.md changes before writing them. Then write with `edit_file`.
+Show Ian the proposed Today.md changes before writing them. Then write them with the same file access
+method from Step 0.
 
 ---
 
@@ -296,9 +296,11 @@ Show Ian the proposed Today.md changes before writing them. Then write with `edi
 
 ## Edge Cases
 
-**Note doesn't exist yet:** Offer to create it from the template — path depends on platform:
-- Linux terminal: `/data/ian/Obsidian/Personal/Extras/Templates/Template, Daily Note.md`
-- Windows Claude app: `\\synology01\ian\Obsidian\Personal\Extras\Templates\Template, Daily Note.md`
+**Can't reach the vault:** On macOS, if the vault folder isn't connected or the computer can't be
+reached, say so plainly and tell Ian how to connect `~/Documents/Personal` — don't guess at
+the note's contents.
+
+**Note doesn't exist yet:** Offer to create it from `<VAULT>/Extras/Templates/Template, Daily Note.md`.
 
 **Note is basically empty:** Ask more open questions. Start with "How'd today actually go?"
 before trying to infer anything.
