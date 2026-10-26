@@ -26,17 +26,17 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace 1'
 
-# Kitty lives alone on workspace 4. It floats there because a single tiled
-# window fills the whole 3840pt-wide ultrawide, which is uncomfortably wide.
-# AeroSpace has no per-workspace gaps (only constant or per-monitor), so
-# floating is the only way to narrow this window without squeezing every
-# other workspace on the same monitor. Target frame is ~60% of the display
-# (2304pt) centred, i.e. ~768pt of empty space on each side. macOS remembers
-# the position once you place it; `alt-shift-semicolon` then `c` re-snaps the
-# width if it ever drifts.
+# Kitty lives on workspace 2, floating, alongside the Claude desktop app. A
+# single tiled window fills the whole 3840pt-wide ultrawide, which is
+# uncomfortably wide. AeroSpace has no per-workspace gaps (only constant or
+# per-monitor), so floating is the only way to narrow this window without
+# squeezing every other workspace on the same monitor. Target frame is ~60% of
+# the display (2304pt) centred, i.e. ~768pt of empty space on each side. macOS
+# remembers the position once you place it; `alt-shift-semicolon` then `c`
+# re-snaps the width if it ever drifts.
 [[on-window-detected]]
 if.app-id = 'net.kovidgoyal.kitty'
-run = ['move-node-to-workspace 4', 'layout floating']
+run = ['move-node-to-workspace 2', 'layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.reminders'
@@ -44,27 +44,15 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Terminal'
-run = ['move-node-to-workspace 4', 'layout floating']
+run = ['move-node-to-workspace 2', 'layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
-if.app-id = 'com.superhuman.electron'
-run = 'move-node-to-workspace 2'
-
-[[on-window-detected]]
-if.app-id = 'com.linear'
-run = 'move-node-to-workspace 2'
-
-[[on-window-detected]]
 if.app-id = 'com.anthropic.claudefordesktop'
-run = 'move-node-to-workspace 2'
-
-[[on-window-detected]]
-if.app-id = 'com.flexibits.fantastical2.mac'
-run = 'move-node-to-workspace 2'
+run = ['move-node-to-workspace 2', 'layout floating']
 
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
