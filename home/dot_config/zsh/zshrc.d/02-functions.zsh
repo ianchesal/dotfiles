@@ -195,10 +195,10 @@ function ta() {
   if [[ -n "$1" ]]; then
     tn "$1"
   else
-    # Check if there are any existing sessions
+    # No existing sessions: start one called main, same as tn
     if ! tmux list-sessions &>/dev/null; then
-      echo "\033[1;33mNo existing tmux sessions found\033[0m"
-      return 1
+      tn
+      return
     fi
     
     # No argument, use fzf to select from existing sessions
