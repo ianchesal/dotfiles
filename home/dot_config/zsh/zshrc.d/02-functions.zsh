@@ -159,6 +159,16 @@ function dotfiles_update() {
     chezmoi apply --error-on-conflict || return 1
   fi
 
+  # Inside herdr, have the running server pick up ~/.config/herdr/config.toml.
+  # Unconditional, so a config applied from outside herdr is caught here too.
+  # Done before `just update`: brew::update may upgrade herdr, and the old
+  # server should hear from the CLI it was started with. `herdr` from PATH, not
+  # $HERDR_BIN_PATH -- that's a Cellar path a brew upgrade deletes.
+  if [[ -n "$HERDR_SOCKET_PATH" ]] && (( $+commands[herdr] )); then
+    echo "\033[1;36m==> Reloading herdr config...\033[0m"
+    herdr server reload-config || echo "\033[1;33m==> herdr config reload failed; continuing.\033[0m"
+  fi
+
   # --justfile keeps this working from any cwd: `just` only finds the justfile
   # by searching upwards, and dfu is routinely run from outside the repo.
   just --justfile "$REPO/justfile" update
