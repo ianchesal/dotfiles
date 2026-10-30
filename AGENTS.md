@@ -242,8 +242,9 @@ This file provides guidance to AI agents working on this repository.
   default; nothing starts herdr automatically
 - Installed from homebrew-core (`brew/Brewfile`), so `just brew::update` owns
   upgrades and `update.version_check = false` keeps herdr's own updater quiet
-- Source state is `home/dot_config/herdr/`: `config.toml` and
-  `executable_nav.sh`. Validate an edit with
+- Source state is `home/dot_config/herdr/`: `config.toml`,
+  `executable_nav.sh`, `executable_open-repo.sh`,
+  `executable_add-worktree.sh` and `executable_remove-worktree.sh`. Validate an edit with
   `HERDR_CONFIG_PATH=home/dot_config/herdr/config.toml herdr config check`;
   after `chezmoi apply`, `herdr server reload-config` picks it up
 - **herdr's settings screen writes back to `config.toml`**, so a change made
@@ -255,8 +256,28 @@ This file provides guidance to AI agents working on this repository.
   `prefix+d` detaches, `prefix+g`/`prefix+h` are the lazygit/gh-dash popups,
   `Shift-Left/Right` switch tabs, `prefix+|`/`_`/`\` split, `prefix+c` opens a
   tab without the name prompt. `prefix+h` is taken, so `focus_pane_left` moved
-  to `ctrl+alt+h`. Worktrees use herdr's own flow (`prefix+shift+g`, sidebar);
-  workmux has no herdr backend and the tmux `prefix+w` menu has no equivalent
+  to `ctrl+alt+h`. workmux has no herdr backend; the two `prefix+w` items that
+  matter are rebuilt as popups. `prefix+f` (`open-repo.sh`) is "open repo":
+  fzf a checkout under `~/src`, focus its workspace or create one at the root.
+  herdr records a workspace's `worktree.checkout_path` only once it has
+  worktrees of its own, so a plain workspace is matched by label, as tmux
+  matched session names. `prefix+a` (`add-worktree.sh`) is "add": `herdr
+  worktree create` into `<repo>__worktrees/<branch>` (not herdr's default
+  `~/.herdr/worktrees`), then `herdr agent start --kind claude` in its root
+  pane. herdr refuses to create worktrees from a linked worktree, so the script
+  resolves the main checkout through `git --git-common-dir`. claude parked at
+  its trust prompt returns `agent_not_ready`, which counts as success. herdr's
+  own `prefix+shift+g` still works but opens a bare shell in `~/.herdr/worktrees`
+- `prefix+shift+a` (`remove-worktree.sh`) is workmux's "remove": the focused
+  worktree, its branch and its workspace, with a y/N before the removal, before
+  forcing past dirty files, and before `-D` on an unmerged branch. It must not
+  use `herdr worktree remove`: that closes the workspace the popup runs in,
+  which kills the popup before the branch step. git removes the checkout and
+  branch, and `herdr workspace close` runs last. herdr's built-in
+  `remove_worktree` (keeps the branch) is on `prefix+shift+k`
+- Popup commands run in the focused pane's directory with `HERDR_SOCKET_PATH`
+  and `HERDR_ACTIVE_{PANE,TAB,WORKSPACE}_ID` set; tests drive the scripts
+  through a `HERDR_BIN` fake (`script/tests/herdr-*.test.sh`)
 - Key names: `prefix+|` and `prefix+_` must be literal -- herdr rejects `pipe`
   and `underscore`, while `minus`, `comma` and `backslash` are named
 - `Ctrl-h/j/k/l` is vim-tmux-navigator rebuilt for herdr, with no herdr plugin

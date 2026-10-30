@@ -50,6 +50,11 @@ detach = "prefix+d"
 split_vertical = ["prefix+v", "prefix+|", "prefix+backslash"]
 split_horizontal = ["prefix+minus", "prefix+_"]
 
+# herdr's own worktree removal: confirms, takes the checkout and the workspace,
+# keeps the branch. prefix+shift+a below is the workmux-style one that also
+# deletes the branch. Not an alt chord: kitty on macOS doesn't send Option as alt.
+remove_worktree = "prefix+shift+k"
+
 # prefix+h is the gh-dash popup below; Ctrl-h covers moving left.
 focus_pane_left = "ctrl+alt+h"
 
@@ -88,6 +93,35 @@ command = "lazygit"
 description = "lazygit"
 width = "90%"
 height = "90%"
+
+# tmux's prefix+w "open repo": fzf a checkout under ~/src into its own
+# workspace, or focus the one already open on it.
+[[keys.command]]
+key = "prefix+f"
+type = "popup"
+command = "~/.config/herdr/open-repo.sh"
+description = "open repo"
+width = "80%"
+height = "40%"
+
+# tmux's prefix+w "add": worktree in <repo>__worktrees/, new workspace, claude.
+[[keys.command]]
+key = "prefix+a"
+type = "popup"
+command = "~/.config/herdr/add-worktree.sh"
+description = "add worktree + claude"
+width = "80%"
+height = "20%"
+
+# tmux's prefix+w "remove" (workmux remove): the focused worktree, its branch
+# and its workspace, asking before each destructive step.
+[[keys.command]]
+key = "prefix+shift+a"
+type = "popup"
+command = "~/.config/herdr/remove-worktree.sh"
+description = "remove worktree + branch"
+width = "80%"
+height = "40%"
 
 # Wrapper picks the work or personal config from ~/.work_machine.
 [[keys.command]]
