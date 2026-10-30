@@ -50,11 +50,18 @@ detach = "prefix+d"
 split_vertical = ["prefix+v", "prefix+|", "prefix+backslash"]
 split_horizontal = ["prefix+minus", "prefix+_"]
 
+# Copy mode on prefix+[, as in tmux. That is herdr's default too, but
+# `herdr --default-config` doesn't list copy_mode, and another action bound to
+# the same key silently disables it (only `herdr config check` on a config
+# naming both says so). Pinned here so a future binding collides visibly.
+# Brackets must be literal -- herdr rejects bracketleft/leftbracket.
+copy_mode = "prefix+["
+
 # Walk the agents list in the sidebar: focus the next/previous agent pane, in
-# the order the panel shows them. Unbound by default. Brackets must be literal
-# -- herdr rejects bracketleft/leftbracket.
-next_agent = "prefix+]"
-previous_agent = "prefix+["
+# the order the panel shows them. Unbound by default. Braces, not brackets:
+# prefix+[ is copy mode.
+next_agent = "prefix+}"
+previous_agent = "prefix+{"
 
 # herdr's own worktree removal: confirms, takes the checkout and the workspace,
 # keeps the branch. prefix+shift+a below is the workmux-style one that also

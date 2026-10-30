@@ -278,10 +278,16 @@ This file provides guidance to AI agents working on this repository.
 - Popup commands run in the focused pane's directory with `HERDR_SOCKET_PATH`
   and `HERDR_ACTIVE_{PANE,TAB,WORKSPACE}_ID` set; tests drive the scripts
   through a `HERDR_BIN` fake (`script/tests/herdr-*.test.sh`)
-- Key names: `prefix+|`, `prefix+_`, `prefix+]` and `prefix+[` must be literal --
-  herdr rejects `pipe`, `underscore` and `bracketleft`/`leftbracket`, while
-  `minus`, `comma` and `backslash` are named
-- `prefix+]`/`prefix+[` are `next_agent`/`previous_agent`, walking the sidebar's
+- Key names: `prefix+|`, `prefix+_`, `prefix+[`, `prefix+{` and `prefix+}` must
+  be literal -- herdr rejects `pipe`, `underscore` and `bracketleft`/`leftbracket`,
+  while `minus`, `comma` and `backslash` are named
+- `prefix+[` is copy mode, as in tmux. `copy_mode` is a real action that
+  `herdr --default-config` does not list, and binding anything else to its key
+  silently disables it -- `herdr config check` only reports the clash when the
+  config names both, so `config.toml` pins `copy_mode` explicitly. Before
+  binding a new key, put it in a scratch config beside the action it might
+  shadow and run `config check`
+- `prefix+}`/`prefix+{` are `next_agent`/`previous_agent`, walking the sidebar's
   agents list (herdr has no key that focuses the panel itself)
 - `Ctrl-h/j/k/l` is vim-tmux-navigator rebuilt for herdr, with no herdr plugin
   (plugin state is machine-local and chezmoi cannot carry it). `nav.sh` is a
