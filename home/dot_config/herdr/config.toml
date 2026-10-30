@@ -1,0 +1,99 @@
+# herdr -- https://herdr.dev
+#
+# Set up to feel like ../tmux/tmux.conf: same prefix, same popups, same
+# Ctrl-h/j/k/l across nvim splits and panes. tmux maps onto herdr as
+# session -> workspace, window -> tab, pane -> pane.
+#
+# This file is chezmoi-managed. herdr's own settings screen writes back to it,
+# so a change made there is overwritten by the next `chezmoi apply` -- edit
+# home/dot_config/herdr/config.toml in the repo instead, then apply and
+# `herdr server reload-config`. `herdr config check` validates it.
+# Full default config: `herdr --default-config`.
+
+onboarding = false
+
+[update]
+# Homebrew owns the install; `herdr update` would fight it.
+version_check = false
+
+[theme]
+# Same palette as ../tmux/theme.conf.
+name = "tokyo-night"
+
+[ui]
+# tmux's prefix+c opens a window straight away; herdr asks for a name by default.
+prompt_new_tab_name = false
+tab_bar_right = [
+  { type = "zoom" },
+  # battery.sh writes tmux #[...] style codes; strip them, herdr shows text only.
+  { type = "command", command = "~/.config/tmux/battery.sh | sed 's/#\\[[^]]*\\]//g'", interval_seconds = 30, timeout_seconds = 5 },
+  { type = "datetime", format = "%Y-%m-%d %H:%M" },
+  { type = "hostname" },
+]
+tab_bar_right_separator = " · "
+
+[keys]
+prefix = "ctrl+b"
+
+# Shift-Left/Right walk windows (tabs) with no prefix, as in tmux.
+previous_tab = ["prefix+p", "shift+left"]
+next_tab = ["prefix+n", "shift+right"]
+
+# tmux's choose-tree lives on prefix+s; herdr's Go To picker is the equivalent.
+goto = "prefix+s"
+settings = "prefix+comma"
+
+# prefix+d detaches, as in tmux. close_workspace stays on prefix+shift+d.
+detach = "prefix+d"
+
+# tmux split keys alongside herdr's own. split_vertical is side by side.
+split_vertical = ["prefix+v", "prefix+|", "prefix+backslash"]
+split_horizontal = ["prefix+minus", "prefix+_"]
+
+# prefix+h is the gh-dash popup below; Ctrl-h covers moving left.
+focus_pane_left = "ctrl+alt+h"
+
+# Ctrl-h/j/k/l: move between nvim splits and herdr panes as one grid -- the
+# vim-tmux-navigator behaviour. nav.sh passes the key to nvim when nvim is in
+# the focused pane; nvim hands focus back out at its edge (see
+# nvim/lua/plugins/vim-tmux-navigator.lua).
+[[keys.command]]
+key = "ctrl+h"
+type = "shell"
+command = "~/.config/herdr/nav.sh left"
+description = "navigate left (nvim/herdr)"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "shell"
+command = "~/.config/herdr/nav.sh down"
+description = "navigate down (nvim/herdr)"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "shell"
+command = "~/.config/herdr/nav.sh up"
+description = "navigate up (nvim/herdr)"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "shell"
+command = "~/.config/herdr/nav.sh right"
+description = "navigate right (nvim/herdr)"
+
+[[keys.command]]
+key = "prefix+g"
+type = "popup"
+command = "lazygit"
+description = "lazygit"
+width = "90%"
+height = "90%"
+
+# Wrapper picks the work or personal config from ~/.work_machine.
+[[keys.command]]
+key = "prefix+h"
+type = "popup"
+command = "~/.config/gh-dash/gh-dash.sh"
+description = "gh dash"
+width = "90%"
+height = "90%"

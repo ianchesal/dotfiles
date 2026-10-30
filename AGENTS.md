@@ -235,6 +235,50 @@ This file provides guidance to AI agents working on this repository.
 - Status bar uses the VHS Era color palette defined in the Oh My Posh section
 - TPM bootstrap (`run '~/.config/tmux/plugins/tpm/tpm'`) must always be the last line in `tmux.conf`
 
+## Herdr Configuration
+
+- herdr (https://herdr.dev) is an agent-aware multiplexer on trial as a tmux
+  replacement (October 2026). tmux and workmux are untouched and stay the
+  default; nothing starts herdr automatically
+- Installed from homebrew-core (`brew/Brewfile`), so `just brew::update` owns
+  upgrades and `update.version_check = false` keeps herdr's own updater quiet
+- Source state is `home/dot_config/herdr/`: `config.toml` and
+  `executable_nav.sh`. Validate an edit with
+  `HERDR_CONFIG_PATH=home/dot_config/herdr/config.toml herdr config check`;
+  after `chezmoi apply`, `herdr server reload-config` picks it up
+- **herdr's settings screen writes back to `config.toml`**, so a change made
+  there is overwritten by the next apply. Edit the repo copy. `session.json`,
+  `sessions/` and `.plugins.lock` in the same dir are runtime state chezmoi
+  ignores
+- Shaped to feel like `tmux.conf`: tmux session → herdr workspace, window → tab,
+  pane → pane. `prefix+s` is the Go To picker (settings moved to `prefix+,`),
+  `prefix+d` detaches, `prefix+g`/`prefix+h` are the lazygit/gh-dash popups,
+  `Shift-Left/Right` switch tabs, `prefix+|`/`_`/`\` split, `prefix+c` opens a
+  tab without the name prompt. `prefix+h` is taken, so `focus_pane_left` moved
+  to `ctrl+alt+h`. Worktrees use herdr's own flow (`prefix+shift+g`, sidebar);
+  workmux has no herdr backend and the tmux `prefix+w` menu has no equivalent
+- Key names: `prefix+|` and `prefix+_` must be literal -- herdr rejects `pipe`
+  and `underscore`, while `minus`, `comma` and `backslash` are named
+- `Ctrl-h/j/k/l` is vim-tmux-navigator rebuilt for herdr, with no herdr plugin
+  (plugin state is machine-local and chezmoi cannot carry it). `nav.sh` is a
+  detached `[[keys.command]]`: if the focused pane's foreground process is
+  vim/nvim/fzf it `send-keys` the chord through, otherwise `pane focus`es.
+  `nvim/lua/plugins/vim-tmux-navigator.lua` does the editor half: `wincmd`,
+  and at an edge `herdr pane focus --current` when `$HERDR_PANE_ID` is set,
+  `TmuxNavigate*` otherwise. Both use `--current`/the active pane rather than a
+  saved pane id, because herdr renumbers pane ids when a pane closes, and both
+  fall back from `$HERDR_BIN_PATH` to `herdr` on PATH because that variable is
+  a Cellar path a brew upgrade deletes under a running server
+- That spec sets `tmux_navigator_no_mappings`: vim-tmux-navigator's `plugin/`
+  script is sourced after `config()` and otherwise replaces the custom maps
+- `herdr integration install claude` (agent-state hooks) edits
+  `~/.claude/settings.json`, which is machine-local -- run it by hand per
+  machine, never from a recipe
+- Testing from inside tmux: the outer tmux's vim-tmux-navigator eats
+  `Ctrl-h/j/k/l` before herdr sees them. Drive herdr in a config-free server
+  (`tmux -L test -f /dev/null new-session -d 'herdr --session test'`) and use
+  `herdr --session`/`HERDR_SOCKET_PATH` to inspect it
+
 ## Neovim Configuration
 
 - Self-managed on Neovim 0.12's native `vim.pack` — no plugin-manager framework (migrated off LazyVim June 2026)
