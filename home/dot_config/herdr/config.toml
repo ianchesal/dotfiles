@@ -50,6 +50,12 @@ detach = "prefix+d"
 split_vertical = ["prefix+v", "prefix+|", "prefix+backslash"]
 split_horizontal = ["prefix+minus", "prefix+_"]
 
+# Walk the agents list in the sidebar: focus the next/previous agent pane, in
+# the order the panel shows them. Unbound by default. Brackets must be literal
+# -- herdr rejects bracketleft/leftbracket.
+next_agent = "prefix+]"
+previous_agent = "prefix+["
+
 # herdr's own worktree removal: confirms, takes the checkout and the workspace,
 # keeps the branch. prefix+shift+a below is the workmux-style one that also
 # deletes the branch. Not an alt chord: kitty on macOS doesn't send Option as alt.
