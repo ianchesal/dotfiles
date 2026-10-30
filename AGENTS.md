@@ -293,9 +293,12 @@ This file provides guidance to AI agents working on this repository.
   (plugin state is machine-local and chezmoi cannot carry it). `nav.sh` is a
   detached `[[keys.command]]`: if the focused pane's foreground process is
   vim/nvim/fzf it `send-keys` the chord through, otherwise `pane focus`es.
+  Focus wraps at the layout's edges as tmux's did; herdr has no wrap option,
+  so on an edge (`changed: false`) `nav.sh` walks the opposite way until focus
+  stops moving, and never while zoomed.
   `nvim/lua/plugins/vim-tmux-navigator.lua` does the editor half: `wincmd`,
-  and at an edge `herdr pane focus --current` when `$HERDR_PANE_ID` is set,
-  `TmuxNavigate*` otherwise. Both use `--current`/the active pane rather than a
+  and at an edge `nav.sh --no-passthrough` (so the key isn't bounced back into
+  nvim) when `$HERDR_PANE_ID` is set, `TmuxNavigate*` otherwise. Both use `--current`/the active pane rather than a
   saved pane id, because herdr renumbers pane ids when a pane closes, and both
   fall back from `$HERDR_BIN_PATH` to `herdr` on PATH because that variable is
   a Cellar path a brew upgrade deletes under a running server

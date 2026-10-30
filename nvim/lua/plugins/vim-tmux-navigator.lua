@@ -1,7 +1,7 @@
 -- Ctrl-h/j/k/l across nvim splits and multiplexer panes. Under tmux this is
 -- plain vim-tmux-navigator. Under herdr ($HERDR_PANE_ID set) nvim moves between
--- its own splits and, when the window doesn't change (an edge), asks herdr to
--- focus the neighbouring pane. The herdr half is ~/.config/herdr/nav.sh.
+-- its own splits and, when the window doesn't change (an edge), hands off to
+-- ~/.config/herdr/nav.sh, the herdr half, which moves (and wraps) herdr focus.
 local function navigate(wincmd, direction, tmux_cmd)
   return function()
     if vim.env.HERDR_PANE_ID == nil then
@@ -11,8 +11,16 @@ local function navigate(wincmd, direction, tmux_cmd)
     local win = vim.api.nvim_get_current_win()
     vim.cmd.wincmd(wincmd)
     if vim.api.nvim_get_current_win() == win then
-      -- --current, not $HERDR_PANE_ID: herdr renumbers pane ids when a pane
-      -- closes, and the focused pane is always ours while we handle the key.
+      -- --no-passthrough: nav.sh would otherwise see nvim in this pane and send
+      -- the key straight back. nav.sh wraps at herdr's own edges, as tmux does.
+      local nav = vim.fn.expand("~/.config/herdr/nav.sh")
+      if vim.fn.executable(nav) == 1 then
+        vim.system({ nav, "--no-passthrough", direction })
+        return
+      end
+      -- No nav.sh (not applied yet): plain move, no wrap. --current, not
+      -- $HERDR_PANE_ID: herdr renumbers pane ids when a pane closes, and the
+      -- focused pane is always ours while we handle the key.
       -- $HERDR_BIN_PATH is a Cellar path a brew upgrade can delete.
       local herdr = vim.env.HERDR_BIN_PATH
       if herdr == nil or vim.fn.executable(herdr) == 0 then
