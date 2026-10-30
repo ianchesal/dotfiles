@@ -6,8 +6,11 @@
 #
 # This file is chezmoi-managed. herdr's own settings screen writes back to it,
 # so a change made there is overwritten by the next `chezmoi apply` -- edit
-# home/dot_config/herdr/config.toml in the repo instead, then apply and
-# `herdr server reload-config`. `herdr config check` validates it.
+# home/dot_config/herdr/config.toml.tmpl in the repo instead, then apply and
+# `herdr server reload-config`. It is a template (for the machine marker
+# below), so check the rendered copy:
+#   chezmoi execute-template < home/dot_config/herdr/config.toml.tmpl > /tmp/herdr.toml
+#   HERDR_CONFIG_PATH=/tmp/herdr.toml herdr config check
 # Full default config: `herdr --default-config`.
 
 onboarding = false
@@ -20,6 +23,29 @@ version_check = false
 # Same palette as ../tmux/theme.conf.
 name = "tokyo-night"
 
+# Machine marker: remote boxes recolor the tab bar so they can't be mistaken
+# for the machine you're sitting at. accent is the active-tab chip, panel_bg
+# the rest of the tab row, sidebar_bg the sidebar. Local machines (macOS,
+# dads-gaming-pc) keep stock tokyo-night.
+#
+# herdr themes are client-side: this shows when herdr runs ON the box (ssh in,
+# then `herdr`). Viewing a saved machine from a local herdr uses the local
+# theme -- the sidebar rules under [ui.sidebar.agents] and [ui.sidebar.spaces]
+# cover that case.
+{{- if stat "/etc/workstation-startup.d" }}
+# Cloud workstation: lime, same as theme-gcw.conf and the gcw prompt.
+[theme.custom]
+accent = "#b8ff2e"
+panel_bg = "#26331c"
+sidebar_bg = "#141c0e"
+{{- else if eq .chezmoi.hostname "tranquility" }}
+# tranquility: orange.
+[theme.custom]
+accent = "#ff9e64"
+panel_bg = "#3d2817"
+sidebar_bg = "#21160d"
+{{- end }}
+
 [ui]
 # tmux's prefix+c opens a window straight away; herdr asks for a name by default.
 prompt_new_tab_name = false
@@ -31,6 +57,41 @@ tab_bar_right = [
   { type = "hostname" },
 ]
 tab_bar_right_separator = " · "
+
+# herdr's default agent rows, with the machine label colored to match the
+# marker above. This is the only per-machine color a saved-machine view can
+# show: the tab bar there uses this (local) theme whichever box you select.
+[ui.sidebar.agents]
+rows = [
+  [
+    "state_icon",
+    { token = "machine", rules = [
+      { equals = "tranquility", ignore_case = true, fg = "#ff9e64", bold = true },
+      { equals = "gcw", ignore_case = true, fg = "#b8ff2e", bold = true },
+    ] },
+    "workspace",
+    "tab",
+  ],
+  ["agent"],
+]
+
+# herdr's default space rows plus a machine badge. Space rows have no machine
+# token, so each server reports its own name as workspace metadata `host`
+# (../zsh/zshrc.d/herdr.zsh); this styles it. The last rule hides every other
+# host, and a row whose only token is hidden disappears, so local workspaces
+# look as they always have. Its own row so the workspace name isn't truncated.
+[ui.sidebar.spaces]
+rows = [
+  ["state_icon", "workspace"],
+  [
+    { token = "$host", rules = [
+      { equals = "tranquility", fg = "#ff9e64", bold = true },
+      { equals = "gcw", fg = "#b8ff2e", bold = true },
+      { contains = "", hide = true },
+    ] },
+  ],
+  ["branch", "git_status"],
+]
 
 [keys]
 prefix = "ctrl+b"
