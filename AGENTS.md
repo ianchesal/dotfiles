@@ -244,7 +244,8 @@ This file provides guidance to AI agents working on this repository.
   upgrades and `update.version_check = false` keeps herdr's own updater quiet
 - Source state is `home/dot_config/herdr/`: `config.toml`,
   `executable_nav.sh`, `executable_open-repo.sh`,
-  `executable_add-worktree.sh` and `executable_remove-worktree.sh`. Validate an edit with
+  `executable_add-worktree.sh`, `executable_open-worktree.sh` and
+  `executable_remove-worktree.sh`. Validate an edit with
   `HERDR_CONFIG_PATH=home/dot_config/herdr/config.toml herdr config check`;
   after `chezmoi apply`, `herdr server reload-config` picks it up
 - **herdr's settings screen writes back to `config.toml`**, so a change made
@@ -268,6 +269,13 @@ This file provides guidance to AI agents working on this repository.
   resolves the main checkout through `git --git-common-dir`. claude parked at
   its trust prompt returns `agent_not_ready`, which counts as success. herdr's
   own `prefix+shift+g` still works but opens a bare shell in `~/.herdr/worktrees`
+- `prefix+o` (`open-worktree.sh`) is workmux's "open": fzf the repo's linked
+  worktrees (open ones marked), then `herdr worktree open`, which focuses the
+  workspace if one exists and otherwise creates it, adopting a plain
+  `prefix+f` workspace as the group parent rather than duplicating it. Only a
+  newly created workspace gets claude. herdr's default `prefix+o`
+  (`open_notification_target`) is unbound by name in `config.toml`: if a
+  config names both, herdr keeps the built-in and drops the command
 - `prefix+shift+a` (`remove-worktree.sh`) is workmux's "remove": the focused
   worktree, its branch and its workspace, with a y/N before the removal, before
   forcing past dirty files, and before `-D` on an unmerged branch. It must not
@@ -318,6 +326,13 @@ This file provides guidance to AI agents working on this repository.
   `Ctrl-h/j/k/l` before herdr sees them. Drive herdr in a config-free server
   (`tmux -L test -f /dev/null new-session -d 'herdr --session test'`) and use
   `herdr --session`/`HERDR_SOCKET_PATH` to inspect it
+- From inside herdr (an agent in a herdr pane), a nested herdr exits at once
+  with "recursive descent denied". Start the test server with every `HERDR_*`
+  variable unset (`env -u HERDR_ENV -u HERDR_SOCKET_PATH ... herdr session
+  attach test`), and unset `HERDR_SOCKET_PATH` on the CLI calls too or they
+  talk to the live server. `HERDR_CONFIG_PATH` on that start command loads a
+  scratch config, so a binding can be driven end to end with `tmux -L test
+  send-keys C-b <key>` before it is applied
 
 ## Neovim Configuration
 

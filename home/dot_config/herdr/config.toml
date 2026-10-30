@@ -68,6 +68,12 @@ previous_agent = "prefix+{"
 # deletes the branch. Not an alt chord: kitty on macOS doesn't send Option as alt.
 remove_worktree = "prefix+shift+k"
 
+# prefix+o is "open worktree" below. herdr's default there is
+# open_notification_target (jump to the pane that last raised a notification),
+# which isn't used here. Unbound by name rather than left to be shadowed: when
+# a config names both, herdr keeps the built-in and drops the command.
+open_notification_target = ""
+
 # prefix+h is the gh-dash popup below; Ctrl-h covers moving left.
 focus_pane_left = "ctrl+alt+h"
 
@@ -125,6 +131,16 @@ command = "~/.config/herdr/add-worktree.sh"
 description = "add worktree + claude"
 width = "80%"
 height = "20%"
+
+# tmux's prefix+w "open" (workmux open): fzf the repo's worktrees, focus the
+# one picked, or open it as a workspace and start claude in it.
+[[keys.command]]
+key = "prefix+o"
+type = "popup"
+command = "~/.config/herdr/open-worktree.sh"
+description = "open worktree"
+width = "80%"
+height = "40%"
 
 # tmux's prefix+w "remove" (workmux remove): the focused worktree, its branch
 # and its workspace, asking before each destructive step.
