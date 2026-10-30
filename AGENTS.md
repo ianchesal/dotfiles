@@ -242,28 +242,11 @@ This file provides guidance to AI agents working on this repository.
   default; nothing starts herdr automatically
 - Installed from homebrew-core (`brew/Brewfile`), so `just brew::update` owns
   upgrades and `update.version_check = false` keeps herdr's own updater quiet
-- Source state is `home/dot_config/herdr/`: `config.toml.tmpl`,
+- Source state is `home/dot_config/herdr/`: `config.toml`,
   `executable_nav.sh`, `executable_open-repo.sh`,
-  `executable_add-worktree.sh` and `executable_remove-worktree.sh`. The config
-  is a template, so validate the rendered copy: `chezmoi execute-template <
-  home/dot_config/herdr/config.toml.tmpl > /tmp/herdr.toml` then
-  `HERDR_CONFIG_PATH=/tmp/herdr.toml herdr config check`;
+  `executable_add-worktree.sh` and `executable_remove-worktree.sh`. Validate an edit with
+  `HERDR_CONFIG_PATH=home/dot_config/herdr/config.toml herdr config check`;
   after `chezmoi apply`, `herdr server reload-config` picks it up
-- **Machine marker.** The template gives remote boxes their own `[theme.custom]`
-  -- gcw lime (detected by `/etc/workstation-startup.d`, as tmux does),
-  tranquility orange (by `.chezmoi.hostname`) -- recoloring the active-tab
-  chip, tab row and sidebar. Local machines keep stock tokyo-night. herdr
-  themes are **client-side**: the marker shows when herdr runs on the box (ssh
-  in, then `herdr`); viewing a saved machine from a local herdr uses the local
-  theme. Tab-bar `command` output has its ANSI codes stripped, so the server
-  cannot color the bar either
-- For the saved-machine view (how tranquility is used), the marker is in the
-  sidebar instead: `zshrc.d/herdr.zsh` runs in every herdr pane shell and
-  reports `host=<short hostname>` (`gcw` on the workstation) as workspace
-  metadata to its own server, and `[ui.sidebar.spaces]` styles that `$host`
-  token per value on a row of its own, hiding any host it doesn't name. The
-  agent rows color the built-in `machine` token (the saved-machine label) the
-  same way. A new remote needs a rule in both, matched on hostname and label
 - **herdr's settings screen writes back to `config.toml`**, so a change made
   there is overwritten by the next apply. Edit the repo copy. `session.json`,
   `sessions/` and `.plugins.lock` in the same dir are runtime state chezmoi
