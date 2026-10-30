@@ -27,10 +27,17 @@ typeset -gU cdpath fpath mailpath path
 # )
 
 # set the list of directories that zsh searches for commands
+#
+# Homebrew is listed here, not just left to .zshrc's `brew shellenv`, because a
+# non-interactive shell never reads .zshrc. An SSH remote command is one:
+# `herdr --remote` starts its server from one, and every herdr popup inherits
+# that server's PATH -- without linuxbrew, lazygit/gh/fzf are not found.
 path=(
   $HOME/{,s}bin(N)
   $HOME/.npm-global/bin
   /opt/{homebrew,local}/{,s}bin(N)
+  /home/linuxbrew/.linuxbrew/{,s}bin(N)
+  $HOME/.linuxbrew/{,s}bin(N)
   /usr/local/{,s}bin(N)
   $path
 )

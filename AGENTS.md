@@ -278,6 +278,13 @@ This file provides guidance to AI agents working on this repository.
 - Popup commands run in the focused pane's directory with `HERDR_SOCKET_PATH`
   and `HERDR_ACTIVE_{PANE,TAB,WORKSPACE}_ID` set; tests drive the scripts
   through a `HERDR_BIN` fake (`script/tests/herdr-*.test.sh`)
+- Popups inherit the **server's** environment, frozen when it started.
+  `herdr --remote` (and a saved SSH machine) starts the remote server from a
+  non-interactive SSH shell, which reads `.zshenv` → `.zprofile` but never
+  `.zshrc` -- so a tool a popup needs must be on PATH from `.zprofile`, which is
+  why linuxbrew is listed there and not left to `brew shellenv`. Without it,
+  lazygit/gh/fzf exit 127 (open-repo exits 0 silently). An environment fix
+  reaches a running server only via `herdr server stop` and a fresh start
 - Key names: `prefix+|`, `prefix+_`, `prefix+[`, `prefix+{` and `prefix+}` must
   be literal -- herdr rejects `pipe`, `underscore` and `bracketleft`/`leftbracket`,
   while `minus`, `comma` and `backslash` are named
