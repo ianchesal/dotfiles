@@ -11,53 +11,14 @@
 -- vim.g.autoformat gates — replicates LazyVim.format.enabled() behavior
 -- without the LazyVim util layer.
 --
--- prettier.condition: inlined from LazyVim prettier extra (has_parser check).
+-- prettier (and its has_parser condition) dropped October 2026 with the npm
+-- trim; yaml now formats through yamlls via lsp_format = "fallback".
 -- vim.g.lazyvim_prettier_needs_config not carried forward (always false default).
 
 return {
   src = "https://github.com/stevearc/conform.nvim",
   policy = { mode = "commit" },
   config = function()
-    -- Prettier condition: check if prettier can handle the buffer
-    -- (inlined from LazyVim extras/formatting/prettier.lua)
-    local prettier_supported = {
-      "css",
-      "graphql",
-      "handlebars",
-      "html",
-      "javascript",
-      "javascriptreact",
-      "json",
-      "jsonc",
-      "less",
-      "markdown",
-      "markdown.mdx",
-      "scss",
-      "typescript",
-      "typescriptreact",
-      "vue",
-      "yaml",
-    }
-
-    local prettier_has_parser_cache = {}
-    local function prettier_has_parser(ctx)
-      if prettier_has_parser_cache[ctx.filename] ~= nil then
-        return prettier_has_parser_cache[ctx.filename]
-      end
-      local ft = vim.bo[ctx.buf].filetype
-      if vim.tbl_contains(prettier_supported, ft) then
-        prettier_has_parser_cache[ctx.filename] = true
-        return true
-      end
-      local ret = vim.fn.system({ "prettier", "--file-info", ctx.filename })
-      local ok, parser = pcall(function()
-        return vim.fn.json_decode(ret).inferredParser
-      end)
-      local result = ok and parser and parser ~= vim.NIL
-      prettier_has_parser_cache[ctx.filename] = result
-      return result
-    end
-
     require("conform").setup({
       default_format_opts = {
         timeout_ms = 3000,
@@ -67,41 +28,18 @@ return {
       },
 
       formatters_by_ft = {
-        css = { "prettier" },
-        eruby = { "erb_format" },
         fish = { "fish_indent" },
-        graphql = { "prettier" },
-        handlebars = { "prettier" },
         hcl = { "packer_fmt" },
-        html = { "prettier" },
-        javascript = { "prettier" },
-        javascriptreact = { "prettier" },
-        json = { "prettier" },
-        jsonc = { "prettier" },
-        less = { "prettier" },
         lua = { "stylua" },
-        markdown = { "prettier" },
-        ["markdown.mdx"] = { "prettier" },
-        ruby = { "rubocop" },
-        scss = { "prettier" },
         sh = { "shfmt" },
         terraform = { "terraform_fmt" },
         ["terraform-vars"] = { "terraform_fmt" },
         tf = { "terraform_fmt" },
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
-        vue = { "prettier" },
-        yaml = { "prettier" },
       },
 
       formatters = {
         injected = {
           options = { ignore_errors = true },
-        },
-        prettier = {
-          condition = function(_, ctx)
-            return prettier_has_parser(ctx)
-          end,
         },
       },
     })

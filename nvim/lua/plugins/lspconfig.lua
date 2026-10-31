@@ -24,20 +24,6 @@ local disabled_servers = { "solargraph", "standardrb", "stylua", "taplo", "ts_ls
 
 local servers = {
   bashls = {},
-  denols = {},
-  diagnosticls = {},
-  docker_compose_language_service = {},
-  dockerls = {},
-  eslint = {
-    -- LazyVim's eslint extra also registered an "eslint: lsp" formatter with
-    -- its own format engine; that machinery is gone (conform handles
-    -- formatting), so only the server settings are ported.
-    settings = {
-      format = true,
-      workingDirectories = { mode = "auto" },
-    },
-  },
-  helm_ls = {},
   jsonls = {
     -- Lazy-load SchemaStore.nvim schemas when the server starts
     -- (LazyVim json extra).
@@ -52,7 +38,6 @@ local servers = {
       },
     },
   },
-  jsonnet_ls = {},
   lua_ls = {
     settings = {
       Lua = {
@@ -73,73 +58,7 @@ local servers = {
     },
   },
   marksman = {},
-  rubocop = {
-    -- See: https://docs.rubocop.org/rubocop/usage/lsp.html
-    cmd = { "bundle", "exec", "rubocop", "--lsp" },
-    -- Port of lspconfig.util.root_pattern("Gemfile", ".git", ".") -- the
-    -- trailing "." meant "always attach", hence the cwd fallback.
-    root_dir = function(bufnr, on_dir)
-      local root = vim.fs.root(bufnr, { "Gemfile", ".git" })
-      on_dir(root or vim.fn.getcwd())
-    end,
-  },
-  ruby_lsp = {
-    init_options = {
-      formatter = "auto",
-    },
-  },
-  sqlls = {},
   terraformls = {},
-  vtsls = {
-    -- From LazyVim's typescript/vtsls extra. The extra's
-    -- _typescript.moveToFileRefactoring client-command handler (interactive
-    -- "move to file" destination picker) was lazy/LazyVim-coupled and is not
-    -- ported. The javascript settings below are the snapshot-resolved copy of
-    -- the typescript ones (LazyVim copied them in its setup hook).
-    filetypes = {
-      "javascript",
-      "javascriptreact",
-      "javascript.jsx",
-      "typescript",
-      "typescriptreact",
-      "typescript.tsx",
-    },
-    settings = {
-      complete_function_calls = true,
-      vtsls = {
-        enableMoveToFileCodeAction = true,
-        autoUseWorkspaceTsdk = true,
-        experimental = {
-          maxInlayHintLength = 30,
-          completion = { enableServerSideFuzzyMatch = true },
-        },
-      },
-      typescript = {
-        updateImportsOnFileMove = { enabled = "always" },
-        suggest = { completeFunctionCalls = true },
-        inlayHints = {
-          enumMemberValues = { enabled = true },
-          functionLikeReturnTypes = { enabled = true },
-          parameterNames = { enabled = "literals" },
-          parameterTypes = { enabled = true },
-          propertyDeclarationTypes = { enabled = true },
-          variableTypes = { enabled = false },
-        },
-      },
-      javascript = {
-        updateImportsOnFileMove = { enabled = "always" },
-        suggest = { completeFunctionCalls = true },
-        inlayHints = {
-          enumMemberValues = { enabled = true },
-          functionLikeReturnTypes = { enabled = true },
-          parameterNames = { enabled = "literals" },
-          parameterTypes = { enabled = true },
-          propertyDeclarationTypes = { enabled = true },
-          variableTypes = { enabled = false },
-        },
-      },
-    },
-  },
   yamlls = {
     -- yamlls needs to be told we support line folding (LazyVim yaml extra)
     capabilities = {
@@ -167,25 +86,6 @@ local servers = {
     },
   },
 }
-
--- Trimmed port of LazyVim.lsp.execute, used by the vtsls keymaps.
-local function lsp_execute(opts)
-  local buf = vim.api.nvim_get_current_buf()
-  local filter = { bufnr = buf }
-  if opts.filter then
-    filter.name = opts.filter
-  end
-  local client = vim.lsp.get_clients(filter)[1]
-  if not client then
-    return
-  end
-  local params = { command = opts.command, arguments = opts.arguments }
-  if opts.open then
-    require("trouble").open({ mode = "lsp_command", params = params })
-  else
-    return client:exec_cmd(vim.tbl_extend("force", params, { title = opts.title }), { bufnr = buf })
-  end
-end
 
 -- Code action shorthand (port of LazyVim.lsp.action[name]).
 local function lsp_action(action)
@@ -232,48 +132,6 @@ local lsp_keys = {
   { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols", has = "workspace/symbols" },
   { "gai", function() Snacks.picker.lsp_incoming_calls() end, desc = "C[a]lls Incoming", has = "callHierarchy/incomingCalls" },
   { "gao", function() Snacks.picker.lsp_outgoing_calls() end, desc = "C[a]lls Outgoing", has = "callHierarchy/outgoingCalls" },
-  -- vtsls-only keymaps (LazyVim typescript extra)
-  {
-    -- overrides the generic gD above for vtsls clients
-    "gD",
-    function()
-      local win = vim.api.nvim_get_current_win()
-      local params = vim.lsp.util.make_position_params(win, "utf-16")
-      lsp_execute({
-        command = "typescript.goToSourceDefinition",
-        arguments = { params.textDocument.uri, params.position },
-        open = true,
-      })
-    end,
-    desc = "Goto Source Definition",
-    name = "vtsls",
-  },
-  {
-    "gR",
-    function()
-      lsp_execute({
-        command = "typescript.findAllFileReferences",
-        arguments = { vim.uri_from_bufnr(0) },
-        open = true,
-      })
-    end,
-    desc = "File References",
-    name = "vtsls",
-  },
-  { "<leader>cM", lsp_action("source.addMissingImports.ts"), desc = "Add missing imports", name = "vtsls" },
-  { "<leader>cD", lsp_action("source.fixAll.ts"), desc = "Fix all diagnostics", name = "vtsls" },
-  {
-    "<leader>cV",
-    function()
-      lsp_execute({
-        title = "Select TypeScript Version",
-        filter = "vtsls",
-        command = "typescript.selectTypeScriptVersion",
-      })
-    end,
-    desc = "Select TS workspace version",
-    name = "vtsls",
-  },
 }
 
 return {
@@ -413,7 +271,7 @@ return {
 
     -- Register the Mason packages backing these servers so `just
     -- nvim::mason-prune` keeps them (mason.lua's list doesn't include LSP
-    -- servers like marksman/vtsls that mason-lspconfig auto-installs).
+    -- servers like marksman that mason-lspconfig auto-installs).
     -- Registered only on this success path: the fallback branch above can't
     -- map names, so it leaves "lspconfig" unregistered and prune refuses to run.
     local mason_packages = {}

@@ -20,7 +20,6 @@ return {
 
     -- No custom linter overrides in the snapshot's linters table
     lint.linters_by_ft = {
-      dockerfile = { "hadolint" },
       fish = { "fish" },
       terraform = { "terraform_validate" },
       tf = { "terraform_validate" },

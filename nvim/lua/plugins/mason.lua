@@ -5,35 +5,21 @@
 -- mason registry after setup() (LazyVim's FileType-retrigger on install
 -- success was lazy.nvim machinery and is dropped).
 --
--- Package list: union of the old user mason.lua and the LazyVim snapshot
--- resolution, minus js-debug-adapter (DAP cluster dropped).
+-- Package list: trimmed October 2026 to the languages still being written
+-- (bash, terraform, yaml, markdown) plus lua for this config itself. Fewer
+-- auto-updating third-party packages, and especially fewer npm trees.
+-- shellcheck is deliberately absent: brew installs it and bashls finds it.
 --
 -- tree-sitter-cli (required by treesitter `main` to build parsers) comes
 -- from brew (brew/Brewfile), NOT mason: mason's prebuilt binary needs a
 -- newer glibc than Debian 12 ships, while brew bottles bundle their own.
 local ensure_installed = {
   "bash-language-server",
-  "deno",
-  "diagnostic-languageserver",
-  "dockerfile-language-server",
-  "erb-formatter",
-  "erb-lint",
-  "hadolint",
-  "helm-ls",
   "json-lsp",
-  "jsonnet-language-server",
   "lua-language-server",
-  "prettier",
-  "prettierd",
-  "rubocop",
-  "ruby-lsp",
-  "shellcheck",
   "shfmt",
-  "sqlls",
   "stylua",
   "terraform-ls",
-  "tflint",
-  "typescript-language-server",
   "yaml-language-server",
 }
 
