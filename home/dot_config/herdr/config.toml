@@ -20,6 +20,14 @@ version_check = false
 # Same palette as ../tmux/theme.conf.
 name = "tokyo-night"
 
+[theme.custom]
+# The sidebar/pane divider. herdr has no token of its own for it; it is drawn
+# in surface_dim (found by giving every token a unique colour in a scratch
+# session), and tokyo-night's is too faint to see. This is the prompt's branch
+# green (pistachio-green in ../ohmyposh/ohmyposh.json); its terminal-magenta,
+# #be95ff, is the light-purple alternative.
+surface_dim = "#42be65"
+
 [ui]
 # tmux's prefix+c opens a window straight away; herdr asks for a name by default.
 prompt_new_tab_name = false
