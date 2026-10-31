@@ -45,12 +45,6 @@ Host udm-pro
   User root
   PubkeyAuthentication no
 
-Host fractal-devenv
-  HostName 192.168.1.222
-  User ian
-  IdentityFile ~/.ssh/dads-gaming-pc.pub
-  IdentitiesOnly yes
-
 Host github.com
   User git
   IdentityFile ~/.ssh/github-personal.pub
