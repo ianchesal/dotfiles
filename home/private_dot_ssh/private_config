@@ -62,6 +62,13 @@ Host macmini
   IdentityFile ~/.ssh/macmini.pub
   IdentitiesOnly yes
 
+Host dads-gaming-pc
+  HostName 192.168.1.134
+  Port 2222
+  User ichesal
+  IdentityFile ~/.ssh/dads-gaming-pc.pub
+  IdentitiesOnly yes
+
 # 1Password's agent, only when its socket exists. An unconditional
 # IdentityAgent would silently disable a forwarded or hand-started agent
 # (it overrides SSH_AUTH_SOCK) on any box without 1Password. In an SSH session
