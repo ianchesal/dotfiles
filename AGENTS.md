@@ -376,6 +376,10 @@ This file provides guidance to AI agents working on this repository.
 - Use descriptive comments for functions and aliases
 - Follow existing patterns for tool-specific configurations (each tool has its own file)
 - NEVER recommend the forgit zsh plugin -- I hate it
+- `~/.secrets` is sourced last by `.zshrc` and by `bashrc.d/10-secrets.bash`, and only
+  when its mode (symlink followed) is exactly 600 or 400; otherwise both warn on
+  stderr and skip it. zsh checks with `zstat`, bash with `find -L -perm` because
+  `stat` flags differ between BSD and GNU. Keep the two guards in step
 - Machine identity lives in `zshrc.d/machine.zsh`: `DOTFILES_MACHINE` (gcw vs
   other, detected from `/etc/workstation-startup.d`) and `WORK_MACHINE`, which is
   exported from the `~/.work_machine` flag file. That file is the source of truth
@@ -395,7 +399,8 @@ This file provides guidance to AI agents working on this repository.
   (`globstar`) is guarded behind a `BASH_VERSINFO` check
 - `~/.bashrc` is a thin loader for `~/.config/bash/bashrc.sh`, which sources
   numbered modules from `~/.config/bash/bashrc.d/*.bash` in order (history,
-  shell options/vi mode, env/Homebrew, aliases, prompt, completion, fzf).
+  shell options/vi mode, env/Homebrew, aliases, prompt, completion, fzf,
+  git, parachute, `~/.secrets`).
   `~/.bash_profile` sources `~/.profile` first (if present), then
   `~/.bashrc`, so macOS Terminal.app and SSH login shells pick up the config
   -- bash does not do this automatically the way zsh does. `~/.bashrc` has a

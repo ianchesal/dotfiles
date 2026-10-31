@@ -162,9 +162,18 @@ if [ -f "${HOME}/.zsh_local" ]; then
   source "${HOME}/.zsh_local"
 fi
 
-# Load secrets
-if [ -f "${HOME}/.secrets" ]; then
-  source "${HOME}/.secrets"
+# Load secrets, but only when nobody but the owner can read them (mode 600 or
+# 400, following a symlink as `source` would); warn and skip the file otherwise.
+# Sourced at top level, not in a function, so a `typeset` in the file stays global.
+if [[ -f "${HOME}/.secrets" ]]; then
+  zmodload -F zsh/stat b:zstat
+  _secrets_mode=$(( 8#$(zstat -o +mode "${HOME}/.secrets") & 8#7777 ))
+  if (( _secrets_mode == 8#600 || _secrets_mode == 8#400 )); then
+    source "${HOME}/.secrets"
+  else
+    printf 'zshrc: not sourcing ~/.secrets: mode is %o, want 600 or 400 (chmod 600 ~/.secrets)\n' $_secrets_mode >&2
+  fi
+  unset _secrets_mode
 fi
 
 # zprof
