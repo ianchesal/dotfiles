@@ -3,11 +3,6 @@
     "SchemaStore.nvim": {
       "observed": [
         {
-          "first_seen": 1790910499,
-          "first_seen_iso": "2026-10-02T03:08:19Z",
-          "rev": "ec1b50c7fb9638e0a7b35e0182a54343b45f8d0d"
-        },
-        {
           "first_seen": 1790981791,
           "first_seen_iso": "2026-10-02T22:56:31Z",
           "rev": "d93ef1e8365950420ea3e706e82caf65dc9ff968"
@@ -94,9 +89,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-10-31T19:11:56Z",
-        "pinned_at_epoch": 1793473916,
-        "rev": "fae5c76c00dec18485f264396ce24368e9c4e9fb"
+        "pinned_at": "2026-11-01T16:23:04Z",
+        "pinned_at_epoch": 1793550184,
+        "rev": "ec1b50c7fb9638e0a7b35e0182a54343b45f8d0d"
       }
     },
     "blink.cmp": {
@@ -305,11 +300,6 @@
     "mini.ai": {
       "observed": [
         {
-          "first_seen": 1790954232,
-          "first_seen_iso": "2026-10-02T15:17:12Z",
-          "rev": "c2c4278beb759aa24b9506f56a67186a6cc2209c"
-        },
-        {
           "first_seen": 1791985637,
           "first_seen_iso": "2026-10-14T13:47:17Z",
           "rev": "d0c4987a1ead2bcf4eb22cc9815c662d76677c08"
@@ -321,9 +311,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-10-29T00:44:29Z",
-        "pinned_at_epoch": 1793234669,
-        "rev": "6c39ae7b11abe479fbe1bc81bf00ac6bca7afa07"
+        "pinned_at": "2026-11-01T16:23:04Z",
+        "pinned_at_epoch": 1793550184,
+        "rev": "c2c4278beb759aa24b9506f56a67186a6cc2209c"
       }
     },
     "mini.align": {
@@ -454,11 +444,6 @@
     "mini.surround": {
       "observed": [
         {
-          "first_seen": 1790954232,
-          "first_seen_iso": "2026-10-02T15:17:12Z",
-          "rev": "72feeaa0f984646efde875cc775a97b6f8a8be9b"
-        },
-        {
           "first_seen": 1791985637,
           "first_seen_iso": "2026-10-14T13:47:17Z",
           "rev": "59ce0acf79e1d930756ef3a7cb4c2369560cf548"
@@ -470,9 +455,9 @@
         }
       ],
       "pin": {
-        "pinned_at": "2026-10-29T00:44:29Z",
-        "pinned_at_epoch": 1793234669,
-        "rev": "33a2ebe5df8eb4751828fcba133e18ed0fbbdfab"
+        "pinned_at": "2026-11-01T16:23:04Z",
+        "pinned_at_epoch": 1793550184,
+        "rev": "72feeaa0f984646efde875cc775a97b6f8a8be9b"
       }
     },
     "noice.nvim": {
