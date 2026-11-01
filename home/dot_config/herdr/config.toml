@@ -40,6 +40,11 @@ tab_bar_right = [
 ]
 tab_bar_right_separator = " · "
 
+[ui.sound]
+# No chime when a background agent finishes or wants input. The agents wait;
+# the sidebar's state icons say who is done or blocked.
+enabled = false
+
 [keys]
 prefix = "ctrl+b"
 
