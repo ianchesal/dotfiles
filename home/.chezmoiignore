@@ -1,6 +1,7 @@
 {{- /*
-  Work machines and the cloud workstation keep their own ~/.ssh: the skeleton
-  config, keys and 1Password socket link are for personal machines only. This
+  Work machines and the cloud workstation keep their own ~/.ssh and ~/.aws: the
+  skeleton ssh config, keys, 1Password socket link and the 1Password-backed AWS
+  credential_process config are for personal machines only. This
   is a deliberate exception to "every config deploys everywhere" (see AGENTS.md). destDir, not
   homeDir, so a scratch --destination can exercise both branches.
 */ -}}
@@ -9,6 +10,8 @@
 .ssh/**
 .1password
 .1password/**
+.aws
+.aws/**
 {{- end }}
 {{- /*
   ~/.1password/agent.sock is a symlink only on macOS (work/gcw boxes never get

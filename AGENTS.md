@@ -18,7 +18,7 @@ This file provides guidance to AI agents working on this repository.
   `TODO.md`, and the `.claude/`, `.devcontainer/` and `.github/` dirs
 - Four chezmoi control files: `.chezmoiroot` at the repo root;
   `home/.chezmoiremove`, which lists paths chezmoi should delete from a machine
-  on the next apply; `home/.chezmoiignore`, a template that skips `~/.ssh` on
+  on the next apply; `home/.chezmoiignore`, a template that skips `~/.ssh` and `~/.aws` on
   work machines (`~/.work_machine`) and the cloud workstation
   (`/etc/workstation-startup.d`), and skips `~/.1password` everywhere but macOS;
   and `home/.chezmoi.toml.tmpl`, which `chezmoi init` renders
@@ -30,14 +30,15 @@ This file provides guidance to AI agents working on this repository.
   machine until `chezmoi init` is run there
 - Source naming: `home/dot_config/tmux/` → `~/.config/tmux/`, `dot_` at **every**
   level. `chezmoi add` applies the prefixes for you — don't hand-name files
-- Prefixes in use: `executable_` (exec bit, 15 entries), `create_` (seed once,
+- Prefixes in use: `executable_` (exec bit, 21 entries), `create_` (seed once,
   never clobber — one entry, `home/dot_claude/create_private_settings.json`, and
   what protects `~/.claude/settings.json`), `symlink_` (the entry's contents are
   the link target — three entries, `symlink_nvim.tmpl`,
   `symlink_agent.sock.tmpl` (macOS 1Password agent socket) and
   `dot_config/zsh/symlink_dot_zshenv.tmpl` (see Zsh Configuration)), `private_` (0700
   dirs / 0600 files: `private_dot_ssh`, `private_dot_ssh/private_config`,
-  `private_dot_1password`, plus `create_private_settings.json`) — it applies
+  `private_dot_1password`, `private_dot_aws/private_config.tmpl`, plus
+  `create_private_settings.json`) — it applies
   per entry, so a file inside a `private_` dir still needs its own prefix,
   `run_once_before_*` (one entry, the Brewfile bootstrap) and `run_once_after_*`
   (four entries, setup scripts). Ordering matters: `before` runs ahead of any
@@ -50,9 +51,9 @@ This file provides guidance to AI agents working on this repository.
   lockfile. Everything under `~/.config/nvim` is invisible to `chezmoi
   status`/`diff`/`verify` — that is intended
 - Every config deploys on every platform. No OS gating: a kitty config on Linux
-  is inert and not worth a template guard. The one exception is `~/.ssh` (and
-  the macOS-only `~/.1password` symlink), gated in `home/.chezmoiignore` — see
-  SSH Configuration
+  is inert and not worth a template guard. The exceptions are `~/.ssh` (and
+  the macOS-only `~/.1password` symlink) and `~/.aws`, gated in
+  `home/.chezmoiignore` — see SSH Configuration and AWS Configuration
 - `~/.work_machine` stays a **runtime** check
   (`home/dot_config/gh-dash/executable_gh-dash.sh` reads the file itself) so
   tmux popups and cron agree with interactive shells. Both `config.yml` and
@@ -521,6 +522,24 @@ This file provides guidance to AI agents working on this repository.
   and `ssh-new-host` (install + prove key auth, then place the block in
   `private_config` or an `ssh-config` note). Both refuse on work machines and gcw.
   Keep them in step with this section when the SSH layout changes
+
+## AWS Configuration
+
+- `home/private_dot_aws/private_config.tmpl` → `~/.aws/config` (0600). Personal
+  machines only: work machines and gcw keep their own `~/.aws` (SSO profiles),
+  so `home/.chezmoiignore` skips it there, as it does `~/.ssh`
+- No access key is on disk. The `default` profile's `credential_process` runs
+  `~/bin/aws-1p` (`home/bin/executable_aws-1p`), which `op read`s the access key
+  id and secret from a 1Password item (Private vault by default) and prints the
+  JSON the AWS CLI expects. The path is templated from `.chezmoi.homeDir`
+  because macOS and Linux homes differ
+- `~/bin` itself is not owned: only `aws-1p` is in the source state, and `home/bin`
+  has no `exact_` prefix, so other scripts there (and pi's `~/bin/pi` symlink)
+  are left alone
+- Same caveat as `ssh-config-sync`: on macOS over SSH, `op` blocks on the
+  1Password app's auth prompt on the Mac's display, so an `aws` command in that
+  session hangs
+- `awscli` comes from `brew/Brewfile`
 
 ## Kitty Configuration
 

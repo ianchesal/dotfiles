@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+item="${1:?usage: aws-1p <item title>}"
+vault="${2:-Private}"
+jq -n \
+  --arg id "$(op read "op://${vault}/${item}/access key id")" \
+  --arg secret "$(op read "op://${vault}/${item}/secret access key")" \
+  '{Version: 1, AccessKeyId: $id, SecretAccessKey: $secret}'

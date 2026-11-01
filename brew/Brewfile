@@ -8,6 +8,7 @@ tap "nikitabobko/tap" if OS.mac?
 tap "raine/workmux"
 
 brew "asdf"
+brew "awscli"
 brew "bash"
 brew "bat"
 brew "chezmoi"
