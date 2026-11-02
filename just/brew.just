@@ -30,6 +30,10 @@ update:
     printf '%s\n' "$keep" | xargs brew upgrade --force
     brew cleanup
 
+# Install everything in brew/Brewfile, upgrading anything out of date (safe to re-run)
+install: trust
+    @brew bundle install --file="$REPO/brew/Brewfile"
+
 # Trust the third-party taps and formulae declared in brew/trusted
 trust:
     @"$REPO/script/brew-trust"

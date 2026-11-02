@@ -7,7 +7,7 @@ runs `brew bundle`.
 ## Layout
 
 ```
-../just/brew.just   Update and trust recipes
+../just/brew.just   Install, update and trust recipes
 ../script/brew-trust  Applies `trusted` (shared by the recipe and the bootstrap)
 Brewfile            Declared taps, formulae and casks (installed via `brew bundle`)
 trusted             Third-party taps/formulae this repo trusts (see below)
@@ -22,6 +22,13 @@ everything in the `Brewfile`.
 
 On a normal `chezmoi init --apply` bootstrap this happens automatically via
 `home/run_once_before_20-brew-bundle.sh`, which does the same three steps.
+
+That script runs once per machine and does **not** re-run when the `Brewfile`
+changes, and `just brew::update` only upgrades what is already installed, so a
+package added later reaches an existing machine only through `just brew::install`.
+It applies the trust list, then installs everything in the `Brewfile` and upgrades
+anything out of date, and is safe to re-run. `just doctor` suggests it when a
+formula is missing or behind.
 
 ## Trusting third-party taps
 

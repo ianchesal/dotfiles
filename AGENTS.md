@@ -176,6 +176,7 @@ This file provides guidance to AI agents working on this repository.
 - Update zsh plugins: `zinit self-update && zinit update` (also run by `dfu`)
 - Install the Rust toolchain: `just rust::install`
 - Update rustup and Rust toolchains: `just rust::update`
+- Install everything in `brew/Brewfile`, upgrading anything out of date: `just brew::install` (the run-once bootstrap doesn't re-run when the Brewfile changes, so this is how an existing machine picks up a new package)
 - Update Homebrew packages: `just brew::update`
 - Trust the third-party taps declared in `brew/trusted`: `just brew::trust`
 - Install any missing gh CLI extensions: `just git::install-extensions` (also run by `git::update`, so `dfu` covers it; the run-once script skips them when logged out and never retries)

@@ -87,7 +87,7 @@ if have brew; then
     # brew says "needs to be installed or updated" -- it does not distinguish
     # the two, and a `brew pin`ned package is deliberately held back, so this
     # must not claim a package is missing when it is merely behind.
-    warn "missing or out of date: $missing -- 'brew bundle install --file=$repo/brew/Brewfile'"
+    warn "missing or out of date: $missing -- 'just brew::install'"
   fi
 else
   bad "brew not installed -- run 'chezmoi apply' to provision it"
@@ -252,7 +252,7 @@ else
       done
     fi
     if [ -n "$relay" ]; then ok "npiperelay.exe ($relay)"; else warn "npiperelay.exe not found -- 'winget install albertony.npiperelay'"; fi
-    if have socat; then ok "socat"; else warn "socat not on PATH -- 'brew bundle install --file=$repo/brew/Brewfile'"; fi
+    if have socat; then ok "socat"; else warn "socat not on PATH -- 'just brew::install'"; fi
   fi
   if have op; then ok "op $(op --version 2>/dev/null || echo '?')"; else note "op not installed -- just ssh::sync will skip"; fi
 fi

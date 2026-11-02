@@ -67,7 +67,7 @@ link-node:
     brew_node=$("$brew_bin" --prefix)/opt/node
     if [ ! -x "$brew_node/bin/node" ]; then
       printf '\033[31m%s\033[0m\n' "Cannot pin pi's node -- brew node not installed"
-      printf '\033[33m%s\033[0m\n' "Run: brew bundle --file=$REPO/brew/Brewfile"
+      printf '\033[33m%s\033[0m\n' "Run: just brew::install"
       exit 1
     fi
     link="{{ pi_node_link }}"
