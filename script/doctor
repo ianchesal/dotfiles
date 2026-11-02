@@ -146,6 +146,33 @@ else
   warn "asdf not on PATH"
 fi
 
+# --- gh extensions -------------------------------------------------------------
+# run_once_after_60-gh-extensions.sh skips the install when gh isn't logged in,
+# which is the normal state on a fresh machine, and chezmoi records that as done
+# and never retries. `git::update` installs them on the next dfu once gh is logged
+# in; until then the first symptom is `gh dash` failing in a popup. Keep the list
+# in step with `install-extensions` in just/git.just.
+section "gh extensions"
+if ! have gh; then
+  note "gh not on PATH -- skipping extension check"
+elif ! gh_extensions=$(gh extension list 2>/dev/null); then
+  warn "'gh extension list' failed -- could not check extensions"
+else
+  missing=''
+  for ext in gennaro-tedesco/gh-f dlvhdr/gh-dash github/gh-stack; do
+    if grep -qwF "$ext" <<<"$gh_extensions"; then
+      ok "$ext"
+    else
+      missing="$missing $ext"
+    fi
+  done
+  if [ -n "$missing" ]; then
+    fix="'just git::install-extensions'"
+    gh auth status >/dev/null 2>&1 || fix="'gh auth login', then $fix"
+    warn "not installed:$missing -- $fix"
+  fi
+fi
+
 # --- pi ------------------------------------------------------------------------
 # pi is installed on demand by its own installer, so its absence is never a
 # failure. What is worth flagging: a pi on PATH that is not the managed install

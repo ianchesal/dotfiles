@@ -78,4 +78,10 @@ host/auth state).
 
 - Config is deployed by chezmoi from `home/dot_config/git/`; the gh extensions
   are installed by `home/run_once_after_60-gh-extensions.sh`
-- `just git::update` — upgrade installed `gh` CLI extensions
+- `just git::install-extensions` — install any missing `gh` CLI extensions, and
+  fail if `gh` is missing or logged out or an install fails. The run-once script
+  skips them if `gh` isn't logged in and never retries, so `git::update` calls
+  this too. `just doctor` warns when any are missing
+- `just git::update` — install any missing `gh` CLI extensions, then upgrade them
+  all. In the `update` fan-out, so `dfu` covers it. When logged out it warns and
+  skips both steps; a failed install warns and moves on to the upgrade

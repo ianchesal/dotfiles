@@ -136,7 +136,7 @@ This file provides guidance to AI agents working on this repository.
   (`/etc/shells` + `chsh` needs sudo and can lock you out of a box) and `just
   install-runtimes` (slow, and compiles Ruby)
 - `just doctor` is a read-only health check — core tooling, bash 4+, chezmoi
-  source, Brewfile coverage, third-party tap trust, asdf runtimes vs
+  source, Brewfile coverage, third-party tap trust, gh extensions, asdf runtimes vs
   `~/.tool-versions`, login shell.
   Run it after a bootstrap or when something feels off
 - `bootstrap/cloud-workstation.sh` is now a thin wrapper over exactly that path,
@@ -178,6 +178,7 @@ This file provides guidance to AI agents working on this repository.
 - Update rustup and Rust toolchains: `just rust::update`
 - Update Homebrew packages: `just brew::update`
 - Trust the third-party taps declared in `brew/trusted`: `just brew::trust`
+- Install any missing gh CLI extensions: `just git::install-extensions` (also run by `git::update`, so `dfu` covers it; the run-once script skips them when logged out and never retries)
 - Update yt-dlp: `just ytdlp::update`
 - Update gcloud components: `just gcloud::update`
 - Uninstall asdf tool versions older than the one in use: `just asdf::prune` (`FORCE=1` skips the confirmation prompt)
