@@ -1,0 +1,35 @@
+#!/bin/zsh
+
+##? gcw - open the cloud workstation ssh session in its own herdr tab
+##?
+##? Opens a tab labelled "gcw" in the current herdr workspace and runs
+##? `p workstation ssh` in it, which starts the persistent ssh-agent session to
+##? the Google Cloud Workstation. If the workspace already has a "gcw" tab it is
+##? focused instead, so a second run never starts a second ssh.
+##?
+##? usage: gcw
+
+if [[ -z $HERDR_PANE_ID ]]; then
+  echo 'gcw: not inside a herdr pane' >&2
+  return 1
+fi
+if (( ! $+commands[p] )); then
+  echo 'gcw: `p` is not installed on this machine' >&2
+  return 1
+fi
+
+# HERDR_BIN_PATH is a Cellar path a brew upgrade can delete under a running server.
+local herdr=${HERDR_BIN_PATH:-herdr}
+[[ -x $herdr ]] || herdr=herdr
+
+local ws tab pane
+ws=$("$herdr" pane current | jq -r '.result.pane.workspace_id') || return 1
+
+tab=$("$herdr" tab list --workspace "$ws" | jq -r '[.result.tabs[] | select(.label == "gcw")][0].tab_id // empty') || return 1
+if [[ -n $tab ]]; then
+  "$herdr" tab focus "$tab" >/dev/null
+  return
+fi
+
+pane=$("$herdr" tab create --workspace "$ws" --label gcw --cwd "$HOME" --focus | jq -r '.result.root_pane.pane_id') || return 1
+"$herdr" pane run "$pane" 'p workstation ssh' >/dev/null
