@@ -180,5 +180,9 @@ alias pax="pi --session-id pax-$(basename $(pwd))"
 # Dotfiles
 alias dfu=dotfiles_update
 
+# SSH agent state. Run this when ssh says a .pub file has bad permissions: that
+# warning means the agent couldn't serve the key, not that the mode changed.
+alias sshcheck='echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK"; ls -l "$SSH_AUTH_SOCK"; ssh-add -l'
+
 # Get UPS information
 alias upsstat='for v in ups.status ups.load battery.charge battery.runtime; do printf "%-25s %s\n" "$v" "$(upsc myups $v 2>/dev/null)"; done'
