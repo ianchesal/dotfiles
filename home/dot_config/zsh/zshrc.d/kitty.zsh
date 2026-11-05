@@ -5,8 +5,3 @@ if test -n "$KITTY_INSTALLATION_DIR"; then
     kitty-integration
     unfunction kitty-integration
 fi
-
-if [[ "$TERM" == 'xterm-kitty' ]]; then
-    alias kssh='kitty +kitten ssh'
-    compdef kssh='ssh'
-fi

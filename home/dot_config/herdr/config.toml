@@ -78,7 +78,7 @@ previous_agent = "prefix+{"
 
 # herdr's own worktree removal: confirms, takes the checkout and the workspace,
 # keeps the branch. prefix+shift+a below is the workmux-style one that also
-# deletes the branch. Not an alt chord: kitty on macOS doesn't send Option as alt.
+# deletes the branch.
 remove_worktree = "prefix+shift+k"
 
 # prefix+o is "open worktree" below. herdr's default there is
