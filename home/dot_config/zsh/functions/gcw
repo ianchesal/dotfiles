@@ -1,28 +1,65 @@
 #!/bin/zsh
 
-##? gcw - open the cloud workstation ssh session in its own herdr tab
+##? gcw - open the cloud workstation ssh session in its own herdr tab or tmux window
 ##?
-##? Opens a tab labelled "gcw" in the current herdr workspace and runs
-##? `p workstation ssh` in it, which starts the persistent ssh-agent session to
-##? the Google Cloud Workstation. If the workspace already has a "gcw" tab it is
-##? focused instead, so a second run never starts a second ssh.
+##? Opens a tab (herdr) or window (tmux) labelled "gcw" in the current
+##? workspace/session and runs `p workstation ssh` in it, which starts the
+##? persistent ssh-agent session to the Google Cloud Workstation. If one labelled
+##? "gcw" already exists it is focused instead, so a second run never starts a
+##? second ssh.
+##?
+##? The innermost multiplexer wins when they are nested: each one sets
+##? TERM_PROGRAM for its own panes, so that is checked before the
+##? HERDR_PANE_ID/TMUX variables, which leak into anything nested inside.
 ##?
 ##? usage: gcw
 
-if [[ -z $HERDR_PANE_ID ]]; then
-  echo 'gcw: not inside a herdr pane' >&2
-  return 1
-fi
 if (( ! $+commands[p] )); then
   echo 'gcw: `p` is not installed on this machine' >&2
   return 1
+fi
+
+local mux
+case $TERM_PROGRAM in
+  herdr) [[ -n $HERDR_PANE_ID ]] && mux=herdr ;;
+  tmux) [[ -n $TMUX ]] && mux=tmux ;;
+esac
+if [[ -z $mux ]]; then
+  if [[ -n $HERDR_PANE_ID ]]; then
+    mux=herdr
+  elif [[ -n $TMUX ]]; then
+    mux=tmux
+  else
+    echo 'gcw: not inside a herdr or tmux pane' >&2
+    return 1
+  fi
+fi
+
+local cmd='p workstation ssh'
+local tab win pane
+
+if [[ $mux == tmux ]]; then
+  # Target the calling pane's session, not whichever session tmux thinks is current.
+  local -a here
+  [[ -n $TMUX_PANE ]] && here=(-t "$TMUX_PANE")
+  local sess
+  sess=$(tmux display-message -p "${here[@]}" '#{session_id}') || return 1
+  win=$(tmux list-windows -t "$sess" -F '#{window_id} #{window_name}' | awk '$2 == "gcw" { print $1; exit }') || return 1
+  if [[ -n $win ]]; then
+    tmux select-window -t "$win"
+    return
+  fi
+  # "$sess:" takes the next free index; -n disables automatic-rename, so the label sticks for the next lookup.
+  pane=$(tmux new-window -t "$sess:" -n gcw -c "$HOME" -P -F '#{pane_id}') || return 1
+  tmux send-keys -t "$pane" "$cmd" Enter
+  return
 fi
 
 # HERDR_BIN_PATH is a Cellar path a brew upgrade can delete under a running server.
 local herdr=${HERDR_BIN_PATH:-herdr}
 [[ -x $herdr ]] || herdr=herdr
 
-local ws tab pane
+local ws
 ws=$("$herdr" pane current | jq -r '.result.pane.workspace_id') || return 1
 
 tab=$("$herdr" tab list --workspace "$ws" | jq -r '[.result.tabs[] | select(.label == "gcw")][0].tab_id // empty') || return 1
@@ -32,4 +69,4 @@ if [[ -n $tab ]]; then
 fi
 
 pane=$("$herdr" tab create --workspace "$ws" --label gcw --cwd "$HOME" --focus | jq -r '.result.root_pane.pane_id') || return 1
-"$herdr" pane run "$pane" 'p workstation ssh' >/dev/null
+"$herdr" pane run "$pane" "$cmd" >/dev/null
