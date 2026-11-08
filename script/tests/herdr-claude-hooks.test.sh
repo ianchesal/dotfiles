@@ -119,6 +119,35 @@ printf '{"tool_input":{"file_path":"%s"}}' "$work/STATUS.md" |
   env -u HERDR_ENV HERDR_BIN="$work/herdr" HERDR_CALLS="$work/calls" "$status"
 check 'outside herdr: no herdr calls' '' "$(cat "$work/calls")"
 
+echo "herdr-hooks.jq (just claude::herdr-hooks)"
+
+filter=$here/../../claude/herdr-hooks.jq
+# An old seed's workmux hooks, plus a rubocop hook and machine-only hooks.
+cat >"$work/settings.json" <<'EOF'
+{
+  "model": "opus",
+  "hooks": {
+    "Notification": [{"matcher": "permission_prompt", "hooks": [{"type": "command", "command": "workmux set-window-status waiting"}]}],
+    "PostToolUse": [
+      {"matcher": "Edit|Write", "hooks": [{"type": "command", "command": "rubocop-hook"}]},
+      {"hooks": [{"type": "command", "command": "workmux set-window-status working"}]}
+    ],
+    "SessionStart": [
+      {"matcher": "startup", "hooks": [{"type": "command", "command": "workmux register-agent"}]},
+      {"matcher": "startup", "hooks": [{"type": "command", "command": "bash '/x/.claude/hooks/herdr-agent-state.sh' session"}]}
+    ],
+    "Stop": [{"hooks": [{"type": "command", "command": "workmux set-window-status done"}, {"type": "command", "command": "say done"}]}]
+  }
+}
+EOF
+jq -f "$filter" "$work/settings.json" >"$work/migrated.json"
+summary() { jq -c '.hooks | to_entries | map({(.key): [.value[].hooks[].command]}) | add' "$1"; }
+check 'drops workmux, keeps the rest, adds the herdr hooks' \
+  '{"PostToolUse":["rubocop-hook","bash ~/.claude/hooks/herdr-status.sh"],"SessionStart":["bash '"'"'/x/.claude/hooks/herdr-agent-state.sh'"'"' session","bash ~/.claude/hooks/herdr-context.sh"],"Stop":["say done"]}' \
+  "$(summary "$work/migrated.json")"
+check 'leaves non-hook keys alone' '"opus"' "$(jq -c .model "$work/migrated.json")"
+check 'is idempotent' "$(jq -c . "$work/migrated.json")" "$(jq -c -f "$filter" "$work/migrated.json")"
+
 if [ "$failures" -gt 0 ]; then
   echo "$failures failure(s)"
   exit 1

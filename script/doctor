@@ -252,7 +252,7 @@ else
     if [ -f "$claude_settings" ] && grep -q "hooks/$hook" "$claude_settings"; then
       ok "claude hook $hook wired up"
     else
-      warn "claude hook $hook not in $claude_settings -- copy its entry from create_private_settings.json"
+      warn "claude hook $hook not in $claude_settings -- 'just claude::herdr-hooks'"
     fi
   done
 fi

@@ -186,6 +186,7 @@ This file provides guidance to AI agents working on this repository.
 - Preview which asdf tool versions would be pruned: `just asdf::prune-preview`
 - Install the fonts listed in `just/fonts.just` (Homebrew casks; on macOS also strips the download quarantine so Font Book sees them): `just fonts::install`
 - Install the `xterm-kitty` terminfo on a remote Linux box so kitty clients get a working TERM (no-op if present; `FORCE=1` reinstalls): `just kitty::terminfo`
+- Move a live `~/.claude/settings.json` off the workmux hooks and onto the herdr pair, showing the diff and asking first: `just claude::herdr-hooks` (`FORCE=1` skips the prompt)
 - Install or refresh herdr's agent skill for Claude Code (`~/.claude/skills/herdr`, regenerated from `herdr --skill`): `just herdr::skill` (also runs in the `update` fan-out)
 - Install pi with pi.dev's installer (on demand, never automatic): `just pi::install`
 - Update pi and its extensions: `just pi::update` (also runs in the `update` fan-out, so `dfu` covers it)
@@ -346,9 +347,17 @@ This file provides guidance to AI agents working on this repository.
     by `just herdr::skill` (in the `update` fan-out). Generated per herdr
     version and untracked, like the `_claude` completion spec
   Both hooks sit in the `create_private_settings.json` seed as
-  `bash ~/.claude/hooks/<name>.sh`; an existing machine needs them added to its
-  live `settings.json` by hand, and `just doctor` flags the gap. Tests:
-  `script/tests/herdr-claude-hooks.test.sh`
+  `bash ~/.claude/hooks/<name>.sh`. An existing machine gets them with `just
+  claude::herdr-hooks`, which runs `claude/herdr-hooks.jq` over the live
+  `settings.json`: it removes every workmux hook command and adds the two herdr
+  hooks unless they're already there, leaving machine-only hooks and every
+  other key alone. It shows a diff and asks first (`FORCE=1` skips the prompt;
+  it refuses without a terminal otherwise), keeps a timestamped `.bak-` copy,
+  and rewrites in place so the 0600 mode survives. It is the one recipe that
+  edits the live file: surgical, idempotent and confirmed, which is why it is
+  allowed where re-adding or templating the file is not. `CLAUDE_SETTINGS`
+  points it at a copy. `just doctor` flags a machine that still needs it.
+  Tests: `script/tests/herdr-claude-hooks.test.sh`
 - The `worktree`, `coordinator`, `merge` and `rebase` Claude skills drive herdr,
   not workmux (November 2026: herdr replaced tmux+workmux as the daily driver). Both
   dispatchers go through `add-worktree.sh`'s non-interactive inputs (`BRANCH`,
@@ -648,7 +657,8 @@ This file provides guidance to AI agents working on this repository.
   under `~/.claude/skills/` puts it out of sync with the repo and the next `chezmoi
   apply` silently overwrites it — `chezmoi re-add` captures such an edit instead
 - There is no `claude/skills/` directory; `claude/` at the repo root holds only
-  `apt-claude.sh`
+  `apt-claude.sh` and `herdr-hooks.jq` (the filter behind `just
+  claude::herdr-hooks`)
 - `~/src/handoff` (the agent-to-MacBook handoff dir the global `CLAUDE.md`
   describes) is guaranteed by `home/src/private_handoff/.keep`: chezmoi creates
   the dir `0700` on every machine and recreates it if deleted, but never deploys
