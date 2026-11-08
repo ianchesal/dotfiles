@@ -35,5 +35,9 @@ tags
 # Claude Code -- per-machine settings, never shared
 **/.claude/settings.local.json
 
+# Agent STATUS.md -- per-task progress file at the repo/worktree root (see
+# ~/.claude/CLAUDE.md). Anchored so a project's nested STATUS.md stays visible
+/STATUS.md
+
 # Pi -- agent working dir, always repo-local state
 /.pi/

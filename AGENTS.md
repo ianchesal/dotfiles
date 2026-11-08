@@ -617,6 +617,12 @@ This file provides guidance to AI agents working on this repository.
   apply` silently overwrites it — `chezmoi re-add` captures such an edit instead
 - There is no `claude/skills/` directory; `claude/` at the repo root holds only
   `apt-claude.sh`
+- `~/src/handoff` (the agent-to-MacBook handoff dir the global `CLAUDE.md`
+  describes) is guaranteed by `home/src/private_handoff/.keep`: chezmoi creates
+  the dir `0700` on every machine and recreates it if deleted, but never deploys
+  the `.keep` itself. Neither level is `exact_`, so other `~/src` checkouts and
+  the dir's contents are left alone; syncing it between machines is not
+  chezmoi's job
 - `~/.claude/settings.json` is seeded by
   `home/dot_claude/create_private_settings.json` and then never touched again
   (`create_` = write if absent). The live file is not tracked — it is per-machine
