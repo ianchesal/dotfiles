@@ -115,6 +115,25 @@ fi
 check "reports herdr's message" "1" "$(grep -c 'branch is already checked out' "$work/err" || true)"
 check "starts no agent after a failed worktree" "0" "$(grep -c -- 'agent start' "$work/calls" || true)"
 
+# --- the base branch is recorded for /merge and /rebase -----------------------
+check "records the main checkout's branch as herdr-base" "main" \
+  "$(git -C "$repo" config --get branch.feat-x.herdr-base || true)"
+
+git -C "$repo" config branch.kept.herdr-base release
+run "$repo" kept
+check "keeps an existing herdr-base" "release" "$(git -C "$repo" config --get branch.kept.herdr-base || true)"
+
+# --- non-interactive dispatch inputs (the /worktree and coordinator skills) ---
+: >"$work/calls"
+(cd "$repo" && HERDR_CALLS=$work/calls HERDR_BIN=$work/herdr BRANCH=dispatched BASE=old NO_FOCUS=1 \
+  PROMPT_FILE=/tmp/task.md "$subject" </dev/null >"$work/out" 2>"$work/err")
+check "BASE and NO_FOCUS reach herdr" "1" \
+  "$(grep -c -- "^worktree create --cwd $repo --branch dispatched --base old --path ${repo}__worktrees/dispatched --no-focus$" "$work/calls" || true)"
+check "BASE is recorded as herdr-base" "old" "$(git -C "$repo" config --get branch.dispatched.herdr-base || true)"
+check "PROMPT_FILE becomes claude's first message" "1" \
+  "$(grep -c -- '^agent start dispatched --kind claude --pane w3:p1 -- --permission-mode auto Read the task in /tmp/task.md and carry it out.$' "$work/calls" || true)"
+check "reports the agent and pane" "agent dispatched in pane w3:p1" "$(tail -n 1 "$work/out")"
+
 # --- an empty branch is a quiet no-op ----------------------------------------
 run "$repo" ''
 check "an empty branch prompt calls no herdr" "0" "$(wc -l <"$work/calls" | tr -d ' ')"

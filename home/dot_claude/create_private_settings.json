@@ -7,17 +7,6 @@
   "alwaysThinkingEnabled": true,
   "cleanupPeriodDays": 30,
   "hooks": {
-    "Notification": [
-      {
-        "matcher": "permission_prompt|elicitation_dialog",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "workmux set-window-status waiting"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
@@ -30,41 +19,24 @@
         ]
       },
       {
+        "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "workmux set-window-status working"
+            "command": "bash ~/.claude/hooks/herdr-status.sh",
+            "timeout": 10
           }
         ]
       }
     ],
     "SessionStart": [
       {
-        "matcher": "startup|resume|clear|fork",
+        "matcher": "startup|resume|clear|compact",
         "hooks": [
           {
             "type": "command",
-            "command": "workmux register-agent"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "workmux set-window-status done"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "workmux set-window-status working"
+            "command": "bash ~/.claude/hooks/herdr-context.sh",
+            "timeout": 10
           }
         ]
       }

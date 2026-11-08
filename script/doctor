@@ -223,6 +223,40 @@ else
   fi
 fi
 
+# --- herdr + Claude Code --------------------------------------------------------
+# What makes claude herdr-aware lives in three machine-local places chezmoi can't
+# own: herdr's integration hook (installed by hand, it edits settings.json), the
+# herdr skill (generated per herdr version) and our two hooks' entries in the
+# create_-only ~/.claude/settings.json.
+section "herdr / Claude"
+if ! have herdr; then
+  note "herdr not installed"
+else
+  ok "herdr $(herdr --version 2>/dev/null | awk '{print $2}')"
+  integration=$(herdr integration status 2>/dev/null | sed -n 's/^claude: \([^(]*\).*/\1/p' | sed 's/ *$//')
+  case $integration in
+    current*) ok "herdr claude integration ($integration)" ;;
+    'not installed' | '') warn "herdr claude integration not installed -- run 'herdr integration install claude' by hand" ;;
+    *) warn "herdr claude integration is $integration -- rerun 'herdr integration install claude' by hand" ;;
+  esac
+  herdr_skill=$HOME/.claude/skills/herdr/SKILL.md
+  if [ ! -f "$herdr_skill" ]; then
+    warn "herdr Claude skill missing -- 'just herdr::skill'"
+  elif [ "$(cat "$herdr_skill")" != "$(herdr --skill 2>/dev/null)" ]; then
+    warn "herdr Claude skill is stale for this herdr -- 'just herdr::skill'"
+  else
+    ok "herdr Claude skill current"
+  fi
+  claude_settings=$HOME/.claude/settings.json
+  for hook in herdr-context.sh herdr-status.sh; do
+    if [ -f "$claude_settings" ] && grep -q "hooks/$hook" "$claude_settings"; then
+      ok "claude hook $hook wired up"
+    else
+      warn "claude hook $hook not in $claude_settings -- copy its entry from create_private_settings.json"
+    fi
+  done
+fi
+
 # --- SSH via 1Password ----------------------------------------------------------
 # ~/.ssh is chezmoi-managed on personal machines only; a managed config on a work
 # or gcw box means .chezmoiignore did not catch it (flag missing at apply time).

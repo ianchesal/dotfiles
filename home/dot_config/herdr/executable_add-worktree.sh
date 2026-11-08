@@ -13,9 +13,17 @@
 # claude stopping at its "trust this folder" prompt counts as started: every
 # new worktree path asks once.
 #
-# Seams for script/tests/herdr-add-worktree.test.sh:
-#   HERDR_BIN -- herdr executable (default: $HERDR_BIN_PATH, else herdr on PATH)
-#   BRANCH    -- skip the prompt and use this branch
+# The branch it was cut from is recorded as git config branch.<branch>.herdr-base
+# (unless one is already set), which is where the /merge and /rebase Claude
+# skills land it.
+#
+# Inputs, for the popup's tests and for the /worktree and coordinator Claude
+# skills, which dispatch through this script non-interactively:
+#   HERDR_BIN   -- herdr executable (default: $HERDR_BIN_PATH, else herdr on PATH)
+#   BRANCH      -- skip the prompt and use this branch
+#   BASE        -- ref to cut a new branch from (default: the main checkout's HEAD)
+#   PROMPT_FILE -- claude's first message tells it to read this file and do the task
+#   NO_FOCUS    -- 1 leaves focus where it is instead of jumping to the new workspace
 
 set -euo pipefail
 
@@ -56,13 +64,28 @@ if [ -z "$branch" ]; then
 fi
 [ -n "$branch" ] || exit 0
 
-out=$("$herdr" worktree create --cwd "$root" --branch "$branch" \
-  --path "${root}__worktrees/${branch//\//-}" --focus 2>&1) ||
+base=${BASE:-}
+focus=--focus
+[ "${NO_FOCUS:-}" = 1 ] && focus=--no-focus
+
+out=$("$herdr" worktree create --cwd "$root" --branch "$branch" ${base:+--base "$base"} \
+  --path "${root}__worktrees/${branch//\//-}" "$focus" 2>&1) ||
   fail "$(jq -r '.error.message' <<<"$out" 2>/dev/null || echo "$out")"
 pane=$(jq -r '.result.root_pane.pane_id' <<<"$out")
 
+recorded=${base:-$(git -C "$root" branch --show-current 2>/dev/null || true)}
+if [ -n "$recorded" ] && ! git -C "$root" config --get "branch.$branch.herdr-base" >/dev/null; then
+  git -C "$root" config "branch.$branch.herdr-base" "$recorded" || true
+fi
+
+agent=$(agent_name "$branch")
+claude_args=(--permission-mode auto)
+[ -n "${PROMPT_FILE:-}" ] && claude_args+=("Read the task in $PROMPT_FILE and carry it out.")
+
 echo 'Starting claude...'
-out=$("$herdr" agent start "$(agent_name "$branch")" --kind claude --pane "$pane" -- --permission-mode auto 2>&1) || {
+out=$("$herdr" agent start "$agent" --kind claude --pane "$pane" -- "${claude_args[@]}" 2>&1) || {
   [ "$(jq -r '.error.code // empty' <<<"$out" 2>/dev/null)" = agent_not_ready ] ||
     fail "worktree is open but claude did not start: $out"
+  echo "claude is waiting at a startup prompt (folder trust?) in pane $pane"
 }
+echo "agent $agent in pane $pane"

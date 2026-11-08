@@ -186,6 +186,7 @@ This file provides guidance to AI agents working on this repository.
 - Preview which asdf tool versions would be pruned: `just asdf::prune-preview`
 - Install the fonts listed in `just/fonts.just` (Homebrew casks; on macOS also strips the download quarantine so Font Book sees them): `just fonts::install`
 - Install the `xterm-kitty` terminfo on a remote Linux box so kitty clients get a working TERM (no-op if present; `FORCE=1` reinstalls): `just kitty::terminfo`
+- Install or refresh herdr's agent skill for Claude Code (`~/.claude/skills/herdr`, regenerated from `herdr --skill`): `just herdr::skill` (also runs in the `update` fan-out)
 - Install pi with pi.dev's installer (on demand, never automatic): `just pi::install`
 - Update pi and its extensions: `just pi::update` (also runs in the `update` fan-out, so `dfu` covers it)
 - Pin pi to Homebrew's node: `just pi::link-node` (also run by `pi::install` and `pi::update`)
@@ -240,9 +241,10 @@ This file provides guidance to AI agents working on this repository.
 
 ## Herdr Configuration
 
-- herdr (https://herdr.dev) is an agent-aware multiplexer on trial as a tmux
-  replacement (October 2026). tmux and workmux are untouched and stay the
-  default; nothing starts herdr automatically
+- herdr (https://herdr.dev) is an agent-aware multiplexer, trialled as a tmux
+  replacement from October 2026 and the daily driver since November 2026. The
+  tmux and workmux configs are still deployed, but no Claude skill or hook
+  depends on them any more; nothing starts herdr automatically
 - Installed from homebrew-core (`brew/Brewfile`), so `just brew::update` owns
   upgrades and `update.version_check = false` keeps herdr's own updater quiet
 - Source state is `home/dot_config/herdr/`: `config.toml`,
@@ -324,7 +326,37 @@ This file provides guidance to AI agents working on this repository.
   script is sourced after `config()` and otherwise replaces the custom maps
 - `herdr integration install claude` (agent-state hooks) edits
   `~/.claude/settings.json`, which is machine-local -- run it by hand per
-  machine, never from a recipe
+  machine, never from a recipe. In v11 it only reports claude's session id and
+  transcript path on SessionStart; herdr reads working/blocked/done off the
+  screen either way. `just doctor` warns when it is missing or outdated
+- **claude is herdr-aware** through three pieces, all no-ops outside herdr:
+  - `home/dot_claude/hooks/executable_herdr-context.sh`, a SessionStart hook
+    (`startup|resume|clear|compact`) that prints the workspace/tab/pane IDs and
+    then `herdr-context.md` beside it. SessionStart stdout becomes session
+    context, so the policy -- long jobs in side panes, sibling agents in herdr
+    panes instead of Agent-tool subagents, focus and closing rules -- costs
+    nothing in sessions outside herdr. **Edit the policy in `herdr-context.md`**
+  - `home/dot_claude/hooks/executable_herdr-status.sh`, a PostToolUse hook on
+    `Write|Edit|MultiEdit`: when claude writes a `STATUS.md` it sets the pane
+    title to the task name, labels `State: blocked` on the done/idle states
+    (`pane report-metadata --source claude-status`), and fires a herdr
+    notification when the block is a `~/src/handoff` script. It can't see shell
+    redirects, so the policy tells claude to use Write/Edit for STATUS.md
+  - herdr's own skill (`herdr --skill`) installed to `~/.claude/skills/herdr`
+    by `just herdr::skill` (in the `update` fan-out). Generated per herdr
+    version and untracked, like the `_claude` completion spec
+  Both hooks sit in the `create_private_settings.json` seed as
+  `bash ~/.claude/hooks/<name>.sh`; an existing machine needs them added to its
+  live `settings.json` by hand, and `just doctor` flags the gap. Tests:
+  `script/tests/herdr-claude-hooks.test.sh`
+- The `worktree`, `coordinator`, `merge` and `rebase` Claude skills drive herdr,
+  not workmux (November 2026: herdr replaced tmux+workmux as the daily driver). Both
+  dispatchers go through `add-worktree.sh`'s non-interactive inputs (`BRANCH`,
+  `BASE`, `PROMPT_FILE`, `NO_FOCUS=1`), which also records
+  `branch.<b>.herdr-base`, the branch `/merge` fast-forwards and `/rebase`
+  targets (they fall back to `workmux-base`, then `main`). `/merge` ends by
+  closing its own workspace, so a coordinator sees the agent go away and
+  confirms the merge from git
 - Testing from inside tmux: the outer tmux's vim-tmux-navigator eats
   `Ctrl-h/j/k/l` before herdr sees them. Drive herdr in a config-free server
   (`tmux -L test -f /dev/null new-session -d 'herdr --session test'`) and use

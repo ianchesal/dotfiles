@@ -28,6 +28,7 @@ mod fonts 'just/fonts.just'
 mod gcloud 'just/gcloud.just'
 mod gem 'just/gem.just'
 mod git 'just/git.just'
+mod herdr 'just/herdr.just'
 mod kitty 'just/kitty.just'
 mod nvim 'just/nvim.just'
 mod ohmyposh 'just/ohmyposh.just'
@@ -46,7 +47,7 @@ default:
 # Update everything that can be (safely) updated. nvim::update is deliberately excluded --
 # dfu runs it only on dads-gaming-pc (see docs/chezmoi-workflows.md) to avoid racing
 # concurrent `just nvim::update` runs into conflicting pins.json commits.
-update: brew::update asdf::update rust::update claude::update pi::update git::update gcloud::update ytdlp::update gem::cleanup ssh::sync
+update: brew::update asdf::update rust::update claude::update herdr::skill pi::update git::update gcloud::update ytdlp::update gem::cleanup ssh::sync
 
 # Install the asdf-managed runtimes, Rust toolchain first
 install-runtimes: rust::install asdf::install
@@ -65,7 +66,8 @@ lint:
       script/verify-chezmoi-assumptions.sh home/run_once_*.sh \
       script/tests/*.test.sh bootstrap/*.sh \
       home/dot_bashrc home/dot_bash_profile home/dot_config/bash/bashrc.sh \
-      home/dot_config/bash/bashrc.d/*.bash
+      home/dot_config/bash/bashrc.d/*.bash \
+      home/dot_claude/hooks/*.sh
     python3 -c 'import ast, sys; ast.parse(open(sys.argv[1]).read())' script/gen-claude-completions.py
     just --fmt --check --justfile "$REPO/justfile"
 
