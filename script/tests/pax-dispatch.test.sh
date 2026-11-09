@@ -11,7 +11,9 @@ set -euo pipefail
 here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 subject=$here/../../home/dot_config/tmux/workmux/executable_pax-dispatch.sh
 
-work=$(mktemp -d)
+# Resolve symlinks: macOS's $TMPDIR sits under /var -> /private/var, and the
+# script reports paths from `git rev-parse --show-toplevel`, which resolves them.
+work=$(cd "$(mktemp -d)" && pwd -P)
 trap 'rm -rf "$work"' EXIT
 
 failures=0
