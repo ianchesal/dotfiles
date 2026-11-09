@@ -87,10 +87,15 @@ docs/superpowers/plans/YYYY-MM-DD-<topic>.md
 docs/superpowers/prompts/YYYY-MM-DD-<topic>-prompt.md
 ```
 
-`docs/superpowers/` is **committed, not ignored**. The prompt has to reach the
-branch for pax to read it, and has to reach the PR to be reviewable. A repo that
-gitignores that path cannot be dispatched from — `pax-dispatch.sh` detects this
-and says so rather than reporting a missing prompt.
+`docs/superpowers/` is **committed when the repo allows it**, so the planning
+docs reach the PR and are reviewable. Some repos gitignore that path on purpose
+(design docs live in Jira), and the repo's rule wins: the docs stay on disk in
+the worktree, uncommitted. `pax-dispatch.sh` handles both — it prefers a prompt
+the branch commits and otherwise takes a gitignored one from disk, which works
+because the lane runs in this worktree and the lead gets an absolute path. The
+instruction it sends tells pax which case it is, and in the ignored one not to
+force-add the docs. A prompt that is uncommitted but *could* be committed is
+refused with "commit it".
 
 TODO: Do we need to clean up `docs/superpowers/**` at some point? These are
 eventually out of date artifacts that clutter up the repo.

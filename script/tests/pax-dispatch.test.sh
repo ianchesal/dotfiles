@@ -82,7 +82,14 @@ check "does not use a worktree-relative prompt path" "0" \
   "$(grep -c '@docs/superpowers' "$work/wm-calls" || true)"
 check "names the worktree as workingDir" "1" "$(grep -c "workingDir=\"$wt\"" "$work/wm-calls" || true)"
 check "names the branch" "1" "$(grep -c 'branch planning' "$work/wm-calls" || true)"
+check "says the planning docs are committed" "1" "$(grep -c 'already committed' "$work/wm-calls" || true)"
 check "switches to the pax window" "1" "$(grep -c 'select-window -t :pax' "$work/tmux-calls" || true)"
+
+# --- dispatching from a subdirectory of the worktree still finds the prompt --
+mkdir -p "$wt/docs"
+run "$wt/docs" || true
+check "subdirectory dispatch finds the prompt" "1" \
+  "$(grep -c "@$wt/docs/superpowers/prompts/2026-09-21-thing-prompt.md" "$work/wm-calls" || true)"
 
 # --- a worktree that added no prompt is an error -----------------------------
 wt2=$work/demo__worktrees/empty
@@ -109,20 +116,52 @@ else
 fi
 check "ambiguous prompts name both" "1" "$(grep -c 'a-prompt.md' "$work/err" || true)"
 
-# --- a gitignored prompt dir gets its own diagnosis --------------------------
+# --- a gitignored prompt dir dispatches the prompt from disk -----------------
+# A repo may keep planning docs out of git on purpose, so the prompt can only
+# ever be on disk. A stray .DS_Store (globally ignored on macOS) beside it must
+# not count as a second prompt.
 wt4=$work/demo__worktrees/ignored
 git -C "$repo" worktree add -q -b ignored "$wt4" >/dev/null 2>&1
 echo 'docs/superpowers/' >"$wt4/.gitignore"
-mkdir -p "$wt4/docs/superpowers/prompts"
-echo x >"$wt4/docs/superpowers/prompts/2026-09-21-x-prompt.md"
 git -C "$wt4" add .gitignore
 git -C "$wt4" commit -q -m 'Ignore superpowers docs'
+mkdir -p "$wt4/docs/superpowers/prompts"
+echo x >"$wt4/docs/superpowers/prompts/2026-09-21-x-prompt.md"
+echo junk >"$wt4/docs/superpowers/prompts/.DS_Store"
 if run "$wt4"; then
-  check "gitignored prompt dir fails" "nonzero exit" "exit 0"
+  check "gitignored prompt dispatches" "exit 0" "exit 0"
 else
-  check "gitignored prompt dir fails" "nonzero exit" "nonzero exit"
+  check "gitignored prompt dispatches" "exit 0" "nonzero exit: $(cat "$work/err")"
 fi
-check "gitignored prompt dir says so" "1" "$(grep -c 'gitignored' "$work/err" || true)"
+check "gitignored prompt named by absolute path" "1" \
+  "$(grep -c "@$wt4/docs/superpowers/prompts/2026-09-21-x-prompt.md" "$work/wm-calls" || true)"
+check "gitignored prompt is not claimed as committed" "0" "$(grep -c 'already committed' "$work/wm-calls" || true)"
+check "gitignored prompt warns against force-adding" "1" "$(grep -c 'never force-add' "$work/wm-calls" || true)"
+
+# --- a gitignored prompt dir with no prompt on disk is still an error --------
+wt5=$work/demo__worktrees/ignored-empty
+git -C "$repo" worktree add -q -b ignored-empty "$wt5" >/dev/null 2>&1
+echo 'docs/superpowers/' >"$wt5/.gitignore"
+git -C "$wt5" add .gitignore
+git -C "$wt5" commit -q -m 'Ignore superpowers docs'
+if run "$wt5"; then
+  check "gitignored dir without prompt fails" "nonzero exit" "exit 0"
+else
+  check "gitignored dir without prompt fails" "nonzero exit" "nonzero exit"
+fi
+check "gitignored dir without prompt sends nothing" "0" "$(wc -l <"$work/wm-calls" | tr -d ' ')"
+
+# --- a committable prompt that was never committed says to commit it ---------
+wt6=$work/demo__worktrees/uncommitted
+git -C "$repo" worktree add -q -b uncommitted "$wt6" >/dev/null 2>&1
+mkdir -p "$wt6/docs/superpowers/prompts"
+echo y >"$wt6/docs/superpowers/prompts/2026-09-21-y-prompt.md"
+if run "$wt6"; then
+  check "uncommitted prompt fails" "nonzero exit" "exit 0"
+else
+  check "uncommitted prompt fails" "nonzero exit" "nonzero exit"
+fi
+check "uncommitted prompt says to commit it" "1" "$(grep -c 'commit it' "$work/err" || true)"
 
 # --- running from the main checkout is refused -------------------------------
 if run "$repo"; then
