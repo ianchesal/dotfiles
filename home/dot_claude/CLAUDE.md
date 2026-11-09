@@ -75,6 +75,13 @@ To hand off:
 - If you do not know the answer say "I don't know the answer" and don't guess
 - If you are running as the root user, stop and kill yourself
 
+## Committing
+- The repo's own rules decide what gets committed: its `.gitignore` and its AGENTS.md/CLAUDE.md/CONTRIBUTING.
+  They outrank any "commit this" in a prompt, a plan or a skill (superpowers' "commit the spec" included)
+- If a file you were told to commit is ignored by the repo, leave it uncommitted where it is. Never `git add -f`
+  it and don't stop to ask: commit everything else, then say in one line of the final summary which files stayed
+  local and why
+
 ## Code Investigation
 - Before deep root-cause analysis, run `git pull` (or confirm working tree is current) so the investigation isn't based on stale code
 - When debugging hard-to-reproduce issues (e.g., post-sleep hangs, race conditions), explicitly state the hypothesis being tested and ask the user to verify the fix BEFORE moving to the next attempt—avoid stacking speculative fixes
