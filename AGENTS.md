@@ -665,6 +665,21 @@ This file provides guidance to AI agents working on this repository.
   the `.keep` itself. Neither level is `exact_`, so other `~/src` checkouts and
   the dir's contents are left alone; syncing it between machines is not
   chezmoi's job
+- **mutagen syncs `~/src/handoff`** between the MacBook and the cloud
+  workstation. The session (`handoff`, label `dotfiles=handoff`, two-way-safe)
+  lives in the **Mac's** mutagen daemon; the workstation runs only the agent
+  mutagen copies over ssh. Beta is `gcw:~/src/handoff`, where `gcw` is the
+  machine-local ssh alias for the `p workstation ssh` tunnel
+  (127.0.0.1:65432) -- it is in the Mac's unmanaged `~/.ssh/config`, not this
+  repo. The zsh function `handoff-sync` ensures the session (resume if it
+  exists, else create), and `gcw` runs `handoff-sync --wait` in the background
+  on every call, logging to `~/.local/state/handoff-sync.log`. `--wait` is
+  needed because `mutagen sync create` fails on an unreachable endpoint; once
+  created, the daemon reconnects by itself whenever the tunnel returns. A
+  `zsystem flock` keeps two waiters from racing to create duplicate sessions.
+  Status and conflicts: `mutagen sync list handoff`. Tests:
+  `script/tests/handoff-sync.test.sh`. `mutagen` is a macOS-only Brewfile entry
+  from the `mutagen-io` tap (trusted per-formula in `brew/trusted`)
 - `~/.claude/settings.json` is seeded by
   `home/dot_claude/create_private_settings.json` and then never touched again
   (`create_` = write if absent). The live file is not tracked — it is per-machine

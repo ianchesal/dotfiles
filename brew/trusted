@@ -18,6 +18,11 @@
 # workmux (config at home/dot_config/workmux). Single formula, so scope it.
 formula raine/workmux/workmux
 
+# mutagen (drives the ~/src/handoff sync; see the handoff-sync zsh function).
+# macOS-only in the Brewfile; trusting the name on Linux is inert. Single
+# formula, so scope it.
+formula mutagen-io/mutagen/mutagen
+
 # AeroSpace (config at home/dot_config/aerospace). Trusted tap-wide: this is a
 # cask, and the tap grant is the form already proven to work for it.
 tap nikitabobko/tap

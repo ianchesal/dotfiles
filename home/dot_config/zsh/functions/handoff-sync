@@ -1,0 +1,93 @@
+#!/bin/zsh
+
+##? handoff-sync - keep ~/src/handoff in sync with the cloud workstation via mutagen
+##?
+##? Makes sure a mutagen sync session named "handoff" exists between
+##? ~/src/handoff on this machine and ~/src/handoff on the `gcw` ssh host (the
+##? alias for the tunnel `p workstation ssh` opens). Idempotent: an existing
+##? session is resumed, a missing one is created. `gcw` runs it in the
+##? background on every connect.
+##?
+##? Creating a session needs the workstation reachable, so --wait polls ssh
+##? until it answers (HANDOFF_SYNC_TIMEOUT seconds, default 600) instead of
+##? failing. Once the session exists, the mutagen daemon reconnects on its own
+##? whenever the tunnel comes back; nothing has to re-run this.
+##?
+##? Two-way-safe: a file changed on both sides is left as a conflict rather than
+##? overwritten. `mutagen sync list handoff` shows state and conflicts;
+##? `mutagen sync terminate handoff` removes the session (files stay put).
+##?
+##? usage: handoff-sync [--wait]
+
+emulate -L zsh
+zmodload zsh/system zsh/datetime
+
+local mutagen=${MUTAGEN_BIN:-mutagen}
+local host=${HANDOFF_SYNC_HOST:-gcw}
+local dir=${HANDOFF_SYNC_DIR:-$HOME/src/handoff}
+local timeout=${HANDOFF_SYNC_TIMEOUT:-600}
+local interval=${HANDOFF_SYNC_INTERVAL:-5}
+local state=${XDG_STATE_HOME:-$HOME/.local/state}
+local selector='dotfiles=handoff'
+local wait=0
+
+case $1 in
+  --wait) wait=1 ;;
+  '') ;;
+  *) print -u2 'usage: handoff-sync [--wait]'; return 2 ;;
+esac
+
+_handoff_sync_log() { print -r -- "$(strftime '%F %T' $EPOCHSECONDS) handoff-sync: $*" }
+
+if ! command -v "$mutagen" >/dev/null; then
+  _handoff_sync_log 'mutagen is not installed on this machine' >&2
+  return 1
+fi
+
+# Only one waiter at a time: a second `gcw` while the first is still waiting
+# for the tunnel would otherwise race it to create a duplicate session.
+# zsystem flock opens the file but will not create it.
+local lock=$state/handoff-sync.lock lock_fd
+mkdir -p "$state" && : >>"$lock" || return 1
+if ! zsystem flock -t 0 -f lock_fd "$lock" 2>/dev/null; then
+  _handoff_sync_log 'another handoff-sync is already running'
+  return 0
+fi
+
+{
+  # Sessions live in the daemon; this is a no-op when it is already up.
+  "$mutagen" daemon start >/dev/null || return 1
+
+  local existing
+  existing=$("$mutagen" sync list --label-selector "$selector" --template '{{range .}}{{.Name}}{{"\n"}}{{end}}') || return 1
+  if [[ -n $existing ]]; then
+    # Resuming a running session is a no-op, so this only matters after a manual pause.
+    "$mutagen" sync resume --label-selector "$selector" >/dev/null || return 1
+    return 0
+  fi
+
+  local deadline=$(( SECONDS + timeout ))
+  until ssh -o BatchMode=yes -o ConnectTimeout=5 "$host" true >/dev/null 2>&1; do
+    if (( ! wait )); then
+      _handoff_sync_log "$host is not reachable; start it with \`gcw\` or pass --wait" >&2
+      return 1
+    fi
+    if (( SECONDS >= deadline )); then
+      _handoff_sync_log "gave up after ${timeout}s waiting for $host" >&2
+      return 1
+    fi
+    sleep "$interval"
+  done
+
+  mkdir -p "$dir" && chmod 700 "$dir" || return 1
+  _handoff_sync_log "creating mutagen session: $dir <-> $host:~/src/handoff"
+  "$mutagen" sync create \
+    --name handoff \
+    --label "$selector" \
+    --mode two-way-safe \
+    --ignore-vcs \
+    --ignore .DS_Store \
+    "$dir" "$host:~/src/handoff"
+} always {
+  zsystem flock -u "$lock_fd"
+}

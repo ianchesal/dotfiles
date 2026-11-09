@@ -8,6 +8,10 @@
 ##? "gcw" already exists it is focused instead, so a second run never starts a
 ##? second ssh.
 ##?
+##? Either way it also starts `handoff-sync --wait` in the background, so the
+##? mutagen session that mirrors ~/src/handoff to the workstation exists once
+##? the tunnel is up. Its output goes to ~/.local/state/handoff-sync.log.
+##?
 ##? The innermost multiplexer wins when they are nested: each one sets
 ##? TERM_PROGRAM for its own panes, so that is checked before the
 ##? HERDR_PANE_ID/TMUX variables, which leak into anything nested inside.
@@ -33,6 +37,14 @@ if [[ -z $mux ]]; then
     echo 'gcw: not inside a herdr or tmux pane' >&2
     return 1
   fi
+fi
+
+# Keep ~/src/handoff in sync with the workstation (see handoff-sync). In the
+# background and on every run: a first-time create waits for the tunnel the ssh
+# below opens, and an existing session just gets resumed if it was paused.
+if (( $+commands[mutagen] )); then
+  local log=${XDG_STATE_HOME:-$HOME/.local/state}/handoff-sync.log
+  mkdir -p "${log:h}" && handoff-sync --wait >>"$log" 2>&1 &!
 fi
 
 local cmd='p workstation ssh'

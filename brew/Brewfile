@@ -6,6 +6,9 @@
 # is the declared list. Every tap here needs an entry there.
 tap "nikitabobko/tap" if OS.mac?
 tap "raine/workmux"
+# macOS-only: the Mac drives the ~/src/handoff sync (`handoff-sync`, run by
+# `gcw`); the workstation end only needs the agent mutagen installs over ssh.
+tap "mutagen-io/mutagen" if OS.mac?
 
 brew "asdf"
 brew "awscli"
@@ -24,6 +27,7 @@ brew "just"
 brew "lazygit"
 brew "libyaml"
 brew "luarocks"
+brew "mutagen-io/mutagen/mutagen" if OS.mac?
 brew "neovim"
 brew "node"
 brew "oh-my-posh"
