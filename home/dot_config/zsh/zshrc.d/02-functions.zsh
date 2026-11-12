@@ -55,11 +55,6 @@ debug:config_files() {
   debug:config_files "$@"
 }
 
-# function crafting-old-sandboxes() {
-#   JQ_QUERY=".[] | select((.spec.op_state.state == \"SUSPENDED\") and (.meta.updated_at <= \"$(date -v-27d +'%Y-%m-%d')\")) | {creator: .meta.owner.name, sandbox: .meta.name, updated_at: .meta.updated_at}"
-#   cs sandbox list -o json | jq $JQ_QUERY
-# }
-
 # Lazy load clean-nvim-logs function (rarely used)
 clean-nvim-logs() {
   unfunction clean-nvim-logs
