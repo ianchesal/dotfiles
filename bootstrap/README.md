@@ -14,6 +14,8 @@ bash-only.sh          Lays down just the standalone bash fallback config --
                       no git, no chezmoi, no Homebrew, no repo checkout
 tmux-lite.sh          Same idea for tmux: installs the single-file
                       tmux-lite config as ~/.tmux.conf -- no TPM, no plugins
+herdr-lite.sh         Same idea for herdr: installs config.toml and the helper
+                      scripts into ~/.config/herdr, then reloads a running server
 ```
 
 `cloud-workstation.sh` runs in numbered, re-runnable steps (each skips if
@@ -39,13 +41,18 @@ Run `centos.sh` or `cloud-workstation.sh` directly on the target machine,
 e.g. `bash bootstrap/centos.sh` or `./bootstrap/cloud-workstation.sh`. They
 expect the repo checked out at `$HOME/src/dotfiles` and may invoke `sudo`.
 
-`bash-only.sh` and `tmux-lite.sh` need no checkout and no `sudo` -- run them
+`bash-only.sh`, `tmux-lite.sh` and `herdr-lite.sh` need no checkout and no `sudo` -- run them
 straight from GitHub:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/bash-only.sh | bash
 curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/tmux-lite.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/herdr-lite.sh | bash
 ```
+
+`herdr-lite.sh` is for a box a local herdr attaches with `herdr machine
+enable` or `herdr --remote`. The herdr *server* handles keys, so without a
+config on the remote box Ctrl-h/j/k/l and every custom binding go to the shell.
 
 `tmux-lite.sh` warns if `~/.config/tmux/tmux.conf` also exists: tmux loads
 every default config file it finds, so that one would be layered on top.

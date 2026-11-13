@@ -292,6 +292,14 @@ This file provides guidance to AI agents working on this repository.
 - Popup commands run in the focused pane's directory with `HERDR_SOCKET_PATH`
   and `HERDR_ACTIVE_{PANE,TAB,WORKSPACE}_ID` set; tests drive the scripts
   through a `HERDR_BIN` fake (`script/tests/herdr-*.test.sh`)
+- **Keys are handled by the server, with the server's config.** A local
+  herdr attached to a remote session (`herdr machine enable`, `herdr
+  --remote`) runs that box's bindings, not the Mac's. On a box chezmoi doesn't
+  manage there is no config, so Ctrl-h/j/k/l and every `[[keys.command]]`
+  silently fall through to the shell. `bootstrap/herdr-lite.sh` (rerun by the
+  bash parachute's `dfu`) fetches the real `config.toml` and helper scripts
+  there; nav.sh needs only `jq`. `herdr machine add` installs herdr to
+  `~/.local/bin`, often off the server's PATH, so nav.sh falls back to it
 - Popups inherit the **server's** environment, frozen when it started.
   `herdr --remote` (and a saved SSH machine) starts the remote server from a
   non-interactive SSH shell, which reads `.zshenv` → `.zprofile` but never
@@ -477,7 +485,7 @@ This file provides guidance to AI agents working on this repository.
   https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/bash-only.sh
   | bash`
 - `bashrc.d/09-parachute.bash` defines `parachute_update`, aliased to `dfu`
-  in bash, which reruns `bash-only.sh` and `tmux-lite.sh` to update a
+  in bash, which reruns `bash-only.sh`, `tmux-lite.sh` and `herdr-lite.sh` to update a
   parachute machine. It resolves main's commit hash through the GitHub API
   and fetches from that commit, because raw.githubusercontent.com caches
   branch URLs for minutes after a push and a rerun against `main` can lay

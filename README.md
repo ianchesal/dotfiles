@@ -53,7 +53,10 @@ already in place is backed up first:
     # tmux: same keys and theme as the full config, no plugins (~/.tmux.conf)
     curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/tmux-lite.sh | bash
 
-Once the bash config is in, `dfu` updates both to the latest `main` in one go.
+    # herdr: the server-side config a local herdr uses when it attaches this box (~/.config/herdr)
+    curl -fsSL https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/herdr-lite.sh | bash
+
+Once the bash config is in, `dfu` updates all three to the latest `main` in one go.
 It pins the download to main's current commit, so it can't pick up a stale
 cached copy right after a push, and it leaves unchanged files alone (only the
 ones that actually changed get a `.bak` copy). On a chezmoi-managed machine it

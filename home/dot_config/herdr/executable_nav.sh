@@ -32,9 +32,12 @@ case $direction in
 esac
 
 # herdr injects its binary path, but a brew upgrade under a running server
-# leaves it pointing at a deleted Cellar path -- fall back to PATH.
+# leaves it pointing at a deleted Cellar path -- fall back to PATH, then to
+# ~/.local/bin, where `herdr machine add` installs it on a remote box whose
+# server PATH lacks that dir.
 herdr=${HERDR_BIN_PATH:-herdr}
 [ -x "$herdr" ] || herdr=herdr
+command -v "$herdr" >/dev/null 2>&1 || herdr=$HOME/.local/bin/herdr
 
 # Moves focus one pane from $1 (a pane id, or --current) towards $2 and prints
 # "<changed> <zoomed> <focused pane id>"; prints nothing if herdr fails.

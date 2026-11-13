@@ -1,7 +1,7 @@
-# Refresh a parachute machine -- one set up with bootstrap/bash-only.sh
-# and bootstrap/tmux-lite.sh rather than chezmoi -- to the latest bash
-# and tmux-lite config on main. `dfu` here is the bash twin of the zsh
-# dfu, for boxes where that one doesn't exist.
+# Refresh a parachute machine -- one set up with bootstrap/bash-only.sh,
+# bootstrap/tmux-lite.sh and bootstrap/herdr-lite.sh rather than chezmoi
+# -- to the latest bash, tmux-lite and herdr config on main. `dfu` here
+# is the bash twin of the zsh dfu, for boxes where that one doesn't exist.
 #
 # Fetches by commit hash, not by `main`: raw.githubusercontent.com caches
 # a branch URL for several minutes, so pulling right after a push can
@@ -36,7 +36,7 @@ parachute_update() {
   # Download each installer before running it: `curl | bash` would run an
   # empty script and report success if the download failed.
   local installer script
-  for installer in bash-only.sh tmux-lite.sh; do
+  for installer in bash-only.sh tmux-lite.sh herdr-lite.sh; do
     script="$(curl -fsSL "$repo_raw/bootstrap/$installer")" || {
       echo "parachute_update: failed to download $installer from $repo_raw" >&2
       return 1
