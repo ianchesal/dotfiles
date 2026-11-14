@@ -26,6 +26,7 @@ alias -g ......='../../../../..'
 #alias _=sudo
 #alias d='dirs -v'
 #alias l=ls
+alias h=herdr
 
 # mask built-ins with better defaults
 #alias cp='cp -i'

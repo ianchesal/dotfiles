@@ -12,3 +12,4 @@ fi
 alias ll='ls -lAh'
 alias la='ls -lAh'
 alias l='ls'
+alias h='herdr'
