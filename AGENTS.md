@@ -484,6 +484,16 @@ This file provides guidance to AI agents working on this repository.
   anything already there first: `curl -fsSL
   https://raw.githubusercontent.com/ianchesal/dotfiles/main/bootstrap/bash-only.sh
   | bash`
+- `bash-only.sh` also puts a marked guard block (`# >>> parachute sh->bash
+  >>>`) at the top of `~/.profile`, for boxes whose login shell is `/bin/sh`
+  with no `chsh` (Synology DSM, where DSM owns `/etc/passwd`). bash started as
+  sh reads only `~/.profile`, so without it `~/.bash_profile` never runs; the
+  block `exec bash -l`s interactive sh logins. It tests `$0`, not `shopt -o
+  posix` -- bash enters POSIX mode only *after* reading startup files -- and is
+  a no-op in real bash and non-interactive shells. `~/.profile` is **edited,
+  never replaced** (Debian's skel copy carries PATH setup `~/.bash_profile`
+  sources), and reruns swap the block in place. Tests:
+  `script/tests/bash-only-profile.test.sh`
 - `bashrc.d/09-parachute.bash` defines `parachute_update`, aliased to `dfu`
   in bash, which reruns `bash-only.sh`, `tmux-lite.sh` and `herdr-lite.sh` to update a
   parachute machine. It resolves main's commit hash through the GitHub API
