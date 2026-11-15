@@ -165,6 +165,16 @@ description = "remove worktree + branch"
 width = "80%"
 height = "40%"
 
+# Enable/disable saved SSH machines by label: `herdr machine enable|disable`
+# wants the profile id. Enter toggles, Tab marks several, Esc closes.
+[[keys.command]]
+key = "prefix+m"
+type = "popup"
+command = "~/.config/herdr/machines.sh"
+description = "enable/disable machines"
+width = "80%"
+height = "40%"
+
 # Wrapper picks the work or personal config from ~/.work_machine.
 [[keys.command]]
 key = "prefix+h"

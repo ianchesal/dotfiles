@@ -250,8 +250,8 @@ This file provides guidance to AI agents working on this repository.
   upgrades and `update.version_check = false` keeps herdr's own updater quiet
 - Source state is `home/dot_config/herdr/`: `config.toml`,
   `executable_nav.sh`, `executable_open-repo.sh`,
-  `executable_add-worktree.sh`, `executable_open-worktree.sh` and
-  `executable_remove-worktree.sh`. Validate an edit with
+  `executable_add-worktree.sh`, `executable_open-worktree.sh`,
+  `executable_remove-worktree.sh` and `executable_machines.sh`. Validate an edit with
   `HERDR_CONFIG_PATH=home/dot_config/herdr/config.toml herdr config check`;
   after `chezmoi apply`, `herdr server reload-config` picks it up
 - **herdr's settings screen writes back to `config.toml`**, so a change made
@@ -289,6 +289,12 @@ This file provides guidance to AI agents working on this repository.
   which kills the popup before the branch step. git removes the checkout and
   branch, and `herdr workspace close` runs last. herdr's built-in
   `remove_worktree` (keeps the branch) is on `prefix+shift+k`
+- `prefix+m` (`machines.sh`) enables/disables saved SSH machines by label.
+  `herdr machine enable|disable` accepts only the 32-hex profile id (labels
+  are rejected) and herdr's zsh completion offers filenames there, so the
+  script feeds fzf `machine list --json` with the id as a hidden first column.
+  Enter runs `machines.sh toggle {+1}` and reloads, so the popup stays open
+  showing the new state; Tab marks several, Esc closes
 - Popup commands run in the focused pane's directory with `HERDR_SOCKET_PATH`
   and `HERDR_ACTIVE_{PANE,TAB,WORKSPACE}_ID` set; tests drive the scripts
   through a `HERDR_BIN` fake (`script/tests/herdr-*.test.sh`)
