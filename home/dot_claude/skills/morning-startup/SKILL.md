@@ -184,7 +184,8 @@ if it requires you to act or decide **as the head of infrastructure** (RSVP, res
 a conflict, prepare for something exceptional, make a call only you can make). Do not
 include IC-level operational status (tool hiccups, routine standups starting on time,
 a meeting ending early). Test: _would you behave differently as the head of infrastructure
-today because of this item?_ If no, omit it.
+today because of this item?_ If no, omit it. A meeting is a heads-up for what it is about,
+never as a place to carry an unrelated problem into. The Step 3e ownership gate applies.
 
 **1:1 detection.** Identify every 1:1 on today's calendar — a title containing "1:1",
 a two-person pattern like "X / Y", "X <> Y", "X and Y", or any meeting with exactly two
@@ -313,7 +314,10 @@ Use `mcp__claude_ai_Slack__slack_search_public_and_private` and
    act on or be aware of as the head of infrastructure. Skip IC-level operational status
    (engineers handling their own work, transient tool hiccups, PR activity not requiring
    your review or decision). Test: _would you act differently as head of infrastructure
-   because of this item?_
+   because of this item?_ An operational problem a team posts in its own channel belongs
+   to that team, however loud it is, until it is escalated to the user. Run the Step 3e
+   ownership gate before anything here becomes an action. A team-channel post addressed
+   "for monday" or to the team is not addressed to the user.
 
    **Thread-verify channel highlights too — the rule is not just for mentions.**
    `slack_read_channel` returns only top-level messages, so an infra help request, a
@@ -560,9 +564,38 @@ section collapses to a single line: `**📊 Backlog:** inbox clear — nothing a
 
 ## Step 3e: Verification Gate (do this BEFORE writing anything)
 
-Everything gathered so far is raw. Run these three checks before Step 4. They are cheap
-relative to handing the user a false action item, and both failures they guard against
-have actually happened.
+Everything gathered so far is raw. Run these four checks before Step 4. They are cheap
+relative to handing the user a false action item, and every failure they guard against
+has actually happened.
+
+**0. Ownership gate — is this the user's to handle at all?**
+Run this first, on every candidate item for `⚠️ Heads up`, `🔴 Action Required`,
+`📣 Channel Highlights`, `Today needs from you`, `The One Thing`, `Watch Out For`, and
+anything Phase 2 will turn into a talking point. An item about the infra org's systems
+qualifies **only** if at least one of these is true:
+- the user is @-mentioned or DMed about it, or directly asked for a decision
+- someone escalated it to the user, or to the infra EMs as a group, explicitly
+- the user is Incident Lead or Comms Lead (incident.io `roles`), or the assignee
+- the team that owns it has no named owner and has said so
+- it needs a decision only the head of infrastructure can make: headcount, reporting
+  lines, budget, a vendor commitment, cross-org priority
+
+If none holds, the owning team is handling it. Leave it out, or at most add a single
+FYI line under Channel Highlights. Never turn it into an action, a One Thing, or a
+"raise this at X" instruction. Things that do **not** count as escalation: impact on a
+customer or a SEV-2 incident, a large error count, an Oracle analysis that reads as
+urgent, a channel nobody has replied to (the owner may be answering in a vendor or
+support channel you didn't read), or a vendor involved in the problem who also has a
+meeting with the user today.
+
+**Never move an operational problem into an unrelated meeting.** A vendor's ops problem
+does not belong on that vendor's commercial or proposal call unless the user put it on
+the agenda. Observed failure (2026-11-16): an Edge-team issue (Cloudflare CustomerSLO
+probes 429ing deploy-QA keys, posted "for monday" in #engineering-infra-edge, never
+escalated) became Today Needs item 2, a Watch Out For bullet and the first Phase 2
+talking point for the Cloudflare **proposal review**. Jacob, the Edge lead, had already
+raised it with Cloudflare in the support channel. The user: *"this is the edge team's
+problem. it's not been escalated to me."*
 
 **1. Every action item must be resolution-checked.**
 List the items you are about to write under `⚠️ Heads up`, `🔴 Action Required`,
@@ -938,6 +971,11 @@ Generate exactly 3 talking points. Requirements:
 - Each must be specific, not generic (no "discuss project status")
 - Each must be grounded in what you found: cite the Slack thread, Jira ticket, or context
 - Each must be actionable: framed as a question to resolve or decision to make
+- Each must fit **the meeting's purpose**, read from its title, description and who
+  convened it. Do not import problems from elsewhere because an attendee or vendor
+  happens to be involved. An ops issue owned by another team never becomes a talking
+  point on a commercial, proposal or relationship call. If Phase 1 already dropped an
+  item for ownership, don't re-add it here.
 - If no Slack/Jira context was found: infer from meeting title and attendees, but
   prepend "**Note: no recent context found**" before the talking points for that meeting
 
