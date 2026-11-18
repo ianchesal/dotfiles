@@ -674,6 +674,11 @@ This file provides guidance to AI agents working on this repository.
   outside the chezmoi source state, only loaded in this repo. Skills wanted in every
   session everywhere (e.g., `morning-startup`, `daily-wrap`) go in
   `home/dot_claude/skills/` — chezmoi source state, deployed to `~/.claude/skills/`
+- Feedback on the morning-startup briefing is left as Notion comments on the Daily
+  Startup pages and processed **manually** by the project-scoped `morning-feedback`
+  skill: one reviewed edit per comment, general rules into `SKILL.md`, anything
+  identifying into the machine-local `config.md`, then a commit, a scoped `chezmoi
+  apply` and a reply on each comment. The briefing run itself never reads comments
 - Global skills are **copied, not symlinked**. `~/.claude/skills` is a real directory,
   so a skill edited in the repo is not live until the next `chezmoi apply` — unlike
   `nvim/`, which is a `symlink_` entry and takes effect instantly. Editing a global
