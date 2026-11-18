@@ -26,9 +26,10 @@ or one of its worktrees; if not inside it, stop and say so.
 
 ## Step 1: Preflight
 
-1. Read `~/.claude/skills/morning-startup/config.md` and take
-   `NOTION_STARTUP_DATA_SOURCE` (a `collection://<uuid>`). If the file or value is
-   missing, stop and say which.
+1. Read `~/.claude/skills/morning-startup/config.md` and take the Daily Startup data
+   source: the `**Data source**:` line under its "Notion: Daily Startup Database"
+   section, a `collection://<uuid>` (called `<NOTION_STARTUP_DATA_SOURCE>` below). If the
+   file or value is missing, stop and say which.
 2. Probe Notion with `notion-fetch` on that data source. If the tool is missing or auth
    fails, stop: "❌ Notion isn't reachable — [diagnosis]. Fix it and re-run."
 3. `git status --porcelain`. Note any files already dirty: you must never stage them
@@ -57,7 +58,12 @@ default). Call them in parallel. A page with no discussions returns only
 `<omitted-discussion>` by `discussion_id`; if a discussion has `next-cursor`, page
 back until there is none. You need whole threads.
 
-A discussion is **unhandled** when its **newest** comment is not `by-you="true"`. So:
+**Ignore `by-you`.** The Notion integration is authenticated as Ian, so his own comments
+come back `by-you="true"` too (verified 2026-11-18). Claude's replies are recognised by
+the tag every Step 9 reply starts with: `🤖 morning-feedback:`.
+
+A discussion is **unhandled** when its **newest** comment does not start with
+`🤖 morning-feedback:`. So:
 - no Claude reply yet → unhandled
 - Claude replied, then Ian answered back ("no, that's not it") → unhandled again; read
   the whole thread, because the newest comment is a correction to the last change
@@ -138,13 +144,14 @@ leaves it alone.
 ## Step 9: Reply in Notion
 
 For each approved or no-change item, `notion-create-comment` with `page_id` and
-`discussion_id`, one line:
+`discussion_id`, one line, always starting with the tag `🤖 morning-feedback: `:
 
-- `Updated morning-startup SKILL.md: <summary> (commit <short hash>)`
-- `Updated config.md (local, <hostname>): <summary>`
-- `No change: <reason>`
+- `🤖 morning-feedback: Updated morning-startup SKILL.md: <summary> (commit <short hash>)`
+- `🤖 morning-feedback: Updated config.md (local, <hostname>): <summary>`
+- `🤖 morning-feedback: No change: <reason>`
 
-That reply is what marks the discussion handled.
+That tagged reply is what marks the discussion handled (Step 3). Without the tag the
+next pass treats the reply as Ian's and re-proposes it.
 
 ## Step 10: Resolve on request
 

@@ -505,7 +505,13 @@ in priority order — same one-badge discipline as the incident rules in 3b:
   `[DIRECT]` — classify that as `[FYI]` and collapse it
 - `[ADMIN]` — deadline-shaped mail from HR, legal, finance, security, or compliance:
   benefits enrollment, an access review, a signature request, a compliance training due
-  date. These are quiet and easy to miss precisely because they are boring
+  date. These are quiet and easy to miss precisely because they are boring.
+  An @-mention or comment notification from an expense or finance tool earns `[ADMIN]`
+  only when the comment asks the user for something. Read the comment text: a thank-you,
+  an FYI or a status change (approved, paid, reimbursed) is not an obligation. Drop it.
+  Don't hedge it into "worth checking whether it's still open". Observed 2026-11-17: a
+  mention on an already-paid reimbursement, which only thanked the user for adding
+  names, showed up under ⭐ Priority
 
 **What to show.** Show every thread earning `[VIP]`, `[EXTERNAL]`, `[AWAITING]`, or
 `[ADMIN]`. Show `[DIRECT]` threads from the overnight pass. **Collapse** everything
