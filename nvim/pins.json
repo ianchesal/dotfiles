@@ -3,21 +3,6 @@
     "SchemaStore.nvim": {
       "observed": [
         {
-          "first_seen": 1792457465,
-          "first_seen_iso": "2026-10-20T00:51:05Z",
-          "rev": "82037f0534e303c3bb39472340fd23b9c46ab528"
-        },
-        {
-          "first_seen": 1792551373,
-          "first_seen_iso": "2026-10-21T02:56:13Z",
-          "rev": "2af1680d9c054f10ce9ebc1f28443178c2b5fcbf"
-        },
-        {
-          "first_seen": 1792635412,
-          "first_seen_iso": "2026-10-22T02:16:52Z",
-          "rev": "98c0d97389a1d46d7ee442161e05e4175d3763ec"
-        },
-        {
           "first_seen": 1792976922,
           "first_seen_iso": "2026-10-26T01:08:42Z",
           "rev": "067b472f6dbc04520982acc9ab14f27c68195c70"
@@ -66,12 +51,17 @@
           "first_seen": 1794889772,
           "first_seen_iso": "2026-11-17T04:29:32Z",
           "rev": "24123ae1335691e120f8bcd921902d5b3a98d06c"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "abc95e13502ff3acbed151de97667174b2e4132d"
         }
       ],
       "pin": {
-        "pinned_at": "2026-11-16T04:02:46Z",
-        "pinned_at_epoch": 1794801766,
-        "rev": "7fca30f2890a6acf9d21d194876c6ac960d92070"
+        "pinned_at": "2026-11-21T22:36:39Z",
+        "pinned_at_epoch": 1795300599,
+        "rev": "98c0d97389a1d46d7ee442161e05e4175d3763ec"
       }
     },
     "blink.cmp": {
@@ -227,16 +217,6 @@
     "mason-lspconfig.nvim": {
       "observed": [
         {
-          "first_seen": 1792588429,
-          "first_seen_iso": "2026-10-21T13:13:49Z",
-          "rev": "27b98a54bc04d2e8649d2e701c89aec0d02c11a4"
-        },
-        {
-          "first_seen": 1792701259,
-          "first_seen_iso": "2026-10-22T20:34:19Z",
-          "rev": "c4ef013d41f6db041b283eef55a63e579d76763f"
-        },
-        {
           "first_seen": 1792762734,
           "first_seen_iso": "2026-10-23T13:38:54Z",
           "rev": "c302d3fcaf4727ee7d48b20e7c293668ed1f6d98"
@@ -265,12 +245,17 @@
           "first_seen": 1794361714,
           "first_seen_iso": "2026-11-11T01:48:34Z",
           "rev": "97ccf96bb2e7adb5f82975068bd4c7307d2afa8a"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "761d376b5fbe6b21f659432ffadc1205c660176c"
         }
       ],
       "pin": {
-        "pinned_at": "2026-11-14T03:34:57Z",
-        "pinned_at_epoch": 1794627297,
-        "rev": "00b5473cca4db5b410ff4bae724e3b6e21f2687f"
+        "pinned_at": "2026-11-21T22:36:39Z",
+        "pinned_at_epoch": 1795300599,
+        "rev": "c4ef013d41f6db041b283eef55a63e579d76763f"
       }
     },
     "mason.nvim": {
@@ -303,6 +288,11 @@
           "first_seen": 1794627297,
           "first_seen_iso": "2026-11-14T03:34:57Z",
           "rev": "c2e6e88a9de01b5aec5c3cffee1277b9ac8a6d69"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "813d10a43d5d4eda4816e6a27eb6bf6250f75ea8"
         }
       ],
       "pin": {
@@ -314,11 +304,6 @@
     "mini.align": {
       "observed": [
         {
-          "first_seen": 1792502973,
-          "first_seen_iso": "2026-10-20T13:29:33Z",
-          "rev": "b4b402d0455e022b878c30971e02e0d7780e6d9e"
-        },
-        {
           "first_seen": 1793234669,
           "first_seen_iso": "2026-10-29T00:44:29Z",
           "rev": "a7f24f57e68a72fd6c19e442288ab835a9c40cdd"
@@ -327,26 +312,21 @@
           "first_seen": 1794627297,
           "first_seen_iso": "2026-11-14T03:34:57Z",
           "rev": "757136ffeb168450f0a854aef987b621f37500f5"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "b66a8300762ba0ec34236c995f6d45031f9d089c"
         }
       ],
       "pin": {
-        "pinned_at": "2026-11-14T03:34:57Z",
-        "pinned_at_epoch": 1794627297,
-        "rev": "34efb28993933ba1bded1890ca81821bc1dfd258"
+        "pinned_at": "2026-11-21T22:36:39Z",
+        "pinned_at_epoch": 1795300599,
+        "rev": "b4b402d0455e022b878c30971e02e0d7780e6d9e"
       }
     },
     "mini.diff": {
       "observed": [
-        {
-          "first_seen": 1792414698,
-          "first_seen_iso": "2026-10-19T12:58:18Z",
-          "rev": "f6b09d25b19c4cde18b0269556c76bfb8b6f631f"
-        },
-        {
-          "first_seen": 1792502973,
-          "first_seen_iso": "2026-10-20T13:29:33Z",
-          "rev": "47ab8cf21c62cfd952008f2b9e79417c98173ec1"
-        },
         {
           "first_seen": 1793849676,
           "first_seen_iso": "2026-11-05T03:34:36Z",
@@ -356,21 +336,21 @@
           "first_seen": 1794627297,
           "first_seen_iso": "2026-11-14T03:34:57Z",
           "rev": "91d6ce4b7f400439fe761f01a58280f2c0f99c01"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "f527407247245d121ca65d539d7a8a3686938915"
         }
       ],
       "pin": {
-        "pinned_at": "2026-11-14T03:34:57Z",
-        "pinned_at_epoch": 1794627297,
-        "rev": "ce542d15eacf068f81f5e516da7d486db808c559"
+        "pinned_at": "2026-11-21T22:36:39Z",
+        "pinned_at_epoch": 1795300599,
+        "rev": "47ab8cf21c62cfd952008f2b9e79417c98173ec1"
       }
     },
     "mini.hipatterns": {
       "observed": [
-        {
-          "first_seen": 1792502973,
-          "first_seen_iso": "2026-10-20T13:29:33Z",
-          "rev": "247c0173579a29af60f25f00671a75c57090be9c"
-        },
         {
           "first_seen": 1794023906,
           "first_seen_iso": "2026-11-07T03:58:26Z",
@@ -380,21 +360,21 @@
           "first_seen": 1794627297,
           "first_seen_iso": "2026-11-14T03:34:57Z",
           "rev": "7a79e5f000beb530ade0fa9faec70f01469dbcb3"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "012ae1f3070ad47973d09c730091be2ee4bef09c"
         }
       ],
       "pin": {
-        "pinned_at": "2026-11-14T03:34:57Z",
-        "pinned_at_epoch": 1794627297,
-        "rev": "8e18b4970f21be0db157104786d2be43058cdd44"
+        "pinned_at": "2026-11-21T22:36:39Z",
+        "pinned_at_epoch": 1795300599,
+        "rev": "247c0173579a29af60f25f00671a75c57090be9c"
       }
     },
     "mini.icons": {
       "observed": [
-        {
-          "first_seen": 1792502973,
-          "first_seen_iso": "2026-10-20T13:29:33Z",
-          "rev": "9e4c1645ce2b78afd6191b6be2c38bc0f998dd48"
-        },
         {
           "first_seen": 1792813196,
           "first_seen_iso": "2026-10-24T03:39:56Z",
@@ -404,12 +384,17 @@
           "first_seen": 1794627297,
           "first_seen_iso": "2026-11-14T03:34:57Z",
           "rev": "fc90b3925a2a68282be06e28cfe0cbb366c75dad"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "5d58117d176c133f4cb5585ec8cb3450881c89a0"
         }
       ],
       "pin": {
-        "pinned_at": "2026-11-14T03:34:57Z",
-        "pinned_at_epoch": 1794627297,
-        "rev": "f916635dc5ae2f479fbb9ab8184bb9444b62e86c"
+        "pinned_at": "2026-11-21T22:36:39Z",
+        "pinned_at_epoch": 1795300599,
+        "rev": "9e4c1645ce2b78afd6191b6be2c38bc0f998dd48"
       }
     },
     "mini.pairs": {
@@ -418,6 +403,11 @@
           "first_seen": 1794627297,
           "first_seen_iso": "2026-11-14T03:34:57Z",
           "rev": "eea81afc1b4de898de9bb310c2225f9225fd42b9"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "e332261859814c307e72458222070f84b6d6f4e8"
         }
       ],
       "pin": {
@@ -437,6 +427,11 @@
           "first_seen": 1794627297,
           "first_seen_iso": "2026-11-14T03:34:57Z",
           "rev": "c17f9e2b2d685376b8ae7bb2cd8bb51dc7cd6d98"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "77f376bdebb3440ad13bc40b48062b29bccb7577"
         }
       ],
       "pin": {
@@ -479,6 +474,11 @@
           "first_seen": 1793281318,
           "first_seen_iso": "2026-10-29T13:41:58Z",
           "rev": "52107ce2076a27a285af781248e2c59bad817cd0"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "6bf29b9dbdad60b38b489b23309c22ba6d4c915a"
         }
       ],
       "pin": {
@@ -489,11 +489,6 @@
     },
     "nvim-lspconfig": {
       "observed": [
-        {
-          "first_seen": 1792511246,
-          "first_seen_iso": "2026-10-20T15:47:26Z",
-          "rev": "77b7432d4770d23b277d37923e5a08a442d8bb07"
-        },
         {
           "first_seen": 1793234669,
           "first_seen_iso": "2026-10-29T00:44:29Z",
@@ -548,26 +543,21 @@
           "first_seen": 1794889772,
           "first_seen_iso": "2026-11-17T04:29:32Z",
           "rev": "6a3ddecf60e19f164390308f502e67f3199f58e8"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "4648fd8ba5c678d7e2db75ae44ffac269bb589d8"
         }
       ],
       "pin": {
-        "pinned_at": "2026-11-16T04:02:46Z",
-        "pinned_at_epoch": 1794801766,
-        "rev": "45a3a444b710511c39abca3b60bb6e23a21e3de5"
+        "pinned_at": "2026-11-21T22:36:39Z",
+        "pinned_at_epoch": 1795300599,
+        "rev": "77b7432d4770d23b277d37923e5a08a442d8bb07"
       }
     },
     "nvim-treesitter": {
       "observed": [
-        {
-          "first_seen": 1792366761,
-          "first_seen_iso": "2026-10-18T23:39:21Z",
-          "rev": "d3e4a28b63961ba972b0945d66c73b6eec969953"
-        },
-        {
-          "first_seen": 1792414698,
-          "first_seen_iso": "2026-10-19T12:58:18Z",
-          "rev": "29212d826054bb2948fa9d3a99eca9bf6a050eb2"
-        },
         {
           "first_seen": 1792845910,
           "first_seen_iso": "2026-10-24T12:45:10Z",
@@ -612,12 +602,17 @@
           "first_seen": 1794889772,
           "first_seen_iso": "2026-11-17T04:29:32Z",
           "rev": "b706d642dd20d0922e7e92365dc73617f0fdb4ea"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "52773f0d13a0c11d0c3ef33c14ab6ecc1c17148b"
         }
       ],
       "pin": {
-        "pinned_at": "2026-11-14T03:34:57Z",
-        "pinned_at_epoch": 1794627297,
-        "rev": "ca581c3436fc2b236847f5b739ebc263739e5ca6"
+        "pinned_at": "2026-11-21T22:36:39Z",
+        "pinned_at_epoch": 1795300599,
+        "rev": "29212d826054bb2948fa9d3a99eca9bf6a050eb2"
       }
     },
     "nvim-treesitter-endwise": {
@@ -780,6 +775,11 @@
           "first_seen": 1781206824,
           "first_seen_iso": "2026-06-11T19:40:24Z",
           "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432"
+        },
+        {
+          "first_seen": 1795300599,
+          "first_seen_iso": "2026-11-21T22:36:39Z",
+          "rev": "fb217852efb294a50a10507fc8d53709696b6e23"
         }
       ],
       "pin": {
