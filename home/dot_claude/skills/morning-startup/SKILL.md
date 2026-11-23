@@ -671,7 +671,23 @@ more than one row, update the oldest and tell the user there are duplicates for 
 do not delete anything yourself.
 
 **4b. Compose the page body** in Notion-flavored Markdown. Do **not** include an H1
-title — the title lives in the `Day` property. The body is:
+title — the title lives in the `Day` property.
+
+**Write plainly.** Say what happened and what the user should do, in literal words.
+No figurative phrases, metaphors or headline-style hooks ("the number is about to
+travel without you", "the clock is ticking"). Test each sentence: could the user act
+on it without first working out what it means? If not, rewrite it. Bold lead-ins in
+Heads up and Watch Out For are where this slips most. They should name the thing and
+the ask ("Someone sent your boss a savings figure you haven't checked"), not tease it.
+
+**Action items are to-dos.** Any list of things the user has to do or decide uses
+Notion to-do syntax, `- [ ] item`, so they can be checked off. That covers Heads up,
+Prepare now, Action Required, Needs Your Reply, and any ad-hoc "still needs you" list.
+FYI, already-handled and context lists stay plain bullets. On a same-day re-run,
+`replace_content` would clear the user's checks. Fetch the existing page first and
+keep `- [x]` on any item that is still in the new body.
+
+The body is:
 
 ```markdown
 ## Calendar
