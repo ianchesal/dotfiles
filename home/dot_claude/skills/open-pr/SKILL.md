@@ -93,6 +93,9 @@ is the most common way this skill fails.
 
 ## 5. Print the URL
 
+In a `persona-id` repo, start the `watch-pr` skill (its side pane and
+background waiter) before writing this message, so the URL still ends it.
+
 End with the URL `gh` printed — the bare `https://github.com/...`, on its own
 line, as the last thing in your reply. Not a markdown link, not `[#123](url)`,
 not wrapped in prose. The raw string survives copy-paste out of a terminal that

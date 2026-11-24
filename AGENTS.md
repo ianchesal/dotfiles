@@ -685,6 +685,16 @@ This file provides guidance to AI agents working on this repository.
   skill is a two-step job: change it here, then apply. Conversely, editing one directly
   under `~/.claude/skills/` puts it out of sync with the repo and the next `chezmoi
   apply` silently overwrites it — `chezmoi re-add` captures such an edit instead
+- The global `CLAUDE.md` makes claude start the `watch-pr` skill whenever it
+  opens a PR in a `persona-id` repo: it fixes failing checks and answers review
+  threads until the PR merges or closes. Its waiter,
+  `home/dot_claude/skills/watch-pr/executable_wait.sh` (deployed as
+  `~/.claude/skills/watch-pr/wait.sh`), runs as a background Bash job so the
+  harness wakes claude when it exits. It polls `gh` rather than using `gh event
+  listen`, which has no event for top-level PR comments or for commit statuses
+  (Buildkite). Skill scripts are linted by `just lint` through the
+  `home/dot_claude/skills/*/executable_*.sh` glob. Tests:
+  `script/tests/watch-pr-wait.test.sh`
 - There is no `claude/skills/` directory; `claude/` at the repo root holds only
   `apt-claude.sh` and `herdr-hooks.jq` (the filter behind `just
   claude::herdr-hooks`)

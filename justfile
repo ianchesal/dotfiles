@@ -67,7 +67,7 @@ lint:
       script/tests/*.test.sh bootstrap/*.sh \
       home/dot_bashrc home/dot_bash_profile home/dot_config/bash/bashrc.sh \
       home/dot_config/bash/bashrc.d/*.bash \
-      home/dot_claude/hooks/*.sh
+      home/dot_claude/hooks/*.sh home/dot_claude/skills/*/executable_*.sh
     python3 -c 'import ast, sys; ast.parse(open(sys.argv[1]).read())' script/gen-claude-completions.py
     just --fmt --check --justfile "$REPO/justfile"
 
