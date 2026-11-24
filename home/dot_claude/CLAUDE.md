@@ -66,8 +66,8 @@ To hand off:
    Once you've read the result and no longer need the folder, delete
    `~/src/handoff/<task>/` so its output doesn't keep syncing.
 
-## PRs you open in persona-id
-- When you open a PR in a `persona-id` repo, start the `watch-pr` skill in the same turn, whether the PR came from
+## PRs you open
+- When you open a PR in any repo, start the `watch-pr` skill in the same turn, whether the PR came from
   `open-pr`, a bare `gh pr create` or anything else. Don't ask first and don't wait to be told
 - This is my standing OK, for that PR only, to commit and push fixes to its branch, re-run failed CI jobs, reply on
   its review threads under my account (every reply ends with `(via Claude)`) and resolve bot threads you fixed. It

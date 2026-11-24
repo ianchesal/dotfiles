@@ -1,6 +1,6 @@
 ---
 name: watch-pr
-description: Watch an open pull request until it is merged or closed, fixing failing checks and answering review comments as they arrive. Use right after opening a PR in a persona-id repo (the global rules require it), or when asked to watch, babysit or shepherd a PR.
+description: Watch an open pull request until it is merged or closed, fixing failing checks and answering review comments as they arrive. Use right after opening any PR (the global rules require it), or when asked to watch, babysit or shepherd a PR.
 ---
 
 # Watch a PR

@@ -686,7 +686,7 @@ This file provides guidance to AI agents working on this repository.
   under `~/.claude/skills/` puts it out of sync with the repo and the next `chezmoi
   apply` silently overwrites it — `chezmoi re-add` captures such an edit instead
 - The global `CLAUDE.md` makes claude start the `watch-pr` skill whenever it
-  opens a PR in a `persona-id` repo: it fixes failing checks and answers review
+  opens a PR, in any repo: it fixes failing checks and answers review
   threads until the PR merges or closes. Its waiter,
   `home/dot_claude/skills/watch-pr/executable_wait.sh` (deployed as
   `~/.claude/skills/watch-pr/wait.sh`), runs as a background Bash job so the
