@@ -157,6 +157,14 @@ else
   check "agent_not_ready is not a failure" "exit 0" "nonzero exit"
 fi
 
+# herdr drops the name when `agent start` times out, though claude keeps starting
+if AGENT_ERROR=timeout run "$repo" closed; then
+  check "an agent start timeout is not a failure" "exit 0" "exit 0"
+else
+  check "an agent start timeout is not a failure" "exit 0" "nonzero exit: $(cat "$work/err")"
+fi
+check "after a timeout, names the claude it detects" "1" "$(grep -c -- '^agent rename w4:p1 closed$' "$work/calls" || true)"
+
 if AGENT_ERROR=agent_name_taken run "$repo" closed; then
   check "other agent errors fail" "nonzero exit" "exit 0"
 else

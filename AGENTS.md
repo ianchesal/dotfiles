@@ -273,7 +273,10 @@ This file provides guidance to AI agents working on this repository.
   `~/.herdr/worktrees`), then `herdr agent start --kind claude` in its root
   pane. herdr refuses to create worktrees from a linked worktree, so the script
   resolves the main checkout through `git --git-common-dir`. claude parked at
-  its trust prompt returns `agent_not_ready`, which counts as success. When
+  its trust prompt returns `agent_not_ready`, which counts as success. A
+  claude slower than `agent start`'s 30s readiness wait returns `timeout`, and
+  herdr then **drops the name** while claude keeps starting (0.9.5), so both
+  scripts wait for herdr to detect it and `agent rename` it themselves. When
   the pane's shell has a `claude-oracle` command (on work machines, a function
   in the unmanaged `~/.zsh_local`), that runs instead. The script asks
   `$SHELL -ic 'command -v claude-oracle'`, because a bash popup can't see a

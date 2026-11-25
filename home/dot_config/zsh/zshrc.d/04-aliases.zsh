@@ -28,6 +28,10 @@ alias -g ......='../../../../..'
 #alias l=ls
 alias h=herdr
 
+# herdr agents as a table: pane id, agent name (- when unnamed), status, cwd.
+# Pane ids and names are both valid targets for `herdr agent wait|get|prompt`.
+alias hal="herdr agent list | jq -r '.result.agents[] | [.pane_id, (.name // \"-\"), .agent_status, .cwd] | @tsv'"
+
 # mask built-ins with better defaults
 #alias cp='cp -i'
 #alias mv='mv -i'

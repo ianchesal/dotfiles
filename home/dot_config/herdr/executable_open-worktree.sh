@@ -54,23 +54,30 @@ has_claude_oracle() {
   "${SHELL:-sh}" -ic 'command -v claude-oracle' </dev/null >/dev/null 2>&1
 }
 
+# Wait for herdr to detect a claude in pane $3 and name it $2; $1 labels the
+# program in errors. As in add-worktree.sh, also run after `agent start` times
+# out, because herdr then drops the name while claude carries on starting.
+name_detected_claude() {
+  local what=$1 agent=$2 pane=$3 out deadline
+  deadline=$((SECONDS + 30))
+  until out=$("$herdr" agent get "$pane" 2>&1) && [ "$(jq -r '.result.agent.agent' <<<"$out")" = claude ]; do
+    [ "$SECONDS" -lt "$deadline" ] || fail "worktree is open but $what did not start in pane $pane"
+    sleep 0.5
+  done
+  out=$("$herdr" agent rename "$pane" "$agent" 2>&1) ||
+    fail "$what started in pane $pane but could not be named $agent: $out"
+}
+
 # Type claude-oracle into pane $2 and name the claude it starts $1, as
 # add-worktree.sh does: herdr's `agent start` only runs the kind's own executable.
 start_claude_oracle() {
-  local agent=$1 pane=$2 out deadline
+  local agent=$1 pane=$2 out
   if "$herdr" agent get "$agent" >/dev/null 2>&1; then
     fail "worktree is open but an agent named $agent is already running"
   fi
   out=$("$herdr" pane run "$pane" 'claude-oracle --permission-mode auto' 2>&1) ||
     fail "worktree is open but claude-oracle could not be run: $out"
-
-  deadline=$((SECONDS + 30))
-  until out=$("$herdr" agent get "$pane" 2>&1) && [ "$(jq -r '.result.agent.agent' <<<"$out")" = claude ]; do
-    [ "$SECONDS" -lt "$deadline" ] || fail "worktree is open but claude-oracle did not start in pane $pane"
-    sleep 0.5
-  done
-  out=$("$herdr" agent rename "$pane" "$agent" 2>&1) ||
-    fail "claude-oracle started in pane $pane but could not be named $agent: $out"
+  name_detected_claude claude-oracle "$agent" "$pane"
   out=$("$herdr" agent wait "$agent" --until idle --until 'done' --until blocked --until working --timeout 30000 2>&1) ||
     fail "claude-oracle started in pane $pane but never became ready: $out"
 }
@@ -117,7 +124,10 @@ if has_claude_oracle; then
 else
   echo 'Starting claude...'
   out=$("$herdr" agent start "$agent" --kind claude --pane "$pane" -- --permission-mode auto 2>&1) || {
-    [ "$(jq -r '.error.code // empty' <<<"$out" 2>/dev/null)" = agent_not_ready ] ||
-      fail "worktree is open but claude did not start: $out"
+    case $(jq -r '.error.code // empty' <<<"$out" 2>/dev/null) in
+      agent_not_ready) ;;
+      timeout) name_detected_claude claude "$agent" "$pane" ;;
+      *) fail "worktree is open but claude did not start: $out" ;;
+    esac
   }
 fi
