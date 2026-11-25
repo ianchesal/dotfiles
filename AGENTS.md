@@ -771,6 +771,12 @@ This file provides guidance to AI agents working on this repository.
   `settings.json` above. It holds no secret, but the internal hostname isn't
   worth publishing, and it's inert on a personal machine. Copy it by hand to a
   new work box; don't `chezmoi add` it back
+- In interactive zsh, `claude` is a function (`zshrc.d/ai.zsh`) that runs
+  `claude-oracle` when `~/.work_machine` exists and the plain binary otherwise.
+  On a work machine with no `claude-oracle` it refuses rather than fall back to
+  the direct API; `command claude` bypasses it. Non-shell launchers (herdr's
+  `agent start --kind claude`) never see the function, which is why
+  `add-worktree.sh` types `claude-oracle` into the pane itself
 
 ## Pi Configuration
 
