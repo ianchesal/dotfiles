@@ -3,7 +3,9 @@
 ##? start-my-day - Start the workday with Claude's morning startup skill
 ##?
 ##? Launches Claude Code with bypassPermissions mode and instructs it to
-##? run the morning-startup skill to begin the day.
+##? run the morning-startup skill to begin the day. Uses claude-oracle
+##? instead of claude when this shell has one (work machines define it
+##? in ~/.zsh_local).
 ##?
 ##? Any arguments are appended as extra context for the briefing, so you
 ##? can tell Claude about things it can't infer from calendar/Slack/Jira.
@@ -23,4 +25,10 @@ if (( $# > 0 )); then
 Additional context from me for today: $*"
 fi
 
-claude --permission-mode bypassPermissions "$prompt"
+# A function or an executable, not an alias: autoload -U loads this function
+# with alias expansion off, so an alias here would be "command not found".
+if (( $+functions[claude-oracle] || $+commands[claude-oracle] )); then
+  claude-oracle --permission-mode bypassPermissions "$prompt"
+else
+  claude --permission-mode bypassPermissions "$prompt"
+fi
