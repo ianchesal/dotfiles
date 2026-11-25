@@ -31,6 +31,9 @@ alias h=herdr
 # herdr agents as a table: pane id, agent name (- when unnamed), status, cwd.
 # Pane ids and names are both valid targets for `herdr agent wait|get|prompt`.
 alias hal="herdr agent list | jq -r '.result.agents[] | [.pane_id, (.name // \"-\"), .agent_status, .cwd] | @tsv'"
+# herdr saved machines as a table: profile id, on/off, label, ssh target.
+# `machine remove|enable|disable` take only the id, not the label.
+alias hml="herdr machine list --json | jq -r '.[] | [.id, (if .enabled then \"on\" else \"off\" end), .label, .target] | @tsv'"
 
 # mask built-ins with better defaults
 #alias cp='cp -i'
