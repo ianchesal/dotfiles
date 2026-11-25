@@ -9,9 +9,11 @@
 # offered; prefix+f opens that. A worktree that already has a workspace is
 # focused. One that doesn't gets a new workspace with claude started in it, as
 # add-worktree.sh does -- `herdr worktree open` reports which case it was.
+# As there, claude-oracle runs instead of claude when the pane's shell has it.
 #
 # Seams for script/tests/herdr-open-worktree.test.sh:
 #   HERDR_BIN -- herdr executable (default: $HERDR_BIN_PATH, else herdr on PATH)
+#   SHELL     -- the shell asked whether claude-oracle exists
 
 set -euo pipefail
 
@@ -43,6 +45,34 @@ agent_name() {
     *) name=wt-$name ;;
   esac
   printf '%s\n' "${name:0:32}"
+}
+
+# Whether the shell a new pane runs has claude-oracle. Same probe as
+# add-worktree.sh: it is usually a function in a machine-local rc file, so only
+# an interactive shell sees it.
+has_claude_oracle() {
+  "${SHELL:-sh}" -ic 'command -v claude-oracle' </dev/null >/dev/null 2>&1
+}
+
+# Type claude-oracle into pane $2 and name the claude it starts $1, as
+# add-worktree.sh does: herdr's `agent start` only runs the kind's own executable.
+start_claude_oracle() {
+  local agent=$1 pane=$2 out deadline
+  if "$herdr" agent get "$agent" >/dev/null 2>&1; then
+    fail "worktree is open but an agent named $agent is already running"
+  fi
+  out=$("$herdr" pane run "$pane" 'claude-oracle --permission-mode auto' 2>&1) ||
+    fail "worktree is open but claude-oracle could not be run: $out"
+
+  deadline=$((SECONDS + 30))
+  until out=$("$herdr" agent get "$pane" 2>&1) && [ "$(jq -r '.result.agent.agent' <<<"$out")" = claude ]; do
+    [ "$SECONDS" -lt "$deadline" ] || fail "worktree is open but claude-oracle did not start in pane $pane"
+    sleep 0.5
+  done
+  out=$("$herdr" agent rename "$pane" "$agent" 2>&1) ||
+    fail "claude-oracle started in pane $pane but could not be named $agent: $out"
+  out=$("$herdr" agent wait "$agent" --until idle --until 'done' --until blocked --until working --timeout 30000 2>&1) ||
+    fail "claude-oracle started in pane $pane but never became ready: $out"
 }
 
 common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) ||
@@ -78,11 +108,16 @@ if [ "$(jq -r '.result.already_open' <<<"$out")" = true ]; then
   exit 0
 fi
 pane=$(jq -r '.result.root_pane.pane_id' <<<"$out")
+agent=$(agent_name "${branch:-$(basename "$path")}")
 
 # claude stopping at its "trust this folder" prompt counts as started.
-echo 'Starting claude...'
-out=$("$herdr" agent start "$(agent_name "${branch:-$(basename "$path")}")" --kind claude --pane "$pane" \
-  -- --permission-mode auto 2>&1) || {
-  [ "$(jq -r '.error.code // empty' <<<"$out" 2>/dev/null)" = agent_not_ready ] ||
-    fail "worktree is open but claude did not start: $out"
-}
+if has_claude_oracle; then
+  echo 'Starting claude-oracle...'
+  start_claude_oracle "$agent" "$pane"
+else
+  echo 'Starting claude...'
+  out=$("$herdr" agent start "$agent" --kind claude --pane "$pane" -- --permission-mode auto 2>&1) || {
+    [ "$(jq -r '.error.code // empty' <<<"$out" 2>/dev/null)" = agent_not_ready ] ||
+      fail "worktree is open but claude did not start: $out"
+  }
+fi

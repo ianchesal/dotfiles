@@ -69,9 +69,30 @@ case "$1 $2" in
       exit 1
     fi
     ;;
+  # The claude-oracle path: `agent get` finds a claude in pane w4:p1 at once,
+  # and finds one under any other target only when NAME_TAKEN is set.
+  'agent get')
+    if [ "$3" = w4:p1 ] || [ -n "${NAME_TAKEN:-}" ]; then
+      echo '{"result":{"agent":{"agent":"claude","agent_status":"unknown"}}}'
+      exit 0
+    fi
+    echo '{"error":{"code":"agent_not_found","message":"not found"}}' >&2
+    exit 1
+    ;;
+  'agent wait')
+    echo '{"result":{"agent":{"agent":"claude","agent_status":"blocked"}}}'
+    ;;
 esac
 FAKE
 chmod +x "$work/bin/herdr"
+
+# Fake $SHELL for the claude-oracle probe: it "has" claude-oracle when
+# HAS_ORACLE is set.
+cat >"$work/bin/fake-shell" <<'FAKE'
+#!/usr/bin/env bash
+[ -n "${HAS_ORACLE:-}" ]
+FAKE
+chmod +x "$work/bin/fake-shell"
 
 # A fake fzf that saves the candidate lines and prints the first one containing
 # $FZF_PICK, as real fzf prints the whole line whatever --with-nth shows.
@@ -89,7 +110,7 @@ run() {
   rm -f "$work/fzf-input"
   (cd "$dir" && PATH=$work/bin:$PATH HERDR_CALLS=$work/calls HERDR_BIN=$work/bin/herdr \
     FZF_INPUT=$work/fzf-input FZF_PICK=$pick WORKTREES=${WORKTREES:-$all_worktrees} \
-    "$subject" </dev/null >"$work/out" 2>"$work/err")
+    SHELL=$work/bin/fake-shell "$subject" </dev/null >"$work/out" 2>"$work/err")
 }
 
 echo "herdr-open-worktree"
@@ -141,6 +162,29 @@ if AGENT_ERROR=agent_name_taken run "$repo" closed; then
 else
   check "other agent errors fail" "nonzero exit" "nonzero exit"
 fi
+
+# --- claude-oracle, when the pane's shell has it, replaces claude --------------
+HAS_ORACLE=1 run "$repo" closed
+check "types claude-oracle into the new pane" "1" \
+  "$(grep -c -- '^pane run w4:p1 claude-oracle --permission-mode auto$' "$work/calls" || true)"
+check "does not use agent start for claude-oracle" "0" "$(grep -c -- '^agent start ' "$work/calls" || true)"
+check "names the detected claude after the branch" "1" "$(grep -c -- '^agent rename w4:p1 closed$' "$work/calls" || true)"
+check "waits for it to be ready" "1" "$(grep -c -- '^agent wait closed ' "$work/calls" || true)"
+if [ "$(grep -c '' "$work/err")" = 0 ]; then
+  check "claude-oracle at the trust prompt is not a failure" "quiet" "quiet"
+else
+  check "claude-oracle at the trust prompt is not a failure" "quiet" "$(cat "$work/err")"
+fi
+
+ALREADY_OPEN=true HAS_ORACLE=1 run "$repo" 'feat/x'
+check "starts no claude-oracle in an open worktree" "0" "$(grep -c -- '^pane run ' "$work/calls" || true)"
+
+if NAME_TAKEN=1 HAS_ORACLE=1 run "$repo" closed; then
+  check "a taken agent name fails" "nonzero exit" "exit 0"
+else
+  check "a taken agent name fails" "nonzero exit" "nonzero exit"
+fi
+check "launches nothing when the name is taken" "0" "$(grep -c -- '^pane run ' "$work/calls" || true)"
 
 # --- a failed open shows herdr's message and starts nothing ------------------
 if WORKTREE_FAIL=1 run "$repo" closed; then

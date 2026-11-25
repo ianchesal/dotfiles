@@ -286,7 +286,8 @@ This file provides guidance to AI agents working on this repository.
   worktrees (open ones marked), then `herdr worktree open`, which focuses the
   workspace if one exists and otherwise creates it, adopting a plain
   `prefix+f` workspace as the group parent rather than duplicating it. Only a
-  newly created workspace gets claude. herdr's default `prefix+o`
+  newly created workspace gets claude, started the same way as in `prefix+a`
+  (`claude-oracle` when the shell has it). herdr's default `prefix+o`
   (`open_notification_target`) is unbound by name in `config.toml`: if a
   config names both, herdr keeps the built-in and drops the command
 - `prefix+shift+a` (`remove-worktree.sh`) is workmux's "remove": the focused
