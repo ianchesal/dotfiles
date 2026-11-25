@@ -273,8 +273,15 @@ This file provides guidance to AI agents working on this repository.
   `~/.herdr/worktrees`), then `herdr agent start --kind claude` in its root
   pane. herdr refuses to create worktrees from a linked worktree, so the script
   resolves the main checkout through `git --git-common-dir`. claude parked at
-  its trust prompt returns `agent_not_ready`, which counts as success. herdr's
-  own `prefix+shift+g` still works but opens a bare shell in `~/.herdr/worktrees`
+  its trust prompt returns `agent_not_ready`, which counts as success. When
+  the pane's shell has a `claude-oracle` command (on work machines, a function
+  in the unmanaged `~/.zsh_local`), that runs instead. The script asks
+  `$SHELL -ic 'command -v claude-oracle'`, because a bash popup can't see a
+  zsh function. `agent start --kind` only runs the kind's own executable, so
+  the script `pane run`s `claude-oracle` instead, polls `agent get <pane>`
+  until herdr detects claude, then `agent rename`s it to the branch's agent
+  name. herdr's own `prefix+shift+g` still works but opens a bare shell in
+  `~/.herdr/worktrees`
 - `prefix+o` (`open-worktree.sh`) is workmux's "open": fzf the repo's linked
   worktrees (open ones marked), then `herdr worktree open`, which focuses the
   workspace if one exists and otherwise creates it, adopting a plain

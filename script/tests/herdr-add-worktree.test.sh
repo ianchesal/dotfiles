@@ -35,6 +35,11 @@ git -C "$repo" worktree add -q "$work/src/demo__worktrees/old" -b old
 # A fake herdr that records its argv one call per line. `worktree create`
 # answers with pane w3:p1, or fails when WORKTREE_FAIL is set; `agent start`
 # fails with the code in AGENT_ERROR, if set.
+#
+# The claude-oracle path: `agent get` on the pane finds no agent for the first
+# DETECT_AFTER calls (default 0), then a claude; `agent get` on any other
+# target finds one only when NAME_TAKEN is set; `agent wait` reports
+# WAIT_STATUS (default idle).
 cat >"$work/herdr" <<'FAKE'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -53,14 +58,42 @@ case "$1 $2" in
       exit 1
     fi
     ;;
+  'agent get')
+    if [ "$3" = w3:p1 ]; then
+      polls=$(grep -c '^agent get w3:p1$' "$HERDR_CALLS")
+      if [ "$polls" -gt "${DETECT_AFTER:-0}" ]; then
+        echo '{"result":{"agent":{"agent":"claude","agent_status":"unknown","pane_id":"w3:p1"}}}'
+        exit 0
+      fi
+    elif [ -n "${NAME_TAKEN:-}" ]; then
+      echo '{"result":{"agent":{"agent":"claude","agent_status":"idle","pane_id":"w9:p9"}}}'
+      exit 0
+    fi
+    echo '{"error":{"code":"agent_not_found","message":"not found"}}' >&2
+    exit 1
+    ;;
+  'agent wait')
+    printf '{"result":{"agent":{"agent":"claude","agent_status":"%s"}}}\n' "${WAIT_STATUS:-idle}"
+    ;;
 esac
 FAKE
 chmod +x "$work/herdr"
 
+# Fake $SHELL for the claude-oracle probe: it "has" claude-oracle when
+# HAS_ORACLE is set, and records how it was asked.
+cat >"$work/shell" <<'FAKE'
+#!/usr/bin/env bash
+echo "$*" >>"$SHELL_CALLS"
+[ -n "${HAS_ORACLE:-}" ]
+FAKE
+chmod +x "$work/shell"
+
 run() {
   local dir=$1 branch=$2
   : >"$work/calls"
+  : >"$work/shell-calls"
   (cd "$dir" && HERDR_CALLS=$work/calls HERDR_BIN=$work/herdr BRANCH=$branch \
+    SHELL=$work/shell SHELL_CALLS=$work/shell-calls \
     "$subject" </dev/null >"$work/out" 2>"$work/err")
 }
 
@@ -126,6 +159,7 @@ check "keeps an existing herdr-base" "release" "$(git -C "$repo" config --get br
 # --- non-interactive dispatch inputs (the /worktree and coordinator skills) ---
 : >"$work/calls"
 (cd "$repo" && HERDR_CALLS=$work/calls HERDR_BIN=$work/herdr BRANCH=dispatched BASE=old NO_FOCUS=1 \
+  SHELL=$work/shell SHELL_CALLS=$work/shell-calls \
   PROMPT_FILE=/tmp/task.md "$subject" </dev/null >"$work/out" 2>"$work/err")
 check "BASE and NO_FOCUS reach herdr" "1" \
   "$(grep -c -- "^worktree create --cwd $repo --branch dispatched --base old --path ${repo}__worktrees/dispatched --no-focus$" "$work/calls" || true)"
@@ -133,6 +167,44 @@ check "BASE is recorded as herdr-base" "old" "$(git -C "$repo" config --get bran
 check "PROMPT_FILE becomes claude's first message" "1" \
   "$(grep -c -- '^agent start dispatched --kind claude --pane w3:p1 -- --permission-mode auto Read the task in /tmp/task.md and carry it out.$' "$work/calls" || true)"
 check "reports the agent and pane" "agent dispatched in pane w3:p1" "$(tail -n 1 "$work/out")"
+
+# --- claude-oracle, when the pane's shell has it, replaces claude --------------
+run "$repo" plain
+check "asks an interactive \$SHELL for claude-oracle" "-ic command -v claude-oracle" "$(cat "$work/shell-calls")"
+check "without claude-oracle, nothing is typed into the pane" "0" "$(grep -c -- '^pane run ' "$work/calls" || true)"
+
+HAS_ORACLE=1 run "$repo" oracle
+check "types claude-oracle into the new pane" "1" \
+  "$(grep -c -- '^pane run w3:p1 claude-oracle --permission-mode auto$' "$work/calls" || true)"
+check "does not use agent start for claude-oracle" "0" "$(grep -c -- '^agent start ' "$work/calls" || true)"
+check "checks the agent name is free before launching" "agent get oracle" "$(grep -m1 -- '^agent get ' "$work/calls" || true)"
+check "names the detected claude after the branch" "1" "$(grep -c -- '^agent rename w3:p1 oracle$' "$work/calls" || true)"
+check "waits for it to be ready" "1" \
+  "$(grep -c -- '^agent wait oracle --until idle --until done --until blocked --until working --timeout 30000$' "$work/calls" || true)"
+check "reports the agent and pane" "agent oracle in pane w3:p1" "$(tail -n 1 "$work/out")"
+
+DETECT_AFTER=2 HAS_ORACLE=1 run "$repo" slow
+check "polls until herdr detects claude" "3" "$(grep -c -- '^agent get w3:p1$' "$work/calls" || true)"
+check "names it only after detection" "agent rename w3:p1 slow" \
+  "$(grep -A1 -- '^agent get w3:p1$' "$work/calls" | tail -n 1)"
+
+WAIT_STATUS=blocked HAS_ORACLE=1 run "$repo" trusty-oracle
+check "reports claude-oracle parked at the trust prompt" "1" \
+  "$(grep -c 'claude is waiting at a startup prompt (folder trust?) in pane w3:p1' "$work/out" || true)"
+
+if NAME_TAKEN=1 HAS_ORACLE=1 run "$repo" clash; then
+  check "a taken agent name fails" "nonzero exit" "exit 0"
+else
+  check "a taken agent name fails" "nonzero exit" "nonzero exit"
+fi
+check "launches nothing when the name is taken" "0" "$(grep -c -- '^pane run ' "$work/calls" || true)"
+
+: >"$work/calls"
+(cd "$repo" && HERDR_CALLS=$work/calls HERDR_BIN=$work/herdr BRANCH=oracle-task HAS_ORACLE=1 \
+  SHELL=$work/shell SHELL_CALLS=$work/shell-calls \
+  PROMPT_FILE=/tmp/task.md "$subject" </dev/null >"$work/out" 2>"$work/err")
+check "PROMPT_FILE reaches claude-oracle as one shell word" "1" \
+  "$(grep -cxF -- 'pane run w3:p1 claude-oracle --permission-mode auto Read\ the\ task\ in\ /tmp/task.md\ and\ carry\ it\ out.' "$work/calls" || true)"
 
 # --- an empty branch is a quiet no-op ----------------------------------------
 run "$repo" ''
